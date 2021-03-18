@@ -34,3 +34,13 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = '1.8'
 }
+
+task buildAndCopy {
+    dependsOn 'shadowJar'
+    doLast {
+        copy {
+            from file('D:\\IdeaProjects\\WynnLab\\build\\libs\\WynnLab-1.0-SNAPSHOT-all.jar')
+            into file('D:\\Minecraft Server\\WynnLab Server\\plugins')
+        }
+    }
+}
