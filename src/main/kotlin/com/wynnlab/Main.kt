@@ -1,6 +1,7 @@
 package com.wynnlab
 
 import com.wynnlab.commands.ClassCommand
+import com.wynnlab.commands.ItemCommand
 import org.bukkit.plugin.java.JavaPlugin
 
 class Main : JavaPlugin() {
@@ -13,9 +14,11 @@ class Main : JavaPlugin() {
     }
 
     val classCommand by lazy { ClassCommand() }
+    val itemCommand by lazy { ItemCommand() }
 
     private fun registerCommands() {
         getCommand("class")?.setExecutor(classCommand)
+        getCommand("item")?.setExecutor(itemCommand)
     }
 }
 

@@ -9,4 +9,7 @@ website: wynnlab.com
 commands:
   class:
     description: Select your Wynncraft class
-    usage: /class <class-name>
+    usage: /class <name>
+  item:
+    description: Give yourself a Wynncraft item
+    usage: /item <name>
