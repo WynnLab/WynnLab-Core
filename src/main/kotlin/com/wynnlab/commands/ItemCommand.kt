@@ -19,6 +19,10 @@ class ItemCommand : CommandExecutor {
         }
         val itemName = args.joinToString(" ")
         val jsonObjects = getAPIResults(itemName)
+        if (jsonObjects.isEmpty()) {
+            sender.sendMessage("§c\"$itemName\" was not found")
+            return true
+        }
         val wynnItem = WynnItem.parse(jsonObjects[0]) //TODO
         sender.inventory.addItem(wynnItem.toItemStack())
         return true

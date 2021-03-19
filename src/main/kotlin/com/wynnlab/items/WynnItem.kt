@@ -4,8 +4,11 @@ import com.wynnlab.WynnClass
 import com.wynnlab.util.Optional
 import com.wynnlab.util.optional
 import com.wynnlab.util.optionalAs
+import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.Damageable
+import org.bukkit.inventory.meta.LeatherArmorMeta
 import org.json.simple.JSONObject
 
 class WynnItem(
@@ -16,11 +19,9 @@ class WynnItem(
     private val sockets: Int,
     private val category: ItemCategory,
     private val type: Type?,
-    private val armorType: Optional<ArmorType>,
     private val armorColor: Optional<Triple<Int, Int, Int>>,
-    private val accessoryType: Optional<AccessoryType>,
     private val addedLore: String?,
-    private val material: Material?,
+    private val material: Material,
     private val itemDamage: Int,
     private val damage: OptRange,
     private val earthDamage: OptRange,
@@ -44,14 +45,16 @@ class WynnItem(
     private val agility: Int,
 ) {
     fun toItemStack(): ItemStack {
-        val itemMaterial: Material =
-            material ?:
-            armorType.ifSome { Material.valueOf("${it.name}_${type!!.name}") } or
-            { accessoryType.ifSome { Material.FLINT_AND_STEEL } or
-            { Material.BARRIER } }
-
-        val item = ItemStack(itemMaterial)
+        val item = ItemStack(material)
         val meta = item.itemMeta
+
+        if (meta is Damageable) {
+            meta.isUnbreakable = true
+            meta.damage = itemDamage
+        }
+        if (meta is LeatherArmorMeta) {
+            armorColor.ifSome { meta.setColor(Color.fromRGB(it.first, it.second, it.third)) }
+        }
 
         val title = tier.colorCode + displayName.or { name }
         meta.setDisplayName(title)
@@ -61,14 +64,14 @@ class WynnItem(
         attackSpeed.ifSome { lore.add("§7${it.str} Attack Speed") }
         lore.add("")
 
-        damage.ifSome { lore.add("§6✣ Neutral Damage: ${it.dash()}") }
+        damage.ifSome { if (it.last > 0) lore.add("§6✣ Neutral Damage: ${it.dash()}") }
         earthDamage.ifSome { if (it.last > 0) lore.add("§2✤ Earth §7Damage: ${it.dash()}") }
         thunderDamage.ifSome { if (it.last > 0) lore.add("§e✦ Thunder §7Damage: ${it.dash()}") }
         waterDamage.ifSome { if (it.last > 0) lore.add("§b❉ Water §7Damage: ${it.dash()}") }
         fireDamage.ifSome { if (it.last > 0) lore.add("§c✹ Fire §7Damage: ${it.dash()}") }
         airDamage.ifSome { if (it.last > 0) lore.add("§f❋ Air §7Damage: ${it.dash()}") }
 
-        health.ifSome { lore.add("§4❤ Health: $it") }
+        health.ifSome { if (it > 0) lore.add("§4❤ Health: $it") }
         earthDefense.ifSome { if (it > 0) lore.add("§2✤ Earth §7Defense: $it") }
         thunderDefense.ifSome { if (it > 0) lore.add("§e✦ Thunder §7Defense: $it") }
         waterDefense.ifSome { if (it > 0) lore.add("§b❉ Water §7Defense: $it") }
@@ -100,9 +103,24 @@ class WynnItem(
 
     companion object {
         fun parse(json: JSONObject): WynnItem {
+            val type = (json["type"] as String?)?.let { Type.valueOf(it.toUpperCase()) }
+
             val materialId = json["material"]?.let { material -> (material as String).toUpperCase().split(':').let {
                 if (it.size > 1) it[0].toInt() to it[1].toInt() else it[0].toInt() to 0
             } }
+            val armorType = if (materialId == null) (json["armorType"] as String?)?.let {
+                ArmorType.valueOf(it.toUpperCase().takeUnless { a -> a == "GOLD" } ?: "GOLDEN")
+            } else null
+            val accessoryType = if (materialId == null && armorType == null) (json["accessoryType"] as String?)?.let {
+                AccessoryType.valueOf(it.toUpperCase())
+            } else null
+
+            val material = materialId?.let { idToMaterial[materialId.first] } ?:
+                armorType?.let { Material.valueOf("${it.name}_${type!!.name}") } ?:
+                accessoryType?.let { Material.FLINT_AND_STEEL } ?:
+                Material.BARRIER
+            val itemDamage = materialId?.second ?: 0
+
             return WynnItem(
                 json["name"] as String,
                 json["displayName"].optionalAs(),
@@ -110,15 +128,13 @@ class WynnItem(
                 (json["set"] as String?).ifNullNull(),
                 (json["sockets"] as Long).toInt(),
                 ItemCategory.valueOf((json["category"] as String).toUpperCase()),
-                (json["type"] as String?)?.let { Type.valueOf(it.toUpperCase()) },
-                json["armorType"].optionalAs<String>().ifSome { ArmorType.valueOf(it.toUpperCase().takeUnless { a -> a == "GOLD" } ?: "GOLDEN") },
+                type,
                 json["armorColor"].optionalAs<String>().ifSome { it.split(',').let { split ->
                     Triple(split[0].toInt(), split[1].toInt(), split[2].toInt())
                 } },
-                json["accessoryType"].optionalAs<String>().ifSome { AccessoryType.valueOf(it.toUpperCase()) },
                 (json["addedLore"] as String?).ifNullNull(),
-                idToMaterial[materialId?.first],
-                materialId?.second ?: 0,
+                material,
+                itemDamage,
                 json["damage"].optionalAs<String>().toIntRange(),
                 json["earthDamage"].optionalAs<String>().toIntRange(),
                 json["thunderDamage"].optionalAs<String>().toIntRange(),
@@ -184,7 +200,13 @@ class WynnItem(
 }
 
 private val idToMaterial = hashMapOf(
-    261 to Material.BOW
+    261 to Material.BOW,
+    259 to Material.FLINT_AND_STEEL,
+    256 to Material.IRON_SHOVEL,
+    359 to Material.SHEARS,
+    280 to Material.STICK,
+    273 to Material.STONE_SHOVEL,
+    269 to Material.WOODEN_SHOVEL
 )
 
 private fun String?.ifNullNull(): String? = if (this == "null") null else this
