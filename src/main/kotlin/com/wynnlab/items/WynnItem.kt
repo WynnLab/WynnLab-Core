@@ -6,6 +6,8 @@ import com.wynnlab.util.optional
 import com.wynnlab.util.optionalAs
 import org.bukkit.Color
 import org.bukkit.Material
+import org.bukkit.attribute.Attribute
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.inventory.meta.LeatherArmorMeta
@@ -55,6 +57,11 @@ class WynnItem(
         if (meta is LeatherArmorMeta) {
             armorColor.ifSome { meta.setColor(Color.fromRGB(it.first, it.second, it.third)) }
         }
+        meta.addItemFlags(*ItemFlag.values())
+        meta.removeAttributeModifier(Attribute.GENERIC_ARMOR)
+        meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS)
+        meta.removeAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE)
+        meta.removeAttributeModifier(Attribute.GENERIC_ATTACK_SPEED)
 
         val title = tier.colorCode + displayName.or { name }
         meta.setDisplayName(title)
