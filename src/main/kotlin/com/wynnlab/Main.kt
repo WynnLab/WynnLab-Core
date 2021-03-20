@@ -4,6 +4,7 @@ import com.wynnlab.commands.CastCommand
 import com.wynnlab.commands.ClassCommand
 import com.wynnlab.commands.ItemCommand
 import com.wynnlab.listeners.CastListener
+import com.wynnlab.listeners.PlayerClickListener
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -28,10 +29,12 @@ class Main : JavaPlugin() {
     }
 
     val castListener by lazy { CastListener() }
+    val playerClickListener by lazy { PlayerClickListener() }
 
     private fun registerListeners() {
         val manager = Bukkit.getPluginManager()
         manager.registerEvents(castListener, this)
+        manager.registerEvents(playerClickListener, this)
     }
 }
 

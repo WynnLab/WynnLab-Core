@@ -13,7 +13,8 @@ import org.bukkit.scheduler.BukkitRunnable
 class CastListener : Listener {
     @EventHandler(priority = EventPriority.HIGH)
     fun onSpellCast(e: CastEvent) {
-        e.player.playSound(e.player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 0.5f)
+        if (e.spellId > 0)
+            e.player.playSound(e.player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 0.5f)
         val meteor = Meteor(e.player)
         meteor.schedule()
     }
