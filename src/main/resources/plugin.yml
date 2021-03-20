@@ -13,3 +13,6 @@ commands:
   item:
     description: Give yourself a Wynncraft item
     usage: /item <name>
+  cast:
+    description: Cast a spell
+    usage: /cast <spell id (0..4)>

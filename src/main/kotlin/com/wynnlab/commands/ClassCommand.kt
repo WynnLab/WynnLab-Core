@@ -12,7 +12,7 @@ class ClassCommand : CommandExecutor {
             sender.sendMessage("§cThis command can only be executed by players")
             return true
         }
-        if (args.isEmpty()) {
+        if (args.size != 1) {
             sender.sendMessage("§cPlease specify a class")
             return false
         }
