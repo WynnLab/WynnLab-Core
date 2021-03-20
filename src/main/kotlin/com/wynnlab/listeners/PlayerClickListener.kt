@@ -24,7 +24,6 @@ class PlayerClickListener : Listener {
         if (!e.player.hasWeaponInHand())
             return
         e.player.addLeftClick()
-        e.player.playEffect(e.player.location, Effect.CLICK1, null)
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -38,6 +37,5 @@ class PlayerClickListener : Listener {
         if (!e.player.hasWeaponInHand())
             return
         e.player.addRightClick()
-        e.player.playEffect(e.player.location, Effect.CLICK1, null)
     }
 }

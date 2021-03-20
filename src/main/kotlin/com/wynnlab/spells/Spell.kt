@@ -1,5 +1,6 @@
 package com.wynnlab.spells
 
+import com.wynnlab.api.isCloneClass
 import com.wynnlab.plugin
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -13,7 +14,7 @@ abstract class Spell(
     private var scheduled = false
 
     protected var tick = 0
-    protected val clone = false
+    protected val clone = player.isCloneClass
 
     abstract fun tick()
 

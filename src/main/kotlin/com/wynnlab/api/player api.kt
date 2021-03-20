@@ -2,6 +2,7 @@ package com.wynnlab.api
 
 import com.wynnlab.events.CastEvent
 import org.bukkit.Bukkit
+import org.bukkit.Effect
 import org.bukkit.entity.Player
 
 fun Player.setWynnClass(wynnClass: String) {
@@ -11,6 +12,8 @@ fun Player.setWynnClass(wynnClass: String) {
 fun Player.getWynnClass() = data.getString("class")
 
 fun Player.hasWeaponInHand() = true // TODO
+
+val Player.isCloneClass get() = "clone" in scoreboardTags
 
 val Player.invertedControls get() = false // TODO
 
@@ -41,8 +44,10 @@ fun Player.addLeftClick(invertedControls: Boolean = false) {
         }
         else -> {
             castSpell(0)
+            return
         }
     }
+    playEffect(location, Effect.CLICK1, null)
 }
 
 fun Player.addRightClick(invertedControls: Boolean = false) {
@@ -71,4 +76,5 @@ fun Player.addRightClick(invertedControls: Boolean = false) {
             sendActionBar(if (invertedControls) "§a§nL§r-§n?§r-§n?" else "§a§nR§r-§n?§r-§n?")
         }
     }
+    playEffect(location, Effect.CLICK1, null)
 }
