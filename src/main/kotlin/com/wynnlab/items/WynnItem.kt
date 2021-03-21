@@ -1,12 +1,15 @@
 package com.wynnlab.items
 
 import com.wynnlab.WynnClass
+import com.wynnlab.api.data
+import com.wynnlab.api.setString
 import com.wynnlab.util.Optional
 import com.wynnlab.util.optional
 import com.wynnlab.util.optionalAs
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
@@ -46,8 +49,16 @@ class WynnItem(
     private val defense: Int,
     private val agility: Int,
 ) {
-    fun toItemStack(): ItemStack {
+    fun generateNewItem(player: Player): ItemStack {
         val item = ItemStack(material)
+
+        updateData(item, player)
+        updateLore(item, player)
+
+        return item
+    }
+
+    fun updateLore(item: ItemStack, player: Player) {
         val meta = item.itemMeta
 
         if (meta is Damageable) {
@@ -99,18 +110,27 @@ class WynnItem(
         lore.add("")
         if (sockets > 0) lore.add("§7[0/$sockets] Powder Slots")
 
-        lore.add("${tier.colorCode}${tier.tierName} Item")
+        lore.add("${tier.colorCode}${tier.tierName} ${type?.typeName ?: "Item"}")
 
         addedLore?.let { l -> l.wrapLines(30).forEach { lore.add("§8$it") } }
 
         meta.lore = lore
         item.itemMeta = meta
-        return item
+    }
+
+    fun updateData(item: ItemStack, player: Player) {
+        val meta = item.itemMeta
+        val data = meta.data
+
+        type?.name?.let { data.setString("type", it) }
+        attackSpeed.ifSome { data.setString("attack_speed", it.name) }
+
+        item.itemMeta = meta
     }
 
     companion object {
         fun parse(json: JSONObject): WynnItem {
-            val type = (json["type"] as String?)?.let { Type.valueOf(it.toUpperCase()) }
+            val type = (json["type"] as String? ?: json["accessoryType"] as String?)?.let { Type.valueOf(it.toUpperCase()) }
 
             val materialId = json["material"]?.let { material -> (material as String).toUpperCase().split(':').let {
                 if (it.size > 1) it[0].toInt() to it[1].toInt() else it[0].toInt() to 0
@@ -179,22 +199,24 @@ class WynnItem(
         MYTHIC("Mythic", "§5")
     }
 
-    enum class Type {
-        HELMET, CHESTPLATE, LEGGINGS, BOOTS, SPEAR, BOW, WAND, DAGGER, RELIK
+    enum class Type(val typeName: String) {
+        SPEAR("Spear"), BOW("Bow"), WAND("Wand"), DAGGER("Dagger"), RELIK("Relik"),
+        HELMET("Helmet"), CHESTPLATE("Chestplate"), LEGGINGS("Leggings"), BOOTS("Boots"),
+        RING("Ring"), BRACELET("Bracelet"), NECKLACE("Necklace")
     }
 
     enum class ArmorType {
         LEATHER, GOLDEN, CHAIN, IRON, DIAMOND
     }
 
-    enum class AttackSpeed(val str: String) {
-        SUPER_SLOW("Super Slow"),
-        VERY_SLOW("Very Slow"),
-        SLOW("Slow"),
-        NORMAL("Normal"),
-        FAST("Fast"),
-        VERY_FAST("Very Fast"),
-        SUPER_FAST("Super Fast")
+    enum class AttackSpeed(val str: String, val cooldown: Int) {
+        SUPER_SLOW("Super Slow", 39),
+        VERY_SLOW("Very Slow", 25),
+        SLOW("Slow", 13),
+        NORMAL("Normal", 10),
+        FAST("Fast", 8),
+        VERY_FAST("Very Fast", 6),
+        SUPER_FAST("Super Fast", 4),
     }
 
     enum class AccessoryType {

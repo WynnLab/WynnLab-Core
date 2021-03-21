@@ -24,7 +24,7 @@ class ItemCommand : CommandExecutor {
             return true
         }
         val wynnItem = WynnItem.parse(jsonObjects[0]) //TODO
-        sender.inventory.addItem(wynnItem.toItemStack())
+        sender.inventory.addItem(wynnItem.generateNewItem(sender))
         return true
     }
 }

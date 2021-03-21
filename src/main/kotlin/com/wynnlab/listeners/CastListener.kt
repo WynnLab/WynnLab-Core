@@ -1,6 +1,7 @@
 package com.wynnlab.listeners
 
 import com.wynnlab.WynnClass
+import com.wynnlab.api.cooldown
 import com.wynnlab.api.getWynnClass
 import com.wynnlab.events.CastEvent
 import com.wynnlab.plugin
@@ -20,6 +21,9 @@ class CastListener : Listener {
     fun onSpellCast(e: CastEvent) {
         if (e.spellId > 0)
             e.player.playSound(e.player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 0.5f)
+        else {
+            if (e.player.cooldown()) return
+        }
         e.player.getWynnClass()?.let { castSpell(e.player, WynnClass.valueOf(it.toUpperCase()).spells[e.spellId]) }
     }
 }

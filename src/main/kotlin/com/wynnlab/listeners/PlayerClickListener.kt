@@ -2,6 +2,7 @@ package com.wynnlab.listeners
 
 import com.wynnlab.api.addLeftClick
 import com.wynnlab.api.addRightClick
+import com.wynnlab.api.checkWeapon
 import com.wynnlab.api.hasWeaponInHand
 import org.bukkit.Effect
 import org.bukkit.GameMode
@@ -21,7 +22,7 @@ class PlayerClickListener : Listener {
             return
         if (e.animationType != PlayerAnimationType.ARM_SWING)
             return
-        if (!e.player.hasWeaponInHand())
+        if (!e.player.checkWeapon())
             return
         e.player.addLeftClick()
     }
@@ -34,7 +35,7 @@ class PlayerClickListener : Listener {
             return
         if (e.hand != EquipmentSlot.HAND)
             return
-        if (!e.player.hasWeaponInHand())
+        if (!e.player.checkWeapon())
             return
         e.player.addRightClick()
     }
