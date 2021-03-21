@@ -1,10 +1,13 @@
 package com.wynnlab.api
 
-import com.wynnlab.events.CastEvent
+import com.wynnlab.events.SpellCastEvent
 import com.wynnlab.items.WynnItem
 import com.wynnlab.plugin
+import com.wynnlab.util.RefreshRunnable
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Effect
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 
 fun Player.setWynnClass(wynnClass: String) {
@@ -13,13 +16,15 @@ fun Player.setWynnClass(wynnClass: String) {
 
 fun Player.getWynnClass() = data.getString("class")
 
-fun Player.hasWeaponInHand() = when (getWynnClass()) {
-    "WARRIOR" -> inventory.itemInMainHand.getWynnType() == WynnItem.Type.SPEAR
-    "ARCHER" -> inventory.itemInMainHand.getWynnType() == WynnItem.Type.BOW
-    "MAGE" -> inventory.itemInMainHand.getWynnType() == WynnItem.Type.WAND
-    "ASSASSIN" -> inventory.itemInMainHand.getWynnType() == WynnItem.Type.DAGGER
-    "SHAMAN" -> inventory.itemInMainHand.getWynnType() == WynnItem.Type.RELIK
-    else -> null
+fun Player.hasWeaponInHand(): Boolean? {
+    return when (getWynnClass()) {
+        "WARRIOR" -> (inventory.itemInMainHand.getWynnType() ?: return null) == WynnItem.Type.SPEAR
+        "ARCHER" -> (inventory.itemInMainHand.getWynnType() ?: return null) == WynnItem.Type.BOW
+        "MAGE" -> (inventory.itemInMainHand.getWynnType() ?: return null) == WynnItem.Type.WAND
+        "ASSASSIN" -> (inventory.itemInMainHand.getWynnType() ?: return null) == WynnItem.Type.DAGGER
+        "SHAMAN" -> (inventory.itemInMainHand.getWynnType() ?: return null) == WynnItem.Type.RELIK
+        else -> null
+    }
 }
 
 fun Player.checkWeapon() =
@@ -38,13 +43,12 @@ fun Player.cooldown(): Boolean {
         true
 }
 
-
 val Player.isCloneClass get() = "clone" in scoreboardTags
 
 val Player.invertedControls get() = getWynnClass()?.toUpperCase() == "ARCHER"
 
 fun Player.castSpell(id: Int) {
-    Bukkit.getPluginManager().callEvent(CastEvent(this, id))
+    Bukkit.getPluginManager().callEvent(SpellCastEvent(this, id))
 }
 
 fun Player.addLeftClick(invertedControls: Boolean = false) {
@@ -55,24 +59,25 @@ fun Player.addLeftClick(invertedControls: Boolean = false) {
     when {
         "rrx" in scoreboardTags -> {
             scoreboardTags.remove("rrx")
-            sendActionBar(if (invertedControls) "§a§nL§r-§a§nL§r-§a§nR" else "§a§nR§r-§a§nR§r-§a§nL")
+            updateActionBar(if (invertedControls) "§a§nL§r-§a§nL§r-§a§nR" else "§a§nR§r-§a§nR§r-§a§nL")
             castSpell(4)
         }
         "rlx" in scoreboardTags -> {
             scoreboardTags.remove("rlx")
-            sendActionBar(if (invertedControls) "§a§nL§r-§a§nR§r-§a§nR" else "§a§nR§r-§a§nL§r-§a§nL")
+            updateActionBar(if (invertedControls) "§a§nL§r-§a§nR§r-§a§nR" else "§a§nR§r-§a§nL§r-§a§nL")
             castSpell(3)
         }
         "rxx" in scoreboardTags -> {
             scoreboardTags.remove("rxx")
             scoreboardTags.add("rlx")
-            sendActionBar(if (invertedControls) "§a§nL§r-§a§nR§r-§n?" else "§a§nR§r-§a§nL§r-§n?")
+            updateActionBar(if (invertedControls) "§a§nL§r-§a§nR§r-§n?" else "§a§nR§r-§a§nL§r-§n?")
         }
         else -> {
             castSpell(0)
             return
         }
     }
+    scheduleCancelSpellClicks()
     playEffect(location, Effect.CLICK1, null)
 }
 
@@ -84,23 +89,64 @@ fun Player.addRightClick(invertedControls: Boolean = false) {
     when {
         "rrx" in scoreboardTags -> {
             scoreboardTags.remove("rrx")
-            sendActionBar(if (invertedControls) "§a§nL§r-§a§nL§r-§a§nL" else "§a§nR§r-§a§nR§r-§a§nR")
+            updateActionBar(if (invertedControls) "§a§nL§r-§a§nL§r-§a§nL" else "§a§nR§r-§a§nR§r-§a§nR")
             castSpell(2)
         }
         "rlx" in scoreboardTags -> {
             scoreboardTags.remove("rlx")
-            sendActionBar(if (invertedControls) "§a§nL§r-§a§nR§r-§a§nL" else "§a§nR§r-§a§nL§r-§a§nR")
+            updateActionBar(if (invertedControls) "§a§nL§r-§a§nR§r-§a§nL" else "§a§nR§r-§a§nL§r-§a§nR")
             castSpell(1)
         }
         "rxx" in scoreboardTags -> {
             scoreboardTags.remove("rxx")
             scoreboardTags.add("rrx")
-            sendActionBar(if (invertedControls) "§a§nL§r-§a§nL§r-§n?" else "§a§nR§r-§a§nR§r-§n?")
+            updateActionBar(if (invertedControls) "§a§nL§r-§a§nL§r-§n?" else "§a§nR§r-§a§nR§r-§n?")
         }
         else -> {
             scoreboardTags.add("rxx")
-            sendActionBar(if (invertedControls) "§a§nL§r-§n?§r-§n?" else "§a§nR§r-§n?§r-§n?")
+            updateActionBar(if (invertedControls) "§a§nL§r-§n?§r-§n?" else "§a§nR§r-§n?§r-§n?")
         }
     }
+    scheduleCancelSpellClicks()
     playEffect(location, Effect.CLICK1, null)
+}
+
+private fun Player.scheduleCancelSpellClicks() {
+    RefreshRunnable(data, "cancel_spell") { cancelSpellClicks() }.schedule(20L)
+}
+
+fun Player.cancelSpellClicks() {
+    if (removeScoreboardTag("rxx")) return
+    if (removeScoreboardTag("rrx")) return
+    removeScoreboardTag("rlx")
+}
+
+fun Player.updateActionBar(msg: String) {
+    sendWynnActionBar(msg)
+    if ("action_bar" !in scoreboardTags)
+        addScoreboardTag("action_bar")
+    RefreshRunnable(data, "action_bar") {
+        removeScoreboardTag("action_bar")
+        standardActionBar()
+    }.schedule(20L)
+}
+
+fun Player.standardActionBar() {
+    if ("action_bar" !in scoreboardTags) {
+        sendWynnActionBar("")
+    }
+}
+
+private fun Player.sendWynnActionBar(msg: String) {
+    val health = "§4[§cH ${health.toInt()}/${getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value?.toInt()}§4]§r"
+    val mana = "§3[§bM $foodLevel/20§3]§r"
+    val mlD2 = (ChatColor.stripColor(msg)!!.length) / 2
+    sendActionBar(buildString {
+        append(health)
+        repeat(20 - health.length + 8 - mlD2) { append(' ') }
+        append(msg)
+        append("§r")
+        repeat(20 - mana.length + 8 - mlD2) { append(' ') }
+        append(mana)
+    })
 }

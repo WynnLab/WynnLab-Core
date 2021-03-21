@@ -1,7 +1,7 @@
 package com.wynnlab.commands
 
 import com.wynnlab.api.getWynnClass
-import com.wynnlab.events.CastEvent
+import com.wynnlab.events.SpellCastEvent
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -28,7 +28,7 @@ class CastCommand : CommandExecutor {
             sender.sendMessage("§c'${args[0]}' is not a valid spell id")
             return false
         }
-        Bukkit.getPluginManager().callEvent(CastEvent(sender, spell))
+        Bukkit.getPluginManager().callEvent(SpellCastEvent(sender, spell))
         return true
     }
 }

@@ -17,6 +17,7 @@ class Main : JavaPlugin() {
     override fun onEnable() {
         registerListeners()
         registerCommands()
+        MainThread.schedule()
     }
 
     val classCommand by lazy { ClassCommand() }

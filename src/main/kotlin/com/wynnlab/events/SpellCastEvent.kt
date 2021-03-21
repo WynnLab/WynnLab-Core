@@ -4,8 +4,8 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 
-class CastEvent(val player: Player, val spellId: Int) : Event() {
-    override fun getHandlers(): HandlerList = CastEvent.handlerList
+class SpellCastEvent(val player: Player, val spellId: Int) : Event() {
+    override fun getHandlers(): HandlerList = SpellCastEvent.handlerList
 
     companion object {
         @JvmStatic
