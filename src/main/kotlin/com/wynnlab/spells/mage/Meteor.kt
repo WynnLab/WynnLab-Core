@@ -12,7 +12,7 @@ import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import java.util.*
 
-class Meteor(player: Player) : Spell(player, 61, SpellData.METEOR) {
+object Meteor : Spell(61, SpellData.METEOR) {
     private lateinit var target: Location
     private lateinit var origin: Location
     private lateinit var direction: Vector

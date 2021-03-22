@@ -12,7 +12,7 @@ import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import java.util.*
 
-class BombArrow(player: Player) : Spell(player, 1, SpellData.METEOR) {
+object BombArrow : Spell(1, SpellData.METEOR) {
     override fun tick() {
 
     }

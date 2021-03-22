@@ -10,7 +10,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityRegainHealthEvent
 
-class Heal(player: Player) : Spell(player, 41, SpellData.METEOR) {
+object Heal : Spell(41, SpellData.METEOR) {
     override fun tick() {
         if (tick % 20 == 0) {
             player.spawnParticle(Particle.PORTAL, player.location.clone().add(0.0, 0.5, 0.0), 144, 4.0, 0.0, 4.0, 0.1)

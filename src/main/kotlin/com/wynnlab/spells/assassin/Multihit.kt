@@ -12,7 +12,7 @@ import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import java.util.*
 
-class Multihit(player: Player) : Spell(player, 1, SpellData.METEOR) {
+object Multihit : Spell(1, SpellData.METEOR) {
     override fun tick() {
 
     }

@@ -12,7 +12,7 @@ import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import java.util.*
 
-class Uppercut(player: Player) : Spell(player, 1, SpellData.METEOR) {
+object Uppercut : Spell(1, SpellData.UPPERCUT) {
     override fun tick() {
 
     }

@@ -4,7 +4,7 @@ import com.wynnlab.spells.Spell
 import com.wynnlab.spells.SpellData
 import org.bukkit.entity.Player
 
-class Charge(player: Player) : Spell(player, 1, SpellData.METEOR) {
+object Charge : Spell(1, SpellData.CHARGE) {
     override fun tick() {
 
     }

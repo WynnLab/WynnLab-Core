@@ -8,7 +8,7 @@ import org.bukkit.entity.Mob
 import com.wynnlab.util.LocationIterator
 import org.bukkit.Particle
 
-class MageMain(player: Player) : Spell(player, 1, SpellData.METEOR) {
+object MageMain : Spell(1, SpellData.METEOR) {
     private val hit: MutableList<Mob> = mutableListOf()
 
     override fun tick() {

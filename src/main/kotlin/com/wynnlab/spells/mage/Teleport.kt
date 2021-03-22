@@ -8,7 +8,7 @@ import org.bukkit.entity.Mob
 import com.wynnlab.util.LocationIterator
 import org.bukkit.Particle
 
-class Teleport(player: Player) : Spell(player, 1, SpellData.METEOR) {
+object Teleport : Spell( 1, SpellData.METEOR) {
     override fun tick() {
         val ray = player.rayTraceBlocks(14.0)
         val target = if (ray == null || ray.hitBlock == null) player.location.clone()

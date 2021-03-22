@@ -19,18 +19,18 @@ class CastListener : Listener {
     fun onSpellCast(e: SpellCastEvent) {
         val player = e.player
         val spell = player.getWynnClass()?.let {  WynnClass.valueOf(it.toUpperCase()).spells[e.spellId] } ?: return
-        val instance = spell.java.getConstructor(Player::class.java).newInstance(player)!!
+        spell.initialize(player)
 
         if (e.spellId > 0) {
             player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 0.5f)
             player.updateActionBar(
-                "${if (player.isCloneClass) instance.data.cloneSpellName else instance.data.spellName} Cast " +
-                        "[-${instance.data.cost}M]"
+                "${if (player.isCloneClass) spell.data.cloneSpellName else spell.data.spellName} Cast " +
+                        "[-${spell.data.cost}M]"
             )
         } else {
             if (player.cooldown()) return
         }
 
-        instance.schedule()
+        spell.schedule()
     }
 }
