@@ -12,13 +12,9 @@ import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 
-object IceSnake : Spell(21, SpellData.METEOR) {
-    private val hit: MutableList<Mob> = mutableListOf()
-    private lateinit var iceLoc: Location
-
-    override fun init() {
-        iceLoc = player.location.clone().add(0.0, 1.0, 0.0)
-    }
+class IceSnake(player: Player) : Spell(player, 21, SpellData.ICE_SNAKE) {
+    private val hit = mutableListOf<Mob>()
+    private val iceLoc = player.location.clone().add(0.0, 1.0, 0.0)
 
     override fun tick() {
         iceLoc.add(player.eyeLocation.direction.clone().normalizeOnXZ())
@@ -40,14 +36,12 @@ object IceSnake : Spell(21, SpellData.METEOR) {
             if (clone) 0.25f else 0.5f, if (clone) 1.5f else 1f
         )
         for (e in iceLoc.getNearbyEntities(1.0, 1.0, 1.0)) {
-            if (e is Player) {
+            if (e is Player)
                 continue
-            }
             if (e is Mob) {
                 e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 300, 4))
-                if (hit.contains(e)) {
+                if (hit.contains(e))
                     continue
-                }
                 hit.add(e)
                 e.damage(1.0, player)
             }

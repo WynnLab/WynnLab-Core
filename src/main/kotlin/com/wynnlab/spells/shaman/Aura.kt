@@ -12,7 +12,7 @@ import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import java.util.*
 
-object Aura : Spell(1, SpellData.AURA) {
+class Aura(player: Player) : Spell(player, 1, SpellData.AURA) {
     override fun tick() {
 
     }

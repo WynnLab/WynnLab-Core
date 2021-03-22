@@ -10,7 +10,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityRegainHealthEvent
 
-object Heal : Spell(41, SpellData.METEOR) {
+class Heal(player: Player) : Spell(player, 41, SpellData.HEAL) {
     override fun tick() {
         if (tick % 20 == 0) {
             player.spawnParticle(Particle.PORTAL, player.location.clone().add(0.0, 0.5, 0.0), 144, 4.0, 0.0, 4.0, 0.1)
@@ -18,10 +18,10 @@ object Heal : Spell(41, SpellData.METEOR) {
             player.spawnParticle(Particle.FIREWORKS_SPARK, player.location.clone().add(0.0, 1.0, 0.0), 16, 0.3, 1.0, 0.3, 0.05)
             player.playSound(player.location, Sound.ENTITY_EVOKER_CAST_SPELL, 0.5f, 1.5f)
             player.playSound(player.location, Sound.BLOCK_LAVA_EXTINGUISH, 1f, 1f)
-            player.health = player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value.coerceAtMost(player.health + 50) // Heal Health
+            player.health = (player.health + 50).coerceAtMost(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value) // Heal Health
             for (e in player.getNearbyEntities(4.0, 4.0, 4.0)) {
                 if (e is Player) {
-                    e.health = e.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value.coerceAtMost(e.health + 50) // Heal Health
+                    e.health = (e.health + 50).coerceAtMost(e.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value) // Heal Health
                     Bukkit.getPluginManager().callEvent(
                         EntityRegainHealthEvent(player, 50.0, EntityRegainHealthEvent.RegainReason.CUSTOM) // Heal Health
                     )

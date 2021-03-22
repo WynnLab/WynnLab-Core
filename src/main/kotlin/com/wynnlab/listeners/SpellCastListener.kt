@@ -18,8 +18,8 @@ class CastListener : Listener {
     @EventHandler(priority = EventPriority.HIGH)
     fun onSpellCast(e: SpellCastEvent) {
         val player = e.player
-        val spell = player.getWynnClass()?.let {  WynnClass.valueOf(it.toUpperCase()).spells[e.spellId] } ?: return
-        spell.initialize(player)
+        val spellClass = player.getWynnClass()?.let {  WynnClass.valueOf(it.toUpperCase()).spells[e.spellId] } ?: return
+        val spell = spellClass.java.getConstructor(Player::class.java).newInstance(player)!!
 
         if (e.spellId > 0) {
             player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 0.5f)

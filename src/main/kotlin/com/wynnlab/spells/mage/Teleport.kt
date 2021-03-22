@@ -8,7 +8,7 @@ import org.bukkit.entity.Mob
 import com.wynnlab.util.LocationIterator
 import org.bukkit.Particle
 
-object Teleport : Spell( 1, SpellData.METEOR) {
+class Teleport(player: Player) : Spell(player, 1, SpellData.TELEPORT) {
     override fun tick() {
         val ray = player.rayTraceBlocks(14.0)
         val target = if (ray == null || ray.hitBlock == null) player.location.clone()
@@ -27,9 +27,8 @@ object Teleport : Spell( 1, SpellData.METEOR) {
         for (loc in LocationIterator(player.eyeLocation.clone(), target, player.eyeLocation.direction.clone(), 1.0)) {
             player.spawnParticle(if (clone) Particle.VILLAGER_ANGRY else Particle.LAVA, loc, 1, 0.0, 0.0, 0.0, 0.0)
             for (e in loc.getNearbyEntities(0.5, 0.5, 0.5)) {
-                if (e is Player) {
+                if (e is Player)
                     continue
-                }
                 if (e is Mob) {
                     e.damage(2.0, player)
                 }

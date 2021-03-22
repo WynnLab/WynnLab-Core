@@ -4,7 +4,7 @@ import com.wynnlab.spells.Spell
 import com.wynnlab.spells.SpellData
 import org.bukkit.entity.Player
 
-object WarScream : Spell(1, SpellData.WAR_SCREAM) {
+class WarScream(player: Player) : Spell(player, 1, SpellData.WAR_SCREAM) {
     override fun tick() {
 
     }

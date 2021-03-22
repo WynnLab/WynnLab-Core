@@ -4,7 +4,7 @@ import com.wynnlab.spells.Spell
 import com.wynnlab.spells.SpellData
 import org.bukkit.entity.Player
 
-object Bash : Spell(1, SpellData.BASH) {
+class Bash(player: Player) : Spell(player, 1, SpellData.BASH) {
     override fun tick() {
 
     }

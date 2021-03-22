@@ -44,3 +44,5 @@ class Main : JavaPlugin() {
 
 private lateinit var instance: Main
 val plugin get() = instance
+
+val random = java.util.Random()

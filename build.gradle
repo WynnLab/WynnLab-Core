@@ -42,9 +42,13 @@ compileTestKotlin {
 task buildAndCopy {
     dependsOn 'shadowJar'
     doLast {
-        copy {
+        /*copy {
             from file("D:\\IdeaProjects\\WynnLab\\build\\libs\\WynnLab-$version-all.jar")
-            into file(/*'D:\\Minecraft Server\\WynnLab Server\\plugins'*/"M:\\plugins")
+            into file(/*'D:\\Minecraft Server\\WynnLab Server\\plugins'"M:\\plugins")
+        }*/
+        copy {
+            from file("D:\\Simon\\WynnLab\\build\\libs\\WynnLab-$version-all.jar")
+            into file("D:\\Minecraft Server\\plugins")
         }
     }
 }

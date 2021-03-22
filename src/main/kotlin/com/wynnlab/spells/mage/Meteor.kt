@@ -12,7 +12,7 @@ import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import java.util.*
 
-object Meteor : Spell(61, SpellData.METEOR) {
+class Meteor(player: Player) : Spell(player, 61, SpellData.METEOR) {
     private lateinit var target: Location
     private lateinit var origin: Location
     private lateinit var direction: Vector
@@ -28,9 +28,8 @@ object Meteor : Spell(61, SpellData.METEOR) {
                 rayLoc = ray.hitEntity!!.location
             }
             for (e in rayLoc.getNearbyEntities(7.0, 7.0, 7.0)) {
-                if (e is Player) {
+                if (e is Player)
                     continue
-                }
                 if (e is Mob) {
                     if (!::target.isInitialized) {
                         target = e.getLocation()

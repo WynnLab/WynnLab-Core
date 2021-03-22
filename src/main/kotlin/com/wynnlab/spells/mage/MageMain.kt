@@ -8,8 +8,8 @@ import org.bukkit.entity.Mob
 import com.wynnlab.util.LocationIterator
 import org.bukkit.Particle
 
-object MageMain : Spell(1, SpellData.METEOR) {
-    private val hit: MutableList<Mob> = mutableListOf()
+class MageMain(player: Player) : Spell(player, 1, SpellData.METEOR) {
+    private val hit = mutableListOf<Mob>()
 
     override fun tick() {
         val l1 = player.eyeLocation.clone().add(0.0, -0.5, 0.0)
@@ -20,13 +20,11 @@ object MageMain : Spell(1, SpellData.METEOR) {
             player.spawnParticle(if (clone) Particle.SPELL_WITCH else Particle.CRIT, loc, 1, 0.0, 0.0, 0.0, 0.0)
             player.spawnParticle(Particle.CRIT_MAGIC, loc, 1, 0.0, 0.0, 0.0, 0.1)
             for (e in loc.getNearbyEntities(0.5, 0.5, 0.5)) {
-                if (e is Player) {
+                if (e is Player)
                     continue
-                }
                 if (e is Mob) {
-                    if (hit.contains(e)) {
+                    if (hit.contains(e))
                         continue
-                    }
                     hit.add(e)
                     e.damage(2.0, player)
                 }
