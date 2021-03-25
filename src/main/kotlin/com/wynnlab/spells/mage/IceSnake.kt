@@ -44,6 +44,7 @@ class IceSnake(player: Player) : Spell(player, 21, SpellData.ICE_SNAKE) {
                     continue
                 hit.add(e)
                 e.damage(1.0, player)
+                e.noDamageTicks = 0
             }
         }
     }

@@ -24,7 +24,7 @@ abstract class Spell(
                 tick()
                 ++tick
             } else {
-                Bukkit.getScheduler().cancelTask(taskId)
+                cancel()
             }
         }
     }
@@ -32,5 +32,10 @@ abstract class Spell(
     fun schedule() {
         taskId = Bukkit.getScheduler().runTaskTimer(plugin, this, 0L, 1L).taskId
         scheduled = true
+    }
+
+    fun cancel() {
+        scheduled = false
+        Bukkit.getScheduler().cancelTask(taskId)
     }
 }

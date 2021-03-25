@@ -29,9 +29,10 @@ class Teleport(player: Player) : Spell(player, 1, SpellData.TELEPORT) {
             for (e in loc.getNearbyEntities(0.5, 0.5, 0.5)) {
                 if (e is Player)
                     continue
-                if (e is Mob) {
-                    e.damage(2.0, player)
-                }
+                if (e !is Mob)
+                    continue
+                e.damage(2.0, player)
+                e.noDamageTicks = 0
             }
         }
         player.playSound(target, if (clone) Sound.ENTITY_ENDERMAN_TELEPORT else Sound.ENTITY_SHULKER_TELEPORT, 1f, 1f)

@@ -25,7 +25,7 @@ class CastListener : Listener {
             player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 0.5f)
             player.updateActionBar(
                 "${if (player.isCloneClass) spell.data.cloneSpellName else spell.data.spellName} Cast " +
-                        "[-${spell.data.cost}M]"
+                        "§3[§b-${spell.data.cost}✺§3]"
             )
         } else {
             if (player.cooldown()) return

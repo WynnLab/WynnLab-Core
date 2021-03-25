@@ -5,6 +5,6 @@ fun main() {
     val items = getAPIResults("Crusade")
     print(items)
 
-    val wynnItem = WynnItem.parse(items[0])
-    print(wynnItem)
+    //val wynnItem = WynnItem.parse(items[0])
+    //print(wynnItem)
 }

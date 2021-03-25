@@ -70,12 +70,12 @@ class Meteor(player: Player) : Spell(player, 61, SpellData.METEOR) {
                 this.player.world.playSound(target, Sound.ENTITY_GENERIC_EXPLODE, 5f, if (clone) 0.5f else 0.75f)
                 if (clone) this.player.playSound(target, Sound.ENTITY_WITHER_DEATH, 1f, 0.75f)
                 for (e in target.getNearbyEntities(3.0, 3.0, 3.0)) {
-                    if (e is Player) {
+                    if (e is Player)
                         continue
-                    }
-                    if (e is Mob) {
-                        (e as Damageable).damage(15.0, this.player)
-                    }
+                    if (e !is Mob)
+                        continue
+                    e.damage(15.0, this.player)
+                    e.noDamageTicks = 0
                 }
             }
         }

@@ -27,6 +27,7 @@ class MageMain(player: Player) : Spell(player, 1, SpellData.METEOR) {
                         continue
                     hit.add(e)
                     e.damage(2.0, player)
+                    e.noDamageTicks = 0
                 }
             }
         }
