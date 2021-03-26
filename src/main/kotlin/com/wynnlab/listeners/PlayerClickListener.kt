@@ -25,6 +25,7 @@ class PlayerClickListener : Listener {
         if (!e.player.checkWeapon())
             return
         e.player.addLeftClick()
+        e.isCancelled = true
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -38,5 +39,6 @@ class PlayerClickListener : Listener {
         if (!e.player.checkWeapon())
             return
         e.player.addRightClick()
+        e.isCancelled = true
     }
 }

@@ -41,8 +41,8 @@ class Escape(player: Player) : Spell(player, 2, SpellData.ESCAPE) {
 
                     if (player.isSneaking)
                         player.velocity = player.velocity - Vector(.0, 1.0, .0)
-                    else if (player.velocity.y < 0)
-                        player.velocity.y = player.velocity.y * .7
+                    else if (player.velocity.y <= -.5)
+                        player.velocity = player.velocity.setY(-.5)
                 } else {
                     if (player.isSneaking) {
                         for (i in 0..360 step 60) {

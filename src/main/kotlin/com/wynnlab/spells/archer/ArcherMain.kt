@@ -24,3 +24,19 @@ class ArcherMain(player: Player) : Spell(player, 1, SpellData.METEOR) {
         }
     }
 }
+
+/*
+from org.bukkit import Material, Sound
+from org.bukkit.entity import Arrow, Player, Snowball
+from org.bukkit.inventory import ItemStack
+
+player.playSound(player.getLocation(), Sound.ENTITY_ARROW_SHOOT, 1f, 1f)
+if clone:
+    arrow = player.launchProjectile(Snowball, player.getExeLocation().getDirection().clone().multiply(3))
+    arrow.addScoreboardTag('arrow')
+    arrow.setItem(ItemStack(Material.FLINT))
+    arrow.setRotation(random.nextFloat(), 0f)
+else:
+    arrow = player.launchProjectile(Arrow, player.getExeLocation().getDirection().clone().multiply(3))
+    arrow.addScoreboardTag('arrow')
+ */

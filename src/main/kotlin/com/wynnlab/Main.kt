@@ -18,6 +18,14 @@ class Main : JavaPlugin() {
         registerListeners()
         registerCommands()
         MainThread.schedule()
+
+        //TODO(debug)
+        /*dataFolder.mkdirs()
+        val subFile = File(dataFolder, "hello.yml")
+        subFile.createNewFile()
+        val config = YamlConfiguration()
+        config.load(subFile)
+        config.set("item", ItemStack(Material.ARROW))*/
     }
 
     val classCommand by lazy { ClassCommand() }

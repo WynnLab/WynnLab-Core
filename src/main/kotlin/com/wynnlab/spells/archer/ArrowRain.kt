@@ -31,7 +31,7 @@ class ArrowRain(player: Player) : Spell(player, 11, SpellData.ARROW_SHIELD /*TOD
                 player.playSound(l, Sound.ENTITY_ARROW_SHOOT, 1f, .8f)
                 player.playSound(l, if (clone) Sound.ITEM_ARMOR_EQUIP_GOLD else Sound.ENTITY_GENERIC_EXPLODE, .8f, if (clone) 1f else 1.8f)
                 if (clone) player.playSound(l, Sound.ITEM_TOTEM_USE, .8f, .8f)
-                for (i in 0 until 360 step 30) {
+                for (i in 0..360 step 30) {
                     for (j in 0..2) {
                         val arrow = player.world.spawnArrow(l, Vector(sin(i * RAD2DEG), .5 * (j - 1.0) - 1.0, cos(i * RAD2DEG)), 3f, 1f)
                         arrow.shooter = player
