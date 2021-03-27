@@ -4,7 +4,7 @@ import com.wynnlab.api.data
 import com.wynnlab.api.getInt
 import com.wynnlab.api.setInt
 import com.wynnlab.api.setString
-import com.wynnlab.spells.Spell
+import com.wynnlab.spells.SpellL
 import com.wynnlab.spells.SpellData
 import com.wynnlab.util.RAD2DEG
 import com.wynnlab.util.minus
@@ -23,7 +23,7 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-class ArrowShield(player: Player) : Spell(player, 601, SpellData.ARROW_SHIELD) {
+class ArrowShield(player: Player) : SpellL(player, 601, SpellData.ARROW_SHIELD) {
     private lateinit var as1: ArmorStand
     private lateinit var as2: ArmorStand
     private lateinit var as3: ArmorStand

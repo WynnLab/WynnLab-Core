@@ -1,7 +1,7 @@
 package com.wynnlab.spells.archer
 
 import com.wynnlab.random
-import com.wynnlab.spells.Spell
+import com.wynnlab.spells.SpellL
 import com.wynnlab.spells.SpellData
 import com.wynnlab.util.times
 import org.bukkit.Material
@@ -13,7 +13,7 @@ import org.bukkit.entity.Projectile
 import org.bukkit.entity.Snowball
 import org.bukkit.inventory.ItemStack
 
-class ArrowStorm(player: Player) : Spell(player, 21, SpellData.ARROW_STORM) {
+class ArrowStorm(player: Player) : SpellL(player, 21, SpellData.ARROW_STORM) {
     private val arrows = mutableListOf<Projectile>()
 
     override fun tick() {

@@ -1,24 +1,22 @@
 package com.wynnlab.listeners
 
-import com.wynnlab.WynnClass
+import com.wynnlab.WynnClassL
 import com.wynnlab.api.cooldown
 import com.wynnlab.api.getWynnClass
 import com.wynnlab.api.isCloneClass
 import com.wynnlab.api.updateActionBar
 import com.wynnlab.events.SpellCastEvent
-import com.wynnlab.spells.Spell
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
-import kotlin.reflect.KClass
 
 class CastListener : Listener {
     @EventHandler(priority = EventPriority.HIGH)
     fun onSpellCast(e: SpellCastEvent) {
         val player = e.player
-        val spellClass = player.getWynnClass()?.let {  WynnClass.valueOf(it.toUpperCase()).spells[e.spellId] } ?: return
+        val spellClass = player.getWynnClass()?.let {  WynnClassL.valueOf(it.toUpperCase()).spells[e.spellId] } ?: return
         val spell = spellClass.java.getConstructor(Player::class.java).newInstance(player)!!
 
         if (e.spellId > 0) {

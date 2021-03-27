@@ -1,11 +1,10 @@
 package com.wynnlab.spells.archer
 
-import com.wynnlab.spells.Spell
+import com.wynnlab.spells.SpellL
 import com.wynnlab.spells.SpellData
 import com.wynnlab.util.RAD2DEG
 import com.wynnlab.util.minus
 import com.wynnlab.util.plus
-import com.wynnlab.util.times
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Mob
@@ -18,7 +17,7 @@ import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
-class Escape(player: Player) : Spell(player, 2, SpellData.ESCAPE) {
+class Escape(player: Player) : SpellL(player, 2, SpellData.ESCAPE) {
     @Suppress("depreciation")
     override fun tick() {
         when (tick) {

@@ -1,6 +1,6 @@
 package com.wynnlab.spells.mage
 
-import com.wynnlab.spells.Spell
+import com.wynnlab.spells.SpellL
 import com.wynnlab.spells.SpellData
 import org.bukkit.entity.Player
 import org.bukkit.Sound
@@ -8,7 +8,7 @@ import org.bukkit.entity.Mob
 import com.wynnlab.util.LocationIterator
 import org.bukkit.Particle
 
-class Teleport(player: Player) : Spell(player, 1, SpellData.TELEPORT) {
+class Teleport(player: Player) : SpellL(player, 1, SpellData.TELEPORT) {
     override fun tick() {
         val ray = player.rayTraceBlocks(14.0)
         val target = if (ray == null || ray.hitBlock == null) player.location.clone()

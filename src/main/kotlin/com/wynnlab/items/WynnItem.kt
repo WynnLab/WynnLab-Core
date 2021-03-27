@@ -1,18 +1,19 @@
 package com.wynnlab.items
 
-import com.wynnlab.WynnClass
+import com.wynnlab.WynnClassL
 import com.wynnlab.api.data
 import com.wynnlab.api.setString
 import com.wynnlab.util.Optional
-import com.wynnlab.util.optional
 import com.wynnlab.util.optionalAs
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemFactory
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.LeatherArmorMeta
 import org.json.simple.JSONObject
 
@@ -42,7 +43,7 @@ class WynnItem(
     private val fireDefense: OptInt,
     private val airDefense: OptInt,
     private val level: Int,
-    private val classRequirement: WynnClass?,
+    private val classRequirement: WynnClassL?,
     private val strength: Int,
     private val dexterity: Int,
     private val intelligence: Int,
@@ -176,7 +177,7 @@ class WynnItem(
                 json["fireDefense"].optionalAs<Long>().ifSome { it.toInt() },
                 json["airDefense"].optionalAs<Long>().ifSome { it.toInt() },
                 (json["level"] as Long).toInt(),
-                (json["classRequirement"] as String?)?.let { s -> WynnClass.valueOf(s.toUpperCase()) },
+                (json["classRequirement"] as String?)?.let { s -> WynnClassL.valueOf(s.toUpperCase()) },
                 (json["strength"] as Long).toInt(),
                 (json["dexterity"] as Long).toInt(),
                 (json["intelligence"] as Long).toInt(),

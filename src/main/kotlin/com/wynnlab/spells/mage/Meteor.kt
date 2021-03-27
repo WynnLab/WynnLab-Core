@@ -1,18 +1,17 @@
 package com.wynnlab.spells.mage
 
-import com.wynnlab.spells.Spell
+import com.wynnlab.spells.SpellL
 import com.wynnlab.spells.SpellData
 import com.wynnlab.util.LocationIterator
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.Sound
-import org.bukkit.entity.Damageable
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import java.util.*
 
-class Meteor(player: Player) : Spell(player, 61, SpellData.METEOR) {
+class Meteor(player: Player) : SpellL(player, 61, SpellData.METEOR) {
     private lateinit var target: Location
     private lateinit var origin: Location
     private lateinit var direction: Vector

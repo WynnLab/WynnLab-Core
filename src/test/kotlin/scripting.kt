@@ -6,10 +6,12 @@ fun main() {
         py.setOut(System.out)
 
         val code = py.compile("""
-            print('Hello World!')
+            from p import ICKt
+            from org.bukkit import Sound
+            
+            ICKt.acceptSound(Sound.ENTITY_ENDER_DRAGON_GROWL);
         """.trimIndent())
 
-        py.exec(code)
         py.exec(code)
     }
 }

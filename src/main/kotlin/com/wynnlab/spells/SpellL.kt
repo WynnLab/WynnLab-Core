@@ -5,7 +5,7 @@ import com.wynnlab.plugin
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-abstract class Spell(
+abstract class SpellL(
     protected val player: Player,
     private val maxTick: Int,
     val data: SpellData

@@ -6,26 +6,37 @@ import com.wynnlab.commands.ItemCommand
 import com.wynnlab.listeners.CastListener
 import com.wynnlab.listeners.FallingBlockListener
 import com.wynnlab.listeners.PlayerClickListener
+import com.wynnlab.spells.Spell
 import org.bukkit.Bukkit
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.plugin.java.JavaPlugin
+import org.python.util.PythonInterpreter
 
 class Main : JavaPlugin() {
     override fun onLoad() {
         instance = this
+        python.setOut(System.out)
     }
 
     override fun onEnable() {
         registerListeners()
         registerCommands()
+        registerSerializers()
+
         MainThread.schedule()
 
         //TODO(debug)
         /*dataFolder.mkdirs()
         val subFile = File(dataFolder, "hello.yml")
-        subFile.createNewFile()
         val config = YamlConfiguration()
         config.load(subFile)
-        config.set("item", ItemStack(Material.ARROW))*/
+        config.set("item", ItemStack(Material.ARROW))
+        config.save(subFile)*/
+        loadClasses()
+    }
+
+    override fun onDisable() {
+        python.close()
     }
 
     val classCommand by lazy { ClassCommand() }
@@ -48,9 +59,16 @@ class Main : JavaPlugin() {
         manager.registerEvents(playerClickListener, this)
         manager.registerEvents(fallingBlockListener, this)
     }
+
+    private fun registerSerializers() {
+        ConfigurationSerialization.registerClass(WynnClass::class.java)
+        ConfigurationSerialization.registerClass(Spell::class.java)
+    }
 }
 
 private lateinit var instance: Main
 val plugin get() = instance
 
 val random = java.util.Random()
+
+val python = PythonInterpreter()

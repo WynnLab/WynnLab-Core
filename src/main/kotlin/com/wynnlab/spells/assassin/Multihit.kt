@@ -1,21 +1,16 @@
 package com.wynnlab.spells.assassin
 
 import com.wynnlab.api.normalizeOnXZ
-import com.wynnlab.spells.Spell
+import com.wynnlab.spells.SpellL
 import com.wynnlab.spells.SpellData
-import com.wynnlab.util.LocationIterator
 import com.wynnlab.util.plus
 import org.bukkit.Location
-import org.bukkit.Particle
 import org.bukkit.Sound
-import org.bukkit.entity.Damageable
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
-import org.bukkit.util.Vector
-import java.util.*
 
-class Multihit(player: Player) : Spell(player, 11, SpellData.MULTIHIT) {
+class Multihit(player: Player) : SpellL(player, 11, SpellData.MULTIHIT) {
     private lateinit var l: Location
     private lateinit var entities: Collection<Entity>
 

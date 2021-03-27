@@ -1,6 +1,6 @@
 package com.wynnlab.spells.mage
 
-import com.wynnlab.spells.Spell
+import com.wynnlab.spells.SpellL
 import com.wynnlab.spells.SpellData
 import org.bukkit.entity.Player
 import org.bukkit.Sound
@@ -8,7 +8,7 @@ import org.bukkit.entity.Mob
 import com.wynnlab.util.LocationIterator
 import org.bukkit.Particle
 
-class MageMain(player: Player) : Spell(player, 1, SpellData.METEOR) {
+class MageMain(player: Player) : SpellL(player, 1, SpellData.METEOR) {
     private val hit = mutableListOf<Mob>()
 
     override fun tick() {

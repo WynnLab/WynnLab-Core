@@ -1,6 +1,6 @@
 package com.wynnlab.spells.assassin
 
-import com.wynnlab.spells.Spell
+import com.wynnlab.spells.SpellL
 import com.wynnlab.spells.SpellData
 import com.wynnlab.util.plus
 import com.wynnlab.util.times
@@ -9,7 +9,7 @@ import org.bukkit.Sound
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 
-class AssassinMain(player: Player) : Spell(player, 1, SpellData.METEOR) {
+class AssassinMain(player: Player) : SpellL(player, 1, SpellData.METEOR) {
     override fun tick() {
         player.playSound(player.location, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, .8f)
         val l = player.eyeLocation + player.eyeLocation.direction * 2.0

@@ -1,9 +1,8 @@
 package com.wynnlab.spells.mage
 
 import com.wynnlab.api.normalizeOnXZ
-import com.wynnlab.spells.Spell
+import com.wynnlab.spells.SpellL
 import com.wynnlab.spells.SpellData
-import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
@@ -12,7 +11,7 @@ import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 
-class IceSnake(player: Player) : Spell(player, 21, SpellData.ICE_SNAKE) {
+class IceSnake(player: Player) : SpellL(player, 21, SpellData.ICE_SNAKE) {
     private val hit = mutableListOf<Mob>()
     private val iceLoc = player.location.clone().add(0.0, 1.0, 0.0)
 

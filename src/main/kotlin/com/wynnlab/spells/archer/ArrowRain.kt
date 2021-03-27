@@ -1,6 +1,6 @@
 package com.wynnlab.spells.archer
 
-import com.wynnlab.spells.Spell
+import com.wynnlab.spells.SpellL
 import com.wynnlab.spells.SpellData
 import com.wynnlab.util.RAD2DEG
 import com.wynnlab.util.plus
@@ -11,7 +11,7 @@ import org.bukkit.util.Vector
 import kotlin.math.cos
 import kotlin.math.sin
 
-class ArrowRain(player: Player) : Spell(player, 11, SpellData.ARROW_SHIELD /*TODO*/) {
+class ArrowRain(player: Player) : SpellL(player, 11, SpellData.ARROW_SHIELD /*TODO*/) {
     override fun tick() {
         when {
             tick < 10 -> {
