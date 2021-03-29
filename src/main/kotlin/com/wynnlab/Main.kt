@@ -16,6 +16,8 @@ class Main : JavaPlugin() {
     override fun onLoad() {
         instance = this
         python.setOut(System.out)
+        python.set("plugin", this)
+        python.set("random", random)
     }
 
     override fun onEnable() {

@@ -20,7 +20,7 @@ import kotlin.math.sin
 class Escape(player: Player) : SpellL(player, 2, SpellData.ESCAPE) {
     @Suppress("depreciation")
     override fun tick() {
-        when (tick) {
+        when (t) {
             0 -> {
                 if (!player.world.getBlockAt(player.location.minus(.0, 1.0, .0)).isEmpty ||
                         !player.world.getBlockAt(player.location.minus(.0, 2.0, .0)).isEmpty) {
@@ -36,7 +36,7 @@ class Escape(player: Player) : SpellL(player, 2, SpellData.ESCAPE) {
             }
             else -> {
                 if (!player.isOnGround) {
-                    --tick // To not cancel
+                    delay()
 
                     if (player.isSneaking)
                         player.velocity = player.velocity - Vector(.0, 1.0, .0)

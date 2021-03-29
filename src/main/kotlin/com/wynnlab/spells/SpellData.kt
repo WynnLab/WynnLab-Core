@@ -1,10 +1,11 @@
 package com.wynnlab.spells
 
+import com.wynnlab.api.isCloneClass
 import com.wynnlab.currentClassLoadFolder
 import com.wynnlab.python
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.entity.Player
-import org.python.core.PyCode
+import org.python.core.*
 import java.io.File
 import java.io.FileReader
 
@@ -40,21 +41,15 @@ data class Spell(
     val cloneSpellName: String,
     val cost: Int,
     val maxTick: Int,
-    val script: PyCode,
+    val pythonClass: PyType,
 ) : ConfigurationSerializable {
     fun cast(player: Player) {
-        python.set("player", player)
-        python.set("tick", 0)
+        val instance = pythonClass.__call__()
+        instance.__setattr__("player", Py.java2py(player))
+        instance.__setattr__("clone", PyBoolean(player.isCloneClass))
+        instance.__setattr__("maxTick", PyInteger(maxTick))
 
-        (object : SpellL(player, maxTick, SpellData.WAR_SCREAM) {
-            override fun tick() {
-                python.exec(script)
-                python.exec("tick = tick + 1")
-            }
-        }).schedule()
-
-        /*python.exec("del tick")
-        python.exec("del player")*/
+        instance("schedule")
     }
 
     override fun serialize(): MutableMap<String, Any> {
@@ -81,8 +76,10 @@ data class Spell(
             val script = FileReader(scriptFile).use { reader ->
                 python.compile(reader)
             }
+            python.exec(script)
+            val pythonClass = python.get(spellName) as PyType //TODO: name
 
-            return Spell(spellName, cloneSpellName, cost, maxTick, script)
+            return Spell(spellName, cloneSpellName, cost, maxTick, pythonClass)
         }
     }
 }

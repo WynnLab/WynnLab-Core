@@ -16,7 +16,7 @@ class Multihit(player: Player) : SpellL(player, 11, SpellData.MULTIHIT) {
 
     override fun tick() {
         when {
-            tick == 0 -> {
+            t == 0 -> {
                 player.playSound(player.location, Sound.ENTITY_PLAYER_ATTACK_STRONG, .5f, 1f)
                 player.playSound(player.location, Sound.ENTITY_IRON_GOLEM_HURT, 1f, 1.5f)
                 player.playSound(player.location, Sound.ENTITY_BLAZE_SHOOT, 1f, 1.3f)
@@ -28,7 +28,7 @@ class Multihit(player: Player) : SpellL(player, 11, SpellData.MULTIHIT) {
                     it !is Player && it is Mob
                 }
             }
-            tick < 10 -> {
+            t < 10 -> {
                 for (e in entities) {
 
                 }

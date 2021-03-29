@@ -17,7 +17,7 @@ class ArrowStorm(player: Player) : SpellL(player, 21, SpellData.ARROW_STORM) {
     private val arrows = mutableListOf<Projectile>()
 
     override fun tick() {
-        if (tick == 0)
+        if (t == 0)
             player.spawnParticle(if (clone) Particle.VILLAGER_HAPPY else Particle.CRIT, player.location, 5)
 
         player.playSound(player.location, Sound.ENTITY_ARROW_SHOOT, 1f, 1f)

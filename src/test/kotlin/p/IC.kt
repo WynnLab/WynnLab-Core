@@ -1,13 +1,11 @@
 package p
 
-import org.bukkit.Sound
+data class IC(var i: Int) {
+    data class U(val a: String)
+}
 
-data class IC(val i: Int)
+data class FC(var f: Float)
 
 fun acceptClass(clazz: Class<out Any>) {
     println(clazz.interfaces.contentToString())
-}
-
-fun acceptSound(a: Sound) {
-    print(a.name)
 }

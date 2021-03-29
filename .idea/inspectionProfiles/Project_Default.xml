@@ -1,0 +1,20 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyInterpreterInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="classes.mage.heal.self" />
+          <option value="classes.mage.heal.isinstance" />
+          <option value="classes.mage.teleport.self" />
+          <option value="classes.mage.teleport.isinstance" />
+          <option value="classes.mage.meteor.self" />
+          <option value="classes.mage.meteor.isinstance" />
+          <option value="classes.mage.meteor.random" />
+          <option value="classes.mage.ice_snake.isinstance" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

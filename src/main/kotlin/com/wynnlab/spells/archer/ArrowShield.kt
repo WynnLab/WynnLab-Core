@@ -33,7 +33,7 @@ class ArrowShield(player: Player) : SpellL(player, 601, SpellData.ARROW_SHIELD) 
 
     override fun tick() {
         when {
-            tick == 0 -> {
+            t == 0 -> {
                 if ("arrow_shield" !in player.scoreboardTags) {
                     player.addScoreboardTag("arrow_shield")
                     player.data.setInt("arrow_shield", 3)
@@ -64,14 +64,14 @@ class ArrowShield(player: Player) : SpellL(player, 601, SpellData.ARROW_SHIELD) 
                     stand.headPose = EulerAngle(.0, .0, PI * (if (clone) -.5 else -.75))
                 }
             }
-            tick < 600 -> {
-                as1.teleport(player.location.plus(sin((10.0 * tick + 60.0) * -RAD2DEG) * 1.5, if (clone) .2 else .7, cos((10.0 * tick + 60.0) * RAD2DEG) * 1.5))
-                as2.teleport(player.location.plus(sin((10.0 * tick - 60.0) * -RAD2DEG) * 1.5, if (clone) .2 else .7, cos((10.0 * tick - 60.0) * RAD2DEG) * 1.5))
-                as3.teleport(player.location.plus(sin((10.0 * tick + 180.0) * -RAD2DEG) * 1.5, if (clone) .2 else .7, cos((10.0 * tick + 180.0) * RAD2DEG) * 1.5))
+            t < 600 -> {
+                as1.teleport(player.location.plus(sin((10.0 * t + 60.0) * -RAD2DEG) * 1.5, if (clone) .2 else .7, cos((10.0 * t + 60.0) * RAD2DEG) * 1.5))
+                as2.teleport(player.location.plus(sin((10.0 * t - 60.0) * -RAD2DEG) * 1.5, if (clone) .2 else .7, cos((10.0 * t - 60.0) * RAD2DEG) * 1.5))
+                as3.teleport(player.location.plus(sin((10.0 * t + 180.0) * -RAD2DEG) * 1.5, if (clone) .2 else .7, cos((10.0 * t + 180.0) * RAD2DEG) * 1.5))
 
-                as1.setRotation((10f * tick + 60f) * -1f, 0f)
-                as2.setRotation((10f * tick - 60f) * -1f, 0f)
-                as3.setRotation((10f * tick + 180f) * -1f, 0f)
+                as1.setRotation((10f * t + 60f) * -1f, 0f)
+                as2.setRotation((10f * t - 60f) * -1f, 0f)
+                as3.setRotation((10f * t + 180f) * -1f, 0f)
 
                 for (ast in arrayOf(as1, as2, as3)) {
                     player.spawnParticle(

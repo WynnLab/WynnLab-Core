@@ -1,0 +1,29 @@
+class:
+  ==: com.wynnlab.WynnClass
+  className: Mage
+  cloneName: Dark Wizard
+  spells:
+    - ==: com.wynnlab.spells.Spell
+      spellName: Heal
+      cloneSpellName: Remedy
+      cost: 6
+      maxTick: 40
+      script: heal.py
+    #- ==: com.wynnlab.spells.Spell
+    #    spellName: Teleport
+    #    cloneSpellName: Blink
+    #    cost: 4
+    #    maxTick: 1
+    #    script: teleport.py
+    #- ==: com.wynnlab.spells.Spell
+    #    spellName: Meteor
+    #    cloneSpellName: Death Star
+    #    cost: 8
+    #    maxTick: 61
+    #    script: meteor.py
+    #- ==: com.wynnlab.spells.Spell
+    #    spellName: Ice Snake
+    #    cloneSpellName: Crystal Reptile
+    #    cost: 4
+    #    maxTick: 21
+    #    script: ice_snake.py

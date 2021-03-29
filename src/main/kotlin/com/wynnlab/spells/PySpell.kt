@@ -1,26 +1,28 @@
 package com.wynnlab.spells
 
-import com.wynnlab.api.isCloneClass
 import com.wynnlab.plugin
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-abstract class SpellL(
-    protected val player: Player,
-    private val maxTick: Int,
-    val data: SpellData
-) : Runnable {
+abstract class PySpell : Runnable {
+    lateinit var player: Player
+    var t = 0
+
     private var taskId = -1
     private var scheduled = false
-
-    protected var t = 0
-    protected val clone = player.isCloneClass
+    var maxTick = 0
 
     abstract fun tick()
 
+    fun delay() { --t }
+
+    fun cancel() {
+        Bukkit.getScheduler().cancelTask(taskId)
+    }
+
     final override fun run() {
         if (scheduled) {
-            if (t < maxTick) {
+            if (t <= maxTick) {
                 tick()
                 ++t
             } else {
@@ -32,14 +34,5 @@ abstract class SpellL(
     fun schedule() {
         taskId = Bukkit.getScheduler().runTaskTimer(plugin, this, 0L, 1L).taskId
         scheduled = true
-    }
-
-    fun cancel() {
-        scheduled = false
-        Bukkit.getScheduler().cancelTask(taskId)
-    }
-
-    fun delay() {
-        --t
     }
 }

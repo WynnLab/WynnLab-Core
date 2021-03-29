@@ -14,16 +14,16 @@ import kotlin.math.sin
 class ArrowRain(player: Player) : SpellL(player, 11, SpellData.ARROW_SHIELD /*TODO*/) {
     override fun tick() {
         when {
-            tick < 10 -> {
+            t < 10 -> {
                 for (i in 0..2) {
                     val l = player.location.plus(
-                        sin((10.0 * tick + 60.0 * (i - 1.0)) * RAD2DEG) * (1.5 - .15 * tick),
-                        tick.toDouble(),
-                        cos((10.0 * tick + 60.0 * (i - 1.0)) * RAD2DEG) * (1.5 - .15 * tick)
+                        sin((10.0 * t + 60.0 * (i - 1.0)) * RAD2DEG) * (1.5 - .15 * t),
+                        t.toDouble(),
+                        cos((10.0 * t + 60.0 * (i - 1.0)) * RAD2DEG) * (1.5 - .15 * t)
                     )
                     player.spawnParticle(if (clone) Particle.FIREWORKS_SPARK else Particle.CRIT, l, 5, .0, .0, .0, if (clone) .1 else .3)
                     player.spawnParticle(Particle.SQUID_INK, l, 3, .0, .0, .0, .0)
-                    player.playSound(l, Sound.ENTITY_ARROW_SHOOT, 1f, 1f + tick / 20f)
+                    player.playSound(l, Sound.ENTITY_ARROW_SHOOT, 1f, 1f + t / 20f)
                 }
             }
             else -> {

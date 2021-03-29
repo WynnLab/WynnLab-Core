@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent
 
 class Heal(player: Player) : SpellL(player, 41, SpellData.HEAL) {
     override fun tick() {
-        if (tick % 20 == 0) {
+        if (t % 20 == 0) {
             player.spawnParticle(Particle.PORTAL, player.location.clone().add(0.0, 0.5, 0.0), 144, 4.0, 0.0, 4.0, 0.1)
             player.spawnParticle(Particle.CRIT_MAGIC, player.location.clone().add(0.0, 0.3, 0.0), 144, 4.0, 0.0, 4.0, 0.1)
             player.spawnParticle(Particle.FIREWORKS_SPARK, player.location.clone().add(0.0, 1.0, 0.0), 16, 0.3, 1.0, 0.3, 0.05)
