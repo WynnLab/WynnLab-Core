@@ -5,7 +5,7 @@ import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 
 class SpellCastEvent(val player: Player, val spellId: Int) : Event() {
-    override fun getHandlers(): HandlerList = SpellCastEvent.handlerList
+    override fun getHandlers(): HandlerList = handlerList
 
     companion object {
         @JvmStatic

@@ -77,7 +77,7 @@ data class Spell(
                 python.compile(reader)
             }
             python.exec(script)
-            val pythonClass = python.get(spellName) as PyType //TODO: name
+            val pythonClass = python.get("Spell") as PyType //TODO: name
 
             return Spell(spellName, cloneSpellName, cost, maxTick, pythonClass)
         }

@@ -13,6 +13,7 @@
           <option value="classes.mage.meteor.isinstance" />
           <option value="classes.mage.meteor.random" />
           <option value="classes.mage.ice_snake.isinstance" />
+          <option value="classes.mage.mage_main.isinstance" />
         </list>
       </option>
     </inspection_tool>

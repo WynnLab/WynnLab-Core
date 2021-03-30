@@ -57,7 +57,7 @@ data class WynnClass(
     }
 }
 
-val classes = mutableListOf<WynnClass>()
+val classes = hashMapOf<String, WynnClass>()
 
 fun loadClasses() {
     val classFolder = File(plugin.dataFolder, "classes")
@@ -74,7 +74,7 @@ fun loadClasses() {
         val config = YamlConfiguration()
         config.load(configFile)
         val wynnClass = config.getSerializable("class", WynnClass::class.java) ?: continue
-        classes += wynnClass
+        classes[wynnClass.className.toUpperCase()] = wynnClass
     }
 
     plugin.logger.log(Level.INFO, "Classes: $classes")

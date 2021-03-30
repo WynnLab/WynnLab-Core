@@ -4,7 +4,7 @@ from org.bukkit.entity import Mob, Player
 from com.wynnlab.spells import SpellL
 from com.wynnlab.util import LocationIterator
 
-class Meteor(SpellL):
+class Spell(SpellL):
     def __init__(self):
         self.target = None
         self.origin = None

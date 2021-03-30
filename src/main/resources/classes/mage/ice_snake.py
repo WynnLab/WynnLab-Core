@@ -5,7 +5,7 @@ from org.bukkit.potion import PotionEffect, PotionEffectType
 from com.wynnlab.spells import SpellL
 from com.wynnlab.api import Bukkit_utilsKt
 
-class IceSnake(SpellL):
+class Spell(SpellL):
     def __init__(self):
         self.hit = {}
         self.ice_loc = self.player.getLocation().clone().add(0, 1, 0)

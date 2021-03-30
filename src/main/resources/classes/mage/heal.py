@@ -7,7 +7,7 @@ from com.wynnlab.spells import PySpell
 
 from java.lang import Math
 
-class Heal(PySpell):
+class Spell(PySpell):
     def tick(self):
         if self.t % 20 > 0:
             return

@@ -25,10 +25,6 @@ class CastCommand : CommandExecutor {
             return true
         }
         val spell = args[0].toIntOrNull()
-        //TODO(debug)
-        if (spell == 5) {
-            classes[0].spells[0].cast(sender)
-        }
         if (spell == null || spell < 0 || spell > 4) {
             sender.sendMessage("§c'${args[0]}' is not a valid spell id")
             return false

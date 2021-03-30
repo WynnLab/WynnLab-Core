@@ -27,13 +27,6 @@ class Main : JavaPlugin() {
 
         MainThread.schedule()
 
-        //TODO(debug)
-        /*dataFolder.mkdirs()
-        val subFile = File(dataFolder, "hello.yml")
-        val config = YamlConfiguration()
-        config.load(subFile)
-        config.set("item", ItemStack(Material.ARROW))
-        config.save(subFile)*/
         loadClasses()
     }
 
