@@ -1,5 +1,6 @@
 package com.wynnlab.api
 
+import com.wynnlab.WynnClassL
 import com.wynnlab.events.SpellCastEvent
 import com.wynnlab.items.WynnItem
 import com.wynnlab.plugin
@@ -12,6 +13,7 @@ import org.bukkit.entity.Player
 
 fun Player.setWynnClass(wynnClass: String) {
     data.setString("class", wynnClass)
+    updatePrefix()
 }
 
 fun Player.getWynnClass() = data.getString("class")
@@ -43,7 +45,9 @@ fun Player.cooldown(): Boolean {
         true
 }
 
-val Player.isCloneClass get() = "clone" in scoreboardTags
+var Player.isCloneClass
+get() = "clone" in scoreboardTags
+set(value) { if (value) addScoreboardTag("clone") else removeScoreboardTag("clone") }
 
 val Player.invertedControls get() = getWynnClass()?.toUpperCase() == "ARCHER"
 
@@ -138,8 +142,8 @@ fun Player.standardActionBar() {
 }
 
 private fun Player.sendWynnActionBar(msg: String) {
-    val health = "§4[§cH ${health.toInt()}/${getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value?.toInt()}§4]§r"
-    val mana = "§3[§bM $foodLevel/20§3]§r"
+    val health = "§4[§c❤ ${health.toInt()}/${getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value?.toInt()}§4]§r"
+    val mana = "§3[§b✺ $foodLevel/20§3]§r"
     val mlD2 = (ChatColor.stripColor(msg)!!.length) / 2
     sendActionBar(buildString {
         append(health)
@@ -149,4 +153,23 @@ private fun Player.sendWynnActionBar(msg: String) {
         repeat(20 - mana.length + 8 - mlD2) { append(' ') }
         append(mana)
     })
+}
+
+var Player.prefix: String
+get() = prefixes[this] ?: ""
+set(value) {
+    prefixes[this] = value
+    updatePrefix()
+}
+
+private val prefixes = hashMapOf<Player, String>()
+
+fun Player.wynnPrefix(): String {
+    val wynnClass = getWynnClass()?.let { WynnClassL.valueOf(it) } ?: return "§7"
+    val classPrefix = if (isCloneClass) wynnClass.cloneName else wynnClass.className
+    return "§7[${classPrefix.substring(0..1)}/106] §7"
+}
+
+fun Player.updatePrefix() {
+    setDisplayName(prefix+wynnPrefix()+name)
 }

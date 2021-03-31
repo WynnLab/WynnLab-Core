@@ -16,3 +16,6 @@ commands:
   cast:
     description: Cast a spell
     usage: /cast <spell id (0..4)>
+  rank:
+    description: Apply the rank to the player
+    usage: /rank <rank> [<selector>]

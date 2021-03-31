@@ -24,6 +24,7 @@ class CastListener : Listener {
                 "${if (player.isCloneClass) spell.cloneSpellName else spell.spellName} Cast " +
                         "§3[§b-${spell.cost}✺§3]"
             )
+            player.foodLevel -= spell.cost
         } else {
             if (player.cooldown()) return
         }
