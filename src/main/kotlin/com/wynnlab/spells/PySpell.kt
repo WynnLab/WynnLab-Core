@@ -12,6 +12,8 @@ abstract class PySpell : Runnable {
     private var scheduled = false
     var maxTick = 0
 
+    open fun init() {}
+
     abstract fun tick()
 
     fun delay() { --t }
@@ -32,6 +34,7 @@ abstract class PySpell : Runnable {
     }
 
     fun schedule() {
+        init()
         taskId = Bukkit.getScheduler().runTaskTimer(plugin, this, 0L, 1L).taskId
         scheduled = true
     }

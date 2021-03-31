@@ -165,11 +165,11 @@ set(value) {
 private val prefixes = hashMapOf<Player, String>()
 
 fun Player.wynnPrefix(): String {
-    val wynnClass = getWynnClass()?.let { WynnClassL.valueOf(it) } ?: return "§7"
+    val wynnClass = getWynnClass()?.let { WynnClassL.valueOf(it) } ?: return "§r"
     val classPrefix = if (isCloneClass) wynnClass.cloneName else wynnClass.className
-    return "§7[${classPrefix.substring(0..1)}/106] §7"
+    return "§7[${classPrefix.substring(0..1)}/106] §r"
 }
 
 fun Player.updatePrefix() {
-    setDisplayName(prefix+wynnPrefix()+name)
+    setDisplayName(wynnPrefix()+prefix+name)
 }

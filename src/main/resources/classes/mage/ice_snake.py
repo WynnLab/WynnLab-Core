@@ -2,12 +2,15 @@ from org.bukkit import Material, Particle, Sound
 from org.bukkit.entity import Mob, Player
 from org.bukkit.potion import PotionEffect, PotionEffectType
 
-from com.wynnlab.spells import SpellL
+from com.wynnlab.spells import PySpell
 from com.wynnlab.api import Bukkit_utilsKt
 
-class Spell(SpellL):
+class Spell(PySpell):
     def __init__(self):
-        self.hit = {}
+        self.hit = set()
+        self.ice_loc = None
+
+    def init(self):
         self.ice_loc = self.player.getLocation().clone().add(0, 1, 0)
 
     def tick(self):
@@ -18,7 +21,7 @@ class Spell(SpellL):
         ice_block.setHurtEntities(False)
 
         self.player.spawnParticle(Particle.FIREWORKS_SPARK, self.ice_loc, 1, 1, 1, 1, .1)
-        self.player.spawnParticle(Particle.BLOCK_CRACK, self.ice_loc, 9, 1, 1, 1, 1, Material.OBSIDIAN.createBlockData() if self.clone else Material.IRON_SHOVEL.createBlockData())
+        self.player.spawnParticle(Particle.BLOCK_CRACK, self.ice_loc, 9, 1, 1, 1, 1, Material.OBSIDIAN.createBlockData() if self.clone else Material.ICE.createBlockData())
         self.player.playSound(self.ice_loc, Sound.BLOCK_STONE_PLACE if self.clone else Sound.BLOCK_GLASS_BREAK, 2 if self.clone else 1, .75)
         self.player.playSound(self.ice_loc, Sound.ENTITY_WITHER_BREAK_BLOCK if self.clone else Sound.BLOCK_FIRE_EXTINGUISH, .25 if self.clone else .5, 1.5 if self.clone else 1)
 

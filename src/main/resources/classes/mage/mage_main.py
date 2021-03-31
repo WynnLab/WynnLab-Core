@@ -6,7 +6,7 @@ from com.wynnlab.util import LocationIterator
 
 class Spell(PySpell):
     def __init__(self):
-        self.hit = {}
+        self.hit = set()
 
     def tick(self):
         l1 = self.player.getEyeLocation().clone().add(0, -.5, 0)
@@ -26,9 +26,10 @@ class Spell(PySpell):
                     continue
                 if not isinstance(e, Mob):
                     continue
+
                 if e in self.hit:
                     continue
-
                 self.hit.add(e)
+
                 e.damage(2, self.player)
                 e.setNoDamageTicks(0)

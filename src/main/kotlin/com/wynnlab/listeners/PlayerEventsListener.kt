@@ -22,7 +22,7 @@ class PlayerEventsListener : Listener {
 
     @EventHandler
     fun onPlayerChat(e: AsyncPlayerChatEvent) {
-        e.format = "%s§7: %s"
+        e.format = "%s: §r%s"
     }
 
     @EventHandler

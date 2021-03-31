@@ -19,12 +19,17 @@ class CastListener : Listener {
         val spell = spellClass.spells[e.spellId]
 
         if (e.spellId > 0) {
-            player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 0.5f)
-            player.updateActionBar(
-                "${if (player.isCloneClass) spell.cloneSpellName else spell.spellName} Cast " +
-                        "§3[§b-${spell.cost}✺§3]"
-            )
-            player.foodLevel -= spell.cost
+            if (player.foodLevel > spell.cost) {
+                player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, .5f)
+                player.updateActionBar(
+                    "${if (player.isCloneClass) spell.cloneSpellName else spell.spellName} Cast " +
+                            "§3[§b-${spell.cost}✺§3]"
+                )
+                player.foodLevel -= spell.cost
+            } else {
+                player.playSound(player.location, Sound.BLOCK_ANVIL_PLACE, 1f, .5f)
+                player.updateActionBar("§4Not enough mana!")
+            }
         } else {
             if (player.cooldown()) return
         }
