@@ -36,12 +36,12 @@ import java.io.FileReader
     TOTEM("Totem", "Sky Emblem", 4),
     HAUL("Haul", "Soar", 1),
     AURA("Aura", "Wind Surge", 8),
-    UPROOT("Uproot", "" /*TODO*/, 6),
+    UPROOT("Uproot", "Gale funnel" /*TODO*/, 6),
 }*/
 
 data class Spell(
-    val spellName: String,
-    val cloneSpellName: String,
+    val spellName: String?,
+    val cloneSpellName: String?,
     val cost: Int,
     val maxTick: Int,
     val pythonClass: PyType,
@@ -58,8 +58,8 @@ data class Spell(
     override fun serialize(): MutableMap<String, Any> {
         val out = LinkedHashMap<String, Any>()
 
-        out["spellName"] = spellName
-        out["cloneSpellName"] = cloneSpellName
+        spellName?.let { out["spellName"] = it }
+        cloneSpellName?.let { out["cloneSpellName"] = it }
         out["cost"] = cost
         out["maxTick"] = maxTick
 
@@ -70,9 +70,9 @@ data class Spell(
         @JvmStatic
         @Suppress("unused")
         fun deserialize(map: Map<String, Any>): Spell {
-            val spellName = map["spellName"] as String
-            val cloneSpellName = map["cloneSpellName"] as String
-            val cost = (map["cost"] as Number).toInt()
+            val spellName = map["spellName"] as String?
+            val cloneSpellName = map["cloneSpellName"] as String?
+            val cost = (map["cost"] as Number? ?: 0).toInt()
             val maxTick = (map["maxTick"] as Number).toInt()
 
             val scriptFile = File(currentClassLoadFolder, map["script"] as String)

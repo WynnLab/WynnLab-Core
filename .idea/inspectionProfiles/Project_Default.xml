@@ -14,6 +14,17 @@
           <option value="classes.mage.meteor.random" />
           <option value="classes.mage.ice_snake.isinstance" />
           <option value="classes.mage.mage_main.isinstance" />
+          <option value="classes.mage.mage_main.set" />
+          <option value="classes.archer.archer_main.random" />
+          <option value="classes.archer.arrow_storm.set" />
+          <option value="classes.archer.bomb_arrow.isinstance" />
+          <option value="classes.archer.escape.range" />
+          <option value="classes.archer.escape.RAD2DEG" />
+          <option value="classes.archer.escape.isinstance" />
+          <option value="classes.archer.arrow_shield.RAD2DEG" />
+          <option value="classes.archer.arrow_shield.isinstance" />
+          <option value="classes.archer.arrow_rain.range" />
+          <option value="classes.archer.arrow_rain.RAD2DEG" />
         </list>
       </option>
     </inspection_tool>

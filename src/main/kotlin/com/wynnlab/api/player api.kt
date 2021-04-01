@@ -1,3 +1,5 @@
+@file:JvmName("PlayerAPI")
+
 package com.wynnlab.api
 
 import com.wynnlab.WynnClass
@@ -155,7 +157,7 @@ set(value) {
     updatePrefix()
 }
 
-private val prefixes = hashMapOf<Player, String>()
+val prefixes = hashMapOf<Player, String>()
 
 fun Player.wynnPrefix(): String {
     val wynnClass = getWynnClass()?.let { classes[it] } ?: return "§r"

@@ -5,9 +5,6 @@ class:
   invertedControls: false
   spells:
     - ==: com.wynnlab.spells.Spell
-      spellName: Mage Main Attack
-      cloneSpellName: Dark Wizard Main Attack
-      cost: 0
       maxTick: 0
       script: mage_main.py
     - ==: com.wynnlab.spells.Spell

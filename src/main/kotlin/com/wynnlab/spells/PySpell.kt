@@ -41,7 +41,10 @@ abstract class PySpell : Runnable {
         scheduled = true
     }
 
-    fun registerProjectileHit(tag: String, e: (ProjectileHitEvent) -> Unit) {
-        ProjectileHitListener.tags[tag] = e
+    companion object {
+        @JvmStatic
+        fun registerProjectileHit(tag: String, e: (ProjectileHitEvent) -> Unit) {
+            ProjectileHitListener.tags[tag] = e
+        }
     }
 }

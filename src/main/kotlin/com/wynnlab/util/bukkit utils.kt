@@ -1,4 +1,4 @@
-package com.wynnlab.api
+package com.wynnlab.util
 
 import org.bukkit.Bukkit
 import org.bukkit.scoreboard.Team

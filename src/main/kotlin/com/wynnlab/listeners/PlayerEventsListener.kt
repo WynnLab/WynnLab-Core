@@ -1,6 +1,8 @@
 package com.wynnlab.listeners
 
 import com.wynnlab.Players
+import com.wynnlab.api.prefix
+import com.wynnlab.api.prefixes
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
@@ -11,13 +13,14 @@ import org.bukkit.event.player.PlayerQuitEvent
 class PlayerEventsListener : Listener {
     @EventHandler
     fun onPlayerJoin(e: PlayerJoinEvent) {
-        e.joinMessage = "§a»§r ${e.player.name}"
+        e.joinMessage = "§7[§a+§7]§r ${e.player.prefix}${e.player.name}"
         Players.preparePlayer(e.player)
     }
 
     @EventHandler
     fun onPlayerLeave(e: PlayerQuitEvent) {
-        e.quitMessage = "§c«§r ${e.player.name}"
+        prefixes.remove(e.player)
+        e.quitMessage = "§7[§c-§7]§r ${e.player.prefix}${e.player.name}"
     }
 
     @EventHandler
@@ -36,6 +39,6 @@ class PlayerEventsListener : Listener {
     }
 
     companion object {
-        val deathMessages = setOf("$ didn't know about R-R-R")
+        val deathMessages = setOf("$ didn't know about RRR")
     }
 }

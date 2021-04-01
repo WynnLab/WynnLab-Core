@@ -1,3 +1,5 @@
+@file:JvmName("PersistentDataAPI")
+
 package com.wynnlab.api
 
 import com.wynnlab.plugin

@@ -1,3 +1,5 @@
+@file:JvmName("ItemAPI")
+
 package com.wynnlab.api
 
 import com.wynnlab.items.WynnItem

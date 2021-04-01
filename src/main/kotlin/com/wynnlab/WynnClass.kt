@@ -1,3 +1,5 @@
+@file:JvmName("Classes")
+
 package com.wynnlab
 
 import com.wynnlab.spells.Spell

@@ -10,6 +10,8 @@ import com.wynnlab.listeners.PlayerClickListener
 import com.wynnlab.listeners.PlayerEventsListener
 import com.wynnlab.ranks.Rank
 import com.wynnlab.spells.Spell
+import com.wynnlab.util.RAD2DEG
+import com.wynnlab.util.saveAllResources
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
 import org.bukkit.configuration.serialization.ConfigurationSerialization
@@ -19,9 +21,12 @@ import org.python.util.PythonInterpreter
 class Main : JavaPlugin() {
     override fun onLoad() {
         instance = this
-        python.setOut(System.out)
+
         python.set("plugin", this)
         python.set("random", random)
+        python.set("RAD2DEG", RAD2DEG)
+
+        saveAllResources()
     }
 
     override fun onEnable() {

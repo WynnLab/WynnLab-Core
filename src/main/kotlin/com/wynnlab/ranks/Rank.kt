@@ -1,7 +1,7 @@
 package com.wynnlab.ranks
 
 import com.wynnlab.api.prefix
-import com.wynnlab.api.registerMainTeam
+import com.wynnlab.util.registerMainTeam
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import org.bukkit.scoreboard.Team
