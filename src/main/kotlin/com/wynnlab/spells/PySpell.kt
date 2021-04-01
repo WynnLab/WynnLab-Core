@@ -1,8 +1,10 @@
 package com.wynnlab.spells
 
+import com.wynnlab.listeners.ProjectileHitListener
 import com.wynnlab.plugin
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.event.entity.ProjectileHitEvent
 
 abstract class PySpell : Runnable {
     lateinit var player: Player
@@ -37,5 +39,9 @@ abstract class PySpell : Runnable {
         init()
         taskId = Bukkit.getScheduler().runTaskTimer(plugin, this, 0L, 1L).taskId
         scheduled = true
+    }
+
+    fun registerProjectileHit(tag: String, e: (ProjectileHitEvent) -> Unit) {
+        ProjectileHitListener.tags[tag] = e
     }
 }

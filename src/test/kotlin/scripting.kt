@@ -6,23 +6,17 @@ fun main() {
         py.setOut(System.out)
 
         val code = py.compile("""
-            class A(S):
-                def greet(self):
-                    print("Hi, I'm {me}".format(me=self))
-                    print(self.zero)
+            def doSth(ic):
+                print(ic)
             
-            a = A()
+            s = S(doSth)
+            
+            s.fn.invoke('Hi')
         """.trimIndent())
 
         py.set("S", S::class.java)
-        py.set("ic", IC(1))
 
         py.exec(code)
-
-        py.print("A")
-        py.print("S")
-        py.print("a")
-        py.print("ic")
     }
 }
 
@@ -31,10 +25,7 @@ fun PythonInterpreter.print(name: String) {
     println("${value::class.simpleName} $name = $value")
 }
 
-abstract class S {
-    var zero = 0
-    abstract fun greet()
-}
+class S(val fn: (String) -> Unit)
 
 fun echo(it: String) = println(it)
 
