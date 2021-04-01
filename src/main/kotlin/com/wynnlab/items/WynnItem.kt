@@ -1,19 +1,17 @@
 package com.wynnlab.items
 
-import com.wynnlab.WynnClassL
 import com.wynnlab.api.data
 import com.wynnlab.api.setString
+import com.wynnlab.classes
 import com.wynnlab.util.Optional
 import com.wynnlab.util.optionalAs
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemFactory
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
-import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.LeatherArmorMeta
 import org.json.simple.JSONObject
 
@@ -43,7 +41,7 @@ class WynnItem(
     private val fireDefense: OptInt,
     private val airDefense: OptInt,
     private val level: Int,
-    private val classRequirement: WynnClassL?,
+    private val classRequirement: String?,
     private val strength: Int,
     private val dexterity: Int,
     private val intelligence: Int,
@@ -98,7 +96,9 @@ class WynnItem(
         airDefense.ifSome { if (it > 0) lore.add("§f❋ Air §7Defense: $it") }
 
         lore.add("")
-        classRequirement?.let { lore.add("§a✔ §7Class Req: ${it.both()}") }
+        classRequirement?.let { lore.add("§a✔ §7Class Req: ${classes[it]?.let { 
+                c -> "${c.className} / ${c.cloneName}" }}")
+        }
         lore.add("§a✔ §7Combat Lv. Min: $level")
         if (strength > 0) lore.add("§a✔ §7Strength Min: $strength")
         if (dexterity > 0) lore.add("§a✔ §7Dexterity Min: $dexterity")
@@ -124,6 +124,7 @@ class WynnItem(
         val data = meta.data
 
         type?.name?.let { data.setString("type", it) }
+        classRequirement?.let { data.setString("class_req", it) }
         attackSpeed.ifSome { data.setString("attack_speed", it.name) }
 
         item.itemMeta = meta
@@ -177,7 +178,7 @@ class WynnItem(
                 json["fireDefense"].optionalAs<Long>().ifSome { it.toInt() },
                 json["airDefense"].optionalAs<Long>().ifSome { it.toInt() },
                 (json["level"] as Long).toInt(),
-                (json["classRequirement"] as String?)?.let { s -> WynnClassL.valueOf(s.toUpperCase()) },
+                (json["classRequirement"] as String?)?.toUpperCase() ?: type?.classReq,
                 (json["strength"] as Long).toInt(),
                 (json["dexterity"] as Long).toInt(),
                 (json["intelligence"] as Long).toInt(),
@@ -200,10 +201,21 @@ class WynnItem(
         MYTHIC("Mythic", "§5")
     }
 
-    enum class Type(val typeName: String) {
-        SPEAR("Spear"), BOW("Bow"), WAND("Wand"), DAGGER("Dagger"), RELIK("Relik"),
-        HELMET("Helmet"), CHESTPLATE("Chestplate"), LEGGINGS("Leggings"), BOOTS("Boots"),
-        RING("Ring"), BRACELET("Bracelet"), NECKLACE("Necklace")
+    enum class Type(val typeName: String, val classReq: String? = null) {
+        SPEAR("Spear", "WARRIOR"),
+        BOW("Bow", "ARCHER"),
+        WAND("Wand", "MAGE"),
+        DAGGER("Dagger", "ASSASSIN"),
+        RELIK("Relik", "SHAMAN"),
+
+        HELMET("Helmet"),
+        CHESTPLATE("Chestplate"),
+        LEGGINGS("Leggings"),
+        BOOTS("Boots"),
+
+        RING("Ring"),
+        BRACELET("Bracelet"),
+        NECKLACE("Necklace")
     }
 
     enum class ArmorType {

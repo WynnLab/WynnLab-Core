@@ -2,6 +2,7 @@ class:
   ==: com.wynnlab.WynnClass
   className: Mage
   cloneName: Dark Wizard
+  invertedControls: false
   spells:
     - ==: com.wynnlab.spells.Spell
       spellName: Mage Main Attack

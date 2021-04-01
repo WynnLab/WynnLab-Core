@@ -1,9 +1,6 @@
 package com.wynnlab.spells.assassin
 
-import com.wynnlab.api.normalizeOnXZ
-import com.wynnlab.spells.SpellL
-import com.wynnlab.spells.SpellData
-import com.wynnlab.util.plus
+/*import com.wynnlab.spells.SpellData
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.entity.Entity
@@ -38,4 +35,4 @@ class Multihit(player: Player) : SpellL(player, 11, SpellData.MULTIHIT) {
             }
         }
     }
-}
+}*/

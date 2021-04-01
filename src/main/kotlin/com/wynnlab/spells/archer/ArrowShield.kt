@@ -1,10 +1,7 @@
 package com.wynnlab.spells.archer
 
-import com.wynnlab.api.data
-import com.wynnlab.api.getInt
-import com.wynnlab.api.setInt
+/*import com.wynnlab.api.data
 import com.wynnlab.api.setString
-import com.wynnlab.spells.SpellL
 import com.wynnlab.spells.SpellData
 import com.wynnlab.util.RAD2DEG
 import com.wynnlab.util.minus
@@ -133,4 +130,4 @@ class ArrowShield(player: Player) : SpellL(player, 601, SpellData.ARROW_SHIELD) 
         as2.remove()
         as3.remove()
     }
-}
+}*/

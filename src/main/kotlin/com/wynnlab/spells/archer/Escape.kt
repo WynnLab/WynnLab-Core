@@ -1,10 +1,7 @@
 package com.wynnlab.spells.archer
 
-import com.wynnlab.spells.SpellL
-import com.wynnlab.spells.SpellData
+/*import com.wynnlab.spells.SpellData
 import com.wynnlab.util.RAD2DEG
-import com.wynnlab.util.minus
-import com.wynnlab.util.plus
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Mob
@@ -69,4 +66,4 @@ class Escape(player: Player) : SpellL(player, 2, SpellData.ESCAPE) {
             }
         }
     }
-}
+}*/

@@ -5,11 +5,14 @@ import com.wynnlab.currentClassLoadFolder
 import com.wynnlab.python
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.entity.Player
-import org.python.core.*
+import org.python.core.Py
+import org.python.core.PyBoolean
+import org.python.core.PyInteger
+import org.python.core.PyType
 import java.io.File
 import java.io.FileReader
 
-enum class SpellData(val spellName: String, val cloneSpellName: String, val cost: Int) {
+/*enum class SpellData(val spellName: String, val cloneSpellName: String, val cost: Int) {
     BASH("Bash", "Holy Blast", 6),
     CHARGE("Charge", "Leap", 4),
     UPPERCUT("Uppercut", "Heaven Jolt", 10),
@@ -34,7 +37,7 @@ enum class SpellData(val spellName: String, val cloneSpellName: String, val cost
     HAUL("Haul", "Soar", 1),
     AURA("Aura", "Wind Surge", 8),
     UPROOT("Uproot", "" /*TODO*/, 6),
-}
+}*/
 
 data class Spell(
     val spellName: String,

@@ -1,8 +1,8 @@
 package com.wynnlab.api
 
-import com.wynnlab.WynnClassL
+import com.wynnlab.WynnClass
+import com.wynnlab.classes
 import com.wynnlab.events.SpellCastEvent
-import com.wynnlab.items.WynnItem
 import com.wynnlab.plugin
 import com.wynnlab.util.RefreshRunnable
 import org.bukkit.Bukkit
@@ -19,14 +19,7 @@ fun Player.setWynnClass(wynnClass: String) {
 fun Player.getWynnClass() = data.getString("class")
 
 fun Player.hasWeaponInHand(): Boolean? {
-    return when (getWynnClass()) {
-        "WARRIOR" -> (inventory.itemInMainHand.getWynnType() ?: return null) == WynnItem.Type.SPEAR
-        "ARCHER" -> (inventory.itemInMainHand.getWynnType() ?: return null) == WynnItem.Type.BOW
-        "MAGE" -> (inventory.itemInMainHand.getWynnType() ?: return null) == WynnItem.Type.WAND
-        "ASSASSIN" -> (inventory.itemInMainHand.getWynnType() ?: return null) == WynnItem.Type.DAGGER
-        "SHAMAN" -> (inventory.itemInMainHand.getWynnType() ?: return null) == WynnItem.Type.RELIK
-        else -> null
-    }
+    return getWynnClass()?.let { it == (inventory.itemInMainHand.getClassReq() ?: return null) }
 }
 
 fun Player.checkWeapon() =
@@ -49,7 +42,7 @@ var Player.isCloneClass
 get() = "clone" in scoreboardTags
 set(value) { if (value) addScoreboardTag("clone") else removeScoreboardTag("clone") }
 
-val Player.invertedControls get() = getWynnClass()?.toUpperCase() == "ARCHER"
+val Player.invertedControls get() = getWynnClass()?.let { WynnClass[it] }?.invertedControls ?: false
 
 fun Player.castSpell(id: Int) {
     Bukkit.getPluginManager().callEvent(SpellCastEvent(this, id))
@@ -165,7 +158,7 @@ set(value) {
 private val prefixes = hashMapOf<Player, String>()
 
 fun Player.wynnPrefix(): String {
-    val wynnClass = getWynnClass()?.let { WynnClassL.valueOf(it) } ?: return "§r"
+    val wynnClass = getWynnClass()?.let { classes[it] } ?: return "§r"
     val classPrefix = if (isCloneClass) wynnClass.cloneName else wynnClass.className
     return "§7[${classPrefix.substring(0..1)}/106] §r"
 }

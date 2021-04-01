@@ -1,7 +1,6 @@
 package com.wynnlab.spells.archer
 
-import com.wynnlab.random
-import com.wynnlab.spells.SpellL
+/*import com.wynnlab.random
 import com.wynnlab.spells.SpellData
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -23,7 +22,7 @@ class ArcherMain(player: Player) : SpellL(player, 1, SpellData.METEOR) {
             arrow.addScoreboardTag("arrow")
         }
     }
-}
+}*/
 
 /*
 from org.bukkit import Material, Sound

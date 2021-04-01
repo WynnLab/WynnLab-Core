@@ -80,12 +80,12 @@ class Main : JavaPlugin() {
             it.setGameRule(GameRule.DO_LIMITED_CRAFTING, false)
             it.setGameRule(GameRule.DO_MOB_SPAWNING, false)
             it.setGameRule(GameRule.DO_PATROL_SPAWNING, false)
+            it.setGameRule(GameRule.FALL_DAMAGE, false)
             it.setGameRule(GameRule.MOB_GRIEFING, false)
             it.setGameRule(GameRule.NATURAL_REGENERATION, false)
             it.setGameRule(GameRule.REDUCED_DEBUG_INFO, true)
             it.setGameRule(GameRule.SPAWN_RADIUS, 0)
             it.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false)
-            
         }
     }
 }

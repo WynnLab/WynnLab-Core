@@ -1,9 +1,6 @@
 package com.wynnlab.spells.assassin
 
-import com.wynnlab.spells.SpellL
-import com.wynnlab.spells.SpellData
-import com.wynnlab.util.plus
-import com.wynnlab.util.times
+/*import com.wynnlab.spells.SpellData
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Mob
@@ -24,4 +21,4 @@ class AssassinMain(player: Player) : SpellL(player, 1, SpellData.METEOR) {
             e.noDamageTicks = 0
         }
     }
-}
+}*/
