@@ -27,8 +27,9 @@ class CastListener : Listener {
                 )
                 player.foodLevel -= spell.cost
             } else {
-                player.playSound(player.location, Sound.BLOCK_ANVIL_PLACE, 1f, .5f)
+                player.playSound(player.location, Sound.BLOCK_ANVIL_PLACE, 1f, 1f)
                 player.updateActionBar("§4Not enough mana!")
+                return
             }
         } else {
             if (player.cooldown()) return

@@ -5,6 +5,7 @@ import org.bukkit.util.Vector
 import kotlin.math.PI
 
 const val RAD2DEG = 180.0 / PI
+const val DEG2RAD = PI / 180.0
 
 operator fun Location.plus(l: Location) = clone().add(l)
 operator fun Location.plus(l: Vector) = clone().add(l)

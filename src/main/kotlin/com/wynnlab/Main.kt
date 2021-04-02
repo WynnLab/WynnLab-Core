@@ -4,12 +4,10 @@ import com.wynnlab.commands.CastCommand
 import com.wynnlab.commands.ClassCommand
 import com.wynnlab.commands.ItemCommand
 import com.wynnlab.commands.RankCommand
-import com.wynnlab.listeners.CastListener
-import com.wynnlab.listeners.FallingBlockListener
-import com.wynnlab.listeners.PlayerClickListener
-import com.wynnlab.listeners.PlayerEventsListener
+import com.wynnlab.listeners.*
 import com.wynnlab.ranks.Rank
 import com.wynnlab.spells.Spell
+import com.wynnlab.util.DEG2RAD
 import com.wynnlab.util.RAD2DEG
 import com.wynnlab.util.saveAllResources
 import org.bukkit.Bukkit
@@ -25,8 +23,9 @@ class Main : JavaPlugin() {
         python.set("plugin", this)
         python.set("random", random)
         python.set("RAD2DEG", RAD2DEG)
+        python.set("DEG2RAD", DEG2RAD)
 
-        saveAllResources()
+        //saveAllResources()
     }
 
     override fun onEnable() {
@@ -62,6 +61,7 @@ class Main : JavaPlugin() {
     val playerClickListener by lazy { PlayerClickListener() }
     val fallingBlockListener by lazy { FallingBlockListener() }
     val playerEventsListener by lazy { PlayerEventsListener() }
+    val projectileHitListener by lazy { ProjectileHitListener() }
 
     private fun registerListeners() {
         val manager = Bukkit.getPluginManager()
@@ -69,6 +69,7 @@ class Main : JavaPlugin() {
         manager.registerEvents(playerClickListener, this)
         manager.registerEvents(fallingBlockListener, this)
         manager.registerEvents(playerEventsListener, this)
+        manager.registerEvents(projectileHitListener, this)
     }
 
     private fun registerSerializers() {

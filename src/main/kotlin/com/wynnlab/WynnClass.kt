@@ -2,6 +2,7 @@
 
 package com.wynnlab
 
+import com.wynnlab.listeners.ProjectileHitListener
 import com.wynnlab.spells.Spell
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerializable
@@ -63,6 +64,7 @@ fun loadClasses() {
     }
 
     plugin.logger.log(Level.INFO, "Classes: $classes")
+    plugin.logger.log(Level.INFO, "Listeners: ${ProjectileHitListener.tags}")
 }
 
 internal lateinit var currentClassLoadFolder: File

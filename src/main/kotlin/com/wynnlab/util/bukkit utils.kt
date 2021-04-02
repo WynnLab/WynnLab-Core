@@ -1,3 +1,5 @@
+@file:JvmName("BukkitUtils")
+
 package com.wynnlab.util
 
 import org.bukkit.Bukkit

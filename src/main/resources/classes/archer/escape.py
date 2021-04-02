@@ -10,7 +10,7 @@ from java.lang import Math
 class Spell(PySpell):
     def tick(self):
         if self.t == 0:
-            if self.player.getWorld().getBlockAt(self.player.getLocation().clone().subtract(0, 1, 0)).isEmpty() or self.player.getWorld().getBlockAt(self.player.getLocation().clone().subtract(0, 2, 0)).isEmpty():
+            if not self.player.getWorld().getBlockAt(self.player.getLocation().clone().subtract(0, 1, 0)).isEmpty() or not self.player.getWorld().getBlockAt(self.player.getLocation().clone().subtract(0, 2, 0)).isEmpty():
                 #self.player.addScoreboardTag('escape')
                 eye_dir = self.player.getEyeLocation().getDirection().clone()
                 self.player.setVelocity(eye_dir.setY(Math.min(-.4 * Math.abs(eye_dir.getY()), -.4)).multiply(-4))
@@ -19,6 +19,8 @@ class Spell(PySpell):
                 self.player.spawnParticle(Particle.VILLAGER_HAPPY if self.clone else Particle.SQUID_INK, self.player.getLocation().clone().add(0, 1, 0), 10 if self.clone else 5, .3, 2, .3, .2)
                 if self.clone:
                     self.player.spawnParticle(Particle.CLOUD, self.player.getLocation().clone().add(0, 1, 0), 5, .3, .3, .1)
+            else:
+                self.cancel()
             return
 
         if not self.player.isOnGround():
@@ -31,8 +33,8 @@ class Spell(PySpell):
         else:
             if self.player.isSneaking():
                 for i in range(0, 360, 60):
-                    for j in range(5):
-                        l = self.player.getLocation().clone().add(Math.sin(i * RAD2DEG) * j, 0, Math.cos(i * RAD2DEG) * j)
+                    for j in range(9):
+                        l = self.player.getLocation().clone().add(Math.sin(i * DEG2RAD) * j, 0, Math.cos(i * DEG2RAD) * j)
                         self.player.spawnParticle(Particle.SQUID_INK, l, 2, 0, 0, 0, .2)
                         self.player.spawnParticle(Particle.CLOUD, l, 2, 0, 0, 0, .2)
                         self.player.spawnParticle(Particle.CRIT, l, 2, 0, 0, 0, .3)

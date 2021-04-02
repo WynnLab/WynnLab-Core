@@ -20,14 +20,14 @@ class Spell(PySpell):
             self.player.spawnParticle(Particle.CRIT, arrow.getLocation(), 1, 0, 0, 0, .01)
             if self.clone:
                 self.player.spawnParticle(Particle.CRIT_MAGIC, arrow.getLocation(), 1, 0, 0, 0, .01)
-
-        vi = self.player.getEyeDirection().clone().multiply(3)
+        
+        vi = self.player.getEyeLocation().getDirection().clone().multiply(3)
         shots = (
             self.player.launchProjectile(Snowball if self.clone else Arrow, vi),
             self.player.launchProjectile(Snowball if self.clone else Arrow, vi.rotateAroundY(.4)),
             self.player.launchProjectile(Snowball if self.clone else Arrow, vi.rotateAroundY(-.8))
         )
-
+        
         for arrow in shots:
             arrow.setShooter(self.player)
             arrow.addScoreboardTag('storm_arrow')
@@ -37,6 +37,11 @@ class Spell(PySpell):
             self.arrows.add(arrow)
 
 def delete_arrow(event):
+    hit = event.getHitEntity()
+    if not hit is None:
+        hit.damage(.4, event.getEntity().getShooter())
+        hit.setNoDamageTicks(0)
+
     event.getEntity().remove()
 
 PySpell.registerProjectileHit('storm_arrow', delete_arrow)

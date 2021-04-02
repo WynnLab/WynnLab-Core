@@ -9,7 +9,7 @@ class Spell(PySpell):
     def tick(self):
         if self.t < 10:
             for i in range(3):
-                l = self.player.getLocation().clone().add(Math.sin((10 * self.t + 60 * (i - 1)) * RAD2DEG) * (1.5 - .15 * self.t), self.t, Math.cos((10 * self.t + 60 * (i - 1)) * RAD2DEG) * (1.5 - .15 * self.t))
+                l = self.player.getLocation().clone().add(Math.sin((10 * self.t + 60 * (i - 1)) * DEG2RAD) * (1.5 - .15 * self.t), self.t, Math.cos((10 * self.t + 60 * (i - 1)) * DEG2RAD) * (1.5 - .15 * self.t))
                 self.player.spawnParticle(Particle.FIREWORKS_SPARK if self.clone else Particle.CRIT, l, 5, 0, 0, 0, .1 if self.clone else .3)
                 self.player.spawnParticle(Particle.SQUID_INK, l, 3, 0, 0, 0, 0)
                 self.player.playSound(l, Sound.ENTITY_ARROW_SHOOT, 1, 1 + self.t / 20)
@@ -23,13 +23,18 @@ class Spell(PySpell):
 
         for i in range(0, 360, 30):
             for j in range(3):
-                arrow = self.player.getWorld().spawnArrow(l, Vector(Math.sin(i * RAD2DEG), .5 * (j - 1) - 1, Math.cos(i * RAD2DEG)), 3, 1)
+                arrow = self.player.getWorld().spawnArrow(l, Vector(Math.sin(i * DEG2RAD), .5 * (j - 1) - 1, Math.cos(i * DEG2RAD)), 3, 1)
                 #TODO: flint
 
                 arrow.setShooter(self.player)
                 arrow.addScoreboardTag('rain_arrow')
 
 def delete_arrow(event):
+    hit = event.getHitEntity()
+    if not hit is None:
+        hit.damage(4, event.getEntity().getShooter())
+        hit.setNoDamageTicks(0)
+
     event.getEntity().remove()
 
 PySpell.registerProjectileHit('rain_arrow', delete_arrow)

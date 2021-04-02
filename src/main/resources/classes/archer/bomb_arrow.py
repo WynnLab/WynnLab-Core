@@ -33,9 +33,10 @@ def bomb_hit(event):
             next = snowball
 
         next.setShooter(player)
+        next.addScoreboardTag('bomb_arrow')
         next.addScoreboardTag('bomb_hit_2' if arrow.getScoreboardTags().contains('bomb_hit_1') else 'bomb_hit_1')
 
-    for e in arrow.getNearbyEntities(arrow.getLocation(), 4, 4, 4):
+    for e in arrow.getNearbyEntities(4, 4, 4):
         if isinstance(e, Player):
             continue
         if not isinstance(e, Mob):
@@ -43,7 +44,7 @@ def bomb_hit(event):
 
         e.damage(14, player)
         e.setNoDamageTicks(0)
-        e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 60, 4, True, False))
+        e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 60, 4, True, False, True))
 
     player.playSound(arrow.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 1.3)
     if clone:

@@ -32,9 +32,9 @@ class Spell(PySpell):
             self.player.playSound(self.player.location, Sound.ENTITY_PLAYER_ATTACK_CRIT, 1, 1)
 
             self.stands = (
-                self.player.getWorld().spawn(self.player.getLocation().clone(1.3, .2 if self.clone else .7, .75), ArmorStand),
-                self.player.getWorld().spawn(self.player.getLocation().clone(-1.3, .2 if self.clone else .7, .75), ArmorStand),
-                self.player.getWorld().spawn(self.player.getLocation().clone(0, .2 if self.clone else .7, -1.5), ArmorStand)
+                self.player.getWorld().spawn(self.player.getLocation().clone().add(1.3, .2 if self.clone else .7, .75), ArmorStand),
+                self.player.getWorld().spawn(self.player.getLocation().clone().add(-1.3, .2 if self.clone else .7, .75), ArmorStand),
+                self.player.getWorld().spawn(self.player.getLocation().clone().add(0, .2 if self.clone else .7, -1.5), ArmorStand)
             )
 
             for stand in self.stands:
@@ -45,20 +45,20 @@ class Spell(PySpell):
                 stand.addScoreboardTag('shield_arrow')
                 PersistentDataAPI.setString(PersistentDataAPI.getData(self.player), 'owner', self.player.getName())
                 stand.getEquipment().setHelmet(ItemStack(Material.SHEARS if self.clone else Material.ARROW))
-                stand.setHeadPose(EulerAngle(0, 0, Math.PI * -.5 if self.clone else -.75))
+                stand.setHeadPose(EulerAngle(0, 0, Math.PI * (-.5 if self.clone else -.75)))
 
         elif self.t < 600:
-            self.stands[0].teleport(self.player.getLocation().clone().add(Math.sin((10 * self.t + 60) * -RAD2DEG) * 1.5, .2 if self.clone else .7, Math.cos((10 * self.t + 60) * RAD2DEG) * 1.5))
-            self.stands[0].teleport(self.player.getLocation().clone().add(Math.sin((10 * self.t - 60) * -RAD2DEG) * 1.5, .2 if self.clone else .7, Math.cos((10 * self.t - 60) * RAD2DEG) * 1.5))
-            self.stands[0].teleport(self.player.getLocation().clone().add(Math.sin((10 * self.t + 180) * -RAD2DEG) * 1.5, .2 if self.clone else .7, Math.cos((10 * self.t + 180) * RAD2DEG) * 1.5))
+            self.stands[0].teleport(self.player.getLocation().clone().add(Math.sin((10 * self.t + 60) * -DEG2RAD) * 1.5, .2 if self.clone else .7, Math.cos((10 * self.t + 60) * DEG2RAD) * 1.5))
+            self.stands[1].teleport(self.player.getLocation().clone().add(Math.sin((10 * self.t - 60) * -DEG2RAD) * 1.5, .2 if self.clone else .7, Math.cos((10 * self.t - 60) * DEG2RAD) * 1.5))
+            self.stands[2].teleport(self.player.getLocation().clone().add(Math.sin((10 * self.t + 180) * -DEG2RAD) * 1.5, .2 if self.clone else .7, Math.cos((10 * self.t + 180) * DEG2RAD) * 1.5))
 
-            self.stands[0].setRotation(-(10 * self.t + 60), 0)
-            self.stands[1].setRotation(-(10 * self.t - 60), 0)
-            self.stands[2].setRotation(-(10 * self.t + 180), 0)
+            self.stands[0].setRotation(10 * self.t + 60, 0)
+            self.stands[1].setRotation(10 * self.t - 60, 0)
+            self.stands[2].setRotation(10 * self.t + 180, 0)
 
             for stand in self.stands:
-                self.player.spawnParticle(Particle.VILLAGER_HAPPY if self.clone else Particle.CRIT, self.player.getLocation().clone().add(0, .5 if self.clone else .2, 0), 1, 0, 0, 0, 0)
-                self.player.spawnParticle(Particle.FIREWORKS_SPARK if self.clone else Particle.CRIT_MAGIC, self.player.getLocation().clone().add(0, .5, 0) if self.clone else self.player.getLocation(), 1, 0, 0, 0, 0)
+                self.player.spawnParticle(Particle.VILLAGER_HAPPY if self.clone else Particle.CRIT, stand.getLocation().clone().add(0, .5 if self.clone else .2, 0), 1, 0, 0, 0, 0)
+                self.player.spawnParticle(Particle.FIREWORKS_SPARK if self.clone else Particle.CRIT_MAGIC, stand.getLocation().clone().add(0, .5, 0) if self.clone else stand.getLocation(), 1, 0, 0, 0, 0)
 
         else:
             self.player.playSound(self.player.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, .1, 1.9)
@@ -80,7 +80,7 @@ class Spell(PySpell):
                     self.cooldown = 10
                     self.remaining -= 1
                 else:
-                    Classes.getClasses().get(self.player).getSpells().get(5).cast(self.player)
+                    Classes.getClasses().get('ARCHER').getSpells().get(5).cast(self.player)
                     self.deactivate()
                     self.cancel()
 
