@@ -2,6 +2,20 @@ class:
   ==: com.wynnlab.WynnClass
   className: Mage
   cloneName: Dark Wizard
+  item: STICK
+  metaStats:
+    damage: 2
+    defence: 3
+    range: 3
+    spells: 5
+  lore: |
+      Mages are naturally talented
+      in the magical arts. While
+      their raw damage may be
+      considered weaker, they
+      offer a great amount of
+      utility and versatility
+      with their spells.
   invertedControls: false
   spells:
     - ==: com.wynnlab.spells.Spell

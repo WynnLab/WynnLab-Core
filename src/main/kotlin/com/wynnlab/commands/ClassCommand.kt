@@ -1,6 +1,7 @@
 package com.wynnlab.commands
 
 import com.wynnlab.api.setWynnClass
+import com.wynnlab.gui.ClassGUI
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -13,8 +14,10 @@ class ClassCommand : CommandExecutor {
             return true
         }
         if (args.size != 1) {
-            sender.sendMessage("§cPlease specify a class")
-            return false
+            return if (args.isEmpty()) {
+                ClassGUI(sender).show()
+                true
+            } else false
         }
         sender.setWynnClass(args[0].toUpperCase())
         return true

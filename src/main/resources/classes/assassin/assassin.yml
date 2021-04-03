@@ -1,0 +1,48 @@
+class:
+  ==: com.wynnlab.WynnClass
+  className: Assassin
+  cloneName: Ninja
+  item: SHEARS
+  metaStats:
+    damage: 5
+    defence: 4
+    range: 1
+    spells: 3
+  lore: |
+      The Assassin is the deadliest
+      of all the classes, exploiting
+      enemies weak spots to deal
+      massive amounts of damage
+      from the shadows, however
+      they endanger themselves
+      by having to get extremely
+      close to the enemy.
+  invertedControls: false
+  spells:
+    - ==: com.wynnlab.spells.Spell
+      maxTick: 0
+      script: assassin_main.py
+    # ==: com.wynnlab.spells.Spell
+    # spellName: Spin Attack
+    # cloneSpellName: Whirlwind
+    # cost: 6
+    # maxTick: 20
+    # script: spin_attack.py
+    #- ==: com.wynnlab.spells.Spell
+    #  spellName: Escape
+    #  cloneSpellName: Spider Jump
+    #  cost: 3
+    #  maxTick: 1
+    #  script: escape.py
+    #- ==: com.wynnlab.spells.Spell
+    #  spellName: Bomb Arrow
+    #  cloneSpellName: Creeper Dart
+    #  cost: 8
+    #  maxTick: 0
+    #  script: bomb_arrow.py
+    #- ==: com.wynnlab.spells.Spell
+    #  spellName: Arrow Shield
+    #  cloneSpellName: Dagger Aura
+    #  cost: 10
+    #  maxTick: 600
+    #  script: arrow_shield.py
