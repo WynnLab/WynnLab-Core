@@ -1,4 +1,6 @@
-from org.bukkit import Particle, Sound
+from org.bukkit import Material, Particle, Sound
+from org.bukkit.entity import EntityType
+from org.bukkit.inventory import ItemStack
 from org.bukkit.util import Vector
 
 from com.wynnlab.spells import PySpell
@@ -10,30 +12,34 @@ class Spell(PySpell):
         if self.t < 10:
             for i in range(3):
                 l = self.player.getLocation().clone().add(Math.sin((10 * self.t + 60 * (i - 1)) * DEG2RAD) * (1.5 - .15 * self.t), self.t, Math.cos((10 * self.t + 60 * (i - 1)) * DEG2RAD) * (1.5 - .15 * self.t))
-                self.player.spawnParticle(Particle.FIREWORKS_SPARK if self.clone else Particle.CRIT, l, 5, 0, 0, 0, .1 if self.clone else .3)
-                self.player.spawnParticle(Particle.SQUID_INK, l, 3, 0, 0, 0, 0)
-                self.player.playSound(l, Sound.ENTITY_ARROW_SHOOT, 1, 1 + self.t / 20)
+                self.particle(l, Particle.FIREWORKS_SPARK if self.clone else Particle.CRIT, 5, 0, 0, 0, .1 if self.clone else .3)
+                self.particle(l, Particle.SQUID_INK, 3, 0, 0, 0, 0)
+                self.sound(l, Sound.ENTITY_ARROW_SHOOT, 1, 1 + self.t / 20)
             return
 
         l = self.player.getLocation().clone().add(0, 10, 0)
-        self.player.playSound(l, Sound.ENTITY_ARROW_SHOOT, 1, .8)
-        self.player.playSound(l, Sound.ITEM_ARMOR_EQUIP_GOLD if self.clone else Sound.ENTITY_GENERIC_EXPLODE, .8, 1 if self.clone else 1.8)
+        self.sound(l, Sound.ENTITY_ARROW_SHOOT, 1, .8)
+        self.sound(l, Sound.ITEM_ARMOR_EQUIP_GOLD if self.clone else Sound.ENTITY_GENERIC_EXPLODE, .8, 1 if self.clone else 1.8)
         if self.clone:
-            self.player.playSound(l, Sound.ITEM_TOTEM_USE, .8, .8)
+            self.sound(l, Sound.ITEM_TOTEM_USE, .8, .8)
 
         for i in range(0, 360, 30):
             for j in range(3):
                 arrow = self.player.getWorld().spawnArrow(l, Vector(Math.sin(i * DEG2RAD), .5 * (j - 1) - 1, Math.cos(i * DEG2RAD)), 3, 1)
-                #TODO: flint
+                if self.clone:
+                    snowball = self.player.getWorld().spawnEntity(arrow.getLocation(), EntityType.SNOWBALL)
+                    snowball.setVelocity(arrow.getVelocity())
+                    snowball.setItem(ItemStack(Material.FLINT))
+                    arrow.remove()
+                    arrow = snowball
 
                 arrow.setShooter(self.player)
                 arrow.addScoreboardTag('rain_arrow')
 
 def delete_arrow(event):
     hit = event.getHitEntity()
-    if not hit is None:
-        hit.damage(4, event.getEntity().getShooter())
-        hit.setNoDamageTicks(0)
+    if not hit is None and not isinstance(hit, Player):
+        PySpell.damage(event.getEntity().getShooter(), hit, 4)
 
     event.getEntity().remove()
 

@@ -1,5 +1,5 @@
 from org.bukkit import Material, Particle, Sound
-from org.bukkit.entity import Arrow, EntityType, Mob, Player, Snowball
+from org.bukkit.entity import Arrow, EntityType, Snowball
 from org.bukkit.inventory import ItemStack
 from org.bukkit.potion import PotionEffect, PotionEffectType
 
@@ -9,8 +9,8 @@ from java.lang import Math
 
 class Spell(PySpell):
     def tick(self):
-        self.player.playSound(self.player.getLocation(), Sound.ENTITY_ARROW_SHOOT, .9, .7)
-        self.player.playSound(self.player.getLocation(), Sound.ENTITY_TNT_PRIMED, 1, 1.3)
+        self.sound(Sound.ENTITY_ARROW_SHOOT, .9, .7)
+        self.sound(Sound.ENTITY_TNT_PRIMED, 1, 1.3)
 
         bomb = self.player.launchProjectile(Snowball if self.clone else Arrow, self.player.getEyeLocation().getDirection().clone().multiply(3))
         bomb.addScoreboardTag('bomb_arrow')
@@ -24,7 +24,7 @@ def bomb_hit(event):
     clone = player.getScoreboardTags().contains('clone')
 
     if not arrow.getScoreboardTags().contains('bomb_hit_2'):
-        next = arrow.getWorld().spawnArrow(arrow.getLocation().clone().add(0, .2, 0), arrow.getVelocity().clone().rotateAroundAxis(arrow.getFacing().getDirection(), Math.PI / 2).multiply(3), .6, 0)
+        next = arrow.getWorld().spawnArrow(arrow.getLocation().clone().add(0, .2, 0), arrow.getVelocity().clone().rotateAroundAxis(arrow.getFacing().getDirection(), Math.PI / 2).multiply(3).setY(1), .6, 0)
         if clone:
             snowball = arrow.getWorld().spawnEntity(next.getLocation(), EntityType.SNOWBALL)
             snowball.setVelocity(next.getVelocity())
@@ -36,25 +36,19 @@ def bomb_hit(event):
         next.addScoreboardTag('bomb_arrow')
         next.addScoreboardTag('bomb_hit_2' if arrow.getScoreboardTags().contains('bomb_hit_1') else 'bomb_hit_1')
 
-    for e in arrow.getNearbyEntities(4, 4, 4):
-        if isinstance(e, Player):
-            continue
-        if not isinstance(e, Mob):
-            continue
-
-        e.damage(14, player)
-        e.setNoDamageTicks(0)
+    for e in PySpell.nearbyMobs(arrow.getWorld(), arrow.getLocation(), 4, 4, 4):
+        PySpell.damage(player, e, 14)
         e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 60, 4, True, False, True))
 
-    player.playSound(arrow.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 1.3)
+    PySpell.sound(player, arrow.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 1.3)
     if clone:
-        player.playSound(arrow.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, .9, 1.1)
+        PySpell.sound(player, arrow.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, .9, 1.1)
     particle_location = arrow.getLocation().clone().add(0, .5, 0)
-    player.spawnParticle(Particle.FIREWORKS_SPARK if clone else Particle.FLAME, particle_location, 20, .3, .3, .3, .1)
-    player.spawnParticle(Particle.VILLAGER_HAPPY if clone else Particle.SQUID_INK, particle_location, 10, .3, .3, .3, .1)
+    PySpell.particle(player, particle_location, Particle.FIREWORKS_SPARK if clone else Particle.FLAME, 20, .3, .3, .3, .1)
+    PySpell.particle(player, particle_location, Particle.VILLAGER_HAPPY if clone else Particle.SQUID_INK, 10, .3, .3, .3, .1)
     if not clone:
-        player.spawnParticle(Particle.CLOUD, particle_location, 5, .2, .2, .2, .1)
-    player.spawnParticle(Particle.EXPLOSION_LARGE, particle_location, 1, 0, 0, 0, 0)
+        PySpell.particle(player, particle_location, Particle.CLOUD, 5, .2, .2, .2, .1)
+    PySpell.particle(player, particle_location, Particle.EXPLOSION_LARGE, 1, 0, 0, 0, 0)
 
     arrow.remove()
 

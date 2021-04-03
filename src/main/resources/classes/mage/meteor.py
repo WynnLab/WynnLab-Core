@@ -1,8 +1,8 @@
 from org.bukkit import Particle, Sound
-from org.bukkit.entity import Mob, Player
 
 from com.wynnlab.spells import PySpell
 from com.wynnlab.util import LocationIterator
+
 
 class Spell(PySpell):
     def __init__(self):
@@ -17,12 +17,7 @@ class Spell(PySpell):
             if ray is not None and ray.getHitEntity() is not None:
                 ray_loc = ray.getHitEntity().getLocation()
 
-            for e in ray_loc.getNearbyEntities(7, 7, 7):
-                if isinstance(e, Player):
-                    continue
-                if not isinstance(e, Mob):
-                    continue
-
+            for e in self.nearbyMobs(ray_loc, 7, 7, 7):
                 if self.target is None or ray_loc.distance(self.target) > e.getLocation().distance(self.target):
                     self.target = e.getLocation()
 
@@ -35,12 +30,12 @@ class Spell(PySpell):
             self.direction = self.origin.clone().subtract(self.target).toVector().normalize()
 
             for l in LocationIterator(self.target, self.origin, self.direction, .5):
-                self.player.spawnParticle(Particle.FLAME, l, 1, 0, 0, 0, 0)
+                self.particle(l, Particle.FLAME, 1, 0, 0, 0, 0)
 
             self.direction.multiply(-1)
 
             if self.clone:
-                self.player.playSound(self.origin, Sound.ENTITY_EVOKER_PREPARE_SUMMON, 1, .5)
+                self.sound(self.origin, Sound.ENTITY_EVOKER_PREPARE_SUMMON, 1, .5)
 
         particle_count = 0
         if self.t <= 5: particle_count = 4
@@ -51,27 +46,21 @@ class Spell(PySpell):
         if self.t <= 20:
             p_loc = self.origin.clone().add(self.direction.clone().multiply(self.t))
 
-            self.player.spawnParticle(Particle.EXPLOSION_LARGE, p_loc, particle_count, 0, 0, 0, .1)
-            self.player.spawnParticle(Particle.SQUID_INK if self.clone else Particle.CLOUD, p_loc, particle_count * 5, 0, 0, 0, .25)
-            self.player.spawnParticle(Particle.SPELL_WITCH if self.clone else Particle.LAVA, p_loc, particle_count, 0, 0, 0, .25)
+            self.particle(p_loc, Particle.EXPLOSION_LARGE, particle_count, 0, 0, 0, .1)
+            self.particle(p_loc, Particle.SQUID_INK if self.clone else Particle.CLOUD, particle_count * 5, 0, 0, 0, .25)
+            self.particle(p_loc, Particle.SPELL_WITCH if self.clone else Particle.LAVA, particle_count, 0, 0, 0, .25)
 
         if self.t == 20:
-            self.player.playSound(self.target, Sound.ENTITY_BLAZE_SHOOT, 5, 1)
-            self.player.playSound(self.target, Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 5, 1)
-            self.player.playSound(self.target, Sound.ENTITY_GENERIC_EXPLODE, 5, .5 if self.clone else .75)
+            self.sound(self.target, Sound.ENTITY_BLAZE_SHOOT, 5, 1)
+            self.sound(self.target, Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 5, 1)
+            self.sound(self.target, Sound.ENTITY_GENERIC_EXPLODE, 5, .5 if self.clone else .75)
             if self.clone:
-                self.player.playSound(self.target, Sound.ENTITY_WITHER_DEATH, 1, .175)
+                self.sound(self.target, Sound.ENTITY_WITHER_DEATH, 1, .175)
 
-            for e in self.target.getNearbyEntities(3, 3, 3):
-                if isinstance(e, Player):
-                    continue
-                if not isinstance(e, Mob):
-                    continue
-
-                e.damage(15, self.player)
-                e.setNoDamageTicks(0)
+            for e in self.nearbyMobs(self.target, 3, 3, 3):
+                self.damage(e, 15)
 
         if self.t >= 20 and self.t % 10 == 0:
-            self.player.playSound(self.target, Sound.BLOCK_CAMPFIRE_CRACKLE, 2, 1)
-            self.player.spawnParticle(Particle.SPELL_WITCH if self.clone else Particle.FLAME, self.target, 98, 7, 0, 7, .2)
-            self.player.spawnParticle(Particle.SMOKE_NORMAL, self.target, 98, 7, 0, 7, .2)
+            self.sound(self.target, Sound.BLOCK_CAMPFIRE_CRACKLE, 2, 1)
+            self.particle(self.target, Particle.SPELL_WITCH if self.clone else Particle.FLAME, 98, 7, 3, 7, .2)
+            self.particle(self.target, Particle.SMOKE_NORMAL, 98, 7, 3, 7, .2)

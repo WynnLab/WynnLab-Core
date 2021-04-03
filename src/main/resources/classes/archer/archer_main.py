@@ -1,12 +1,12 @@
 from org.bukkit import Material, Sound
-from org.bukkit.entity import Arrow, Snowball
+from org.bukkit.entity import Arrow, Player, Snowball
 from org.bukkit.inventory import ItemStack
 
 from com.wynnlab.spells import PySpell
 
 class Spell(PySpell):
     def tick(self):
-        self.player.playSound(self.player.getLocation(), Sound.ENTITY_ARROW_SHOOT, 1, 1)
+        self.sound(Sound.ENTITY_ARROW_SHOOT, 1, 1)
 
         arrow = self.player.launchProjectile(Snowball if self.clone else Arrow, self.player.getEyeLocation().getDirection().clone().multiply(3))
         if self.clone:
@@ -17,9 +17,8 @@ class Spell(PySpell):
 
 def delete_arrow(event):
     hit = event.getHitEntity()
-    if not hit is None:
-        hit.damage(4, event.getEntity().getShooter())
-        hit.setNoDamageTicks(0)
+    if not hit is None and not isinstance(hit, Player):
+        PySpell.damage(event.getEntity().getShooter(), hit, 4)
 
     event.getEntity().remove()
 

@@ -1,5 +1,5 @@
 from org.bukkit import Material, Particle, Sound
-from org.bukkit.entity import ArmorStand, Mob, Player
+from org.bukkit.entity import ArmorStand
 from org.bukkit.inventory import ItemStack
 from org.bukkit.util import EulerAngle, Vector
 
@@ -27,9 +27,9 @@ class Spell(PySpell):
                     self.player.removeScoreboardTag('arrow_shield')
                 return #TODO
 
-            self.player.playSound(self.player.location, Sound.ITEM_ARMOR_EQUIP_NETHERITE if self.clone else Sound.ENTITY_EVOKER_PREPARE_SUMMON, .5, .9)
-            self.player.playSound(self.player.location, Sound.ENTITY_ARROW_SHOOT, 1, .8)
-            self.player.playSound(self.player.location, Sound.ENTITY_PLAYER_ATTACK_CRIT, 1, 1)
+            self.sound(Sound.ITEM_ARMOR_EQUIP_NETHERITE if self.clone else Sound.ENTITY_EVOKER_PREPARE_SUMMON, .5, .9)
+            self.sound(Sound.ENTITY_ARROW_SHOOT, 1, .8)
+            self.sound(Sound.ENTITY_PLAYER_ATTACK_CRIT, 1, 1)
 
             self.stands = (
                 self.player.getWorld().spawn(self.player.getLocation().clone().add(1.3, .2 if self.clone else .7, .75), ArmorStand),
@@ -57,23 +57,18 @@ class Spell(PySpell):
             self.stands[2].setRotation(10 * self.t + 180, 0)
 
             for stand in self.stands:
-                self.player.spawnParticle(Particle.VILLAGER_HAPPY if self.clone else Particle.CRIT, stand.getLocation().clone().add(0, .5 if self.clone else .2, 0), 1, 0, 0, 0, 0)
-                self.player.spawnParticle(Particle.FIREWORKS_SPARK if self.clone else Particle.CRIT_MAGIC, stand.getLocation().clone().add(0, .5, 0) if self.clone else stand.getLocation(), 1, 0, 0, 0, 0)
+                self.particle(stand.getLocation().clone().add(0, .5 if self.clone else .2, 0), Particle.VILLAGER_HAPPY if self.clone else Particle.CRIT, 1, 0, 0, 0, 0)
+                self.particle(stand.getLocation().clone().add(0, .5, 0) if self.clone else stand.getLocation(), Particle.FIREWORKS_SPARK if self.clone else Particle.CRIT_MAGIC, 1, 0, 0, 0, 0)
 
         else:
-            self.player.playSound(self.player.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, .1, 1.9)
-            self.player.playSound(self.player.getLocation(), Sound.ITEM_ARMOR_EQUIP_NETHERITE, 1, 1)
+            self.sound(Sound.ENTITY_WITHER_BREAK_BLOCK, .1, 1.9)
+            self.sound(Sound.ITEM_ARMOR_EQUIP_NETHERITE, 1, 1)
 
             self.deactivate()
 
 
         if self.cooldown <= 0:
-            for e in self.player.getNearbyEntities(3, 3, 3):
-                if isinstance(e, Player):
-                    continue
-                if not isinstance(e, Mob):
-                    continue
-
+            for e in self.nearbyMobs(3, 3, 3):
                 self.activate(e)
 
                 if self.remaining > 1:
@@ -87,14 +82,13 @@ class Spell(PySpell):
         self.cooldown -= 1
 
     def activate(self, e):
-        e.damage(2, self.player)
-        e.setNoDamageTicks(0)
+        self.damage(e, 2)
 
         e.setVelocity(e.getLocation().toVector().subtract(self.player.getLocation().toVector()).setY(0).normalize().add(Vector(0, 1, 0)))
 
-        self.player.playSound(self.player.getLocation(), Sound.ENTITY_ARROW_HIT, 1, .9)
-        self.player.playSound(self.player.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, .1, 1.9)
-        self.player.playSound(self.player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_KNOCKBACK, 1, 1)
+        self.sound(Sound.ENTITY_ARROW_HIT, 1, .9)
+        self.sound(Sound.ENTITY_WITHER_BREAK_BLOCK, .1, 1.9)
+        self.sound(Sound.ENTITY_PLAYER_ATTACK_KNOCKBACK, 1, 1)
 
     def deactivate(self):
         self.player.removeScoreboardTag('arrow_shield')

@@ -2,6 +2,7 @@ package com.wynnlab.commands
 
 import com.wynnlab.api.getWynnClass
 import com.wynnlab.classes
+import com.wynnlab.entities.Hologram
 import com.wynnlab.events.SpellCastEvent
 import org.bukkit.Bukkit
 import org.bukkit.command.Command

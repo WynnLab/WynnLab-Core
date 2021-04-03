@@ -25,6 +25,10 @@
           <option value="classes.archer.arrow_shield.isinstance" />
           <option value="classes.archer.arrow_rain.range" />
           <option value="classes.archer.arrow_rain.RAD2DEG" />
+          <option value="classes.archer.arrow_rain.DEG2RAD" />
+          <option value="classes.archer.arrow_shield.DEG2RAD" />
+          <option value="classes.archer.escape.DEG2RAD" />
+          <option value="classes.mage.ice_snake.set" />
         </list>
       </option>
     </inspection_tool>

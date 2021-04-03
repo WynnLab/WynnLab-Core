@@ -12,11 +12,11 @@ class Spell(PySpell):
         if self.t % 20 > 0:
             return
 
-        self.player.spawnParticle(Particle.PORTAL, self.player.getLocation().clone().add(0, .5, 0), 144, 4, 0, 4, .1)
-        self.player.spawnParticle(Particle.CRIT_MAGIC, self.player.getLocation().clone().add(0, .3, 0), 144, 4, 0, 4, .1)
-        self.player.spawnParticle(Particle.FIREWORKS_SPARK, self.player.getLocation().clone().add(0, 1, 0), 16, .3, 1, .3, .05)
-        self.player.playSound(self.player.getLocation(), Sound.ENTITY_EVOKER_CAST_SPELL, .5, 1.5)
-        self.player.playSound(self.player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1, 1)
+        self.particle(self.player.getLocation().clone().add(0, .5, 0), Particle.PORTAL, 144, 4, 0, 4, .1)
+        self.particle(self.player.getLocation().clone().add(0, .3, 0), Particle.CRIT_MAGIC, 144, 4, 0, 4, .1)
+        self.particle(self.player.getLocation().clone().add(0, 1, 0), Particle.FIREWORKS_SPARK, 16, .3, 1, .3, .05)
+        self.sound(Sound.ENTITY_EVOKER_CAST_SPELL, .5, 1.5)
+        self.sound(Sound.BLOCK_LAVA_EXTINGUISH, 1, 1)
 
         self.player.setHealth(Math.min(self.player.getHealth() + 50, self.player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()))
 
@@ -27,4 +27,4 @@ class Spell(PySpell):
             e.setHealth(Math.min(self.player.getHealth() + 50), self.player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue())
             Bukkit.getPluginManager().callEvent(EntityRegainHealthEvent(self.player, 50, EntityRegainHealthEvent.RegainReason.CUSTOM))
 
-            self.player.spawnParticle(Particle.FIREWORKS_SPARK, e.getLocation().clone().add(0, 1, 0), 16, .3, 1, .3, .05)
+            self.particle(e.getLocation().clone().add(0, 1, 0), Particle.FIREWORKS_SPARK, 16, .3, 1, .3, .05)

@@ -1,5 +1,4 @@
 from org.bukkit import Particle, Sound
-from org.bukkit.entity import Player, Mob
 
 from com.wynnlab.spells import PySpell
 from com.wynnlab.util import LocationIterator
@@ -13,19 +12,13 @@ class Spell(PySpell):
         target.setDirection(self.player.getEyeLocation().getDirection())
 
         for l in LocationIterator(self.player.getEyeLocation(), target, self.player.getEyeLocation().getDirection(), .5):
-            self.player.spawnParticle(Particle.DRIP_LAVA if self.clone else Particle.FLAME, l.clone().subtract(0, 1, 0) if self.clone else l, 1, 0, 0, 0, 0)
+            self.particle(l.clone().subtract(0, 1, 0) if self.clone else l, Particle.DRIP_LAVA if self.clone else Particle.FLAME, 1, 0, 0, 0, 0)
 
         for l in LocationIterator(self.player.getEyeLocation(), target, self.player.getEyeLocation().getDirection(), 1):
-            self.player.spawnParticle(Particle.VILLAGER_ANGRY if self.clone else Particle.LAVA, l, 1, 0, 0, 0, 0)
+            self.particle(l, Particle.VILLAGER_ANGRY if self.clone else Particle.LAVA, 1, 0, 0, 0, 0)
 
-            for e in l.getNearbyEntities(.5, .5, .5):
-                if isinstance(e, Player):
-                    continue
-                if not isinstance(e, Mob):
-                    continue
+            for e in self.nearbyMobs(l, .5, 2, .5):
+                self.damage(e, 2)
 
-                e.damage(2, self.player)
-                e.setNoDamageTicks(0)
-
-        self.player.playSound(target, Sound.ENTITY_ENDERMAN_TELEPORT if self.clone else Sound.ENTITY_SHULKER_TELEPORT, 1, 1)
+        self.sound(target, Sound.ENTITY_ENDERMAN_TELEPORT if self.clone else Sound.ENTITY_SHULKER_TELEPORT, 1, 1)
         self.player.teleport(target)

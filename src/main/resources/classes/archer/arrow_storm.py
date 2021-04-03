@@ -10,16 +10,16 @@ class Spell(PySpell):
 
     def tick(self):
         if self.t == 0:
-            self.player.spawnParticle(Particle.VILLAGER_HAPPY if self.clone else Particle.CRIT, self.player.getLocation(), 5)
+            self.particle(self.player.getLocation().clone().add(0, 1, 0), Particle.VILLAGER_HAPPY if self.clone else Particle.CRIT, 5, .2, 2, .2, .5)
 
-        self.player.playSound(self.player.getLocation(), Sound.ENTITY_ARROW_SHOOT, 1, 1)
+        self.sound(Sound.ENTITY_ARROW_SHOOT, 1, 1)
         if self.clone:
-            self.player.playSound(self.player.getLocation(), Sound.BLOCK_GLASS_BREAK, .05, .6)
+            self.sound(Sound.BLOCK_GLASS_BREAK, .05, .6)
 
         for arrow in self.arrows:
-            self.player.spawnParticle(Particle.CRIT, arrow.getLocation(), 1, 0, 0, 0, .01)
+            self.particle(arrow.getLocation(), Particle.CRIT, 1, 0, 0, 0, .01)
             if self.clone:
-                self.player.spawnParticle(Particle.CRIT_MAGIC, arrow.getLocation(), 1, 0, 0, 0, .01)
+                self.particle(arrow.getLocation(), Particle.CRIT_MAGIC, 1, 0, 0, 0, .01)
         
         vi = self.player.getEyeLocation().getDirection().clone().multiply(3)
         shots = (
@@ -38,9 +38,8 @@ class Spell(PySpell):
 
 def delete_arrow(event):
     hit = event.getHitEntity()
-    if not hit is None:
-        hit.damage(.4, event.getEntity().getShooter())
-        hit.setNoDamageTicks(0)
+    if not hit is None and not isinstance(hit, Player):
+        PySpell.damage(event.getEntity().getShooter(), hit, .4)
 
     event.getEntity().remove()
 

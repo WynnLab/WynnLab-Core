@@ -12,7 +12,6 @@ class ProjectileHitListener : Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onProjectileHit(e: ProjectileHitEvent) {
         val proj = e.entity
-        println("Shooter: ${proj.shooter}, ST: ${proj.scoreboardTags}") //TODO(debug)
         if (proj.shooter !is Player)
             return
 
