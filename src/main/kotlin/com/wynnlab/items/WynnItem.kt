@@ -97,7 +97,7 @@ class WynnItem(
 
         lore.add("")
         classRequirement?.let { lore.add("§a✔ §7Class Req: ${classes[it]?.let { 
-                c -> "${c.className} / ${c.cloneName}" }}")
+                c -> "${c.className}/${c.cloneName}" }}")
         }
         lore.add("§a✔ §7Combat Lv. Min: $level")
         if (strength > 0) lore.add("§a✔ §7Strength Min: $strength")

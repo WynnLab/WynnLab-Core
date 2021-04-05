@@ -1,12 +1,13 @@
 package com.wynnlab
 
-import com.destroystokyo.paper.profile.ProfileProperty
+import com.wynnlab.api.meta
+import com.wynnlab.api.metaAs
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
-import org.bukkit.GameRule
+import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.scoreboard.Team
-import java.lang.IllegalArgumentException
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.BookMeta
 
 object Players {
     val players get() = Bukkit.getOnlinePlayers()
@@ -37,5 +38,25 @@ object Players {
         player.saturation = 0f
         player.exp = 0f
         player.level = 106
+
+        player.inventory.run {
+            setItem(6, ItemStack(Material.COMPASS).meta {
+                setDisplayName("§bCharacter Info")
+                lore = listOf("§6View and manage your skills")
+            })
+            setItem(7, ItemStack(Material.WRITTEN_BOOK).metaAs<BookMeta> {
+                title = "§dQuest Book"
+                author = "WynnLab"
+                generation = BookMeta.Generation.ORIGINAL
+            }.meta {
+            lore = listOf("", "§5Quests: §d0/0 §5[100%]")
+            })
+            setItem(8, ItemStack(Material.NETHER_STAR, 15).meta {
+                setDisplayName("§e§l§o15§b Soul Points")
+                lore = listOf("§7Having less soul points increases", "§7the chance of dropping items upon", "§7death",
+                )//" ", "§cShift Right-Click to enable hunted")
+            })
+            setItem(13, ItemStack(Material.DIAMOND_AXE)) // TODO: ingredient pouch
+        }
     }
 }

@@ -22,10 +22,10 @@ class ClassGUI(player: Player) : GUI(player, "Choose a class" /*TODO: color*/, 1
             val lore = mutableListOf(" ")
 
             val (damage, defence, range, spells) = clazz.metaStats
-            lore.add("§6⚔ Damage        ${damage.squares()}")
-            lore.add("§c❤ Defence       ${defence.squares()}")
-            lore.add("§a➸ Range          ${range.squares()}")
-            lore.add("§d✺ Spells          ${spells.squares()}")
+            lore.add("§6⚔ Damage               ${damage.squares()}")
+            lore.add("§c❤ Defence              ${defence.squares()}")
+            lore.add("§a➸ Range                 ${range.squares()}")
+            lore.add("§d✺ Spells                 ${spells.squares()}")
 
             lore.add(" ")
             lore.addAll(clazz.lore.split(Regex("\\n")).map { "§7$it" })
