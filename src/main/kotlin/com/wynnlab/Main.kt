@@ -62,6 +62,7 @@ class Main : JavaPlugin() {
     val fallingBlockListener by lazy { FallingBlockListener() }
     val playerEventsListener by lazy { PlayerEventsListener() }
     val projectileHitListener by lazy { ProjectileHitListener() }
+    val guiListener by lazy { GUIListener() }
 
     private fun registerListeners() {
         val manager = Bukkit.getPluginManager()
@@ -70,6 +71,7 @@ class Main : JavaPlugin() {
         manager.registerEvents(fallingBlockListener, this)
         manager.registerEvents(playerEventsListener, this)
         manager.registerEvents(projectileHitListener, this)
+        manager.registerEvents(guiListener, this)
     }
 
     private fun registerSerializers() {
@@ -98,6 +100,8 @@ class Main : JavaPlugin() {
 
 private lateinit var instance: Main
 val plugin get() = instance
+
+const val PREFIX = "§7[§bWynnLab§7] §r"
 
 val random = java.util.Random()
 

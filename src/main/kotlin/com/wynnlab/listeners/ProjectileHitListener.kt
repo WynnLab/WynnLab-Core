@@ -24,7 +24,5 @@ class ProjectileHitListener : Listener {
         }
     }
 
-    companion object {
-        val tags = hashMapOf<String, (ProjectileHitEvent) -> Unit>()
-    }
+    val tags = hashMapOf<String, (ProjectileHitEvent) -> Unit>()
 }

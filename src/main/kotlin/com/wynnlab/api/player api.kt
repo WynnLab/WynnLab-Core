@@ -2,6 +2,7 @@
 
 package com.wynnlab.api
 
+import com.wynnlab.PREFIX
 import com.wynnlab.WynnClass
 import com.wynnlab.classes
 import com.wynnlab.events.SpellCastEvent
@@ -12,6 +13,8 @@ import org.bukkit.ChatColor
 import org.bukkit.Effect
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
+
+fun Player.sendWynnMessage(message: String) = sendMessage(PREFIX + message)
 
 fun Player.setWynnClass(wynnClass: String) {
     data.setString("class", wynnClass)

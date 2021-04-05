@@ -9,5 +9,9 @@ class GUIListener : Listener {
     @EventHandler(priority = EventPriority.HIGH)
     fun onInventoryClick(e: InventoryClickEvent) {
         val inventory = e.clickedInventory ?: return
+        if (e.view.topInventory != inventory) return
+        inventories[e.view.title]?.invoke(e)
     }
+
+    val inventories = hashMapOf<String, (InventoryClickEvent) -> Unit>()
 }

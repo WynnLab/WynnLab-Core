@@ -73,7 +73,7 @@ abstract class PySpell : Runnable {
         @[JvmStatic Suppress("unused")]
         fun registerProjectileHit(tag: String, e: (ProjectileHitEvent) -> Unit) {
             println("Registered phl $e for $tag") //TODO(debug)
-            ProjectileHitListener.tags[tag] = e
+            plugin.projectileHitListener.tags[tag] = e
         }
 
         @JvmStatic

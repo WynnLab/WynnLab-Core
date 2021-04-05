@@ -75,8 +75,8 @@ fun loadClasses() {
         classes[wynnClass.className.toUpperCase()] = wynnClass
     }
 
-    plugin.logger.log(Level.INFO, "Classes: $classes")
-    plugin.logger.log(Level.INFO, "Listeners: ${ProjectileHitListener.tags}")
+    //plugin.logger.log(Level.INFO, "Classes: $classes")
+    //plugin.logger.log(Level.INFO, "Listeners: ${plugin.projectileHitListener.tags}")
 }
 
 data class Tuple4<T>(val v1: T, val v2: T, val v3: T, val v4: T)
