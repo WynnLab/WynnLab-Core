@@ -47,12 +47,14 @@ class ClassGUI(player: Player) : GUI(player, "Choose a class" /*TODO: color*/, 1
             val player = e.whoClicked as Player
 
             if (when (e.click) {
-                ClickType.LEFT, ClickType.SHIFT_LEFT -> { player.sendWynnMessage("You are now §3[${clazz.className}]"); false }
-                ClickType.RIGHT, ClickType.SHIFT_RIGHT -> { player.sendWynnMessage("You are now §3[${clazz.cloneName}]"); true }
+                ClickType.LEFT, ClickType.SHIFT_LEFT -> false
+                ClickType.RIGHT, ClickType.SHIFT_RIGHT -> true
                 else -> return@registerListener
             }) {
+                player.sendWynnMessage("You are now §3[${clazz.className}]")
                 player.addScoreboardTag("clone")
             } else {
+                player.sendWynnMessage("You are now §3[${clazz.cloneName}]")
                 player.removeScoreboardTag("clone")
             }
 
