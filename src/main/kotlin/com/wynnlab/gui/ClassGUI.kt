@@ -51,10 +51,10 @@ class ClassGUI(player: Player) : GUI(player, "Choose a class" /*TODO: color*/, 1
                 ClickType.RIGHT, ClickType.SHIFT_RIGHT -> true
                 else -> return@registerListener
             }) {
-                player.sendWynnMessage("You are now §3[${clazz.className}]")
+                player.sendWynnMessage("You are now §3[${clazz.cloneName}]")
                 player.addScoreboardTag("clone")
             } else {
-                player.sendWynnMessage("You are now §3[${clazz.cloneName}]")
+                player.sendWynnMessage("You are now §3[${clazz.className}]")
                 player.removeScoreboardTag("clone")
             }
 

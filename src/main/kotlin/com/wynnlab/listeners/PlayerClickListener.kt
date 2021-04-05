@@ -4,6 +4,7 @@ import com.wynnlab.api.addLeftClick
 import com.wynnlab.api.addRightClick
 import com.wynnlab.api.checkWeapon
 import com.wynnlab.api.hasWeaponInHand
+import com.wynnlab.gui.CompassGUI
 import org.bukkit.Effect
 import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
@@ -36,9 +37,24 @@ class PlayerClickListener : Listener {
             return
         if (e.hand != EquipmentSlot.HAND)
             return
-        if (!e.player.checkWeapon())
-            return
-        e.player.addRightClick()
-        e.isCancelled = true
+
+        when (e.player.inventory.heldItemSlot) {
+            6 -> {
+                CompassGUI(e.player).show()
+                e.isCancelled = true
+            }
+            7 -> {
+                e.isCancelled = true
+            }
+            8 -> {
+                e.isCancelled = true
+            }
+            else -> {
+                if (!e.player.checkWeapon())
+                    return
+                e.player.addRightClick()
+                e.isCancelled = true
+            }
+        }
     }
 }

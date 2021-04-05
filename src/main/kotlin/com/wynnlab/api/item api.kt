@@ -4,6 +4,30 @@ package com.wynnlab.api
 
 import com.wynnlab.items.WynnItem
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.Damageable
+import org.bukkit.inventory.meta.ItemMeta
+
+inline fun ItemStack.meta(edit: ItemMeta.() -> Unit): ItemStack {
+    val meta = itemMeta
+    meta.edit()
+    itemMeta = meta
+    return this
+}
+
+//BOUNDS_NOT_ALLOWED_IF_BOUNDED_BY_TYPE_PARAMETER
+inline fun <reified T> ItemStack.metaAs(edit: T.() -> Unit): ItemStack {
+    val meta = itemMeta as? T ?: return this
+    meta.edit()
+    itemMeta = meta as ItemMeta
+    return this
+}
+
+fun ItemStack.setAppearance(damage: Int): ItemStack {
+    val meta = itemMeta
+    (meta as Damageable).damage = damage
+    meta.isUnbreakable = true
+    return this
+}
 
 fun ItemStack.getWynnType() = itemMeta.data.getString("type")?.let { WynnItem.Type.valueOf(it) }
 
