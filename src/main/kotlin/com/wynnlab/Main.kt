@@ -15,6 +15,8 @@ import org.bukkit.GameRule
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.plugin.java.JavaPlugin
 import org.python.util.PythonInterpreter
+import javax.script.ScriptEngine
+import javax.script.ScriptEngineManager
 
 class Main : JavaPlugin() {
     override fun onLoad() {
@@ -25,7 +27,7 @@ class Main : JavaPlugin() {
         python.set("RAD2DEG", RAD2DEG)
         python.set("DEG2RAD", DEG2RAD)
 
-        //saveAllResources()
+        saveAllResources()
     }
 
     override fun onEnable() {
@@ -79,7 +81,7 @@ class Main : JavaPlugin() {
         ConfigurationSerialization.registerClass(Spell::class.java)
     }
 
-    fun setGameRules() {
+    private fun setGameRules() {
         Bukkit.getWorlds().forEach {
             it.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false)
             it.setGameRule(GameRule.DISABLE_RAIDS, false)

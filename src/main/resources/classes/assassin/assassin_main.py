@@ -1,3 +1,12 @@
+#function tick() {
+#    this.sound(Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1, .8);
+#    var l = this.player.getEyeLocation().clone().add(this.player.getEyeLocation().getDirection());
+#    this.particle(l, Particle.SWEEP_ATTACK, 1, 0, 0, 0, 0);
+#
+#    this.nearbyMobs(l, 2, 2, 2).forEach(function (e) {
+#        this.damage(e, 2);
+#    });
+#}
 from org.bukkit import Particle, Sound
 
 from com.wynnlab.spells import PySpell

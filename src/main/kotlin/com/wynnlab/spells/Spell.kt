@@ -44,7 +44,7 @@ data class Spell(
     val cloneSpellName: String?,
     val cost: Int,
     val maxTick: Int,
-    val pythonClass: PyType,
+    val pythonClass: PyType
 ) : ConfigurationSerializable {
     fun cast(player: Player) {
         val instance = pythonClass.__call__()
@@ -76,11 +76,12 @@ data class Spell(
             val maxTick = (map["maxTick"] as Number).toInt()
 
             val scriptFile = File(currentClassLoadFolder, map["script"] as String)
+
             val script = FileReader(scriptFile).use { reader ->
                 python.compile(reader)
             }
             python.exec(script)
-            val pythonClass = python.get("Spell") as PyType //TODO: name
+            val pythonClass: PyType = python.get("Spell") as PyType //TODO: name
 
             return Spell(spellName, cloneSpellName, cost, maxTick, pythonClass)
         }
