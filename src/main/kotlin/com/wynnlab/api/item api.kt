@@ -26,6 +26,7 @@ fun ItemStack.setAppearance(damage: Int): ItemStack {
     val meta = itemMeta
     (meta as Damageable).damage = damage
     meta.isUnbreakable = true
+    itemMeta = meta
     return this
 }
 

@@ -2,10 +2,12 @@ package com.wynnlab
 
 import com.wynnlab.api.meta
 import com.wynnlab.api.metaAs
+import com.wynnlab.api.setAppearance
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BookMeta
 
@@ -56,7 +58,15 @@ object Players {
                 lore = listOf("§7Having less soul points increases", "§7the chance of dropping items upon", "§7death",
                 )//" ", "§cShift Right-Click to enable hunted")
             })
-            setItem(13, ItemStack(Material.DIAMOND_AXE)) // TODO: ingredient pouch
+            setItem(13, ItemStack(Material.DIAMOND_AXE).setAppearance(94).meta {
+                addItemFlags(*ItemFlag.values())
+                setDisplayName("§6Magic Pouch")
+                lore = listOf(
+                    "§fLeft-Click $7to view contents",
+                    " "
+                )
+            }) // TODO: ingredient pouch
+            // 94 Empty 95 Half 96 Full
         }
     }
 }

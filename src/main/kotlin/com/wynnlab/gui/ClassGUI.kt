@@ -3,7 +3,7 @@ package com.wynnlab.gui
 import com.wynnlab.api.sendWynnMessage
 import com.wynnlab.api.setWynnClass
 import com.wynnlab.classes
-import com.wynnlab.plugin
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
@@ -42,6 +42,7 @@ class ClassGUI(player: Player) : GUI(player, "Choose a class" /*TODO: color*/, 1
             e.isCancelled = true
 
             val classIndex = itemPositions.indexOf(e.slot)
+            e.whoClicked.sendMessage("positions: $itemPositions, index: $classIndex")
             if (classIndex == -1) return@registerListener
             val clazz = classes.values.toList()[classIndex]
             val player = e.whoClicked as Player
@@ -57,6 +58,8 @@ class ClassGUI(player: Player) : GUI(player, "Choose a class" /*TODO: color*/, 1
                 player.sendWynnMessage("You are now §3[${clazz.className}]")
                 player.removeScoreboardTag("clone")
             }
+
+            player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
 
             player.setWynnClass(clazz.className.toUpperCase())
 
