@@ -15,6 +15,17 @@ sealed class Optional<T> {
         is None -> None as Optional<R>
     }
 
+    inline fun ifSomeRun(block: (T) -> Unit) {
+        if (this is None)
+            return
+        block((this as Some).value)
+    }
+
+    inline fun <R> either(ifSome: (T) -> R, ifNone: () -> R): R = when (this) {
+        is Some -> ifSome(value)
+        is None -> ifNone()
+    }
+
     inline infix fun or(block: () -> T): T = when (this) {
         is Some -> value
         is None -> block()

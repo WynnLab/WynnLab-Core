@@ -1,5 +1,8 @@
 package com.wynnlab.items
 
+import com.wynnlab.api.setContainer
+import com.wynnlab.api.setInt
+import org.bukkit.persistence.PersistentDataContainer
 import org.json.simple.JSONObject
 
 // Commented values are not important
@@ -127,6 +130,16 @@ class Identifications(
         if (c) { list.add(" ")/*; c = false*/ }
 
         return list
+    }
+
+    fun data(data: PersistentDataContainer) {
+        data.setContainer("ids") {
+            if (strengthPoints != 0) setInt("strength_points", strengthPoints)
+            if (dexterityPoints != 0) setInt("dexterity_points", dexterityPoints)
+            if (intelligencePoints != 0) setInt("intelligence_points", intelligencePoints)
+            if (defensePoints != 0) setInt("defense_points", defensePoints)
+            if (agilityPoints != 0) setInt("agility_points", agilityPoints)
+        }
     }
 
     constructor(json: JSONObject) : this(

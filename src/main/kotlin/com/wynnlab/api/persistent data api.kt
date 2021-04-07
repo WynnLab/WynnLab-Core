@@ -27,6 +27,12 @@ fun PersistentDataContainer.setInt(key: String, value: Int) = set(key, Persisten
 
 fun PersistentDataContainer.setIntArray(key: String, value: IntArray) = set(key, PersistentDataType.INTEGER_ARRAY, value)
 
+fun PersistentDataContainer.setContainer(key: String, value: PersistentDataContainer.() -> Unit) {
+    val container = adapterContext.newPersistentDataContainer()
+    container.value()
+    set(key, PersistentDataType.TAG_CONTAINER, container)
+}
+
 fun persistentDataTypeFromString(string: String) = when (string) {
     "byte" -> PersistentDataType.BYTE
     "short" -> PersistentDataType.SHORT

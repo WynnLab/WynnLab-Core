@@ -1,8 +1,6 @@
 package com.wynnlab.items
 
-import com.wynnlab.api.data
-import com.wynnlab.api.getWynnClass
-import com.wynnlab.api.setString
+import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.util.Optional
 import com.wynnlab.util.optionalAs
@@ -53,7 +51,7 @@ class WynnItem(
     fun generateNewItem(player: Player): ItemStack {
         val item = ItemStack(material)
 
-        updateData(item, player)
+        setData(item)
         updateLore(item, player)
 
         return item
@@ -122,13 +120,42 @@ class WynnItem(
         item.itemMeta = meta
     }
 
-    fun updateData(item: ItemStack, player: Player) {
+    private fun setData(item: ItemStack) {
         val meta = item.itemMeta
         val data = meta.data
 
         type?.name?.let { data.setString("type", it) }
         classRequirement?.let { data.setString("class_req", it) }
-        attackSpeed.ifSome { data.setString("attack_speed", it.name) }
+
+        data.setIntArray("skill_req", intArrayOf(
+            strength, dexterity, intelligence, defense, agility
+        ))
+
+        when (category) {
+            ItemCategory.WEAPON -> {
+                val array = IntArray(6 * 2)
+                damage.ifSomeRun { array[0] = it.first; array[1] = it.last }
+                earthDamage.ifSomeRun { array[2] = it.first; array[3] = it.last }
+                thunderDamage.ifSomeRun { array[4] = it.first; array[5] = it.last }
+                waterDamage.ifSomeRun { array[6] = it.first; array[7] = it.last }
+                fireDamage.ifSomeRun { array[8] = it.first; array[9] = it.last }
+                airDamage.ifSomeRun { array[10] = it.first; array[11] = it.last }
+                data.setIntArray("damage", array)
+                attackSpeed.ifSome { data.setString("attack_speed", it.name) }
+            }
+            else -> {
+                val array = IntArray(5)
+                earthDefense.ifSomeRun { array[0] = it }
+                thunderDefense.ifSomeRun { array[0] = it }
+                waterDefense.ifSomeRun { array[0] = it }
+                fireDefense.ifSomeRun { array[0] = it }
+                airDefense.ifSomeRun { array[0] = it }
+                data.setIntArray("defense", array)
+                data.setInt("health", health.either({ it }, { 0 }))
+            }
+        }
+
+        identifications.data(data)
 
         item.itemMeta = meta
     }

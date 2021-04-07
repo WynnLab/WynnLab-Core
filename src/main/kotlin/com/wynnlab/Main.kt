@@ -1,9 +1,6 @@
 package com.wynnlab
 
-import com.wynnlab.commands.CastCommand
-import com.wynnlab.commands.ClassCommand
-import com.wynnlab.commands.ItemCommand
-import com.wynnlab.commands.RankCommand
+import com.wynnlab.commands.*
 import com.wynnlab.listeners.*
 import com.wynnlab.ranks.Rank
 import com.wynnlab.spells.Spell
@@ -51,12 +48,15 @@ class Main : JavaPlugin() {
     val itemCommand by lazy { ItemCommand() }
     val castCommand by lazy { CastCommand() }
     val rankCommand by lazy { RankCommand() }
+    val devCommands by lazy { DevCommands() }
 
     private fun registerCommands() {
         getCommand("class")?.setExecutor(classCommand)
         getCommand("item")?.setExecutor(itemCommand)
         getCommand("cast")?.setExecutor(castCommand)
         getCommand("rank")?.setExecutor(rankCommand)
+        getCommand("itemdata")?.setExecutor(devCommands)
+        getCommand("script")?.setExecutor(devCommands)
     }
 
     val castListener by lazy { CastListener() }
@@ -107,4 +107,4 @@ const val PREFIX = "§7[§bWynnLab§7] §r"
 
 val random = java.util.Random()
 
-val python = PythonInterpreter()
+val python by lazy { PythonInterpreter() }
