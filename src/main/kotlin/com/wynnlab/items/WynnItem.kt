@@ -1,6 +1,7 @@
 package com.wynnlab.items
 
 import com.wynnlab.api.data
+import com.wynnlab.api.getWynnClass
 import com.wynnlab.api.setString
 import com.wynnlab.classes
 import com.wynnlab.util.Optional
@@ -47,6 +48,7 @@ class WynnItem(
     private val intelligence: Int,
     private val defense: Int,
     private val agility: Int,
+    private val identifications: Identifications
 ) {
     fun generateNewItem(player: Player): ItemStack {
         val item = ItemStack(material)
@@ -79,7 +81,7 @@ class WynnItem(
         val lore = mutableListOf<String>()
 
         attackSpeed.ifSome { lore.add("§7${it.str} Attack Speed") }
-        lore.add("")
+        lore.add(" ")
 
         damage.ifSome { if (it.last > 0) lore.add("§6✣ Neutral Damage: ${it.dash()}") }
         earthDamage.ifSome { if (it.last > 0) lore.add("§2✤ Earth §7Damage: ${it.dash()}") }
@@ -95,8 +97,10 @@ class WynnItem(
         fireDefense.ifSome { if (it > 0) lore.add("§c✹ Fire §7Defense: $it") }
         airDefense.ifSome { if (it > 0) lore.add("§f❋ Air §7Defense: $it") }
 
-        lore.add("")
-        classRequirement?.let { lore.add("§a✔ §7Class Req: ${classes[it]?.let { 
+        lore.add(" ")
+        classRequirement?.let { lore.add("${
+            if (player.getWynnClass() == it) "§a✔" else "§c❌"
+        } §7Class Req: ${classes[it]?.let { 
                 c -> "${c.className}/${c.cloneName}" }}")
         }
         lore.add("§a✔ §7Combat Lv. Min: $level")
@@ -106,9 +110,8 @@ class WynnItem(
         if (defense > 0) lore.add("§a✔ §7Defense Min: $defense")
         if (agility > 0) lore.add("§a✔ §7Agility Min: $agility")
 
-        // TODO: Identifications
+        lore.addAll(identifications.lore())
 
-        lore.add("")
         if (sockets > 0) lore.add("§7[0/$sockets] Powder Slots")
 
         lore.add("${tier.colorCode}${tier.tierName} ${type?.typeName ?: "Item"}")
@@ -183,7 +186,8 @@ class WynnItem(
                 (json["dexterity"] as Long).toInt(),
                 (json["intelligence"] as Long).toInt(),
                 (json["defense"] as Long).toInt(),
-                (json["agility"] as Long).toInt()
+                (json["agility"] as Long).toInt(),
+                Identifications(json)
             )
         }
 

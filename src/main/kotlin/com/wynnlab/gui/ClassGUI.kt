@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack
 class ClassGUI(player: Player) : GUI(player, "Choose a class" /*TODO: color*/, 1) {
     override fun initialize() {
         val classCount = classes.size
-        val itemPositions = if (classCount > 5) 0 until classCount else (5 - classCount)..(4 + classCount) step 2
+        val itemPositions = (5 - (classCount + .5f) / 2f).toInt()..(4 + classCount / 2)
         val iterator = itemPositions.iterator()
 
         for (clazz in classes.values) {

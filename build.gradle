@@ -51,9 +51,5 @@ task buildAndCopy {
             from file("D:\\IdeaProjects\\WynnLab\\build\\libs\\WynnLab-$version-all.jar")
             into file("M:\\plugins")
         }
-        /*copy {
-            from file("D:\\Simon\\WynnLab\\build\\libs\\WynnLab-$version-all.jar")
-            into file("D:\\Minecraft Server\\plugins")
-        }*/
     }
 }
