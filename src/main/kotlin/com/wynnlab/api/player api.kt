@@ -178,7 +178,7 @@ fun Player.getId(key: String): Int {
     var sum = 0
     for (item in wynnEquipment) {
         if (item == null) continue
-        sum += (item.itemMeta.data.getContainer("ids") ?: continue).getInt(key) ?: continue
+        sum += ((item.itemMeta ?: continue).data.getContainer("ids") ?: continue).getInt(key) ?: continue
     }
     return sum
 }

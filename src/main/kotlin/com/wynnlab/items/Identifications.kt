@@ -126,7 +126,7 @@ class Identifications(
         if (c) { list.add(" "); c = false }
         //if (sprint != 0) { list.add(idValue("Sprint", sprint)); c = true }
         //if (sprintRegen != 0) { list.add(idValue("Sprint Regen", sprintRegen)); c = true }
-        if (jumpHeight != 0) { list.add(idValue("Jump Height", jumpHeight)); c = true }
+        if (jumpHeight != 0) { list.add(idValue("Jump Height", jumpHeight, "")); c = true }
         if (c) { list.add(" ")/*; c = false*/ }
 
         return list
@@ -189,56 +189,71 @@ class Identifications(
         if (int != 0) setInt(name, int)
     }
 
-    constructor(json: JSONObject) : this(
-        (json["healthRegen"] as Number??: 0).toInt(),
-        (json["manaRegen"] as Number??: 0).toInt(),
-        (json["spellDamage"] as Number??: 0).toInt(),
-        (json["damageBonus"] as Number??: 0).toInt(),
-        (json["lifeSteal"] as Number??: 0).toInt(),
-        (json["manaSteal"] as Number??: 0).toInt(),
-        //(json["xpBonus"] as Number??: 0).toInt(),
-        //(json["lootBonus"] as Number??: 0).toInt(),
-        (json["reflection"] as Number??: 0).toInt(),
-        (json["strengthPoints"] as Number??: 0).toInt(),
-        (json["dexterityPoints"] as Number??: 0).toInt(),
-        (json["intelligencePoints"] as Number??: 0).toInt(),
-        (json["defensePoints"] as Number??: 0).toInt(),
-        (json["agilityPoints"] as Number??: 0).toInt(),
-        (json["thorns"] as Number??: 0).toInt(),
-        (json["exploding"] as Number??: 0).toInt(),
-        (json["speed"] as Number??: 0).toInt(),
-        (json["attackSpeedBonus"] as Number??: 0).toInt(),
-        (json["poison"] as Number??: 0).toInt(),
-        (json["healthBonus"] as Number??: 0).toInt(),
-        //(json["soulPoints"] as Number??: 0).toInt(),
-        (json["emeraldStealing"] as Number??: 0).toInt(),
-        (json["healthRegenRaw"] as Number??: 0).toInt(),
-        (json["spellDamageRaw"] as Number??: 0).toInt(),
-        (json["damageBonusRaw"] as Number??: 0).toInt(),
-        (json["bonusEarthDamage"] as Number??: 0).toInt(),
-        (json["bonusThunderDamage"] as Number??: 0).toInt(),
-        (json["bonusWaterDamage"] as Number??: 0).toInt(),
-        (json["bonusFireDamage"] as Number??: 0).toInt(),
-        (json["bonusAirDamage:"] as Number??: 0).toInt(),
-        (json["bonusEarthDefense"] as Number??: 0).toInt(),
-        (json["bonusThunderDefense"] as Number??: 0).toInt(),
-        (json["bonusWaterDefense"] as Number??: 0).toInt(),
-        (json["bonusFireDefense"] as Number??: 0).toInt(),
-        (json["bonusAirDefense"] as Number??: 0).toInt(),
-        (json["spellCostPct1"] as Number??: 0).toInt(),
-        (json["spellCostPct2"] as Number??: 0).toInt(),
-        (json["spellCostPct3"] as Number??: 0).toInt(),
-        (json["spellCostPct4"] as Number??: 0).toInt(),
-        (json["spellCostRaw1"] as Number??: 0).toInt(),
-        (json["spellCostRaw2"] as Number??: 0).toInt(),
-        (json["spellCostRaw3"] as Number??: 0).toInt(),
-        (json["spellCostRaw4"] as Number??: 0).toInt(),
-        (json["rainbowSpellDamage"] as Number??: 0).toInt(),
-        //(json["sprint"] as Number??: 0).toInt(),
-        //(json["sprintRegen"] as Number??: 0).toInt(),
-        (json["jumpHeight"] as Number??: 0).toInt(),
-        //(json["lootQuality"] as Number??: 0).toInt(),
-    )
+    companion object {
+        operator fun invoke(json: JSONObject): Identifications {
+            val identified = json["identified"] != true
+            return Identifications(
+                (json["healthRegen"] as Number??: 0).bestID(identified),
+                (json["manaRegen"] as Number??: 0).bestID(identified),
+                (json["spellDamage"] as Number??: 0).bestID(identified),
+                (json["damageBonus"] as Number??: 0).bestID(identified),
+                (json["lifeSteal"] as Number??: 0).bestID(identified),
+                (json["manaSteal"] as Number??: 0).bestID(identified),
+                //(json["xpBonus"] as Number??: 0).bestID(identified),
+                //(json["lootBonus"] as Number??: 0).bestID(identified),
+                (json["reflection"] as Number??: 0).bestID(identified),
+                (json["strengthPoints"] as Number??: 0).bestID(identified),
+                (json["dexterityPoints"] as Number??: 0).bestID(identified),
+                (json["intelligencePoints"] as Number??: 0).bestID(identified),
+                (json["defensePoints"] as Number??: 0).bestID(identified),
+                (json["agilityPoints"] as Number??: 0).bestID(identified),
+                (json["thorns"] as Number??: 0).bestID(identified),
+                (json["exploding"] as Number??: 0).bestID(identified),
+                (json["speed"] as Number??: 0).bestID(identified),
+                (json["attackSpeedBonus"] as Number??: 0).bestID(identified),
+                (json["poison"] as Number??: 0).bestID(identified),
+                (json["healthBonus"] as Number??: 0).bestID(identified),
+                //(json["soulPoints"] as Number??: 0).bestID(identified),
+                (json["emeraldStealing"] as Number??: 0).bestID(identified),
+                (json["healthRegenRaw"] as Number??: 0).bestID(identified),
+                (json["spellDamageRaw"] as Number??: 0).bestID(identified),
+                (json["damageBonusRaw"] as Number??: 0).bestID(identified),
+                (json["bonusEarthDamage"] as Number??: 0).bestID(identified),
+                (json["bonusThunderDamage"] as Number??: 0).bestID(identified),
+                (json["bonusWaterDamage"] as Number??: 0).bestID(identified),
+                (json["bonusFireDamage"] as Number??: 0).bestID(identified),
+                (json["bonusAirDamage:"] as Number??: 0).bestID(identified),
+                (json["bonusEarthDefense"] as Number??: 0).bestID(identified),
+                (json["bonusThunderDefense"] as Number??: 0).bestID(identified),
+                (json["bonusWaterDefense"] as Number??: 0).bestID(identified),
+                (json["bonusFireDefense"] as Number??: 0).bestID(identified),
+                (json["bonusAirDefense"] as Number??: 0).bestID(identified),
+                (json["spellCostPct1"] as Number??: 0).bestID(identified),
+                (json["spellCostPct2"] as Number??: 0).bestID(identified),
+                (json["spellCostPct3"] as Number??: 0).bestID(identified),
+                (json["spellCostPct4"] as Number??: 0).bestID(identified),
+                (json["spellCostRaw1"] as Number??: 0).bestID(identified),
+                (json["spellCostRaw2"] as Number??: 0).bestID(identified),
+                (json["spellCostRaw3"] as Number??: 0).bestID(identified),
+                (json["spellCostRaw4"] as Number??: 0).bestID(identified),
+                (json["rainbowSpellDamage"] as Number??: 0).bestID(identified),
+                //(json["sprint"] as Number??: 0).bestID(identified),
+                //(json["sprintRegen"] as Number??: 0).bestID(identified),
+                (json["jumpHeight"] as Number??: 0).bestID(identified),
+                //(json["lootQuality"] as Number??: 0).bestID(identified),
+            )
+        }
+
+        fun Number.bestID(identified: Boolean) = toInt().let {
+            if (identified)
+                when {
+                    it < 0 -> (it * 0.7).coerceAtMost(-1.0)
+                    it > 0 -> (it * 1.3).coerceAtLeast(1.0)
+                    else -> 0
+                }
+            else it
+        }.toInt()
+    }
 }
 
 fun idValue(name: String, value: Int, suffix: String = "%", invertedColors: Boolean = false) = if (invertedColors)
