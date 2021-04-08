@@ -16,7 +16,7 @@ object MainThread : Runnable {
         for (player in Bukkit.getServer().onlinePlayers) {
             player.standardActionBar()
             player.exhaustion = 0f
-            val maxHealth = (105 + player.getId("health_bonus")).coerceIn(1, 1000000).toDouble()
+            val maxHealth = (505 + player.getId("health_bonus")).coerceIn(1, 1000000).toDouble()
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue = maxHealth
             if (s1) player.foodLevel = (player.foodLevel + 1).coerceAtMost(20)
             if (s4) {

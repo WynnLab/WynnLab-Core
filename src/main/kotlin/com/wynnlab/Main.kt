@@ -38,6 +38,8 @@ class Main : JavaPlugin() {
         MainThread.schedule()
 
         loadClasses()
+
+        Bukkit.getServer().spigot().spigotConfig.set("settings.attribute.maxHealth.max", 1000000)
     }
 
     override fun onDisable() {
