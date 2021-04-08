@@ -171,3 +171,14 @@ fun Player.wynnPrefix(): String {
 fun Player.updatePrefix() {
     setDisplayName(wynnPrefix()+prefix+name)
 }
+
+val Player.wynnEquipment get() = equipment!!.let { arrayOf(it.itemInMainHand, it.helmet, it.chestplate, it.leggings, it.boots) }
+
+fun Player.getId(key: String): Int {
+    var sum = 0
+    for (item in wynnEquipment) {
+        if (item == null) continue
+        sum += (item.itemMeta.data.getContainer("ids") ?: continue).getInt(key) ?: continue
+    }
+    return sum
+}

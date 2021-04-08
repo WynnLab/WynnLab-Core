@@ -51,8 +51,8 @@ class Identifications(
     private val spellCostRaw3: Int,
     private val spellCostRaw4: Int,
     private val rainbowSpellDamageRaw: Int,
-    private val sprint: Int,
-    private val sprintRegen: Int,
+    //private val sprint: Int,
+    //private val sprintRegen: Int,
     private val jumpHeight: Int,
     //private val lootQuality: Int,
 ) {
@@ -87,7 +87,7 @@ class Identifications(
         if (bonusAirDefense != 0) { list.add(idValue("§f❋ Air §7Defense", bonusAirDamage)); c = true }
         if (c) { list.add(" "); c = false }
 
-        if (manaRegen != 0) { list.add(idValue("Mana Regen", manaRegen, "/5s")); c = true }
+        if (manaRegen != 0) { list.add(idValue("Mana Regen", manaRegen, "/4s")); c = true }
         if (manaSteal != 0) { list.add(idValue("Mana Steal", manaSteal, "/4s")); c = true }
         if (c) { list.add(" "); c = false }
         if (healthBonus != 0) { list.add(idValue("Health", healthBonus, "")); c = true }
@@ -124,8 +124,8 @@ class Identifications(
 
         if (rainbowSpellDamageRaw != 0) { list.add(idValue("Rainbow Spell Damage", rainbowSpellDamageRaw)); c = true }
         if (c) { list.add(" "); c = false }
-        if (sprint != 0) { list.add(idValue("Sprint", sprint)); c = true }
-        if (sprintRegen != 0) { list.add(idValue("Sprint Regen", sprintRegen)); c = true }
+        //if (sprint != 0) { list.add(idValue("Sprint", sprint)); c = true }
+        //if (sprintRegen != 0) { list.add(idValue("Sprint Regen", sprintRegen)); c = true }
         if (jumpHeight != 0) { list.add(idValue("Jump Height", jumpHeight)); c = true }
         if (c) { list.add(" ")/*; c = false*/ }
 
@@ -134,12 +134,59 @@ class Identifications(
 
     fun data(data: PersistentDataContainer) {
         data.setContainer("ids") {
-            if (strengthPoints != 0) setInt("strength_points", strengthPoints)
-            if (dexterityPoints != 0) setInt("dexterity_points", dexterityPoints)
-            if (intelligencePoints != 0) setInt("intelligence_points", intelligencePoints)
-            if (defensePoints != 0) setInt("defense_points", defensePoints)
-            if (agilityPoints != 0) setInt("agility_points", agilityPoints)
+            entry(strengthPoints, "strength_points")
+            entry(dexterityPoints, "dexterity_points")
+            entry(intelligencePoints, "intelligence_points")
+            entry(defensePoints, "defense_points")
+            entry(agilityPoints, "agility_points")
+
+            entry(spellDamageRaw, "spell_damage_raw")
+            entry(spellDamage, "spell_damage")
+            entry(damageBonusRaw, "damage_bonus_raw")
+            entry(damageBonus, "damage_bonus")
+
+            entry(bonusEarthDamage, "bonus_earth_damage")
+            entry(bonusThunderDamage, "bonus_thunder_damage")
+            entry(bonusWaterDamage, "bonus_water_damage")
+            entry(bonusFireDamage, "bonus_fire_damage")
+            entry(bonusAirDamage, "bonus_air_damage")
+
+            entry(bonusEarthDefense, "bonus_earth_defense")
+            entry(bonusThunderDefense, "bonus_thunder_defense")
+            entry(bonusWaterDefense, "bonus_water_defense")
+            entry(bonusFireDefense, "bonus_fire_defense")
+            entry(bonusAirDefense, "bonus_air_defense")
+
+            entry(manaRegen, "mana_regen")
+            entry(manaSteal, "mana_steal")
+            entry(healthBonus, "health_bonus")
+            entry(healthRegen, "health_regen")
+            entry(healthRegenRaw, "health_regen_raw")
+            entry(lifeSteal, "life_steal")
+            entry(speed, "speed")
+            entry(emeraldStealing, "emerald_stealing")
+            entry(attackSpeedBonus, "attack_speed_bonus")
+            entry(poison, "poison")
+            entry(reflection, "reflection")
+            entry(thorns, "thorns")
+            entry(exploding, "exploding")
+
+            entry(spellCostPct1, "spell_cost_pct_1")
+            entry(spellCostPct2, "spell_cost_pct_2")
+            entry(spellCostPct3, "spell_cost_pct_3")
+            entry(spellCostPct4, "spell_cost_pct_4")
+            entry(spellCostRaw1, "spell_cost_raw_1")
+            entry(spellCostRaw2, "spell_cost_raw_2")
+            entry(spellCostRaw3, "spell_cost_raw_3")
+            entry(spellCostRaw4, "spell_cost_raw_4")
+
+            entry(rainbowSpellDamageRaw, "rainbow_spell_damage_raw")
+            entry(jumpHeight, "jump_height")
         }
+    }
+
+    private fun PersistentDataContainer.entry(int: Int, name: String) {
+        if (int != 0) setInt(name, int)
     }
 
     constructor(json: JSONObject) : this(
@@ -187,8 +234,8 @@ class Identifications(
         (json["spellCostRaw3"] as Number??: 0).toInt(),
         (json["spellCostRaw4"] as Number??: 0).toInt(),
         (json["rainbowSpellDamage"] as Number??: 0).toInt(),
-        (json["sprint"] as Number??: 0).toInt(),
-        (json["sprintRegen"] as Number??: 0).toInt(),
+        //(json["sprint"] as Number??: 0).toInt(),
+        //(json["sprintRegen"] as Number??: 0).toInt(),
         (json["jumpHeight"] as Number??: 0).toInt(),
         //(json["lootQuality"] as Number??: 0).toInt(),
     )
