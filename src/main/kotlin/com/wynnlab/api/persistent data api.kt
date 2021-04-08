@@ -17,6 +17,10 @@ fun PersistentDataContainer.getString(key: String) = this[key, PersistentDataTyp
 
 fun PersistentDataContainer.getInt(key: String) = this[key, PersistentDataType.INTEGER]
 
+fun PersistentDataContainer.getContainer(key: String) = this[key, PersistentDataType.TAG_CONTAINER]
+
+fun PersistentDataContainer.getContainerArray(key: String) = this[key, PersistentDataType.TAG_CONTAINER_ARRAY]
+
 
 operator fun <T, Z> PersistentDataContainer.set(key: String, type: PersistentDataType<T, Z>, value: Z) =
     set(NamespacedKey(plugin, key), type, value!!)
@@ -31,20 +35,4 @@ fun PersistentDataContainer.setContainer(key: String, value: PersistentDataConta
     val container = adapterContext.newPersistentDataContainer()
     container.value()
     set(key, PersistentDataType.TAG_CONTAINER, container)
-}
-
-fun persistentDataTypeFromString(string: String) = when (string) {
-    "byte" -> PersistentDataType.BYTE
-    "short" -> PersistentDataType.SHORT
-    "int" -> PersistentDataType.INTEGER
-    "long" -> PersistentDataType.LONG
-    "float" -> PersistentDataType.FLOAT
-    "double" -> PersistentDataType.DOUBLE
-    "byte[]" -> PersistentDataType.BYTE_ARRAY
-    "int[]" -> PersistentDataType.INTEGER_ARRAY
-    "long[]" -> PersistentDataType.LONG_ARRAY
-    "String" -> PersistentDataType.STRING
-    "{}" -> PersistentDataType.TAG_CONTAINER
-    "{}[]" -> PersistentDataType.TAG_CONTAINER_ARRAY
-    else -> null
 }

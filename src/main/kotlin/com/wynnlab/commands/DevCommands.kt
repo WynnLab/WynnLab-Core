@@ -1,13 +1,9 @@
 package com.wynnlab.commands
 
-import com.wynnlab.api.data
-import com.wynnlab.api.get
-import com.wynnlab.api.persistentDataTypeFromString
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import org.bukkit.persistence.PersistentDataType
 
 /**
  * Commands:
@@ -27,26 +23,12 @@ class DevCommands : CommandExecutor {
                     return true
                 }
                 if (args.isEmpty()) {
-                    sender.sendMessage("§cPlease specify a data type (e.g. 'int' or 'String')")
+                    sender.sendMessage("§cPlease specify an item index")
                     return false
                 }
-                if (args.size < 2) {
-                    sender.sendMessage("§cPlease specify a key")
-                    return false
-                }
-                val type = persistentDataTypeFromString(args[0])
-                if (type == null) {
-                    sender.sendMessage("§cThe type ${args[0]} doesn't exist")
-                    return true
-                }
-                val key = args.slice(1 until args.size).joinToString(" ")
-                sender.sendMessage(
-                    (sender.inventory.itemInMainHand.itemMeta.data[key, type] ?:
-                    "§cThis item has no '${args[0]}' value for key '$key'").let {
-                        if (it is Array<*>) it.contentToString()
-                        else it.toString()
-                    }
-                )
+                sender.performCommand("data get entity @s Inventory[${args[0]}].tag.PublicBukkitValues${
+                    if (args.size == 1) "" else args.slice(1 until args.size).joinToString(".", ".") { "wynnlab:$it" }
+                }")
             }
         }
         return true

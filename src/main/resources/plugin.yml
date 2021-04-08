@@ -21,7 +21,7 @@ commands:
     usage: /rank <rank> [<selector>]
   itemdata:
     description: Get the metadata of an item
-    usage: /itemdata <key>
+    usage: /itemdata <item index> [<key>]
   script:
     description: Executes a script
     usage: /script <path>
