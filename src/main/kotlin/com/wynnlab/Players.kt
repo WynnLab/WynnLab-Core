@@ -41,6 +41,9 @@ object Players {
         player.exp = 0f
         player.level = 106
 
+        player.healthScale = 20.0
+        player.isHealthScaled = true
+
         player.inventory.run {
             setItem(6, ItemStack(Material.COMPASS).meta {
                 setDisplayName("§bCharacter Info")
@@ -62,7 +65,7 @@ object Players {
                 addItemFlags(*ItemFlag.values())
                 setDisplayName("§6Magic Pouch")
                 lore = listOf(
-                    "§fLeft-Click $7to view contents",
+                    "§fLeft-Click §7to view contents",
                     " "
                 )
             }) // TODO: ingredient pouch

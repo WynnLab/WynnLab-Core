@@ -56,6 +56,7 @@ class Main : JavaPlugin() {
         getCommand("cast")?.setExecutor(castCommand)
         getCommand("rank")?.setExecutor(rankCommand)
         getCommand("itemdata")?.setExecutor(devCommands)
+        getCommand("getid")?.setExecutor(devCommands)
         getCommand("script")?.setExecutor(devCommands)
     }
 

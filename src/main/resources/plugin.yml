@@ -22,6 +22,9 @@ commands:
   itemdata:
     description: Get the metadata of an item
     usage: /itemdata <item index> [<key>]
+  getid:
+    description: Get the identification sum of a player
+    usage: /getid <id name> [<selector>]
   script:
     description: Executes a script
     usage: /script <path>
