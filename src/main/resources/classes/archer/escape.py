@@ -17,7 +17,7 @@ class Spell(PySpell):
                 self.sound(self.player.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1, 1.2)
                 self.particle(self.player.getLocation().clone().add(0, 1, 0), Particle.VILLAGER_HAPPY if self.clone else Particle.SQUID_INK, 10 if self.clone else 5, .3, 2, .3, .2)
                 if self.clone:
-                    self.player.spawnParticle(self.player.getLocation().clone().add(0, 1, 0), Particle.CLOUD, 5, .3, .3, .1)
+                    self.particle(self.player.getLocation().clone().add(0, 1, 0), Particle.CLOUD, 5, .3, 2, .3, .1)
             else:
                 self.cancel()
             return

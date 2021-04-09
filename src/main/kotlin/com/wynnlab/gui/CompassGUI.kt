@@ -7,6 +7,7 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataContainer
 import java.util.*
 
 class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining" /*TODO: skill points*/, 3) {
@@ -68,10 +69,11 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
             lore = listOf("§7WynnLab settings")
         })
 
+
         // IDs
         inventory.setItem(8, ItemStack(Material.PLAYER_HEAD).meta {
             setDisplayName("§e§l§o${player.name}'s Info")
-            lore = listOf(
+            val lore = mutableListOf(
                 "§7Rank: §fNone",
                 " ",
                 "§7Combat Lv: §f106",
@@ -81,6 +83,8 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
                 "§dID Bonuses:",
                 // "§d- §7$name: §f$value
             )
+            addIdValues(lore)
+            this.lore = lore
         })
         // Defence
         inventory.setItem(17, ItemStack(Material.IRON_CHESTPLATE).meta {
@@ -120,5 +124,38 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
         registerListener { e ->
             e.isCancelled = true
         }
+    }
+
+    private fun addIdValues(list: MutableList<String>) {
+        val weapon = player.getFirstWeaponSlot().let { if (it == -1) null else player.inventory.getItem(it) }?.itemMeta?.data
+        list.addIdValue(weapon, "mana_regen", "Mana Regen", "/4s")
+        list.addIdValue(weapon, "mana_steal", "Mana Steal", "/4s")
+        list.addIdValue(weapon, "health_bonus", "Health", "")
+        list.addIdValue(weapon, "health_regen", "Health Regen")
+        list.addIdValue(weapon, "health_regen_raw", "Health Regen", "")
+        list.addIdValue(weapon, "life_steal", "Life Steal", "/4s")
+        list.addIdValue(weapon, "speed", "Walk Speed")
+        list.addIdValue(weapon, "emerald_stealing", "Stealing")
+        list.addIdValue(weapon, "attack_speed_bonus", "Attack Speed", " tier")
+        list.addIdValue(weapon, "poison", "Poison", "/3s")
+        list.addIdValue(weapon, "reflection", "Reflection")
+        list.addIdValue(weapon, "thorns", "Thorns")
+        list.addIdValue(weapon, "exploding", "Exploding")
+        list.addIdValue(weapon, "spell_cost_pct_1", "1st Spell Cost")
+        list.addIdValue(weapon, "spell_cost_pct_2", "2nd Spell Cost")
+        list.addIdValue(weapon, "spell_cost_pct_3", "3rd Spell Cost")
+        list.addIdValue(weapon, "spell_cost_pct_4", "4th Spell Cost")
+        list.addIdValue(weapon, "spell_cost_raw_1", "1st Spell Cost", "")
+        list.addIdValue(weapon, "spell_cost_raw_2", "2nd Spell Cost", "")
+        list.addIdValue(weapon, "spell_cost_raw_3", "3rd Spell Cost", "")
+        list.addIdValue(weapon, "spell_cost_raw_4", "4th Spell Cost", "")
+        list.addIdValue(weapon, "rainbow_spell_damage_raw", "Rainbow Spell Damage", "")
+        list.addIdValue(weapon, "jump_height", "Jump Height", "")
+    }
+
+    private fun MutableList<String>.addIdValue(weapon: PersistentDataContainer?, name: String, displayName: String, suffix: String = "%") {
+        val value = player.getId(name) + (weapon?.getContainer("ids")?.getInt(name) ?: 0)
+        if (value != 0)
+            add("§d- §7$displayName: §f${if (value > 0) "+" else ""}$value$suffix")
     }
 }

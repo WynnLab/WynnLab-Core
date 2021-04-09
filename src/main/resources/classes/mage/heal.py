@@ -24,7 +24,7 @@ class Spell(PySpell):
             if not isinstance(e, Player):
                 continue
 
-            e.setHealth(Math.min(self.player.getHealth() + 50), self.player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue())
+            e.setHealth(Math.min(self.player.getHealth() + 50, self.player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()))
             Bukkit.getPluginManager().callEvent(EntityRegainHealthEvent(self.player, 50, EntityRegainHealthEvent.RegainReason.CUSTOM))
 
             self.particle(e.getLocation().clone().add(0, 1, 0), Particle.FIREWORKS_SPARK, 16, .3, 1, .3, .05)

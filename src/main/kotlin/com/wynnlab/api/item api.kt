@@ -30,8 +30,9 @@ fun ItemStack.setAppearance(damage: Int): ItemStack {
     return this
 }
 
-fun ItemStack.getWynnType() = itemMeta.data.getString("type")?.let { WynnItem.Type.valueOf(it) }
+fun ItemStack.getWynnType() = itemMeta?.data?.getString("type")?.let { WynnItem.Type.valueOf(it) }
+fun ItemStack.takeIfType(type: WynnItem.Type) = takeIf { it.getWynnType() == type }
 
-fun ItemStack.getClassReq() = itemMeta.data.getString("class_req")
+fun ItemStack.getClassReq() = itemMeta?.data?.getString("class_req")
 
-fun ItemStack.getAttackSpeed() = itemMeta.data.getString("attack_speed")?.let { WynnItem.AttackSpeed.valueOf(it) }
+fun ItemStack.getAttackSpeed() = itemMeta?.data?.getString("attack_speed")?.let { WynnItem.AttackSpeed.valueOf(it) }

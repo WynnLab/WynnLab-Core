@@ -80,11 +80,11 @@ class Identifications(
         if (bonusAirDamage != 0) { list.add(idValue("§f❋ Air §7Damage", bonusAirDamage)); c = true }
         if (c) { list.add(" "); c = false }
 
-        if (bonusEarthDefense != 0) { list.add(idValue("§2✤ Earth §7Defense", bonusEarthDamage)); c = true }
-        if (bonusThunderDefense != 0) { list.add(idValue("§e✦ Thunder §7Defense", bonusThunderDamage)); c = true }
-        if (bonusWaterDefense != 0) { list.add(idValue("§b❉ Water §7Defense", bonusWaterDamage)); c = true }
-        if (bonusFireDefense != 0) { list.add(idValue("§c✹ Fire §7Defense", bonusFireDamage)); c = true }
-        if (bonusAirDefense != 0) { list.add(idValue("§f❋ Air §7Defense", bonusAirDamage)); c = true }
+        if (bonusEarthDefense != 0) { list.add(idValue("§2✤ Earth §7Defense", bonusEarthDefense)); c = true }
+        if (bonusThunderDefense != 0) { list.add(idValue("§e✦ Thunder §7Defense", bonusThunderDefense)); c = true }
+        if (bonusWaterDefense != 0) { list.add(idValue("§b❉ Water §7Defense", bonusWaterDefense)); c = true }
+        if (bonusFireDefense != 0) { list.add(idValue("§c✹ Fire §7Defense", bonusFireDefense)); c = true }
+        if (bonusAirDefense != 0) { list.add(idValue("§f❋ Air §7Defense", bonusAirDefense)); c = true }
         if (c) { list.add(" "); c = false }
 
         if (manaRegen != 0) { list.add(idValue("Mana Regen", manaRegen, "/4s")); c = true }
@@ -122,7 +122,7 @@ class Identifications(
         if (spellCostRaw4 != 0) { list.add(idValue("4th Spell Cost", spellCostRaw4, "", true)); c = true }
         if (c) { list.add(" "); c = false }
 
-        if (rainbowSpellDamageRaw != 0) { list.add(idValue("Rainbow Spell Damage", rainbowSpellDamageRaw)); c = true }
+        if (rainbowSpellDamageRaw != 0) { list.add(idValue("Rainbow Spell Damage", rainbowSpellDamageRaw, "")); c = true }
         if (c) { list.add(" "); c = false }
         //if (sprint != 0) { list.add(idValue("Sprint", sprint)); c = true }
         //if (sprintRegen != 0) { list.add(idValue("Sprint Regen", sprintRegen)); c = true }

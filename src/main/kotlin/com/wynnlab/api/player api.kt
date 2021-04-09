@@ -6,6 +6,7 @@ import com.wynnlab.PREFIX
 import com.wynnlab.WynnClass
 import com.wynnlab.classes
 import com.wynnlab.events.SpellCastEvent
+import com.wynnlab.items.WynnItem
 import com.wynnlab.plugin
 import com.wynnlab.util.RefreshRunnable
 import org.bukkit.Bukkit
@@ -172,7 +173,25 @@ fun Player.updatePrefix() {
     setDisplayName(wynnPrefix()+prefix+name)
 }
 
-val Player.wynnEquipment get() = equipment!!.let { arrayOf(it.itemInMainHand, it.helmet, it.chestplate, it.leggings, it.boots) }
+val Player.wynnEquipment get() = inventory.let { inv -> arrayOf(
+    if (hasWeaponInHand() == true) inv.itemInMainHand else null,
+    inv.helmet?.takeIfType(WynnItem.Type.HELMET),
+    inv.chestplate?.takeIfType(WynnItem.Type.CHESTPLATE),
+    inv.leggings?.takeIfType(WynnItem.Type.LEGGINGS),
+    inv.boots?.takeIfType(WynnItem.Type.BOOTS),
+    inv.getItem(9)?.takeIfType(WynnItem.Type.RING),
+    inv.getItem(10)?.takeIfType(WynnItem.Type.RING),
+    inv.getItem(11)?.takeIfType(WynnItem.Type.BRACELET),
+    inv.getItem(12)?.takeIfType(WynnItem.Type.NECKLACE)
+) }
+
+fun Player.getFirstWeaponSlot() = inventory.let {
+    for (i in 0..5) {
+        if (((it.getItem(i) ?: continue).itemMeta ?: continue).data.getString("class_req") == getWynnClass())
+            return i
+    }
+    return@let -1
+}
 
 fun Player.getId(key: String): Int {
     var sum = 0
