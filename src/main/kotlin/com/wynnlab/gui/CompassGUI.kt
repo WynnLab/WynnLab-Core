@@ -2,16 +2,28 @@ package com.wynnlab.gui
 
 import com.wynnlab.api.*
 import com.wynnlab.classes
+import com.wynnlab.guilds.Guild
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataContainer
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining" /*TODO: skill points*/, 3) {
-    override fun initialize() {
+    init {
+        registerListener { e ->
+            e.isCancelled = true
+            when (e.slot) {
+                18 -> WynnLabSettings().show()
+            }
+        }
+    }
+
+    override fun update() {
         // Reset skill points
         inventory.setItem(4, ItemStack(Material.GOLDEN_SHOVEL).setAppearance(21).meta {
             addItemFlags(*ItemFlag.values())
@@ -23,9 +35,9 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
         inventory.setItem( 11, ItemStack(Material.ENCHANTED_BOOK).meta {
             setDisplayName("§dUpgrade your §2✤ Strength§d skill")
             lore = listOf(" ",
-                "       §7§lNow              §5§lNext",
+                "       §7§lNow                 §6§lNext",
                 "       §a0.0%     §a>§2>§a>§2>    §e1.0%",
-                "     §70 points            §51 points",
+                "     §70 points               §61 points",
                 " ",
                 "§7Each point in this skill",
                 "§7will§d increase §7any damage",
@@ -52,16 +64,28 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
             )
         })
         // Guilds
-        inventory.setItem(9, ItemStack(Material.MAGENTA_BANNER).meta {
-            setDisplayName("§b§lView Your Guild")
-            lore = listOf(
-                "§3Name §b[TAG]",
+        val guildName = player.data.getString("guild")
+        val guildLore: List<String>
+        val guildBanner: ItemStack
+        if (guildName == null) {
+            guildLore = listOf("§cYou are not in a Guild yet!")
+            guildBanner = ItemStack(Material.WHITE_BANNER)
+        } else {
+            val guild = Guild(guildName)
+            val guildMember = guild.members[player.name]!!
+            guildLore = listOf(
+                "§3${guild.name} §b[${guild.tag}]",
                 " ",
-                "§7Rank: §fRecruit",
-                "§7Joined: ${Date()}",
+                "§7Rank: §f${guildMember.rank.friendlyName}",
+                "§7Joined: ${guildMember.joined}",
                 " ",
                 "§8Open guild management"
             )
+            guildBanner = guild.banner.clone()
+        }
+        inventory.setItem(9, guildBanner.meta {
+            setDisplayName("§b§lView Your Guild")
+            lore = guildLore
         })
         // Settings
         inventory.setItem(18, ItemStack(Material.CRAFTING_TABLE).meta {
@@ -74,14 +98,13 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
         inventory.setItem(8, ItemStack(Material.PLAYER_HEAD).meta {
             setDisplayName("§e§l§o${player.name}'s Info")
             val lore = mutableListOf(
-                "§7Rank: §fNone",
+                "§7Rank: §f${player.data.getString("rank")?.toLowerCase()?.capitalize() ?: "Player"}",
                 " ",
                 "§7Combat Lv: §f106",
-                "§7Class: §f${player.getWynnClass()?.capitalize() ?: "None"}",
+                "§7Class: §f${classes[player.getWynnClass()]?.let { if (player.isCloneClass) it.cloneName else it.className } ?: "None"}",
                 "§7Quests: §f0/0",
                 " ",
                 "§dID Bonuses:",
-                // "§d- §7$name: §f$value
             )
             addIdValues(lore)
             this.lore = lore
@@ -92,7 +115,7 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
             setDisplayName("§f§lDefence Info")
             lore = listOf(" ",
                 "§bBasic Defence:",
-                "§b- §4❤ Health: §f${player.health}/${player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value}",
+                "§b- §4❤ Health: §f${player.health.toInt()}/${player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value.toInt()}",
                 // Ranked
             )
         })
@@ -104,7 +127,7 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
             addItemFlags(*ItemFlag.values())
             setDisplayName("§f§lDamage Info")
             lore = listOf(
-                "§7[${player.inventory.itemInMainHand.itemMeta.displayName /*TODO: Find weapon in inv*/}§7]",
+                "§7[${player.getFirstWeaponSlot().let { if (it == -1) null else player.inventory.getItem(it) }?.itemMeta?.displayName}§7]",
                 " ",
                 "§3[${if (invertedControls) 'R' else 'L'}] §bMain Attack:",
                 // Damages
@@ -120,10 +143,69 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
                         "§f§k0000§r§f-§f§k0000",
             )
         })
+    }
 
-        registerListener { e ->
-            e.isCancelled = true
+    inner class WynnLabSettings : GUI(player, "WynnLab Settings", 3) {
+        init {
+            registerListener { e ->
+                e.isCancelled = true
+                when (e.slot) {
+                    4 -> {
+                        setParticles(2)
+                        setOtherParticles(2)
+                    }
+                    10 -> setParticles((player.data.getInt("particles") ?: 2) + if (e.isLeftClick) 1 else if (e.isRightClick) -1 else 0)
+                    11 -> setOtherParticles((player.data.getInt("other_particles") ?: 2) + if (e.isLeftClick) 1 else if (e.isRightClick) -1 else 0)
+                }
+            }
         }
+
+        override fun update() {
+            inventory.setItem(4, ItemStack(Material.GOLDEN_SHOVEL).setAppearance(21).meta {
+                addItemFlags(*ItemFlag.values())
+                setDisplayName("§eReset Settings")
+                lore = listOf("§7Back to default")
+            })
+
+            val particles = player.data.getInt("particles") ?: 2
+            val otherParticles = player.data.getInt("other_particles") ?: 2
+
+            inventory.setItem(10, ItemStack(Material.PLAYER_HEAD).meta {
+                setDisplayName("§fYour Particles: ${particleSettingString(particles)}")
+                lore = particlesLore
+            })
+            inventory.setItem(11, ItemStack(Material.PLAYER_HEAD).meta {
+                setDisplayName("§fPlayer Particles: ${particleSettingString(otherParticles)}")
+                lore = particlesLore
+            })
+        }
+
+        private fun setParticles(amount: Int) {
+            player.data.setInt("particles", amount.coerceIn(0, 2))
+        }
+
+        private fun setOtherParticles(amount: Int) {
+            player.data.setInt("other_particles", amount.coerceIn(0, 2))
+        }
+    }
+
+    companion object {
+
+        ///////////////////////////////////////////////////////////////////////////
+        // WynnLabSettings
+        ///////////////////////////////////////////////////////////////////////////
+
+        fun particleSettingString(int: Int) = when (int) {
+            0 -> "§cOFF"
+            1 -> "§eMEDIUM"
+            2 -> "§aHIGH"
+            else -> "§d§kBROKEN"
+        }
+
+        val particlesLore = listOf(
+            "§fLeft-Click §7to increase",
+            "§fRight-Click §7to decrease"
+        )
     }
 
     private fun addIdValues(list: MutableList<String>) {

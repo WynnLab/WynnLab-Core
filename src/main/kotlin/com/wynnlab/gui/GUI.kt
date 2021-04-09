@@ -12,14 +12,17 @@ abstract class GUI(
 ) {
     val inventory = Bukkit.createInventory(player, rows * 9, title)
 
-    abstract fun initialize()
+    abstract fun update()
 
     fun show() {
-        initialize()
+        update()
         player.openInventory(inventory)
     }
 
-    fun registerListener(action: (InventoryClickEvent) -> Unit) {
-        plugin.guiListener.inventories[title] = action
+    inline fun registerListener(crossinline action: (InventoryClickEvent) -> Unit) {
+        plugin.guiListener.inventories[title] = {
+            action(it)
+            update()
+        }
     }
 }

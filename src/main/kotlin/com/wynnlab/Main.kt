@@ -2,7 +2,6 @@ package com.wynnlab
 
 import com.wynnlab.commands.*
 import com.wynnlab.listeners.*
-import com.wynnlab.ranks.Rank
 import com.wynnlab.spells.Spell
 import com.wynnlab.util.DEG2RAD
 import com.wynnlab.util.RAD2DEG
@@ -12,8 +11,6 @@ import org.bukkit.GameRule
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.plugin.java.JavaPlugin
 import org.python.util.PythonInterpreter
-import javax.script.ScriptEngine
-import javax.script.ScriptEngineManager
 
 class Main : JavaPlugin() {
     override fun onLoad() {

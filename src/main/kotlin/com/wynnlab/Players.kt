@@ -1,8 +1,8 @@
 package com.wynnlab
 
-import com.wynnlab.api.meta
-import com.wynnlab.api.metaAs
-import com.wynnlab.api.setAppearance
+import com.wynnlab.api.*
+import com.wynnlab.essentials.Rank
+import com.wynnlab.util.getWynncraftAPIResult
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.Material
@@ -10,6 +10,8 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BookMeta
+import org.json.simple.JSONArray
+import org.json.simple.JSONObject
 
 object Players {
     val players get() = Bukkit.getOnlinePlayers()
@@ -70,6 +72,40 @@ object Players {
                 )
             }) // TODO: ingredient pouch
             // 94 Empty 95 Half 96 Full
+            loadAPIData(player)
         }
+    }
+
+    private fun loadAPIData(player: Player) {
+        val root = getWynncraftAPIResult("https://api.wynncraft.com/v2/player/${player.name}/stats")
+        val data = (root["data"] as JSONArray)[0] as JSONObject
+
+        var rank = when (data["rank"] as String) {
+            "Player" -> when (((data["meta"] as JSONObject)["tag"] as JSONObject)["value"] as String?) {
+                "VIP" -> Rank.VIP
+                "VIP+" -> Rank.`VIP+`
+                "HERO" -> Rank.HERO
+                "CHAMPION" -> Rank.CHAMPION
+                else -> Rank.PLAYER
+            }
+            "Administrator" -> Rank.ADMIN
+            "Moderator" -> Rank.MOD
+            else -> Rank.CT
+        }
+        if (player.name == "TheLastMinecraft") {
+            player.sendMessage("WynnLab Admin, Wynncraft $rank")
+            rank = Rank.ADMIN
+        }
+
+        val guildData = data["guild"] as JSONObject
+        val guildName = guildData["name"] as String?
+        val guildRank = guildData["rank"] as String?
+
+        val guild = guildName?.let { getWynncraftAPIResult("https://api.wynncraft.com/public_api.php?action=guildStats&command=${it.replace(" ", "%20")}") }
+        val guildTag = guild?.get("prefix") as String?
+
+        rank.apply(player)
+        guildName?.let { player.data.setString("guild", it) }
+        guildTag?.let { player.data.setString("guild_tag", it) }
     }
 }

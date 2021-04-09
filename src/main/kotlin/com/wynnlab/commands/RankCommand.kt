@@ -1,6 +1,6 @@
 package com.wynnlab.commands
 
-import com.wynnlab.ranks.Rank
+import com.wynnlab.essentials.Rank
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender

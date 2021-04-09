@@ -12,7 +12,8 @@ class Spell(PySpell):
         l1 = self.player.getEyeLocation().clone().add(0, -.5, 0)
         l2 = self.player.getEyeLocation().clone().add(self.player.getEyeLocation().getDirection().clone().multiply(7)).add(0, -.5, 0)
 
-        self.sound(Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1, 1.5)
+        self.sound(Sound.ITEM_TRIDENT_THROW, 1, 1.5)
+        self.sound(Sound.ITEM_TRIDENT_RIPTIDE_3, .2, 1)
         if self.clone:
             self.sound(Sound.ENTITY_SHULKER_SHOOT, .5, 1.5)
 

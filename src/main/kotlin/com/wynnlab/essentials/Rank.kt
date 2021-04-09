@@ -1,6 +1,8 @@
-package com.wynnlab.ranks
+package com.wynnlab.essentials
 
+import com.wynnlab.api.data
 import com.wynnlab.api.prefix
+import com.wynnlab.api.setString
 import com.wynnlab.util.registerMainTeam
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
@@ -11,6 +13,8 @@ enum class Rank(
     val tag: String,
     val color: ChatColor
 ) {
+    PLAYER(false, "", ChatColor.WHITE),
+
     VIP(true, "§a[VIP] ", ChatColor.GREEN),
     `VIP+`(true, "§b[§3VIP+§b] ", ChatColor.AQUA),
     HERO(true, "§5[§dHERO§5] ", ChatColor.DARK_PURPLE),
@@ -31,5 +35,6 @@ enum class Rank(
     fun apply(player: Player) {
         team.addEntry(player.name)
         player.prefix = tag+color
+        player.data.setString("rank", name)
     }
 }

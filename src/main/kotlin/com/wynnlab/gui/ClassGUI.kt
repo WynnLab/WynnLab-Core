@@ -8,10 +8,39 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 
-class ClassGUI(player: Player) : GUI(player, "Choose a class" /*TODO: color*/, 1) {
-    override fun initialize() {
-        val classCount = classes.size
-        val itemPositions = (5 - (classCount + .5f) / 2f).toInt()..(4 + classCount / 2)
+class ClassGUI(player: Player) : GUI(player, "Choose a class", 1) {
+    private val classCount = classes.size
+    private val itemPositions = (5 - (classCount + .5f) / 2f).toInt()..(4 + classCount / 2)
+
+    init {
+        registerListener { e ->
+            e.isCancelled = true
+
+            val classIndex = itemPositions.indexOf(e.slot)
+            if (classIndex == -1) return@registerListener
+            val clazz = classes.values.toList()[classIndex]
+
+            if (when (e.click) {
+                    ClickType.LEFT, ClickType.SHIFT_LEFT -> false
+                    ClickType.RIGHT, ClickType.SHIFT_RIGHT -> true
+                    else -> return@registerListener
+                }) {
+                player.sendWynnMessage("You are now §3[${clazz.cloneName}]")
+                player.addScoreboardTag("clone")
+            } else {
+                player.sendWynnMessage("You are now §3[${clazz.className}]")
+                player.removeScoreboardTag("clone")
+            }
+
+            player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
+
+            player.setWynnClass(clazz.className.toUpperCase())
+
+            player.closeInventory()
+        }
+    }
+
+    override fun update() {
         val iterator = itemPositions.iterator()
 
         for (clazz in classes.values) {
@@ -36,34 +65,6 @@ class ClassGUI(player: Player) : GUI(player, "Choose a class" /*TODO: color*/, 1
             item.itemMeta = meta
 
             inventory.setItem(iterator.nextInt(), item)
-        }
-
-        registerListener { e ->
-            e.isCancelled = true
-
-            val classIndex = itemPositions.indexOf(e.slot)
-            e.whoClicked.sendMessage("positions: $itemPositions, index: $classIndex")
-            if (classIndex == -1) return@registerListener
-            val clazz = classes.values.toList()[classIndex]
-            val player = e.whoClicked as Player
-
-            if (when (e.click) {
-                ClickType.LEFT, ClickType.SHIFT_LEFT -> false
-                ClickType.RIGHT, ClickType.SHIFT_RIGHT -> true
-                else -> return@registerListener
-            }) {
-                player.sendWynnMessage("You are now §3[${clazz.cloneName}]")
-                player.addScoreboardTag("clone")
-            } else {
-                player.sendWynnMessage("You are now §3[${clazz.className}]")
-                player.removeScoreboardTag("clone")
-            }
-
-            player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
-
-            player.setWynnClass(clazz.className.toUpperCase())
-
-            player.closeInventory()
         }
     }
 
