@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.4.31'
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 group = 'com.wynnlab'
@@ -13,19 +12,14 @@ repositories {
         name = 'papermc-repo'
         url = 'https://papermc.io/repo/repository/maven-public/'
     }
-    maven {
-        url = 'https://oss.sonatype.org/content/repositories/snapshots'
-    }
 }
 
 dependencies {
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT'
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
-    //runtimeOnly "com.googlecode.json-simple:json-simple:1.1.1"
-
-    implementation "org.python:jython-standalone:2.7.1"
+    compileOnly "org.python:jython-standalone:2.7.1"
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
@@ -35,16 +29,13 @@ targetCompatibility = 1.8
 
 compileKotlin {
     kotlinOptions.jvmTarget = '1.8'
-    /*kotlinOptions {
-        freeCompilerArgs = []
-    }*/
 }
 
 compileTestKotlin {
     kotlinOptions.jvmTarget = '1.8'
 }
 
-task buildAndCopy {
+/*task buildAndCopy {
     dependsOn 'shadowJar'
     doLast {
         copy {
@@ -52,4 +43,4 @@ task buildAndCopy {
             into file("M:\\plugins")
         }
     }
-}
+}*/

@@ -1,6 +1,7 @@
 name: WynnLab
 version: 1.0-SNAPSHOT
 main: com.wynnlab.Main
+depend: [ KBukkit, PyBukkit ]
 authors: [ Siinus ]
 description: Wynncraft systematic recreation 1.16
 api-version: 1.16
