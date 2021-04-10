@@ -7,6 +7,7 @@ import com.wynnlab.WynnClass
 import com.wynnlab.classes
 import com.wynnlab.events.SpellCastEvent
 import com.wynnlab.items.WynnItem
+import com.wynnlab.localization.Language
 import com.wynnlab.plugin
 import com.wynnlab.util.RefreshRunnable
 import org.bukkit.Bukkit
@@ -15,7 +16,15 @@ import org.bukkit.Effect
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 
-fun Player.sendWynnMessage(message: String) = sendMessage(PREFIX + message)
+fun Player.sendWynnMessage(key: String, vararg format_args: Any?) =
+    sendMessage(PREFIX + getLocalizedText(key, *format_args))
+
+fun Player.getLocalizedText(key: String, vararg format_args: Any?) =
+    Language[locale.toLowerCase()].getMessage(key, *format_args)
+
+fun Player.sendWynnMessageNonNls(message: String) {
+    sendMessage(PREFIX + message)
+}
 
 fun Player.setWynnClass(wynnClass: String) {
     data.setString("class", wynnClass)

@@ -1,5 +1,6 @@
 package com.wynnlab.gui
 
+import com.wynnlab.api.getLocalizedText
 import com.wynnlab.api.sendWynnMessage
 import com.wynnlab.api.setWynnClass
 import com.wynnlab.classes
@@ -24,11 +25,11 @@ class ClassGUI(player: Player) : GUI(player, "Choose a class", 1) {
                     ClickType.LEFT, ClickType.SHIFT_LEFT -> false
                     ClickType.RIGHT, ClickType.SHIFT_RIGHT -> true
                     else -> return@registerListener
-                }) {
-                player.sendWynnMessage("You are now §3[${clazz.cloneName}]")
+            }) {
+                player.sendWynnMessage("gui.class.select", clazz.cloneName)
                 player.addScoreboardTag("clone")
             } else {
-                player.sendWynnMessage("You are now §3[${clazz.className}]")
+                player.sendWynnMessage("gui.class.select", clazz.className)
                 player.removeScoreboardTag("clone")
             }
 
@@ -47,19 +48,19 @@ class ClassGUI(player: Player) : GUI(player, "Choose a class", 1) {
             val item = ItemStack(clazz.item)
             val meta = item.itemMeta
 
-            meta.setDisplayName("          §fSelect §l§6${clazz.className}")
+            meta.setDisplayName(player.getLocalizedText("gui.class.item.title", clazz.className))
             val lore = mutableListOf(" ")
 
             val (damage, defence, range, spells) = clazz.metaStats
-            lore.add("§6⚔ Damage               ${damage.squares()}")
-            lore.add("§c❤ Defence              ${defence.squares()}")
-            lore.add("§a➸ Range                 ${range.squares()}")
-            lore.add("§d✺ Spells                 ${spells.squares()}")
+            lore.add(player.getLocalizedText("gui.class.item.damage", damage.squares()))
+            lore.add(player.getLocalizedText("gui.class.item.defence", defence.squares()))
+            lore.add(player.getLocalizedText("gui.class.item.range", range.squares()))
+            lore.add(player.getLocalizedText("gui.class.item.spells", spells.squares()))
 
             lore.add(" ")
             lore.addAll(clazz.lore.split(Regex("\\n")).map { "§7$it" })
 
-            lore.add("§8Right click to select §l§b${clazz.cloneName}")
+            lore.add(player.getLocalizedText("gui.class.item.clone", clazz.cloneName))
 
             meta.lore = lore
             item.itemMeta = meta

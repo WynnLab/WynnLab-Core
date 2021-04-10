@@ -12,6 +12,10 @@ fun saveAllResources() {
 }
 
 val resources = arrayOf(
+    /////////////////////////////////////
+    // Classes
+    /////////////////////////////////////
+
     "classes/archer/archer.yml",
     "classes/archer/archer_main.py",
     "classes/archer/arrow_storm.py",
@@ -29,4 +33,11 @@ val resources = arrayOf(
     "classes/mage/teleport.py",
     "classes/mage/meteor.py",
     "classes/mage/ice_snake.py",
+
+    /////////////////////////////////////
+    // Languages
+    /////////////////////////////////////
+
+    "lang/en_us.yml",
+    "lang/de_de.yml"
 )

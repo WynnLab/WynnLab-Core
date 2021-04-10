@@ -1,11 +1,13 @@
 package com.wynnlab.guilds
 
+import com.wynnlab.api.meta
 import com.wynnlab.api.metaAs
 import com.wynnlab.util.getWynncraftAPIResult
 import org.bukkit.DyeColor
 import org.bukkit.Material
 import org.bukkit.block.banner.Pattern
 import org.bukkit.block.banner.PatternType
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BannerMeta
 import org.json.simple.JSONArray
@@ -25,6 +27,7 @@ class Guild(val name: String) {
     val banner: ItemStack = try {
         val bannerData = guildObject["banner"] as JSONObject
         ItemStack(Material.valueOf("${bannerData["base"]}_BANNER")).metaAs<BannerMeta> {
+            addItemFlags(*ItemFlag.values())
             for (layer in bannerData["layers"] as JSONArray) { layer as JSONObject
                 addPattern(Pattern(DyeColor.valueOf(layer["colour"] as String), PatternType.valueOf(layer["pattern"] as String)))
             }

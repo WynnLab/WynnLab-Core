@@ -1,0 +1,10 @@
+gui:
+  class:
+    select: 'You are now &3[%s]'
+    item:
+      title: '&fSelect &6&l%s'
+      damage: '&6⚔ Damage               %s'
+      defence: '&c❤ Defence              %s'
+      range: '&a➸ Range                 %s'
+      spells: '&d✺ Spells                 %s'
+      clone: '&8Right click for &b&l%s'

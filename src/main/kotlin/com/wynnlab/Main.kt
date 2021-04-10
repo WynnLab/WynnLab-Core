@@ -2,6 +2,7 @@ package com.wynnlab
 
 import com.wynnlab.commands.*
 import com.wynnlab.listeners.*
+import com.wynnlab.localization.loadLanguages
 import com.wynnlab.spells.Spell
 import com.wynnlab.util.DEG2RAD
 import com.wynnlab.util.RAD2DEG
@@ -35,6 +36,8 @@ class Main : JavaPlugin() {
         MainThread.schedule()
 
         loadClasses()
+
+        loadLanguages()
 
         Bukkit.getServer().spigot().spigotConfig.set("settings.attribute.maxHealth.max", 1000000)
     }
@@ -103,7 +106,7 @@ class Main : JavaPlugin() {
 private lateinit var instance: Main
 val plugin get() = instance
 
-const val PREFIX = "§7[§bWynnLab§7] §r"
+const val PREFIX = "§8[§bWynnLab§8] §r"
 
 val random = java.util.Random()
 

@@ -2,7 +2,6 @@
 
 package com.wynnlab
 
-import com.wynnlab.listeners.ProjectileHitListener
 import com.wynnlab.spells.Spell
 import org.bukkit.Material
 import org.bukkit.configuration.file.YamlConfiguration
@@ -60,8 +59,10 @@ val classes = hashMapOf<String, WynnClass>()
 fun loadClasses() {
     val classFolder = File(plugin.dataFolder, "classes")
 
-    if (!classFolder.exists())
+    if (!classFolder.exists()) {
         plugin.logger.log(Level.WARNING, "No classes loaded")
+        return
+    }
 
     for (f in classFolder.listFiles { f, _ -> f.isDirectory } ?: return) {
         currentClassLoadFolder = f

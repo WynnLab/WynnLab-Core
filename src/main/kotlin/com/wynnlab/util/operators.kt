@@ -20,4 +20,4 @@ operator fun Vector.plusAssign(v: Vector) { add(v) }
 operator fun Vector.minus(v: Vector) = clone().subtract(v)
 
 operator fun Vector.times(x: Double) = clone().multiply(x)
-operator fun Vector.times(v: Vector) = clone().multiply(x)
+operator fun Vector.times(v: Vector) = clone().multiply(v)

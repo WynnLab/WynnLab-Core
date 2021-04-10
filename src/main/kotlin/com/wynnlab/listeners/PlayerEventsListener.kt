@@ -16,6 +16,7 @@ class PlayerEventsListener : Listener {
     fun onPlayerJoin(e: PlayerJoinEvent) {
         Players.preparePlayer(e.player)
         e.joinMessage = "§7[§a+§7]§r ${e.player.prefix}${e.player.name}"
+        e.player.sendMessage("Locale: ${e.player.locale}")
     }
 
     @EventHandler
