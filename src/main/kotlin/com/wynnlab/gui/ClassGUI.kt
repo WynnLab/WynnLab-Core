@@ -27,10 +27,10 @@ class ClassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.class.
                     ClickType.RIGHT, ClickType.SHIFT_RIGHT -> true
                     else -> return@registerListener
             }) {
-                player.sendWynnMessage("gui.class.select", player.getLocalizedText("classes.${clazz.id}.className"))
+                player.sendWynnMessage("gui.class.select", player.getLocalizedText("classes.${clazz.id}.cloneName"))
                 player.addScoreboardTag("clone")
             } else {
-                player.sendWynnMessage("gui.class.select", player.getLocalizedText("classes.${clazz.id}.cloneName"))
+                player.sendWynnMessage("gui.class.select", player.getLocalizedText("classes.${clazz.id}.className"))
                 player.removeScoreboardTag("clone")
             }
 

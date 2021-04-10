@@ -3,13 +3,13 @@ classes:
     className: 'Magier'
     cloneName: 'Schwarzmagier'
     lore: |
-      Magier haben ein angeborenes
-      Talent für die magischen
-      Künste. Obwohl ihre Angriffe
-      oft schwächer erscheinen,
-      bieten sie eine Vielzahl
-      hilfreicher und vielfältiger
-      Zauber.
+      &7Magier haben ein angeborenes
+      &7Talent für die magischen
+      &7Künste. Obwohl ihre Angriffe
+      &7oft schwächer erscheinen,
+      &7bieten sie eine Vielzahl
+      &7hilfreicher und vielfältiger
+      &7Zauber.
   ARCHER:
     className: 'Bogenschütze'
     cloneName: 'Jäger'

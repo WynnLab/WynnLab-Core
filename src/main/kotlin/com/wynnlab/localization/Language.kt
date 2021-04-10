@@ -7,6 +7,8 @@ import java.io.File
 import java.util.logging.Level
 
 class Language(name: String) {
+    private val shortLC = name.split('_')[0]
+
     private val config = YamlConfiguration()
 
     init {
@@ -16,11 +18,14 @@ class Language(name: String) {
 
     init {
         languages[name] = this
+        if (language_fallbacks[shortLC] == null) language_fallbacks[shortLC] = name
     }
 
     fun getMessage(key: String, vararg format_args: Any?): String = config.getString(key)?.let {
         String.format(ChatColor.translateAlternateColorCodes('&', it), *format_args)
-    } ?: en_us.getMessageOrNull(key, *format_args) ?: "§4Nls: §r$key"
+    } ?:
+    Language[language_fallbacks[shortLC]!!].getMessageOrNull(key, *format_args) ?:
+    en_us.getMessageOrNull(key, *format_args) ?: "§4Nls: §r$key"
 
     private fun getMessageOrNull(key: String, vararg format_args: Any?): String? = config.getString(key)?.let {
         String.format(ChatColor.translateAlternateColorCodes('&', it), *format_args)
@@ -28,9 +33,12 @@ class Language(name: String) {
 
     companion object {
         private val languages = hashMapOf<String, Language>()
+        private val language_fallbacks = hashMapOf<String, String>()
 
         val en_us = Language("en_us")
-        operator fun get(locale: String) = languages[locale] ?: en_us
+        operator fun get(locale: String) = languages[locale] ?:
+        languages[language_fallbacks[locale.split('_')[0]]] ?:
+        en_us
     }
 }
 
