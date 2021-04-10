@@ -1,0 +1,10 @@
+gui:
+  class:
+    select: 'انت الان &3[%s]'
+    item:
+      title: '&fحدد &6&l%s'
+      damage: '&6⚔ الدمج               %s'
+      defence: '&c❤ الدفاع              %s'
+      range: '&a➸ النطاق                 %s'
+      spells: '&d✺ التعويذات                 %s'
+      clone: '&8اظغط الزر الايمن لـ &b&l%s'
