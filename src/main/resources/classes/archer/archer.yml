@@ -1,22 +1,12 @@
 class:
   ==: com.wynnlab.WynnClass
-  className: Archer
-  cloneName: Hunter
+  id: ARCHER
   item: BOW
   metaStats:
     damage: 4
     defence: 1
     range: 5
     spells: 3
-  lore: |
-    Benefiting from the highest
-    range in the game, Archers
-    can comfortably keep their
-    distance from enemies while
-    dishing out high levels
-    of damage. But they must
-    be wary of attacks, as their
-    defence is low.
   invertedControls: true
   spells:
     - ==: com.wynnlab.spells.Spell

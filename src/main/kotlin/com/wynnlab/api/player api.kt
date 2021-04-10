@@ -4,7 +4,6 @@ package com.wynnlab.api
 
 import com.wynnlab.PREFIX
 import com.wynnlab.WynnClass
-import com.wynnlab.classes
 import com.wynnlab.events.SpellCastEvent
 import com.wynnlab.items.WynnItem
 import com.wynnlab.localization.Language
@@ -173,8 +172,9 @@ set(value) {
 val prefixes = hashMapOf<Player, String>()
 
 fun Player.wynnPrefix(): String {
-    val wynnClass = getWynnClass()?.let { classes[it] } ?: return "§r"
-    val classPrefix = if (isCloneClass) wynnClass.cloneName else wynnClass.className
+    val classId = getWynnClass() ?: return "§r"
+    val classPrefix = if (isCloneClass) Language.en_us.getMessage("classes.$classId.cloneName")
+        else Language.en_us.getMessage("classes.$classId.className")
     return "§7[106/${classPrefix.substring(0..1)}${data.getString("guild_tag")?.let { "/$it" } ?: ""}] §r"
 }
 

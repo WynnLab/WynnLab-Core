@@ -101,7 +101,9 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
                 "§7Rank: §f${player.data.getString("rank")?.toLowerCase()?.capitalize() ?: "Player"}",
                 " ",
                 "§7Combat Lv: §f106",
-                "§7Class: §f${classes[player.getWynnClass()]?.let { if (player.isCloneClass) it.cloneName else it.className } ?: "None"}",
+                "§7Class: §f${classes[player.getWynnClass()]?.let { 
+                    if (player.isCloneClass) player.getLocalizedText("classes.${it.id}.cloneName") 
+                    else player.getLocalizedText("classes.${it.id}.className") } ?: "None"}",
                 "§7Quests: §f0/0",
                 " ",
                 "§dID Bonuses:",

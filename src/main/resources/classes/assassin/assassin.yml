@@ -1,22 +1,12 @@
 class:
   ==: com.wynnlab.WynnClass
-  className: Assassin
-  cloneName: Ninja
+  id: ASSASSIN
   item: SHEARS
   metaStats:
     damage: 5
     defence: 4
     range: 1
     spells: 3
-  lore: |
-      The Assassin is the deadliest
-      of all the classes, exploiting
-      enemies weak spots to deal
-      massive amounts of damage
-      from the shadows, however
-      they endanger themselves
-      by having to get extremely
-      close to the enemy.
   invertedControls: false
   spells:
     - ==: com.wynnlab.spells.Spell

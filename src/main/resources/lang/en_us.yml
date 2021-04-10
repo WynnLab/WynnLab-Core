@@ -1,5 +1,42 @@
+classes:
+  MAGE:
+    className: 'Mage'
+    cloneName: 'Dark Wizard'
+    lore: |
+      &7Mages are naturally talented
+      &7in the magical arts. While
+      &7their raw damage may be
+      &7considered weaker, they
+      &7offer a great amount of
+      &7utility and versatility
+      &7with their spells.
+  ARCHER:
+    className: Archer
+    cloneName: Hunter
+    lore: |
+      &7Benefiting from the highest
+      &7range in the game, Archers
+      &7can comfortably keep their
+      &7distance from enemies while
+      &7dishing out high levels
+      &7of damage. But they must
+      &7be wary of attacks, as their
+      &7defence is low.
+  ASSASSIN:
+    className: Assassin
+    cloneName: Ninja
+    lore: |
+      &7The Assassin is the deadliest
+      &7of all the classes, exploiting
+      &7enemies weak spots to deal
+      &7massive amounts of damage
+      &7from the shadows, however
+      &7they endanger themselves
+      &7by having to get extremely
+      &7close to the enemy.
 gui:
   class:
+    title: 'Select a class'
     select: 'You are now &3[%s]'
     item:
       title: '&fSelect &6&l%s'

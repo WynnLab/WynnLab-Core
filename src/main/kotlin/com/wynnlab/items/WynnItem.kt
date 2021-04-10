@@ -2,6 +2,7 @@ package com.wynnlab.items
 
 import com.wynnlab.api.*
 import com.wynnlab.classes
+import com.wynnlab.localization.Language
 import com.wynnlab.util.Optional
 import com.wynnlab.util.optionalAs
 import org.bukkit.Color
@@ -98,8 +99,8 @@ class WynnItem(
         lore.add(" ")
         classRequirement?.let { lore.add("${
             if (player.getWynnClass() == it) "§a✔" else "§c❌"
-        } §7Class Req: ${classes[it]?.let { 
-                c -> "${c.className}/${c.cloneName}" }}")
+        } §7Class Req: ${it.let { 
+                s ->"${Language.en_us.getMessage("classes.$s.className")}/${Language.en_us.getMessage("classes.$s.cloneName")}" }}")
         }
         lore.add("§a✔ §7Combat Lv. Min: $level")
         if (strength > 0) lore.add("§a✔ §7Strength Min: $strength")

@@ -111,3 +111,5 @@ const val PREFIX = "§8[§bWynnLab§8] §r"
 val random = java.util.Random()
 
 val python by lazy { PythonInterpreter() }
+
+val NL_REGEX = Regex("\\n")

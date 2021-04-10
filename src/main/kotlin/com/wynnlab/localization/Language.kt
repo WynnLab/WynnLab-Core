@@ -29,7 +29,7 @@ class Language(name: String) {
     companion object {
         private val languages = hashMapOf<String, Language>()
 
-        private val en_us = Language("en_us")
+        val en_us = Language("en_us")
         operator fun get(locale: String) = languages[locale] ?: en_us
     }
 }

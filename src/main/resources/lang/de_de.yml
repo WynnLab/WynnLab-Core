@@ -1,5 +1,45 @@
+classes:
+  MAGE:
+    className: 'Magier'
+    cloneName: 'Schwarzmagier'
+    lore: |
+      Magier haben ein angeborenes
+      Talent für die magischen
+      Künste. Obwohl ihre Angriffe
+      oft schwächer erscheinen,
+      bieten sie eine Vielzahl
+      hilfreicher und vielfältiger
+      Zauber.
+  ARCHER:
+    className: 'Bogenschütze'
+    cloneName: 'Jäger'
+    lore: |
+      &7Sie profitieren von der
+      &7höchsten Reichweite im Spiel.
+      &7So können Bogenschützen
+      &7ihren Feinden bequem fern
+      &7bleiben und trotzdem viel
+      &7Schaden machen. Nur müssen
+      &7sie sich vor Angriffen in
+      &7Acht nehmen, denn ihre
+      &7Verteidigung ist niedrig.
+  ASSASSIN:
+    className: 'Assassine'
+    cloneName: 'Ninja'
+    lore: |
+      &7Die Assassinen gehören zur
+      &7tödlichsten aller Klassen.
+      &7Sie nutzen die Schwach-
+      &7punkte iherer Gegner aus,
+      &7um aus den Schatten heraus
+      &7viel Schaden zu machen.
+      &7Aber sie bringen sich auch
+      &7in Gefahr, denn sie müssen
+      &7ihren Feinden extrem nahe
+      &7kommen.
 gui:
   class:
+    title: 'Wähle eine Klasse'
     select: 'Du bist nun &3[%s]'
     item:
       title: '&fWähle &6&l%s'

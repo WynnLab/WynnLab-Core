@@ -10,11 +10,9 @@ import java.io.File
 import java.util.logging.Level
 
 data class WynnClass(
-    val className: String,
-    val cloneName: String,
+    val id: String,
     val item: Material,
     val metaStats: Tuple4<Int>,
-    val lore: String,
     val invertedControls: Boolean,
     val spells: List<Spell>
 ) : ConfigurationSerializable {
@@ -22,11 +20,9 @@ data class WynnClass(
     override fun serialize(): Map<String, Any> {
         val out = LinkedHashMap<String, Any>()
 
-        out["className"] = className
-        out["cloneName"] = cloneName
+        out["id"] = id
         out["item"] = item.name
         out["metaStats"] = mapOf("damage" to metaStats.v1, "defence" to metaStats.v2, "range" to metaStats.v3, "spells" to metaStats.v4)
-        out["lore"] = lore
         out["invertedControls"] = invertedControls
         out["spells"] = spells.map { it.serialize() }
 
@@ -37,17 +33,15 @@ data class WynnClass(
         @JvmStatic
         @Suppress("unused", "unchecked_cast")
         fun deserialize(map: Map<String, Any>): WynnClass {
-            val className = map["className"] as String
-            val cloneName = map["cloneName"] as String
+            val id = map["id"] as String
             val item = Material.valueOf(map["item"] as String)
             val metaStats = map["metaStats"] as Map<String, Number>
-            val lore = map["lore"] as String
             val invertedControls = map["invertedControls"] as Boolean
             val spells = map["spells"] as List<Spell>
 
-            return WynnClass(className, cloneName, item,
+            return WynnClass(id, item,
                 Tuple4(metaStats["damage"]!!.toInt(), metaStats["defence"]!!.toInt(), metaStats["range"]!!.toInt(), metaStats["spells"]!!.toInt()),
-                lore, invertedControls, spells)
+                invertedControls, spells)
         }
 
         operator fun get(string: String) = classes[string]
@@ -73,7 +67,7 @@ fun loadClasses() {
         val config = YamlConfiguration()
         config.load(configFile)
         val wynnClass = config.getSerializable("class", WynnClass::class.java) ?: continue
-        classes[wynnClass.className.toUpperCase()] = wynnClass
+        classes[wynnClass.id] = wynnClass
     }
 
     //plugin.logger.log(Level.INFO, "Classes: $classes")

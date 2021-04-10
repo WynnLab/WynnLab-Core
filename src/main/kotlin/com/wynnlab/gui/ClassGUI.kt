@@ -1,5 +1,6 @@
 package com.wynnlab.gui
 
+import com.wynnlab.NL_REGEX
 import com.wynnlab.api.getLocalizedText
 import com.wynnlab.api.sendWynnMessage
 import com.wynnlab.api.setWynnClass
@@ -9,7 +10,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 
-class ClassGUI(player: Player) : GUI(player, "Choose a class", 1) {
+class ClassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.class.title"), 1) {
     private val classCount = classes.size
     private val itemPositions = (5 - (classCount + .5f) / 2f).toInt()..(4 + classCount / 2)
 
@@ -26,16 +27,16 @@ class ClassGUI(player: Player) : GUI(player, "Choose a class", 1) {
                     ClickType.RIGHT, ClickType.SHIFT_RIGHT -> true
                     else -> return@registerListener
             }) {
-                player.sendWynnMessage("gui.class.select", clazz.cloneName)
+                player.sendWynnMessage("gui.class.select", player.getLocalizedText("classes.${clazz.id}.className"))
                 player.addScoreboardTag("clone")
             } else {
-                player.sendWynnMessage("gui.class.select", clazz.className)
+                player.sendWynnMessage("gui.class.select", player.getLocalizedText("classes.${clazz.id}.cloneName"))
                 player.removeScoreboardTag("clone")
             }
 
             player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
 
-            player.setWynnClass(clazz.className.toUpperCase())
+            player.setWynnClass(clazz.id)
 
             player.closeInventory()
         }
@@ -48,7 +49,7 @@ class ClassGUI(player: Player) : GUI(player, "Choose a class", 1) {
             val item = ItemStack(clazz.item)
             val meta = item.itemMeta
 
-            meta.setDisplayName(player.getLocalizedText("gui.class.item.title", clazz.className))
+            meta.setDisplayName(player.getLocalizedText("gui.class.item.title", player.getLocalizedText("classes.${clazz.id}.className")))
             val lore = mutableListOf(" ")
 
             val (damage, defence, range, spells) = clazz.metaStats
@@ -58,9 +59,9 @@ class ClassGUI(player: Player) : GUI(player, "Choose a class", 1) {
             lore.add(player.getLocalizedText("gui.class.item.spells", spells.squares()))
 
             lore.add(" ")
-            lore.addAll(clazz.lore.split(Regex("\\n")).map { "§7$it" })
+            lore.addAll(player.getLocalizedText("classes.${clazz.id}.lore").split(NL_REGEX))
 
-            lore.add(player.getLocalizedText("gui.class.item.clone", clazz.cloneName))
+            lore.add(player.getLocalizedText("gui.class.item.clone", player.getLocalizedText("classes.${clazz.id}.cloneName")))
 
             meta.lore = lore
             item.itemMeta = meta
