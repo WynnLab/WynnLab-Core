@@ -1,5 +1,4 @@
 from org.bukkit import Material, Particle, Sound
-from org.bukkit.entity import Mob, Player
 from org.bukkit.potion import PotionEffect, PotionEffectType
 
 from com.wynnlab.spells import PySpell

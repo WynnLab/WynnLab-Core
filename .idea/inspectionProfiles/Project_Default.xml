@@ -29,6 +29,8 @@
           <option value="classes.archer.arrow_shield.DEG2RAD" />
           <option value="classes.archer.escape.DEG2RAD" />
           <option value="classes.mage.ice_snake.set" />
+          <option value="classes.assassin.spin_attack.DEG2RAD" />
+          <option value="classes.assassin.spin_attack.set" />
         </list>
       </option>
     </inspection_tool>
