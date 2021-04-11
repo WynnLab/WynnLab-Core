@@ -1,3 +1,8 @@
+commands:
+  no_receiver: '&cPlease specify a receiver'
+  no_message: '&cPlease specify a message'
+  no_conversation: "&cYou aren't in a conversation"
+  invalid_target: '&cPlease specify a valid target'
 classes:
   MAGE:
     className: 'Mage'

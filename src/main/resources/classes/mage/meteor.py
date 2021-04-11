@@ -30,7 +30,7 @@ class Spell(PySpell):
             self.direction = self.origin.clone().subtract(self.target).toVector().normalize()
 
             for l in LocationIterator(self.target, self.origin, self.direction, .5):
-                self.particle(l, Particle.FLAME, 1, 0, 0, 0, 0)
+                self.particle(l, Particle.SOUL_FIRE_FLAME if self.clone else Particle.FLAME, 1, 0, 0, 0, 0)
 
             self.direction.multiply(-1)
 
@@ -55,6 +55,8 @@ class Spell(PySpell):
             self.sound(self.target, Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 5, 1)
             self.sound(self.target, Sound.ENTITY_GENERIC_EXPLODE, 5, .5 if self.clone else .75)
             self.sound(self.target, Sound.ITEM_TRIDENT_THUNDER, 1, .5)
+            self.sound(self.target, Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 1, .8)
+            self.sound(self.target, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, .8)
 
             for e in self.nearbyMobs(self.target, 3, 3, 3):
                 self.damage(e, 15)

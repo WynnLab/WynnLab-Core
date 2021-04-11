@@ -11,14 +11,18 @@ class Spell(PySpell):
             target.add(self.player.getEyeLocation().getDirection().clone().multiply(-1))
         target.setDirection(self.player.getEyeLocation().getDirection())
 
-        for l in LocationIterator(self.player.getEyeLocation(), target, self.player.getEyeLocation().getDirection(), .5):
+        particle_start = self.player.getEyeLocation()
+        particle_dir = particle_start.getDirection()
+        self.player.teleport(target)
+
+        for l in LocationIterator(particle_start, target, particle_dir, .5):
             self.particle(l.clone().subtract(0, 1, 0) if self.clone else l, Particle.DRIP_LAVA if self.clone else Particle.FLAME, 1, 0, 0, 0, 0)
 
-        for l in LocationIterator(self.player.getEyeLocation(), target, self.player.getEyeLocation().getDirection(), 1):
+        for l in LocationIterator(particle_start, target, particle_dir, 1):
             self.particle(l, Particle.VILLAGER_ANGRY if self.clone else Particle.LAVA, 1, 0, 0, 0, 0)
 
             for e in self.nearbyMobs(l, .5, 2, .5):
                 self.damage(e, 2)
 
-        self.sound(target, Sound.ENTITY_ENDERMAN_TELEPORT if self.clone else Sound.ENTITY_SHULKER_TELEPORT, 1, 1)
-        self.player.teleport(target)
+        self.sound(Sound.ENTITY_ENDERMAN_TELEPORT if self.clone else Sound.ENTITY_SHULKER_TELEPORT, 1, 1)
+        self.sound(target, Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1, 1)
