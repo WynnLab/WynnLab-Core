@@ -51,6 +51,7 @@ class Main : JavaPlugin() {
     val castCommand by lazy { CastCommand() }
     val rankCommand by lazy { RankCommand() }
     val devCommands by lazy { DevCommands() }
+    val essentialsCommands by lazy { EssentialsCommands() }
 
     private fun registerCommands() {
         getCommand("class")?.setExecutor(classCommand)
@@ -60,6 +61,10 @@ class Main : JavaPlugin() {
         getCommand("itemdata")?.setExecutor(devCommands)
         getCommand("getid")?.setExecutor(devCommands)
         getCommand("script")?.setExecutor(devCommands)
+        getCommand("msg")?.setExecutor(essentialsCommands)
+        getCommand("r")?.setExecutor(essentialsCommands)
+        getCommand("party")?.setExecutor(essentialsCommands)
+        getCommand("p")?.setExecutor(essentialsCommands)
     }
 
     val castListener by lazy { CastListener() }
@@ -96,7 +101,7 @@ class Main : JavaPlugin() {
             it.setGameRule(GameRule.FALL_DAMAGE, false)
             it.setGameRule(GameRule.MOB_GRIEFING, false)
             it.setGameRule(GameRule.NATURAL_REGENERATION, false)
-            it.setGameRule(GameRule.REDUCED_DEBUG_INFO, true)
+            //it.setGameRule(GameRule.REDUCED_DEBUG_INFO, true)
             it.setGameRule(GameRule.SPAWN_RADIUS, 0)
             it.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false)
         }
