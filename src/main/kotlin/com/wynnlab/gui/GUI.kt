@@ -15,8 +15,13 @@ abstract class GUI(
     abstract fun update()
 
     fun show() {
-        update()
-        player.openInventory(inventory)
+        Bukkit.getScheduler().runTaskAsynchronously(
+            plugin, Runnable {
+                update()
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin) {
+                    player.openInventory(inventory)
+                }
+            })
     }
 
     inline fun registerListener(crossinline action: (InventoryClickEvent) -> Unit) {

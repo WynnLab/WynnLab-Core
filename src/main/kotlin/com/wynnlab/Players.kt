@@ -77,35 +77,39 @@ object Players {
     }
 
     private fun loadAPIData(player: Player) {
-        val root = getWynncraftAPIResult("https://api.wynncraft.com/v2/player/${player.name}/stats")
-        val data = (root["data"] as JSONArray)[0] as JSONObject
+        getWynncraftAPIResult("https://api.wynncraft.com/v2/player/${player.name}/stats").execute { root ->
+            val data = (root["data"] as JSONArray)[0] as JSONObject
 
-        var rank = when (data["rank"] as String) {
-            "Player" -> when (((data["meta"] as JSONObject)["tag"] as JSONObject)["value"] as String?) {
-                "VIP" -> Rank.VIP
-                "VIP+" -> Rank.`VIP+`
-                "HERO" -> Rank.HERO
-                "CHAMPION" -> Rank.CHAMPION
-                else -> Rank.PLAYER
+            var rank = when (data["rank"] as String) {
+                "Player" -> when (((data["meta"] as JSONObject)["tag"] as JSONObject)["value"] as String?) {
+                    "VIP" -> Rank.VIP
+                    "VIP+" -> Rank.`VIP+`
+                    "HERO" -> Rank.HERO
+                    "CHAMPION" -> Rank.CHAMPION
+                    else -> Rank.PLAYER
+                }
+                "Administrator" -> Rank.ADMIN
+                "Moderator" -> Rank.MOD
+                else -> Rank.CT
             }
-            "Administrator" -> Rank.ADMIN
-            "Moderator" -> Rank.MOD
-            else -> Rank.CT
+            if (player.name == "TheLastMinecraft") {
+                player.sendMessage("WynnLab Admin, Wynncraft $rank")
+                rank = Rank.ADMIN
+            }
+
+            val guildData = data["guild"] as JSONObject
+            val guildName = guildData["name"] as String?
+            val guildRank = guildData["rank"] as String?
+
+            guildName?.let { gn ->
+                getWynncraftAPIResult("https://api.wynncraft.com/public_api.php?action=guildStats&command=${gn.replace(" ", "%20")}").execute { guild ->
+                    val guildTag = guild.get("prefix") as String?
+
+                    rank.apply(player)
+                    guildName.let { player.data.setString("guild", it) }
+                    guildTag?.let { player.data.setString("guild_tag", it) }
+                }
+            }
         }
-        if (player.name == "TheLastMinecraft") {
-            player.sendMessage("WynnLab Admin, Wynncraft $rank")
-            rank = Rank.ADMIN
-        }
-
-        val guildData = data["guild"] as JSONObject
-        val guildName = guildData["name"] as String?
-        val guildRank = guildData["rank"] as String?
-
-        val guild = guildName?.let { getWynncraftAPIResult("https://api.wynncraft.com/public_api.php?action=guildStats&command=${it.replace(" ", "%20")}") }
-        val guildTag = guild?.get("prefix") as String?
-
-        rank.apply(player)
-        guildName?.let { player.data.setString("guild", it) }
-        guildTag?.let { player.data.setString("guild_tag", it) }
     }
 }

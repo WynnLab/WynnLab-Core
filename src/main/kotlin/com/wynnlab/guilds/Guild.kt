@@ -1,7 +1,7 @@
 package com.wynnlab.guilds
 
-import com.wynnlab.api.meta
 import com.wynnlab.api.metaAs
+import com.wynnlab.util.OnlyAsync
 import com.wynnlab.util.getWynncraftAPIResult
 import org.bukkit.DyeColor
 import org.bukkit.Material
@@ -13,8 +13,9 @@ import org.bukkit.inventory.meta.BannerMeta
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 
+@OnlyAsync
 class Guild(val name: String) {
-    private val guildObject = getWynncraftAPIResult("https://api.wynncraft.com/public_api.php?action=guildStats&command=${name.replace(" ", "%20")}")
+    private val guildObject = getWynncraftAPIResult("https://api.wynncraft.com/public_api.php?action=guildStats&command=${name.replace(" ", "%20")}").task()
     val tag = guildObject["prefix"] as String
 
     val members = (guildObject["members"] as JSONArray).associate { data -> data as JSONObject

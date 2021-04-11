@@ -161,6 +161,8 @@ class WynnItem(
         item.itemMeta = meta
     }
 
+    fun isNormal() = tier == Tier.NORMAL
+
     companion object {
         fun parse(json: JSONObject): WynnItem {
             val type = (json["type"] as String? ?: json["accessoryType"] as String?)?.let { Type.valueOf(it.toUpperCase()) }
@@ -169,7 +171,7 @@ class WynnItem(
                 if (it.size > 1) it[0].toInt() to it[1].toInt() else it[0].toInt() to 0
             } }
             val armorType = if (materialId == null) (json["armorType"] as String?)?.let {
-                ArmorType.valueOf(it.toUpperCase().takeUnless { a -> a == "GOLD" } ?: "GOLDEN")
+                ArmorType.valueOf(it.toUpperCase())
             } else null
             val accessoryType = if (materialId == null && armorType == null) (json["accessoryType"] as String?)?.let {
                 AccessoryType.valueOf(it.toUpperCase())
@@ -250,8 +252,8 @@ class WynnItem(
         NECKLACE("Necklace")
     }
 
-    enum class ArmorType {
-        LEATHER, GOLDEN, CHAIN, IRON, DIAMOND
+    enum class ArmorType(val repr: String) {
+        LEATHER("LEATHER"), GOLD("GOLDEN"), CHAIN("CHAINMAIL"), IRON("IRON"), DIAMOND("DIAMOND")
     }
 
     enum class AttackSpeed(val str: String, val cooldown: Int) {

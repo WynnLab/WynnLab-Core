@@ -29,3 +29,15 @@ commands:
   script:
     description: Executes a script
     usage: /script <path>
+  msg:
+    description: Message a single player
+    usage: /msg <player> <message>
+  r:
+    description: Reply to your current conversation
+    usage: /r <message>
+  party:
+    description: Manage a party
+    usage: /party create|invite|join|leave
+  p:
+    description: Send a message to your party
+    usage: /p <message>

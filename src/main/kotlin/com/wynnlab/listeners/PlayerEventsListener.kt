@@ -4,6 +4,7 @@ import com.wynnlab.Players
 import com.wynnlab.api.prefix
 import com.wynnlab.api.prefixes
 import com.wynnlab.api.wynnPrefix
+import com.wynnlab.plugin
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
@@ -21,8 +22,9 @@ class PlayerEventsListener : Listener {
 
     @EventHandler
     fun onPlayerLeave(e: PlayerQuitEvent) {
-        prefixes.remove(e.player)
         e.quitMessage = "§7[§c-§7]§r ${e.player.prefix}${e.player.name}"
+        prefixes.remove(e.player)
+        plugin.essentialsCommands.conversations.remove(e.player)
     }
 
     @EventHandler

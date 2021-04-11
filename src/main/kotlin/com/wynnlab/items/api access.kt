@@ -1,5 +1,6 @@
 package com.wynnlab.items
 
+import com.wynnlab.util.Deferred
 import com.wynnlab.util.getWynncraftAPIResult
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
@@ -12,11 +13,11 @@ import kotlin.jvm.Throws
 
 @Suppress("unchecked_cast")
 @Throws(APIException::class)
-fun getAPIResults(search: String): List<JSONObject> {
-    val root = getWynncraftAPIResult("https://api.wynncraft.com/public_api.php?action=itemDB&search=${search.replace(" ", "%20")}")
+fun getAPIResults(search: String): Deferred<List<JSONObject>> = Deferred {
+    val root = getWynncraftAPIResult("https://api.wynncraft.com/public_api.php?action=itemDB&search=${search.replace(" ", "%20")}").task()
     val items = root["items"] as JSONArray
 
-    return items as List<JSONObject>
+    items as List<JSONObject>
 }
 
 class APIException(message: String) : Exception("Could not access the API ($message)")
