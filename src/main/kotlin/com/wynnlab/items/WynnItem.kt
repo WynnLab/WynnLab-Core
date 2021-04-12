@@ -282,7 +282,11 @@ private val idToMaterial = hashMapOf(
     359 to Material.SHEARS,
     280 to Material.STICK,
     273 to Material.STONE_SHOVEL,
-    269 to Material.WOODEN_SHOVEL
+    269 to Material.WOODEN_SHOVEL,
+    295 to Material.DIAMOND_AXE,
+    277 to Material.DIAMOND_SHOVEL,
+    278 to Material.DIAMOND_PICKAXE,
+    284 to Material.GOLDEN_SHOVEL
 )
 
 private fun String?.ifNullNull(): String? = if (this == "null") null else this
