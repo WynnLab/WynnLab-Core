@@ -13,26 +13,18 @@ class:
       maxTick: 0
       script: assassin_main.py
     - ==: com.wynnlab.spells.Spell
-      spellName: Spin Attack
-      cloneSpellName: Whirlwind
       cost: 6
       maxTick: 16
       script: spin_attack.py
     - ==: com.wynnlab.spells.Spell
-      spellName: Vanish
-      cloneSpellName: Shadow Clone
       cost: 1
       maxTick: 0
       script: vanish.py
     - ==: com.wynnlab.spells.Spell
-      spellName: Multihit
-      cloneSpellName: Shadow Assault
       cost: 8
       maxTick: 22
       script: multihit.py
     - ==: com.wynnlab.spells.Spell
-      spellName: Smoke Bomb
-      cloneSpellName: Noxious Cloud
       cost: 8
       maxTick: 0
       script: smoke_bomb.py

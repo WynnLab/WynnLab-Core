@@ -1,7 +1,7 @@
 class:
   ==: com.wynnlab.WynnClass
-  id: MAGE
-  item: STICK
+  id: WARRIOR
+  item: IRON_SHOVEL
   metaStats:
     damage: 2
     defence: 3
@@ -11,15 +11,15 @@ class:
   spells:
     - ==: com.wynnlab.spells.Spell
       maxTick: 0
-      script: mage_main.py
+      script: warrior_main.py
     - ==: com.wynnlab.spells.Spell
       cost: 6
       maxTick: 40
-      script: heal.py
+      script: bash.py
     - ==: com.wynnlab.spells.Spell
       cost: 4
       maxTick: 0
-      script: teleport.py
+      script: charge.py
     - ==: com.wynnlab.spells.Spell
       cost: 8
       maxTick: 60

@@ -39,6 +39,8 @@ data class WynnClass(
             val invertedControls = map["invertedControls"] as Boolean
             val spells = map["spells"] as List<Spell>
 
+            spellOrdinal = 0
+
             return WynnClass(id, item,
                 Tuple4(metaStats["damage"]!!.toInt(), metaStats["defence"]!!.toInt(), metaStats["range"]!!.toInt(), metaStats["spells"]!!.toInt()),
                 invertedControls, spells)
@@ -49,6 +51,8 @@ data class WynnClass(
 }
 
 val classes = hashMapOf<String, WynnClass>()
+
+internal var spellOrdinal = 0
 
 fun loadClasses() {
     val classFolder = File(plugin.dataFolder, "classes")

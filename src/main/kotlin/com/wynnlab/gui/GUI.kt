@@ -1,5 +1,6 @@
 package com.wynnlab.gui
 
+import com.wynnlab.localization.Language
 import com.wynnlab.plugin
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -11,6 +12,8 @@ abstract class GUI(
     rows: Int
 ) {
     val inventory = Bukkit.createInventory(player, rows * 9, title)
+
+    protected val language = Language[player.locale.toLowerCase()]
 
     abstract fun update()
 

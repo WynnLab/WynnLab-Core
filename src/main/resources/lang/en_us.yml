@@ -15,15 +15,15 @@ classes:
       &7offer a great amount of
       &7utility and versatility
       &7with their spells.
-    #spells:
-    #  - Heal
-    #  - Remedy
-    #  - Teleport
-    #  - Blink
-    #  - Meteor
-    #  - Death Star
-    #  - Ice Snake
-    #  - Crystal Reptile
+    spells:
+      1:  Heal
+      1c: Remedy
+      2:  Teleport
+      2c: Blink
+      3:  Meteor
+      3c: Death Star
+      4:  Ice Snake
+      4c: Crystal Reptile
   ARCHER:
     className: Archer
     cloneName: Hunter
@@ -36,6 +36,15 @@ classes:
       &7of damage. But they must
       &7be wary of attacks, as their
       &7defence is low.
+    spells:
+      1:  Arrow Storm
+      1c: Bolt Blizzard
+      2:  Escape
+      2c: Spider Jump
+      3:  Bomb Arrow
+      3c: Creeper Dart
+      4:  Arrow Shield
+      4c: Dagger Aura
   ASSASSIN:
     className: Assassin
     cloneName: Ninja
@@ -48,6 +57,43 @@ classes:
       &7they endanger themselves
       &7by having to get extremely
       &7close to the enemy.
+    spells:
+      1:  Spin Attack
+      1c: Whirlwind
+      2:  Vanish
+      2c: Shadow Clone
+      3:  Multihit
+      3c: Shadow Assault
+      4:  Smoke Bomb
+      4c: Noxious Cloud
+  WARRIOR:
+    className: Warrior
+    cloneName: Knight
+    lore: |
+      &7 Here goes the warrior lore
+    spells:
+      1:  Bash
+      1c: Holy Blast
+      2:  Charge
+      2c: Leap
+      3:  Uppercut
+      3c: Heaven Jolt
+      4:  War Scream
+      4c: Cry of the Gods
+  SHAMAN:
+    className: Shaman
+    cloneName: Skyseer
+    lore: |
+      &7 Here goes the shaman lore
+    spells:
+      1:  Totem
+      1c: Sky Emblem
+      2:  Haul
+      2c: Soar
+      3:  Aura
+      3c: Wind Surge
+      4:  Uproot
+      4c: Gale Funnel
 gui:
   class:
     title: 'Select a class'
@@ -59,3 +105,66 @@ gui:
       range: '&a➸ Range                 %s'
       spells: '&d✺ Spells                 %s'
       clone: '&8Right click for &b&l%s'
+  compass:
+    title: '&c%d &4skill points remaining'
+
+    reset_skills: '&eReset Skill Points'
+    reset_skills_cost: '&7Cost: &f0 Soul Points'
+
+    upgrade_skill: '&dUpgrade your %s &dskill'
+    upgrade_skill_numbers: |
+      &r       &7&lNow           &6&lNext
+      &r       &a%.1f%%     §a>§2>§a>§2>    &e%.1f%%
+      &r     &7%d points          §6%d points
+    upgrade_skill_modified: '&aThis skill was modified by your equipment'
+    upgrade_skill_strength: |
+      &7Each point in this skill
+      &7will&d increase &7any damage
+      &7you deal and increase the &2✤ Earth
+      &7damage you may inflict.
+
+    daily_rewards: '&eDaily Rewards'
+
+    mastery_tomes: '&5&lMastery Tomes'
+    mastery_tomes_lore: |
+      &7Tomes are special raid rewards
+      &7which can buff your character
+
+    no_guild: '&cYou are not in a guild yet!'
+    guild_rank: '&7Rank: &f%s'
+    guild_joined: '&7Joined: &f%s'
+    guild_open: '&8Open guild management'
+    guild_view: '&b&lView Your Guild'
+
+    settings: '&f&lSettings'
+    settings_lore: '&7WynnLab settings'
+
+    player_info: "&e&l&o%s's Info"
+    player_rank: '&7Rank: &f%s'
+    player_level: '&7Combat Lv: &f%d'
+    player_class: '&7Class: &f%s'
+    player_quests: '&7Quests: &f%d/%d'
+    player_ids: '&dID Bonuses:'
+
+    defense: '&f&lDefense Info'
+    defense_basic: '&bBasic Defense:'
+    defense_health: '&b- &4❤ Health: &f%s/%s'
+
+    damage: '&f&lDamage Info'
+    main_attack_damage: '&3[%c] &bMain Attack:'
+    total_damage: '&b- Total Damage (+Bonus): &f%d-%d'
+    spell_damage: '&5[%s] &d%s Spell: &f%d-%d'
+
+    wl_settings:
+      title: 'WynnLab Settings'
+      reset: '&eReset Settings'
+      reset_default: '&7Back to default'
+      your_particles: '&fYour particles: %s'
+      other_particles: '&fPlayer particles: %s'
+
+elements:
+  strength: '&2✤ Strength'
+  dexterity: '&e✦ Dexterity'
+  intelligence: '&b❉ Intelligence'
+  defense: '&c✹ Defense'
+  agility: '&f❋ Agility'

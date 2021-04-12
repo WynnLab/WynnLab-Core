@@ -1,8 +1,10 @@
 package com.wynnlab.spells
 
+import com.wynnlab.api.getLocalizedText
 import com.wynnlab.api.isCloneClass
 import com.wynnlab.currentClassLoadFolder
 import com.wynnlab.python
+import com.wynnlab.spellOrdinal
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.entity.Player
 import org.python.core.Py
@@ -40,11 +42,10 @@ import java.io.FileReader
 }*/
 
 data class Spell(
-    val spellName: String?,
-    val cloneSpellName: String?,
     val cost: Int,
     val maxTick: Int,
-    val pythonClass: PyType
+    val pythonClass: PyType,
+    val ordinal: Int
 ) : ConfigurationSerializable {
     fun cast(player: Player, vararg args: Any?) {
         val instance = pythonClass.__call__(Array(args.size) { i -> Py.java2py(args[i]) })
@@ -58,8 +59,6 @@ data class Spell(
     override fun serialize(): MutableMap<String, Any> {
         val out = LinkedHashMap<String, Any>()
 
-        spellName?.let { out["spellName"] = it }
-        cloneSpellName?.let { out["cloneSpellName"] = it }
         out["cost"] = cost
         out["maxTick"] = maxTick
 
@@ -70,8 +69,6 @@ data class Spell(
         @JvmStatic
         @Suppress("unused")
         fun deserialize(map: Map<String, Any>): Spell {
-            val spellName = map["spellName"] as String?
-            val cloneSpellName = map["cloneSpellName"] as String?
             val cost = (map["cost"] as Number? ?: 0).toInt()
             val maxTick = (map["maxTick"] as Number).toInt()
 
@@ -83,7 +80,7 @@ data class Spell(
             python.exec(script)
             val pythonClass: PyType = python.get("Spell") as PyType //TODO: name
 
-            return Spell(spellName, cloneSpellName, cost, maxTick, pythonClass)
+            return Spell(cost, maxTick, pythonClass, spellOrdinal++)
         }
     }
 }

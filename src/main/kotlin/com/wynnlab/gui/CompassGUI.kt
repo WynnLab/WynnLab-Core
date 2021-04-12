@@ -1,5 +1,6 @@
 package com.wynnlab.gui
 
+import com.wynnlab.NL_REGEX
 import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.guilds.Guild
@@ -13,7 +14,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining" /*TODO: skill points*/, 3) {
+class CompassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.compass.title", 200) /*TODO: skill points*/, 3) {
     init {
         registerListener { e ->
             e.isCancelled = true
@@ -27,48 +28,40 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
         // Reset skill points
         inventory.setItem(4, ItemStack(Material.GOLDEN_SHOVEL).setAppearance(21).meta {
             addItemFlags(*ItemFlag.values())
-            setDisplayName("§eReset Skill Points")
-            lore = listOf("§7Cost: §f0 Soul Points")
+            setDisplayName(language.getMessage("gui.compass.reset_skills"))
+            lore = listOf(language.getMessage("gui.compass.reset_skills_cost"))
         })
 
         // Skill points
         inventory.setItem( 11, ItemStack(Material.ENCHANTED_BOOK).meta {
-            setDisplayName("§dUpgrade your §2✤ Strength§d skill")
-            lore = listOf(" ",
-                "       §7§lNow                 §6§lNext",
-                "       §a0.0%     §a>§2>§a>§2>    §e1.0%",
-                "     §70 points               §61 points",
-                " ",
-                "§7Each point in this skill",
-                "§7will§d increase §7any damage",
-                "§7you deal and increase the §2✤ Earth",
-                "§7damage you may inflict.",
-                " ",
-                "§aThis skill was modified by your equipment"
-            )
+            setDisplayName(language.getMessage("gui.compass.upgrade_skill", language.getMessage("elements.strength")))
+            val lore = mutableListOf(" ")
+            lore.addAll(language.getMessage("gui.compass.upgrade_skill_numbers", 0.0, 1.0, 0, 0).split(NL_REGEX))
+            lore.add(" ")
+            lore.addAll(language.getMessage("gui.compass.upgrade_skill_strength").split(NL_REGEX))
+            lore.add(" ")
+            lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
+            this.lore = lore
         })
-        inventory.setItem(12, ItemStack(Material.BOOK).meta { setDisplayName("§dUpgrade your §e✦ Dexterity§d skill") })
-        inventory.setItem(13, ItemStack(Material.BOOK).meta { setDisplayName("§dUpgrade your §b❉ Intelligence§d skill") })
-        inventory.setItem(14, ItemStack(Material.BOOK).meta { setDisplayName("§dUpgrade your §c✹ Defence§d skill") })
-        inventory.setItem(15, ItemStack(Material.BOOK).meta { setDisplayName("§dUpgrade your §f❋ Agility§d skill") })
+        inventory.setItem(12, ItemStack(Material.BOOK).meta { setDisplayName(language.getMessage("gui.compass.upgrade_skill", language.getMessage("elements.dexterity"))) })
+        inventory.setItem(13, ItemStack(Material.BOOK).meta { setDisplayName(language.getMessage("gui.compass.upgrade_skill", language.getMessage("elements.intelligence"))) })
+        inventory.setItem(14, ItemStack(Material.BOOK).meta { setDisplayName(language.getMessage("gui.compass.upgrade_skill", language.getMessage("elements.defense"))) })
+        inventory.setItem(15, ItemStack(Material.BOOK).meta { setDisplayName(language.getMessage("gui.compass.upgrade_skill", language.getMessage("elements.agility"))) })
 
         // Daily rewards
-        inventory.setItem(22, ItemStack(Material.CHEST).meta { setDisplayName("§eDaily rewards") })
+        inventory.setItem(22, ItemStack(Material.CHEST).meta { setDisplayName(language.getMessage("gui.compass.daily_rewards")) })
 
         // Tomes
         inventory.setItem(0, ItemStack(Material.ENCHANTED_BOOK).meta {
-            setDisplayName("§5§lMastery Tomes")
-            lore = listOf(
-                "§7Tomes are special raid rewards",
-                "§7which can buff your character"
-            )
+            setDisplayName(language.getMessage("gui.compass.daily_rewards"))
+            //lore = language.getMessage("gui.compass.").split(NL_REGEX)
         })
         // Guilds
         val guildName = player.data.getString("guild")
         val guildLore: List<String>
         val guildBanner: ItemStack
         if (guildName == null) {
-            guildLore = listOf("§cYou are not in a Guild yet!")
+            guildLore = listOf(language.getMessage("gui.compass.no_guild"))
             guildBanner = ItemStack(Material.WHITE_BANNER)
         } else {
             val guild = Guild(guildName)
@@ -76,37 +69,37 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
             guildLore = listOf(
                 "§3${guild.name} §b[${guild.tag}]",
                 " ",
-                "§7Rank: §f${guildMember.rank.friendlyName}",
-                "§7Joined: ${guildMember.joined}",
+                language.getMessage("gui.compass.guild_rank", guildMember.rank.friendlyName),
+                language.getMessage("gui.compass.guild_joined", guildMember.joined),
                 " ",
-                "§8Open guild management"
+                language.getMessage("gui.compass.guild_open")
             )
             guildBanner = guild.banner.clone()
         }
         inventory.setItem(9, guildBanner.meta {
-            setDisplayName("§b§lView Your Guild")
+            setDisplayName(language.getMessage("gui.compass.guild_view"))
             lore = guildLore
         })
         // Settings
         inventory.setItem(18, ItemStack(Material.CRAFTING_TABLE).meta {
-            setDisplayName("§f§lSettings")
-            lore = listOf("§7WynnLab settings")
+            setDisplayName(language.getMessage("gui.compass.settings"))
+            lore = listOf(language.getMessage("gui.compass.settings_lore"))
         })
 
 
         // IDs
         inventory.setItem(8, ItemStack(Material.PLAYER_HEAD).meta {
-            setDisplayName("§e§l§o${player.name}'s Info")
+            setDisplayName(language.getMessage("gui.compass.player_info", player.name))
             val lore = mutableListOf(
-                "§7Rank: §f${player.data.getString("rank")?.toLowerCase()?.capitalize() ?: "Player"}",
+                language.getMessage("gui.compass.player_rank", player.data.getString("rank")?.toLowerCase()?.capitalize() ?: "Player"),
                 " ",
-                "§7Combat Lv: §f106",
-                "§7Class: §f${classes[player.getWynnClass()]?.let { 
+                language.getMessage("gui.compass.player_level", 106),
+                language.getMessage("gui.compass.player_class", classes[player.getWynnClass()]?.let {
                     if (player.isCloneClass) player.getLocalizedText("classes.${it.id}.cloneName") 
-                    else player.getLocalizedText("classes.${it.id}.className") } ?: "None"}",
-                "§7Quests: §f0/0",
+                    else player.getLocalizedText("classes.${it.id}.className") } ?: "None"),
+                language.getMessage("gui.compass.player_quests", 0, 0),
                 " ",
-                "§dID Bonuses:",
+                language.getMessage("gui.compass.player_ids"),
             )
             addIdValues(lore)
             this.lore = lore
@@ -114,10 +107,10 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
         // Defence
         inventory.setItem(17, ItemStack(Material.IRON_CHESTPLATE).meta {
             addItemFlags(*ItemFlag.values())
-            setDisplayName("§f§lDefence Info")
+            setDisplayName(language.getMessage("gui.compass.defense"))
             lore = listOf(" ",
-                "§bBasic Defence:",
-                "§b- §4❤ Health: §f${player.health.toInt()}/${player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value.toInt()}",
+                language.getMessage("gui.compass.defense_basic"),
+                language.getMessage("gui.compass.defense_health", player.health.toInt(), player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value.toInt()),
                 // Ranked
             )
         })
@@ -127,27 +120,23 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
         val clone = player.isCloneClass
         inventory.setItem(26, ItemStack(Material.IRON_SWORD).meta {
             addItemFlags(*ItemFlag.values())
-            setDisplayName("§f§lDamage Info")
+            setDisplayName(language.getMessage("gui.compass.damage"))
             lore = listOf(
                 "§7[${player.getFirstWeaponSlot().let { if (it == -1) null else player.inventory.getItem(it) }?.itemMeta?.displayName}§7]",
                 " ",
-                "§3[${if (invertedControls) 'R' else 'L'}] §bMain Attack:",
+                language.getMessage("gui.compass.main_attack_damage", if (invertedControls) 'R' else 'L'),
                 // Damages
-                "§b- Total Damage (+Bonus): §f§k0000§r§f-§f§k0000",
+                language.getMessage("gui.compass.total_damage", 0, 0),
                 " ",
-                "§5[${if (invertedControls) "LRL" else "RLR"}] §d${clazz?.spells?.get(1)?.let { if (clone) it.cloneSpellName else it.spellName}} Spell:" +
-                        "§f§k0000§r§f-§f§k0000",
-                "§5[${if (invertedControls) "LLL" else "RRR"}] §d${clazz?.spells?.get(2)?.let { if (clone) it.cloneSpellName else it.spellName}} Spell:" +
-                        "§f§k0000§r§f-§f§k0000",
-                "§5[${if (invertedControls) "LRR" else "RLL"}] §d${clazz?.spells?.get(3)?.let { if (clone) it.cloneSpellName else it.spellName}} Spell:" +
-                        "§f§k0000§r§f-§f§k0000",
-                "§5[${if (invertedControls) "LLR" else "RRL"}] §d${clazz?.spells?.get(4)?.let { if (clone) it.cloneSpellName else it.spellName}} Spell:" +
-                        "§f§k0000§r§f-§f§k0000",
+                language.getMessage("gui.compass.spell_damage", if (invertedControls) "LRL" else "RLR", language.getMessage("classes.${player.getWynnClass()}.spells.${if (clone) "1c" else "1"}"), 0, 0),
+                language.getMessage("gui.compass.spell_damage", if (invertedControls) "LLL" else "RRR", language.getMessage("classes.${player.getWynnClass()}.spells.${if (clone) "2c" else "2"}"), 0, 0),
+                language.getMessage("gui.compass.spell_damage", if (invertedControls) "LRR" else "RLL", language.getMessage("classes.${player.getWynnClass()}.spells.${if (clone) "3c" else "3"}"), 0, 0),
+                language.getMessage("gui.compass.spell_damage", if (invertedControls) "LLR" else "RRL", language.getMessage("classes.${player.getWynnClass()}.spells.${if (clone) "4c" else "4"}"), 0, 0),
             )
         })
     }
 
-    inner class WynnLabSettings : GUI(player, "WynnLab Settings", 3) {
+    inner class WynnLabSettings : GUI(player, (this@CompassGUI).language.getMessage("gui.compass.wl_settings.title"), 3) {
         init {
             registerListener { e ->
                 e.isCancelled = true
@@ -165,19 +154,19 @@ class CompassGUI(player: Player) : GUI(player, "§c200 §4skill points remaining
         override fun update() {
             inventory.setItem(4, ItemStack(Material.GOLDEN_SHOVEL).setAppearance(21).meta {
                 addItemFlags(*ItemFlag.values())
-                setDisplayName("§eReset Settings")
-                lore = listOf("§7Back to default")
+                setDisplayName(language.getMessage("gui.compass.wl_settings.reset"))
+                lore = listOf(language.getMessage("gui.compass.wl_settings.reset_default"))
             })
 
             val particles = player.data.getInt("particles") ?: 2
             val otherParticles = player.data.getInt("other_particles") ?: 2
 
             inventory.setItem(10, ItemStack(Material.PLAYER_HEAD).meta {
-                setDisplayName("§fYour Particles: ${particleSettingString(particles)}")
+                setDisplayName(language.getMessage("gui.compass.wl_settings.your_particles", particleSettingString(particles)))
                 lore = particlesLore
             })
             inventory.setItem(11, ItemStack(Material.PLAYER_HEAD).meta {
-                setDisplayName("§fPlayer Particles: ${particleSettingString(otherParticles)}")
+                setDisplayName(language.getMessage("gui.compass.wl_settings.other_particles", particleSettingString(otherParticles)))
                 lore = particlesLore
             })
         }

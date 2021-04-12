@@ -1,10 +1,7 @@
 package com.wynnlab.listeners
 
+import com.wynnlab.api.*
 import com.wynnlab.classes
-import com.wynnlab.api.cooldown
-import com.wynnlab.api.getWynnClass
-import com.wynnlab.api.isCloneClass
-import com.wynnlab.api.updateActionBar
 import com.wynnlab.events.SpellCastEvent
 import org.bukkit.Sound
 import org.bukkit.event.EventHandler
@@ -22,7 +19,7 @@ class CastListener : Listener {
             if (player.foodLevel > spell.cost) {
                 player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, .5f)
                 player.updateActionBar(
-                    "${if (player.isCloneClass) spell.cloneSpellName else spell.spellName} Cast " +
+                    "${player.getLocalizedText("classes.${player.getWynnClass()}.spells.${if (player.isCloneClass) "${spell.ordinal}c" else spell.ordinal.toString()}")} Cast " +
                             "§3[§b-${spell.cost}✺§3]"
                 )
                 player.foodLevel -= spell.cost
