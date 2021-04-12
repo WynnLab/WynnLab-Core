@@ -1,4 +1,5 @@
 from org.bukkit import Particle, Sound
+from org.bukkit.potion import PotionEffectType
 
 from com.wynnlab.spells import PySpell
 from com.wynnlab.util import BukkitUtils
@@ -17,7 +18,7 @@ class Spell(PySpell):
             return
 
         if self.t == 0:
-            if self.player.getScoreboardTags().contains('vanish'):
+            if self.player.hasPotionEffect(PotionEffectType.INVISIBILITY):
                 self.castSpell('ASSASSIN', 5)
 
             self.sound(Sound.ENTITY_PLAYER_ATTACK_STRONG, .5, 1)

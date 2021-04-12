@@ -31,6 +31,8 @@
           <option value="classes.mage.ice_snake.set" />
           <option value="classes.assassin.spin_attack.DEG2RAD" />
           <option value="classes.assassin.spin_attack.set" />
+          <option value="classes.assassin.vanish_end.plugin" />
+          <option value="classes.assassin.vanish.plugin" />
         </list>
       </option>
     </inspection_tool>

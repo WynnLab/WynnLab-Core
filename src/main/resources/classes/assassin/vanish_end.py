@@ -1,4 +1,4 @@
-from org.bukkit import Particle, Sound
+from org.bukkit import Bukkit, Particle, Sound
 from org.bukkit.potion import PotionEffectType
 
 from com.wynnlab.spells import PySpell
@@ -15,4 +15,5 @@ class Spell(PySpell):
         self.sound(Sound.ENTITY_EVOKER_CAST_SPELL, 1, 1.6)
         self.sound(Sound.ENTITY_GHAST_SHOOT, .6, 1)
 
-        self.player.removeScoreboardTag('vanish')
+        for p in Bukkit.getOnlinePlayers():
+            p.showPlayer(plugin, self.player)

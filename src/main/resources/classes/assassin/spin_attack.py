@@ -11,7 +11,7 @@ class Spell(PySpell):
 
     def tick(self):
         if self.t == 0:
-            if self.player.getScoreboardTags().contains('vanish'):
+            if self.player.hasPotionEffect(PotionEffectType.INVISIBILITY):
                 self.castSpell('ASSASSIN', 5)
 
             if self.clone:

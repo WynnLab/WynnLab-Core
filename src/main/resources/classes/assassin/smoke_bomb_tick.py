@@ -6,12 +6,10 @@ from com.wynnlab.spells import PySpell
 class Spell(PySpell):
     def __init__(self, l):
         self.l = l
-        self.puffer = 5
 
     def tick(self):
-        if self.puffer <= 0 and self.player.getScoreboardTags().contains('smoke_bomb'):
+        if self.t > 0 and self.player.getScoreboardTags().contains('smoke_bomb'):
             self.cancel()
-
 
         if self.t % 4 == 0:
             self.particle(self.l, Particle.CLOUD, 16, 3, 3, 3, 0.1)
@@ -24,7 +22,5 @@ class Spell(PySpell):
                 self.damage(e, 2)
                 e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 101, 2))
 
-        if self.puffer <= 2 and self.player.getScoreboardTags().contains('smoke_bomb'):
+        if self.t == 0:
             self.player.removeScoreboardTag('smoke_bomb')
-
-        self.puffer -= 1

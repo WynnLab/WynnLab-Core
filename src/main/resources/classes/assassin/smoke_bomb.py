@@ -1,13 +1,13 @@
 from org.bukkit import Material, Sound
 from org.bukkit.entity import Snowball
 from org.bukkit.inventory import ItemStack
+from org.bukkit.potion import PotionEffectType
 
-from com.wynnlab import Classes
 from com.wynnlab.spells import PySpell
 
 class Spell(PySpell):
     def tick(self):
-        if self.player.getScoreboardTags().contains('vanish'):
+        if self.player.hasPotionEffect(PotionEffectType.INVISIBILITY):
             self.castSpell('ASSASSIN', 5)
 
         self.sound(Sound.ENTITY_ENDER_PEARL_THROW if self.clone else Sound.ENTITY_SNOWBALL_THROW, .8, 1.3)

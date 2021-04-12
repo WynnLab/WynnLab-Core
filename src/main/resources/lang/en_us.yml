@@ -15,6 +15,15 @@ classes:
       &7offer a great amount of
       &7utility and versatility
       &7with their spells.
+    #spells:
+    #  - Heal
+    #  - Remedy
+    #  - Teleport
+    #  - Blink
+    #  - Meteor
+    #  - Death Star
+    #  - Ice Snake
+    #  - Crystal Reptile
   ARCHER:
     className: Archer
     cloneName: Hunter

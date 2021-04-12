@@ -8,14 +8,15 @@
 #    });
 #}
 from org.bukkit import Particle, Sound
+from org.bukkit.potion import PotionEffectType
 
 from com.wynnlab.spells import PySpell
 
 class Spell(PySpell):
     def tick(self):
-        if self.player.getScoreboardTags().contains('vanish'):
+        if self.player.hasPotionEffect(PotionEffectType.INVISIBILITY):
             self.castSpell('ASSASSIN', 5)
-        
+
         self.sound(Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1, .8)
         l = self.player.getEyeLocation().clone().add(self.player.getEyeLocation().getDirection())
         self.particle(l, Particle.SWEEP_ATTACK, 1, 0, 0, 0, 0)

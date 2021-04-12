@@ -3,7 +3,6 @@ from org.bukkit.entity import ArmorStand
 from org.bukkit.inventory import ItemStack
 from org.bukkit.util import EulerAngle, Vector
 
-from com.wynnlab import Classes
 from com.wynnlab.api import PersistentDataAPI
 from com.wynnlab.spells import PySpell
 

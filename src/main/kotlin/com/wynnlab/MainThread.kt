@@ -27,9 +27,10 @@ object MainThread : Runnable {
             val maxHealth = (505 + player.getId("health_bonus") + player.getArmorHealth()).coerceIn(1, 1000000).toDouble()
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue = maxHealth
 
+            val manaDrain = player.hasPotionEffect(PotionEffectType.INVISIBILITY)
             if (s1) {
                 // Natural mana regen
-                player.foodLevel = (player.foodLevel + if ("vanish" in player.scoreboardTags) -1 else 1).coerceIn(0, 20)
+                player.foodLevel = (player.foodLevel + if (manaDrain) -1 else 1).coerceIn(0, 20)
 
                 // Jump height
                 val jumpHeight = player.getId("jump_height")
@@ -38,7 +39,7 @@ object MainThread : Runnable {
 
             // Mana regen and health regen
             if (s4) {
-                player.foodLevel = (player.foodLevel + player.getId("mana_regen")).coerceIn(0, 20)
+                if (!manaDrain) player.foodLevel = (player.foodLevel + player.getId("mana_regen")).coerceIn(0, 20)
                 player.health = (player.health + player.getId("health_regen_raw") * (1 + player.getId("health_regen") / 100f)).coerceIn(1.0, maxHealth)
             }
 
