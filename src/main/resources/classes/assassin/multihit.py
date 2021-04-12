@@ -13,7 +13,13 @@ class Spell(PySpell):
         self.shift = self.player.isSneaking()
 
     def tick(self):
+        if self.t % 2 != 0:
+            return
+
         if self.t == 0:
+            if self.player.getScoreboardTags().contains('vanish'):
+                self.castSpell('ASSASSIN', 5)
+
             self.sound(Sound.ENTITY_PLAYER_ATTACK_STRONG, .5, 1)
             self.sound(Sound.ENTITY_IRON_GOLEM_HURT, 1, 1.5)
             if self.clone:
@@ -24,12 +30,12 @@ class Spell(PySpell):
 
             self.particle(self.l, Particle.SWEEP_ATTACK, 5, .5, .5, .5, .1)
 
-            self.entities = self.nearbyMobs(self.l, 2, 2, 2)
+            self.entities = self.nearbyMobs(self.l, 3, 3, 3)
 
             self.particle(self.l.add(v), Particle.SWEEP_ATTACK, 5, .5, .5, .5, .1)
             self.particle(self.l.add(v), Particle.SWEEP_ATTACK, 5, .5, .5, .5, .1)
 
-        elif self.t <= 10:
+        elif self.t <= 20:
             for e in self.entities:
                 e.setVelocity(self.player.getEyeLocation().getDirection().clone().multiply(.05 if self.shift else .3).setY(.2).rotateAroundY((.1 * self.t) if self.t % 2 == 0 else (-.1 * self.t)))
 

@@ -210,3 +210,12 @@ fun Player.getId(key: String): Int {
     }
     return sum
 }
+
+fun Player.getArmorHealth(): Int {
+    var sum = 0
+    for (item in wynnEquipment) {
+        if (item == null) continue
+        sum += (item.itemMeta ?: continue).data.getInt("health") ?: continue
+    }
+    return sum
+}

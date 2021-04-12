@@ -10,9 +10,13 @@ class Spell(PySpell):
         self.hit = set()
 
     def tick(self):
-        if self.t == 0 and self.clone:
-            self.sound(Sound.ENTITY_EVOKER_CAST_SPELL, .5, 1.6)
-            self.sound(Sound.ENTITY_BLAZE_AMBIENT, .2, 1.5)
+        if self.t == 0:
+            if self.player.getScoreboardTags().contains('vanish'):
+                self.castSpell('ASSASSIN', 5)
+
+            if self.clone:
+                self.sound(Sound.ENTITY_EVOKER_CAST_SPELL, .5, 1.6)
+                self.sound(Sound.ENTITY_BLAZE_AMBIENT, .2, 1.5)
 
         l = self.player.getEyeLocation().clone().add(Math.sin(self.t * -22.5 * DEG2RAD) * 5, 0, Math.cos(self.t * -22.5 * DEG2RAD) * 5)
 
@@ -31,3 +35,4 @@ class Spell(PySpell):
 
         self.sound(l, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1, 1.2)
         self.sound(l, Sound.ITEM_FLINTANDSTEEL_USE, 1, 1.3)
+        self.sound(l, Sound.BLOCK_BEEHIVE_SHEAR, .2, 1.3)

@@ -1,5 +1,6 @@
 package com.wynnlab
 
+import com.wynnlab.api.getArmorHealth
 import com.wynnlab.api.getId
 import com.wynnlab.api.standardActionBar
 import org.bukkit.Bukkit
@@ -23,12 +24,12 @@ object MainThread : Runnable {
             player.exhaustion = 0f
 
             // Store max health and set attribute
-            val maxHealth = (505 + player.getId("health_bonus")).coerceIn(1, 1000000).toDouble()
+            val maxHealth = (505 + player.getId("health_bonus") + player.getArmorHealth()).coerceIn(1, 1000000).toDouble()
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue = maxHealth
 
             if (s1) {
                 // Natural mana regen
-                player.foodLevel = (player.foodLevel + 1).coerceAtMost(20)
+                player.foodLevel = (player.foodLevel + if ("vanish" in player.scoreboardTags) -1 else 1).coerceIn(0, 20)
 
                 // Jump height
                 val jumpHeight = player.getId("jump_height")
@@ -37,8 +38,8 @@ object MainThread : Runnable {
 
             // Mana regen and health regen
             if (s4) {
-                player.foodLevel = (player.foodLevel + player.getId("mana_regen")).coerceAtMost(20)
-                player.health = (player.health + player.getId("health_regen_raw") * (1 + player.getId("health_regen") / 100f)).coerceAtMost(maxHealth)
+                player.foodLevel = (player.foodLevel + player.getId("mana_regen")).coerceIn(0, 20)
+                player.health = (player.health + player.getId("health_regen_raw") * (1 + player.getId("health_regen") / 100f)).coerceIn(1.0, maxHealth)
             }
 
             // Walk speed

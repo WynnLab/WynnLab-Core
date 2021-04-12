@@ -75,7 +75,7 @@ class Spell(PySpell):
                     self.cooldown = 10
                     self.remaining -= 1
                 else:
-                    Classes.getClasses().get('ARCHER').getSpells().get(5).cast(self.player)
+                    self.castSpell('ARCHER', 5)
                     self.deactivate()
                     self.cancel()
 

@@ -46,8 +46,8 @@ data class Spell(
     val maxTick: Int,
     val pythonClass: PyType
 ) : ConfigurationSerializable {
-    fun cast(player: Player) {
-        val instance = pythonClass.__call__()
+    fun cast(player: Player, vararg args: Any?) {
+        val instance = pythonClass.__call__(Array(args.size) { i -> Py.java2py(args[i]) })
         instance.__setattr__("player", Py.java2py(player))
         instance.__setattr__("clone", PyBoolean(player.isCloneClass))
         instance.__setattr__("maxTick", PyInteger(maxTick))

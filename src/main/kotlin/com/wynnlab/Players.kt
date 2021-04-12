@@ -77,7 +77,7 @@ object Players {
     }
 
     private fun loadAPIData(player: Player) {
-        getWynncraftAPIResult("https://api.wynncraft.com/v2/player/${player.name}/stats").execute { root ->
+        getWynncraftAPIResult("https://api.wynncraft.com/v2/player/${player.name}/stats").task().let { root ->
             val data = (root["data"] as JSONArray)[0] as JSONObject
 
             var rank = when (data["rank"] as String) {
@@ -99,11 +99,11 @@ object Players {
 
             val guildData = data["guild"] as JSONObject
             val guildName = guildData["name"] as String?
-            val guildRank = guildData["rank"] as String?
+            //val guildRank = guildData["rank"] as String?
 
             guildName?.let { gn ->
                 getWynncraftAPIResult("https://api.wynncraft.com/public_api.php?action=guildStats&command=${gn.replace(" ", "%20")}").execute { guild ->
-                    val guildTag = guild.get("prefix") as String?
+                    val guildTag = guild["prefix"] as String?
 
                     rank.apply(player)
                     guildName.let { player.data.setString("guild", it) }

@@ -1,24 +1,30 @@
 from org.bukkit import Particle, Sound
+from org.bukkit.potion import PotionEffect, PotionEffectType
 
 from com.wynnlab.spells import PySpell
 
 class Spell(PySpell):
-    def __init__(self):
-        self.l = None
+    def __init__(self, l):
+        self.l = l
+        self.puffer = 5
 
     def tick(self):
-        # TODO: puffer
-        #self.particle(l, Particle.CLOUD,8,2,2,2,0.2);
-        #l.getWorld().spawnParticle(clone?Particle.SPELL_WITCH:Particle.SQUID_INK,l,6,2,2,2,clone?0.5:0.2);
-        #if(tick%5==0) {
-        #l.getWorld().playSound(l,Sound.BLOCK_FIRE_EXTINGUISH,0.2f,1);
-        #for (Entity e : l.getWorld().getNearbyEntities(l, 3, 3, 3)) {
-        #if (e instanceof Mob && !(e instanceof Player)) {
-        #    ((LivingEntity) e).damage(2,player);
-        #((LivingEntity) e).setNoDamageTicks(0);
-        #((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 1));
-        #}
-        #}
-        #}
-        #tick++;
-        pass
+        if self.puffer <= 0 and self.player.getScoreboardTags().contains('smoke_bomb'):
+            self.cancel()
+
+
+        if self.t % 4 == 0:
+            self.particle(self.l, Particle.CLOUD, 16, 3, 3, 3, 0.1)
+            self.particle(self.l, Particle.SPELL_WITCH if self.clone else Particle.SQUID_INK, 16, 3, 3, 3, .2 if self.clone else .1)
+
+        if self.t % 20 == 0:
+            self.sound(self.l,Sound.BLOCK_FIRE_EXTINGUISH, .3 , 1)
+
+            for e in self.nearbyMobs(self.l, 3, 3, 3):
+                self.damage(e, 2)
+                e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 101, 2))
+
+        if self.puffer <= 2 and self.player.getScoreboardTags().contains('smoke_bomb'):
+            self.player.removeScoreboardTag('smoke_bomb')
+
+        self.puffer -= 1

@@ -2,6 +2,7 @@ package com.wynnlab.spells
 
 import com.wynnlab.api.data
 import com.wynnlab.api.getInt
+import com.wynnlab.classes
 import com.wynnlab.listeners.ProjectileHitListener
 import com.wynnlab.plugin
 import org.bukkit.*
@@ -45,6 +46,8 @@ abstract class PySpell : Runnable {
         taskId = Bukkit.getScheduler().runTaskTimer(plugin, this, 0L, 1L).taskId
         scheduled = true
     }
+
+    fun castSpell(clazz: String, index: Int, vararg args: Any?) = Companion.castSpell(player, clazz, index, *args)
 
     ///////////////////////////////////////////////////////////////////////////
     // Util functions
@@ -110,5 +113,9 @@ abstract class PySpell : Runnable {
         @Suppress("unchecked_cast")
         fun nearbyMobs(world: World, location: Location, x: Double, y: Double, z: Double): Collection<Mob> =
             world.getNearbyEntities(location, x, y, z) { it !is Player && it is Mob } as Collection<Mob>
+
+        @JvmStatic
+        fun castSpell(player: Player, clazz: String, index: Int, vararg args: Any?) = classes[clazz]?.spells?.get(index)
+            ?.cast(player, *args)
     }
 }

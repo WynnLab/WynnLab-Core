@@ -30,6 +30,7 @@ val resources = arrayOf(
     "classes/assassin/vanish.py",
     "classes/assassin/multihit.py",
     "classes/assassin/smoke_bomb.py",
+    "classes/assassin/vanish_end.py",
     "classes/assassin/smoke_bomb_tick.py",
 
     "classes/mage/mage.yml",

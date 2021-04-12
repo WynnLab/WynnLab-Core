@@ -28,7 +28,7 @@ class:
       spellName: Multihit
       cloneSpellName: Shadow Assault
       cost: 8
-      maxTick: 11
+      maxTick: 22
       script: multihit.py
     - ==: com.wynnlab.spells.Spell
       spellName: Smoke Bomb
@@ -36,6 +36,9 @@ class:
       cost: 8
       maxTick: 0
       script: smoke_bomb.py
-    #- ==: com.wynnlab.spells.Spell
-    #  maxTick: 45
-    #  script: smoke_bomb_tick.py
+    - ==: com.wynnlab.spells.Spell
+      maxTick: 0
+      script: vanish_end.py
+    - ==: com.wynnlab.spells.Spell
+      maxTick: 180
+      script: smoke_bomb_tick.py

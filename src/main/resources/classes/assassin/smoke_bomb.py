@@ -7,6 +7,9 @@ from com.wynnlab.spells import PySpell
 
 class Spell(PySpell):
     def tick(self):
+        if self.player.getScoreboardTags().contains('vanish'):
+            self.castSpell('ASSASSIN', 5)
+
         self.sound(Sound.ENTITY_ENDER_PEARL_THROW if self.clone else Sound.ENTITY_SNOWBALL_THROW, .8, 1.3)
         self.sound(Sound.ENTITY_FIREWORK_ROCKET_BLAST_FAR, .8, 1.3)
         self.sound(Sound.ENTITY_GENERIC_EXTINGUISH_FIRE, 1, 1.6)
@@ -23,8 +26,10 @@ class Spell(PySpell):
                 snowball.setItem(ItemStack(Material.ENDER_PEARL))
             snowball.addScoreboardTag('smoke_bomb')
 
+        self.player.addScoreboardTag('smoke_bomb')
+
 def bomb_hit(event):
     event.getEntity().remove()
-    #TODO: Classes.getClasses().get('ASSASSIN').getSpells().get(5).cast(event.getEntity().getShooter())
+    PySpell.castSpell(event.getEntity().getShooter(), 'ASSASSIN', 6, event.getHitEntity().getLocation() if not event.getHitEntity() is None else event.getHitBlock().getLocation())
 
-PySpell.registerProjectileHit('bomb_arrow', bomb_hit)
+PySpell.registerProjectileHit('smoke_bomb', bomb_hit)
