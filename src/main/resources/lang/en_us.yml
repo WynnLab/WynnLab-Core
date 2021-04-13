@@ -3,6 +3,8 @@ commands:
   no_message: '&cPlease specify a message'
   no_conversation: "&cYou aren't in a conversation"
   invalid_target: '&cPlease specify a valid target'
+  no_target: '&cPlease specify a target'
+  no_op: '&cYou need to be an operator to perform this command'
 messages:
   current_class: '&aYour current class is &3[%s]'
   no_class: "&cYou haven't selected a class yet"

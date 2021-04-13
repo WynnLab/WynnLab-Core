@@ -46,6 +46,11 @@ object Players {
         player.healthScale = 20.0
         player.isHealthScaled = true
 
+        player.data.run {
+            remove("rr_action_bar")
+            remove("rr_cancel_spell")
+        }
+
         player.inventory.run {
             setItem(6, ItemStack(Material.COMPASS).meta {
                 setDisplayName("§bCharacter Info")

@@ -171,14 +171,14 @@ class WynnItem(
                 if (it.size > 1) it[0].toInt() to it[1].toInt() else it[0].toInt() to 0
             } }
             val armorType = if (materialId == null) (json["armorType"] as String?)?.let {
-                ArmorType.valueOf(it.toUpperCase())
+                ArmorType.valueOf(it.toUpperCase().takeUnless { it == "GOLDEN" } ?: "GOLD")
             } else null
             val accessoryType = if (materialId == null && armorType == null) (json["accessoryType"] as String?)?.let {
                 AccessoryType.valueOf(it.toUpperCase())
             } else null
 
             val material = materialId?.let { idToMaterial[materialId.first] } ?:
-                armorType?.let { Material.valueOf("${it.name}_${type!!.name}") } ?:
+                armorType?.let { Material.valueOf("${it.repr}_${type!!.name}") } ?:
                 accessoryType?.let { Material.FLINT_AND_STEEL } ?:
                 Material.BARRIER
             val itemDamage = materialId?.second ?: 0

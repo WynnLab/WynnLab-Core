@@ -1,10 +1,15 @@
 package com.wynnlab.commands
 
+import com.wynnlab.api.data
+import com.wynnlab.api.getContainer
 import com.wynnlab.api.getId
+import com.wynnlab.api.sendWynnMessage
+import com.wynnlab.localization.Language
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.persistence.PersistentDataContainer
 
 /**
  * Commands:
@@ -41,7 +46,10 @@ class DevCommands : CommandExecutor {
 
     private fun getid(sender: CommandSender, args: Array<out String>): Boolean {
         if (!sender.isOp) {
-            sender.sendMessage("§4You need to be an operator to execute this command")
+            if (sender is Player)
+                sender.sendWynnMessage("commands.no_op")
+            else
+                sender.sendMessage(Language.en_us.getMessage("commands.no_op"))
             return true
         }
         if (args.isEmpty()) {
