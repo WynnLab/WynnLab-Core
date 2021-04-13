@@ -14,17 +14,20 @@ class:
       script: warrior_main.py
     - ==: com.wynnlab.spells.Spell
       cost: 6
-      maxTick: 40
+      maxTick: 10
       script: bash.py
     - ==: com.wynnlab.spells.Spell
       cost: 4
-      maxTick: 0
+      maxTick: 10
       script: charge.py
     - ==: com.wynnlab.spells.Spell
       cost: 8
-      maxTick: 60
-      script: meteor.py
+      maxTick: 5
+      script: uppercut.py
     - ==: com.wynnlab.spells.Spell
       cost: 4
       maxTick: 20
-      script: ice_snake.py
+      script: war_scream.py
+    - ==: com.wynnlab.spells.Spell
+      maxTick: 20
+      script: uppercut_throw.py
