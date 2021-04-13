@@ -1,0 +1,31 @@
+class:
+  ==: com.wynnlab.WynnClass
+  id: SHAMAN
+  item: WOODEN_SHOVEL
+  item_damage: 7
+  metaStats:
+    damage: 2
+    defence: 3
+    range: 3
+    spells: 5
+  invertedControls: false
+  spells:
+    - ==: com.wynnlab.spells.Spell
+      maxTick: 0
+      script: shaman_main.py
+    - ==: com.wynnlab.spells.Spell
+      cost: 4
+      maxTick: 0
+      script: totem.py
+    - ==: com.wynnlab.spells.Spell
+      cost: 1
+      maxTick: 0
+      script: haul.py
+    - ==: com.wynnlab.spells.Spell
+      cost: 8
+      maxTick: 0
+      script: aura.py
+    - ==: com.wynnlab.spells.Spell
+      cost: 6
+      maxTick: 0
+      script: uproot.py

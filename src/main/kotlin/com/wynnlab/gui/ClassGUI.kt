@@ -8,7 +8,9 @@ import com.wynnlab.classes
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.Damageable
 
 class ClassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.class.title"), 1) {
     private val classCount = classes.size
@@ -48,6 +50,12 @@ class ClassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.class.
         for (clazz in classes.values) {
             val item = ItemStack(clazz.item)
             val meta = item.itemMeta
+
+            meta.isUnbreakable = true
+            meta.addItemFlags(*ItemFlag.values())
+
+            if (clazz.itemDamage != 0 && meta is Damageable)
+                meta.damage = clazz.itemDamage
 
             meta.setDisplayName(player.getLocalizedText("gui.class.item.title", player.getLocalizedText("classes.${clazz.id}.className")))
             val lore = mutableListOf(" ")

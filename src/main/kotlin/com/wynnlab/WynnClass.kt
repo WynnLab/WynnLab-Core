@@ -12,6 +12,7 @@ import java.util.logging.Level
 data class WynnClass(
     val id: String,
     val item: Material,
+    val itemDamage: Int,
     val metaStats: Tuple4<Int>,
     val invertedControls: Boolean,
     val spells: List<Spell>
@@ -22,6 +23,7 @@ data class WynnClass(
 
         out["id"] = id
         out["item"] = item.name
+        if (itemDamage != 0) out["item_damage"] = itemDamage
         out["metaStats"] = mapOf("damage" to metaStats.v1, "defence" to metaStats.v2, "range" to metaStats.v3, "spells" to metaStats.v4)
         out["invertedControls"] = invertedControls
         out["spells"] = spells.map { it.serialize() }
@@ -35,13 +37,14 @@ data class WynnClass(
         fun deserialize(map: Map<String, Any>): WynnClass {
             val id = map["id"] as String
             val item = Material.valueOf(map["item"] as String)
+            val itemDamage = (map["item_damage"] as Number??: 0).toInt()
             val metaStats = map["metaStats"] as Map<String, Number>
             val invertedControls = map["invertedControls"] as Boolean
             val spells = map["spells"] as List<Spell>
 
             spellOrdinal = 0
 
-            return WynnClass(id, item,
+            return WynnClass(id, item, itemDamage,
                 Tuple4(metaStats["damage"]!!.toInt(), metaStats["defence"]!!.toInt(), metaStats["range"]!!.toInt(), metaStats["spells"]!!.toInt()),
                 invertedControls, spells)
         }
