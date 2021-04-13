@@ -20,11 +20,11 @@ class Spell(PySpell):
 
         self.player.setHealth(Math.min(self.player.getHealth() + 50, self.player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()))
 
-        for e in self.player.getNearbyEntities(4, 4, 4):
-            if not isinstance(e, Player):
+        for p in self.player.getNearbyEntities(4, 4, 4):
+            if not isinstance(p, Player):
                 continue
 
-            e.setHealth(Math.min(e.getHealth() + 50, e.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()))
-            Bukkit.getPluginManager().callEvent(EntityRegainHealthEvent(self.player, 50, EntityRegainHealthEvent.RegainReason.CUSTOM))
+            p.setHealth(Math.min(p.getHealth() + 50, p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()))
+            Bukkit.getPluginManager().callEvent(EntityRegainHealthEvent(p, 50, EntityRegainHealthEvent.RegainReason.CUSTOM))
 
-            self.particle(e.getLocation().clone().add(0, 1, 0), Particle.FIREWORKS_SPARK, 16, .3, 1, .3, .05)
+            self.particle(p.getLocation().clone().add(0, 1, 0), Particle.FIREWORKS_SPARK, 16, .3, 1, .3, .05)

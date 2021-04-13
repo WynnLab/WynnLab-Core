@@ -40,6 +40,14 @@ val resources = arrayOf(
     "classes/mage/meteor.py",
     "classes/mage/ice_snake.py",
 
+    "classes/warrior/warrior.yml",
+    "classes/warrior/warrior_main.py",
+    "classes/warrior/bash.py",
+    "classes/warrior/charge.py",
+    "classes/warrior/uppercut.py",
+    "classes/warrior/war_scream.py",
+    "classes/warrior/uppercut_throw.py",
+
     /////////////////////////////////////
     // Languages
     /////////////////////////////////////

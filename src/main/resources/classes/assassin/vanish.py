@@ -19,6 +19,8 @@ class Spell(PySpell):
         self.sound(Sound.ENTITY_EVOKER_CAST_SPELL, 1, 1.6)
         self.sound(Sound.ENTITY_GHAST_SHOOT, .6, 1)
 
+        self.player.addScoreboardTag('invis')
+
         for p in Bukkit.getOnlinePlayers():
             p.hidePlayer(plugin, self.player)
         #TODO: Remove Vanish, Shadow Clone (?)

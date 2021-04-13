@@ -13,7 +13,7 @@ class Spell(PySpell):
         self.ice_loc = self.player.getLocation().clone().add(0, 1, 0)
 
     def tick(self):
-        self.ice_loc.add(BukkitUtils.normalizeOnXZ(self.player.getEyeLocation().getDirection().clone()))
+        self.ice_loc.add(BukkitUtils.normalizeOnXZ(self.player.getEyeLocation().getDirection()))
 
         ice_block = self.player.getWorld().spawnFallingBlock(self.ice_loc, Material.OBSIDIAN.createBlockData() if self.clone else Material.PACKED_ICE.createBlockData())
         ice_block.setDropItem(False)

@@ -12,7 +12,7 @@ class Spell(PySpell):
         self.sound(Sound.ENTITY_ARROW_SHOOT, .9, .7)
         self.sound(Sound.ENTITY_TNT_PRIMED, 1, 1.3)
 
-        bomb = self.player.launchProjectile(Snowball if self.clone else Arrow, self.player.getEyeLocation().getDirection().clone().multiply(3))
+        bomb = self.player.launchProjectile(Snowball if self.clone else Arrow, self.player.getEyeLocation().getDirection().multiply(3))
         bomb.addScoreboardTag('bomb_arrow')
         if self.clone:
             bomb.setItem(ItemStack(Material.FLINT))

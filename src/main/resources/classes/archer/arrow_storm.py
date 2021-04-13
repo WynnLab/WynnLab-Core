@@ -21,7 +21,7 @@ class Spell(PySpell):
             if self.clone:
                 self.particle(arrow.getLocation(), Particle.CRIT_MAGIC, 1, 0, 0, 0, .01)
         
-        vi = self.player.getEyeLocation().getDirection().clone().multiply(3)
+        vi = self.player.getEyeLocation().getDirection().multiply(3)
         shots = (
             self.player.launchProjectile(Snowball if self.clone else Arrow, vi),
             self.player.launchProjectile(Snowball if self.clone else Arrow, vi.rotateAroundY(.4)),

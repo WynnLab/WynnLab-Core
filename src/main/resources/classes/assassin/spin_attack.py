@@ -35,4 +35,3 @@ class Spell(PySpell):
 
         self.sound(l, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1, 1.2)
         self.sound(l, Sound.ITEM_FLINTANDSTEEL_USE, 1, 1.3)
-        self.sound(l, Sound.BLOCK_BEEHIVE_SHEAR, .2, 1.3)

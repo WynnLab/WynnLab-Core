@@ -26,7 +26,7 @@ class Spell(PySpell):
             if self.clone:
                 self.sound(Sound.ENTITY_BLAZE_AMBIENT, .3, 1.5)
 
-            v = BukkitUtils.normalizeOnXZ(self.player.getEyeLocation().getDirection().clone())
+            v = BukkitUtils.normalizeOnXZ(self.player.getEyeLocation().getDirection())
             self.l = self.player.getLocation().clone().add(v).add(0, .5, 0)
 
             self.particle(self.l, Particle.SWEEP_ATTACK, 5, .5, .5, .5, .1)
@@ -38,7 +38,7 @@ class Spell(PySpell):
 
         elif self.t <= 20:
             for e in self.entities:
-                e.setVelocity(self.player.getEyeLocation().getDirection().clone().multiply(.05 if self.shift else .3).setY(.2).rotateAroundY((.1 * self.t) if self.t % 2 == 0 else (-.1 * self.t)))
+                e.setVelocity(self.player.getEyeLocation().getDirection().multiply(.05 if self.shift else .3).setY(.2).rotateAroundY((.1 * self.t) if self.t % 2 == 0 else (-.1 * self.t)))
 
                 self.particle(e.getLocation(), Particle.SWEEP_ATTACK, 5, .5, .5, .5, .5)
                 if self.clone:
@@ -54,7 +54,7 @@ class Spell(PySpell):
         else:
             for e in self.entities:
                 if not self.shift:
-                    e.setVelocity(self.player.getEyeLocation().getDirection().clone().setY(.5))
+                    e.setVelocity(self.player.getEyeLocation().getDirection().setY(.5))
 
                 self.sound(e.getLocation(), Sound.ENTITY_PLAYER_ATTACK_KNOCKBACK, 1, 1.3)
 

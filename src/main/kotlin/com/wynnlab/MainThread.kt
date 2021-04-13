@@ -3,6 +3,7 @@ package com.wynnlab
 import com.wynnlab.api.getArmorHealth
 import com.wynnlab.api.getId
 import com.wynnlab.api.standardActionBar
+import com.wynnlab.spells.PySpell
 import org.bukkit.Bukkit
 import org.bukkit.attribute.Attribute
 import org.bukkit.potion.PotionEffect
@@ -28,6 +29,10 @@ object MainThread : Runnable {
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue = maxHealth
 
             val manaDrain = player.hasPotionEffect(PotionEffectType.INVISIBILITY)
+
+            if (!manaDrain && "invis" in player.scoreboardTags)
+                PySpell.castSpell(player, "ASSASSIN", 5)
+
             if (s1) {
                 // Natural mana regen
                 player.foodLevel = (player.foodLevel + if (manaDrain) -1 else 1).coerceIn(0, 20)

@@ -11,7 +11,7 @@ class Spell(PySpell):
         if self.t == 0:
             if not self.player.getWorld().getBlockAt(self.player.getLocation().clone().subtract(0, 1, 0)).isEmpty() or not self.player.getWorld().getBlockAt(self.player.getLocation().clone().subtract(0, 2, 0)).isEmpty():
                 #self.player.addScoreboardTag('escape')
-                eye_dir = self.player.getEyeLocation().getDirection().clone()
+                eye_dir = self.player.getEyeLocation().getDirection()
                 self.player.setVelocity(eye_dir.setY(Math.min(-.4 * Math.abs(eye_dir.getY()), -.4)).multiply(-4))
 
                 self.sound(self.player.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1, 1.2)

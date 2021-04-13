@@ -33,6 +33,12 @@
           <option value="classes.assassin.spin_attack.set" />
           <option value="classes.assassin.vanish_end.plugin" />
           <option value="classes.assassin.vanish.plugin" />
+          <option value="classes.archer.archer_main.isinstance" />
+          <option value="classes.warrior.bash.range" />
+          <option value="classes.warrior.bash.DEG2RAD" />
+          <option value="classes.warrior.war_scream.range" />
+          <option value="classes.warrior.war_scream.DEG2RAD" />
+          <option value="classes.warrior.war_scream.isinstance" />
         </list>
       </option>
     </inspection_tool>

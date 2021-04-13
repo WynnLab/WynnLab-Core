@@ -5,12 +5,16 @@ import com.wynnlab.api.getInt
 import com.wynnlab.classes
 import com.wynnlab.listeners.ProjectileHitListener
 import com.wynnlab.plugin
+import com.wynnlab.util.normalizeOnXZ
+import com.wynnlab.util.plus
+import com.wynnlab.util.times
 import org.bukkit.*
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileHitEvent
+import org.bukkit.util.Vector
 
 abstract class PySpell : Runnable {
     lateinit var player: Player
@@ -54,6 +58,8 @@ abstract class PySpell : Runnable {
     ///////////////////////////////////////////////////////////////////////////
     
     fun damage(e: LivingEntity, amount: Double) = damage(player, e, amount)
+
+    fun knockback(target: Entity, amount: Double) = knockback(target, player.eyeLocation.direction.add(player.velocity).multiply(.5), amount)
     
     fun particle(location: Location, particle: Particle, count: Int, offX: Double, offY: Double, offZ: Double, speed: Double) =
         particle(player, location, particle, count, offX, offY, offZ, speed, null)
@@ -82,6 +88,11 @@ abstract class PySpell : Runnable {
         fun damage(source: Entity, e: LivingEntity, amount: Double) {
             e.damage(amount, source)
             e.noDamageTicks = 0
+        }
+
+        @JvmStatic
+        fun knockback(target: Entity, direction: Vector, amount: Double) {
+            target.velocity = (target.velocity + direction.clone().normalizeOnXZ().multiply(amount).multiply(.225)).add(direction.clone().normalize().multiply(.25))
         }
 
         @JvmStatic

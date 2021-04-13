@@ -5,6 +5,8 @@ from com.wynnlab.spells import PySpell
 
 class Spell(PySpell):
     def tick(self):
+        self.player.removeScoreboardTag('invis')
+
         self.player.removePotionEffect(PotionEffectType.SPEED)
         self.player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE)
         self.player.removePotionEffect(PotionEffectType.INVISIBILITY)

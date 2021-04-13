@@ -8,7 +8,7 @@ class Spell(PySpell):
     def tick(self):
         self.sound(Sound.ENTITY_ARROW_SHOOT, 1, 1)
 
-        arrow = self.player.launchProjectile(Snowball if self.clone else Arrow, self.player.getEyeLocation().getDirection().clone().multiply(3))
+        arrow = self.player.launchProjectile(Snowball if self.clone else Arrow, self.player.getEyeLocation().getDirection().multiply(3))
         if self.clone:
             arrow.setItem(ItemStack(Material.FLINT))
 

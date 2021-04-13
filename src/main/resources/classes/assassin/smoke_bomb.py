@@ -14,7 +14,7 @@ class Spell(PySpell):
         self.sound(Sound.ENTITY_FIREWORK_ROCKET_BLAST_FAR, .8, 1.3)
         self.sound(Sound.ENTITY_GENERIC_EXTINGUISH_FIRE, 1, 1.6)
 
-        v = self.player.getEyeLocation().getDirection().clone().multiply(3)
+        v = self.player.getEyeLocation().getDirection().multiply(3)
         snowballs = (
             self.player.launchProjectile(Snowball, v),
             self.player.launchProjectile(Snowball, v.rotateAroundY(.4)),

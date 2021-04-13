@@ -13,7 +13,7 @@ class Spell(PySpell):
     def tick(self):
         if self.t == 0:
             ray = self.player.rayTraceBlocks(21)
-            ray_loc = self.player.getEyeLocation().clone().add(self.player.getEyeLocation().getDirection().clone().multiply(21)) if ray is None or ray.getHitBlock() is None else ray.getHitBlock().getLocation()
+            ray_loc = self.player.getEyeLocation().clone().add(self.player.getEyeLocation().getDirection().multiply(21)) if ray is None or ray.getHitBlock() is None else ray.getHitBlock().getLocation()
             if ray is not None and ray.getHitEntity() is not None:
                 ray_loc = ray.getHitEntity().getLocation()
 
