@@ -1,3 +1,8 @@
+messages:
+  current_class: '&aDu bist momentan &3[%s]'
+  no_class: "&cDu hast noch keine Klasse gewählt"
+  class_change: '&aGib &6/class &aein, um eine andere Klasse zu benutzen'
+  class_select: '&cGib &6/class &cein, um eine Klasse zu wählen'
 classes:
   MAGE:
     className: 'Magier'

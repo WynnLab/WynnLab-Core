@@ -36,3 +36,5 @@ fun PersistentDataContainer.setContainer(key: String, value: PersistentDataConta
     container.value()
     set(key, PersistentDataType.TAG_CONTAINER, container)
 }
+
+fun PersistentDataContainer.remove(key: String) = remove(NamespacedKey(plugin, key))

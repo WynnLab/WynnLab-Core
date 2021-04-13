@@ -1,9 +1,7 @@
 package com.wynnlab.listeners
 
 import com.wynnlab.Players
-import com.wynnlab.api.prefix
-import com.wynnlab.api.prefixes
-import com.wynnlab.api.wynnPrefix
+import com.wynnlab.api.*
 import com.wynnlab.plugin
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -15,9 +13,19 @@ import org.bukkit.event.player.PlayerQuitEvent
 class PlayerEventsListener : Listener {
     @EventHandler
     fun onPlayerJoin(e: PlayerJoinEvent) {
-        Players.preparePlayer(e.player)
-        e.joinMessage = "§7[§a+§7]§r ${e.player.prefix}${e.player.name}"
-        e.player.sendMessage("Locale: ${e.player.locale}")
+        val player = e.player
+
+        Players.preparePlayer(player)
+        e.joinMessage = "§7[§a+§7]§r ${player.prefix}${player.name}"
+        //e.player.sendMessage("Locale: ${e.player.locale}")
+        player.getWynnClass()?.let { c ->
+            player.sendWynnMessage("messages.select_class", player.getLocalizedText("classes.$c.${if (player.isCloneClass) "cloneName" else "className"}"))
+            player.sendWynnMessage("messages.class_change")
+        } ?: run {
+            player.sendWynnMessage("messages.no_class")
+            player.sendWynnMessage("messages.select_class")
+            player.performCommand("wynnlab:class")
+        }
     }
 
     @EventHandler

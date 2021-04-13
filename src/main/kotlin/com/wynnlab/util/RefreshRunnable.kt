@@ -1,6 +1,7 @@
 package com.wynnlab.util
 
 import com.wynnlab.api.getInt
+import com.wynnlab.api.remove
 import com.wynnlab.api.setInt
 import com.wynnlab.plugin
 import org.bukkit.Bukkit
@@ -14,8 +15,10 @@ abstract class RefreshRunnable(private val data: PersistentDataContainer, privat
         val delay = data.getInt("RR_$id")!!
         if (delay > 0)
             data.setInt("RR_$id", delay - 1)
-        if (delay <= 1)
+        if (delay <= 1) {
             task()
+            data.remove("RR_$id")
+        }
     }
 
     abstract fun task()

@@ -96,6 +96,7 @@ object Players {
                 player.sendMessage("WynnLab Admin, Wynncraft $rank")
                 rank = Rank.ADMIN
             }
+            rank.apply(player)
 
             val guildData = data["guild"] as JSONObject
             val guildName = guildData["name"] as String?
@@ -104,8 +105,6 @@ object Players {
             guildName?.let { gn ->
                 getWynncraftAPIResult("https://api.wynncraft.com/public_api.php?action=guildStats&command=${gn.replace(" ", "%20")}").execute { guild ->
                     val guildTag = guild["prefix"] as String?
-
-                    rank.apply(player)
                     guildName.let { player.data.setString("guild", it) }
                     guildTag?.let { player.data.setString("guild_tag", it) }
                 }
