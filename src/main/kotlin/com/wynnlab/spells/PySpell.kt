@@ -9,6 +9,8 @@ import com.wynnlab.util.normalizeOnXZ
 import com.wynnlab.util.plus
 import com.wynnlab.util.times
 import org.bukkit.*
+import org.bukkit.attribute.Attributable
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Mob
@@ -88,6 +90,11 @@ abstract class PySpell : Runnable {
         fun damage(source: Entity, e: LivingEntity, amount: Double) {
             e.damage(amount, source)
             e.noDamageTicks = 0
+        }
+
+        @JvmStatic
+        fun <Healable> heal(e: Healable, amount: Double) where Healable : LivingEntity, Healable : Attributable {
+            e.health = (e.health + amount).coerceIn(1.0, e.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value)
         }
 
         @JvmStatic

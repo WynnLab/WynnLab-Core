@@ -18,13 +18,13 @@ class Spell(PySpell):
         self.sound(Sound.ENTITY_EVOKER_CAST_SPELL, .5, 1.5)
         self.sound(Sound.BLOCK_LAVA_EXTINGUISH, 1, 1)
 
-        self.player.setHealth(Math.min(self.player.getHealth() + 50, self.player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()))
+        PySpell.heal(self.player, 50)
 
         for p in self.player.getNearbyEntities(4, 4, 4):
             if not isinstance(p, Player):
                 continue
 
-            p.setHealth(Math.min(p.getHealth() + 50, p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()))
+            PySpell.heal(p, 50)
             Bukkit.getPluginManager().callEvent(EntityRegainHealthEvent(p, 50, EntityRegainHealthEvent.RegainReason.CUSTOM))
 
             self.particle(p.getLocation().clone().add(0, 1, 0), Particle.FIREWORKS_SPARK, 16, .3, 1, .3, .05)

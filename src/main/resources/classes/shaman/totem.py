@@ -1,4 +1,5 @@
 from org.bukkit import Material, Particle, Sound
+from org.bukkit.attribute import Attribute
 from org.bukkit.entity import EntityType, Mob, Player
 from org.bukkit.inventory import ItemStack
 
@@ -43,7 +44,7 @@ class Spell(PySpell):
 
             self.totem.setVelocity(dir.setY(1))
 
-            #PersistentDataAPI.setInt(PersistentDataAPI.getData(self.player), 'totem', self.totem.getEntityID())
+            PersistentDataAPI.setInt(PersistentDataAPI.getData(self.player), 'totem', self.totem.getEntityId())
 
         if not self.hit:
             if not self.totem.isOnGround():
@@ -63,7 +64,7 @@ class Spell(PySpell):
                 self.holo.setCustomName(u'§c20s')
                 self.holo.setCustomNameVisible(True)
 
-                #PersistentDataAPI.setInt(PersistentDataAPI.getData(self.player), 'totem_holo', self.holo.getEntityID())
+                PersistentDataAPI.setInt(PersistentDataAPI.getData(self.player), 'totem_holo', self.holo.getEntityId())
 
                 l = self.totem.getLocation()
 
@@ -95,7 +96,7 @@ class Spell(PySpell):
                             continue
 
                         if isinstance(e, Player):
-                            pass # Heal
+                            PySpell.heal(e, self.player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() / 10)
 
                         else:
                             self.damage(e, 1)
