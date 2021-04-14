@@ -14,7 +14,7 @@ class GUIListener : Listener {
         val inventory = e.clickedInventory ?: return
 
         // Prevent moving hotbar action items
-        if (e.slot in 6..8) {
+        if (inventory == e.whoClicked.inventory && e.slot in 6..8) {
             e.isCancelled = true
             return
         }

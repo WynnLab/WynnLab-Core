@@ -31,7 +31,6 @@ class Spell(PySpell):
 
             for e in self.nearbyMobs(self.ripple_loc, 3, 3, 3):
                 self.castSpell('WARRIOR', 5, e)
-            else:
                 self.hit = True
 
         if self.t == 5 and self.hit and self.shift:

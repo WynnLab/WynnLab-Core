@@ -68,7 +68,7 @@ object Players {
                 lore = listOf("§7Having less soul points increases", "§7the chance of dropping items upon", "§7death",
                 )//" ", "§cShift Right-Click to enable hunted")
             })
-            setItem(13, ItemStack(Material.DIAMOND_AXE).setAppearance(94).meta {
+            setItem(13, ItemStack(Material.DIAMOND_AXE).setAppearance(93).meta {
                 addItemFlags(*ItemFlag.values())
                 setDisplayName("§6Magic Pouch")
                 lore = listOf(

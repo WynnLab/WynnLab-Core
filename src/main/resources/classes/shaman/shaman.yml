@@ -1,7 +1,7 @@
 class:
   ==: com.wynnlab.WynnClass
   id: SHAMAN
-  item: WOODEN_SHOVEL
+  item: STONE_SHOVEL
   item_damage: 7
   metaStats:
     damage: 2
