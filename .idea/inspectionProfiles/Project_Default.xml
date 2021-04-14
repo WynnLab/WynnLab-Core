@@ -39,6 +39,9 @@
           <option value="classes.warrior.war_scream.range" />
           <option value="classes.warrior.war_scream.DEG2RAD" />
           <option value="classes.warrior.war_scream.isinstance" />
+          <option value="classes.shaman.shaman_main.set" />
+          <option value="classes.shaman.totem.isinstance" />
+          <option value="classes.shaman.totem.DEG2RAD" />
         </list>
       </option>
     </inspection_tool>

@@ -11,11 +11,11 @@ class:
   invertedControls: false
   spells:
     - ==: com.wynnlab.spells.Spell
-      maxTick: 0
+      maxTick: 15
       script: shaman_main.py
     - ==: com.wynnlab.spells.Spell
       cost: 4
-      maxTick: 0
+      maxTick: 400
       script: totem.py
     - ==: com.wynnlab.spells.Spell
       cost: 1
