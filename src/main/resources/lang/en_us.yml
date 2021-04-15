@@ -10,6 +10,7 @@ messages:
   no_class: "&cYou haven't selected a class yet"
   class_change: '&aType &6/class &ato change your class'
   class_select: '&cType &6/class &cto select a class'
+  totem_out: '&cYour totem is out!'
 classes:
   MAGE:
     className: 'Mage'

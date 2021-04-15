@@ -19,11 +19,11 @@ class PlayerEventsListener : Listener {
         e.joinMessage = "§7[§a+§7]§r ${player.prefix}${player.name}"
         //e.player.sendMessage("Locale: ${e.player.locale}")
         player.getWynnClass()?.let { c ->
-            player.sendWynnMessage("messages.select_class", player.getLocalizedText("classes.$c.${if (player.isCloneClass) "cloneName" else "className"}"))
+            player.sendWynnMessage("messages.current_class", player.getLocalizedText("classes.$c.${if (player.isCloneClass) "cloneName" else "className"}"))
             player.sendWynnMessage("messages.class_change")
         } ?: run {
             player.sendWynnMessage("messages.no_class")
-            player.sendWynnMessage("messages.select_class")
+            player.sendWynnMessage("messages.class_select")
             player.performCommand("wynnlab:class")
         }
     }

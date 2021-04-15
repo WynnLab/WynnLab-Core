@@ -19,7 +19,7 @@ class:
       script: totem.py
     - ==: com.wynnlab.spells.Spell
       cost: 1
-      maxTick: 0
+      maxTick: 300
       script: haul.py
     - ==: com.wynnlab.spells.Spell
       cost: 8

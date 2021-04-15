@@ -61,7 +61,7 @@ class Spell(PySpell):
                 self.holo.setMarker(True)
                 self.holo.setVisible(False)
                 self.holo.setInvulnerable(True)
-                self.holo.setCustomName(u'§c20s')
+                self.holo.setCustomName(PySpell.colorText('20s', 'c'))
                 self.holo.setCustomNameVisible(True)
 
                 PersistentDataAPI.setInt(PersistentDataAPI.getData(self.player), 'totem_holo', self.holo.getEntityId())
@@ -89,7 +89,7 @@ class Spell(PySpell):
 
             if self.t < 400:
                 if self.t % 20 == 0:
-                    self.holo.setCustomName(u'§c{0}s'.format((400 - self.t) // 20))
+                    self.holo.setCustomName(PySpell.colorText('{0}s'.format((400 - self.t) // 20), 'c'))
 
                     for e in self.player.getWorld().getNearbyEntities(self.totem.getLocation(), 8, 4, 8):
                         if not isinstance(e, Mob):
@@ -103,6 +103,8 @@ class Spell(PySpell):
 
                 l = self.totem.getLocation().clone().add(Math.sin(self.t * 10 * DEG2RAD) * 8, .7, Math.cos(self.t * 10 * DEG2RAD) * 8)
                 self.particle(l, Particle.FIREWORKS_SPARK if self.clone else Particle.TOTEM, 1, 0, 0, 0, 0)
+
+                self.particle(self.totem.getLocation().clone().add(0, 1, 0), Particle.SPELL_MOB, 2, .5, 1, .5, .5)
 
                 self.holo.teleport(self.totem.getLocation().clone().add(0, 2.7, 0))
 

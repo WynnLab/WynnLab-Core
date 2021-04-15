@@ -135,5 +135,8 @@ abstract class PySpell : Runnable {
         @JvmStatic
         fun castSpell(player: Player, clazz: String, index: Int, vararg args: Any?) = classes[clazz]?.spells?.get(index)
             ?.cast(player, *args)
+
+        @[JvmStatic Suppress("unused")]
+        fun colorText(text: String, color: Char) = "§$color$text"
     }
 }
