@@ -8,6 +8,9 @@ from com.wynnlab.spells import PySpell
 from java.lang import Math
 
 class Spell(PySpell):
+    def __init__(self):
+        self.hit = set()
+
     def tick(self):
         if self.t == 0:
             # Find totem
@@ -33,7 +36,7 @@ class Spell(PySpell):
             self.sound(Sound.ENTITY_BLAZE_SHOOT, 1, 1)
             self.sound(Sound.ENTITY_IRON_GOLEM_HURT, .8, .8)
             if self.clone:
-                self.sound(Sound.ENTITY_BLAZE_AMBIENT, 2, 0.1)
+                self.sound(Sound.ENTITY_BLAZE_AMBIENT, .1, .9)
 
         elif self.t > 10:
             if self.player.isOnGround():
@@ -52,5 +55,9 @@ class Spell(PySpell):
 
             else:
                 for e in self.nearbyMobs(1, 1, 1):
+                    if e in self.hit:
+                        continue
+                    self.hit.add(e)
+
                     self.damage(e, 2)
                     e.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 100, 0, True, False))

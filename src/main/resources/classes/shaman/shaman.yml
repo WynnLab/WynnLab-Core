@@ -23,7 +23,7 @@ class:
       script: haul.py
     - ==: com.wynnlab.spells.Spell
       cost: 8
-      maxTick: 0
+      maxTick: 30
       script: aura.py
     - ==: com.wynnlab.spells.Spell
       cost: 6

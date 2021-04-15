@@ -1,4 +1,4 @@
-from org.bukkit import Material, Particle, Sound
+from org.bukkit import Bukkit, Material, Particle, Sound
 from org.bukkit.attribute import Attribute
 from org.bukkit.entity import EntityType, Mob, Player
 from org.bukkit.inventory import ItemStack
@@ -17,7 +17,25 @@ class Spell(PySpell):
 
     def tick(self):
         if self.t == 0:
+            if self.player.getScoreboardTags().contains('totem'):
+                totem_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem')
+                if not totem_id is None:
+                    for e in self.player.getWorld().getEntities():
+                        if e.getEntityId() == totem_id:
+                            e.remove()
+
+                holo_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem_holo')
+                if not holo_id is None:
+                    for e in self.player.getWorld().getEntities():
+                        if e.getEntityId() == holo_id:
+                            e.remove()
+
+                totem_task = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem_task')
+                if not totem_task is None:
+                    Bukkit.getScheduler().cancelTask(totem_task)
+
             self.player.addScoreboardTag('totem')
+            PersistentDataAPI.setInt(PersistentDataAPI.getData(self.player), 'totem_task', self.getTaskId())
 
             self.sound(Sound.ENTITY_PLAYER_ATTACK_WEAK, .8, .3)
             self.sound(Sound.ENTITY_IRON_GOLEM_HURT, 1, .8)

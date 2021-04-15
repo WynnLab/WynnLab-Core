@@ -3,11 +3,9 @@ package com.wynnlab.spells
 import com.wynnlab.api.data
 import com.wynnlab.api.getInt
 import com.wynnlab.classes
-import com.wynnlab.listeners.ProjectileHitListener
 import com.wynnlab.plugin
 import com.wynnlab.util.normalizeOnXZ
 import com.wynnlab.util.plus
-import com.wynnlab.util.times
 import org.bukkit.*
 import org.bukkit.attribute.Attributable
 import org.bukkit.attribute.Attribute
@@ -22,7 +20,9 @@ abstract class PySpell : Runnable {
     lateinit var player: Player
     var t = 0
 
-    private var taskId = -1
+    private var _taskId = -1
+    val taskId get() = _taskId
+
     private var scheduled = false
     var maxTick = 0
 
@@ -33,7 +33,7 @@ abstract class PySpell : Runnable {
     fun delay() { --t }
 
     fun cancel() {
-        Bukkit.getScheduler().cancelTask(taskId)
+        Bukkit.getScheduler().cancelTask(_taskId)
     }
 
     final override fun run() {
@@ -49,7 +49,7 @@ abstract class PySpell : Runnable {
 
     fun schedule() {
         init()
-        taskId = Bukkit.getScheduler().runTaskTimer(plugin, this, 0L, 1L).taskId
+        _taskId = Bukkit.getScheduler().runTaskTimer(plugin, this, 0L, 1L).taskId
         scheduled = true
     }
 
