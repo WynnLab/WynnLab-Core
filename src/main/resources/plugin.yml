@@ -41,3 +41,6 @@ commands:
   p:
     description: Send a message to your party
     usage: /p <message>
+  dummy:
+    description: Spawns a dummy
+    usage: /dummy

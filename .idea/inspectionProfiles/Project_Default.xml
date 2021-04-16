@@ -51,6 +51,7 @@
           <option value="classes.shaman.uproot.DEG2RAD" />
           <option value="classes.shaman.totem_tick.isinstance" />
           <option value="classes.shaman.totem_tick.DEG2RAD" />
+          <option value="classes.warrior.uppercut.set" />
         </list>
       </option>
     </inspection_tool>

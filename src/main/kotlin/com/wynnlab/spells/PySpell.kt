@@ -93,7 +93,7 @@ abstract class PySpell : Runnable {
             e.damage(amount, source)
             e.noDamageTicks = 0
 
-            val diLocation = e.eyeLocation.clone().add(random.nextDouble() * 2, random.nextDouble(), random.nextDouble() * 2)
+            val diLocation = e.eyeLocation.clone().add(random.nextDouble() * .5, random.nextDouble() * .5 + .5, random.nextDouble() * .5)
             val di = Hologram(diLocation,
                 "§4-${amount.toInt()}❤")
             di.spawn(e.world)

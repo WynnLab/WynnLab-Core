@@ -52,6 +52,7 @@ class Main : JavaPlugin() {
     val rankCommand by lazy { RankCommand() }
     val devCommands by lazy { DevCommands() }
     val essentialsCommands by lazy { EssentialsCommands() }
+    val dummyCommand by lazy { DummyCommand() }
 
     private fun registerCommands() {
         getCommand("class")?.setExecutor(classCommand)
@@ -65,6 +66,7 @@ class Main : JavaPlugin() {
         getCommand("r")?.setExecutor(essentialsCommands)
         getCommand("party")?.setExecutor(essentialsCommands)
         getCommand("p")?.setExecutor(essentialsCommands)
+        getCommand("dummy")?.setExecutor(dummyCommand)
     }
 
     val castListener by lazy { CastListener() }

@@ -8,7 +8,10 @@ class Spell(PySpell):
     def __init__(self):
         self.ripple_loc = None
         self.ripple_dir = None
-        self.hit = False
+
+        self.hit = set()
+
+        self.has_hit = False
         self.shift = False
 
     def init(self):
@@ -30,8 +33,12 @@ class Spell(PySpell):
             self.particle(self.ripple_loc, Particle.BLOCK_CRACK, 10, .5, .5, .5, .5, (Material.GLOWSTONE if self.clone else Material.DIRT).createBlockData())
 
             for e in self.nearbyMobs(self.ripple_loc, 3, 3, 3):
-                self.castSpell('WARRIOR', 5, e)
-                self.hit = True
+                if e in self.hit:
+                    continue
+                self.hit.add(e)
 
-        if self.t == 5 and self.hit and self.shift:
+                self.castSpell('WARRIOR', 5, e)
+                self.has_hit = True
+
+        if self.t == 5 and self.has_hit and self.shift:
             self.player.setVelocity(Vector(0, 1.5, 0))

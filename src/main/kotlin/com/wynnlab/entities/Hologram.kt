@@ -11,8 +11,7 @@ import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
 import org.bukkit.entity.ArmorStand
 import org.bukkit.event.entity.CreatureSpawnEvent
 
-class Hologram(location: Location, text: String) : EntityArmorStand(EntityTypes.ARMOR_STAND, (location.world as CraftWorld).handle) {
-
+class Hologram(location: Location, text: String) : EntityArmorStand(EntityTypes.ARMOR_STAND, (location.world as CraftWorld).handle), CustomEntity<ArmorStand> {
     init {
         isInvisible = true
         isInvulnerable = true
@@ -24,10 +23,6 @@ class Hologram(location: Location, text: String) : EntityArmorStand(EntityTypes.
 
         customName = ChatComponentText(text)
         customNameVisible = true
-    }
-
-    fun spawn(world: World) {
-        (world as CraftWorld).addEntity<ArmorStand>(this, CreatureSpawnEvent.SpawnReason.CUSTOM)
     }
 
     fun removeAfter(time: Long) = Bukkit.getScheduler().runTaskLater(plugin, ::remove, time)
