@@ -1,27 +1,38 @@
 package com.wynnlab.entities
 
+import com.wynnlab.plugin
+import net.minecraft.server.v1_16_R3.ChatComponentText
+import net.minecraft.server.v1_16_R3.EntityArmorStand
+import net.minecraft.server.v1_16_R3.EntityTypes
+import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.World
+import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
+import org.bukkit.entity.ArmorStand
+import org.bukkit.event.entity.CreatureSpawnEvent
 
-class Hologram(location: Location, text: String) {
-    private val handle = EntityArmorStand.getConstructor(EntityTypes, World).newInstance(
-        EntityTypes.getField("ARMOR_STAND")[null],
-        CraftWorld.getMethod("getHandle")(CraftWorld.cast(location.world))
-    )
+class Hologram(location: Location, text: String) : EntityArmorStand(EntityTypes.ARMOR_STAND, (location.world as CraftWorld).handle) {
 
     init {
-        EntityArmorStand.getMethod("setInvisible")(handle, true)
-        EntityArmorStand.getMethod("setInvulnerable")(handle, true)
-        EntityArmorStand.getField("collides")[handle] = false
-        EntityArmorStand.getMethod("setNoGravity")(handle, true)
-        EntityArmorStand.getMethod("setSmall")(handle, true)
+        isInvisible = true
+        isInvulnerable = true
+        collides = false
+        isNoGravity = true
+        isSmall = true
 
-        EntityArmorStand.getMethod("setLocation")(handle, location.x, location.y, location.z, location.yaw, location.pitch)
+        setLocation(location.x, location.y, location.z, location.yaw, location.pitch)
 
-        EntityArmorStand.getMethod("setCustomName")(handle, ChatComponentText.getConstructor(String::class.java).newInstance(text))
-        EntityArmorStand.getMethod("setCustomNameVisible")(handle, true)
+        customName = ChatComponentText(text)
+        customNameVisible = true
     }
 
+    fun spawn(world: World) {
+        (world as CraftWorld).addEntity<ArmorStand>(this, CreatureSpawnEvent.SpawnReason.CUSTOM)
+    }
+
+    fun removeAfter(time: Long) = Bukkit.getScheduler().runTaskLater(plugin, ::remove, time)
+
     fun remove() {
-        EntityArmorStand.getMethod("die")(handle)
+        die()
     }
 }

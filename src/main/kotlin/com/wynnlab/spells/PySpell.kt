@@ -3,7 +3,9 @@ package com.wynnlab.spells
 import com.wynnlab.api.data
 import com.wynnlab.api.getInt
 import com.wynnlab.classes
+import com.wynnlab.entities.Hologram
 import com.wynnlab.plugin
+import com.wynnlab.random
 import com.wynnlab.util.normalizeOnXZ
 import com.wynnlab.util.plus
 import org.bukkit.*
@@ -90,6 +92,13 @@ abstract class PySpell : Runnable {
         fun damage(source: Entity, e: LivingEntity, amount: Double) {
             e.damage(amount, source)
             e.noDamageTicks = 0
+
+            val diLocation = e.eyeLocation.clone().add(random.nextDouble() * 2, random.nextDouble(), random.nextDouble() * 2)
+            val di = Hologram(diLocation,
+                "§4-${amount.toInt()}❤")
+            di.spawn(e.world)
+            di.bukkitEntity.velocity = diLocation.clone().subtract(e.location).multiply(0.5).toVector()
+            di.removeAfter(10)
         }
 
         @JvmStatic
