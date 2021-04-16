@@ -49,7 +49,7 @@ class Spell(PySpell):
                 self.sound(e.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1, 1.3)
                 self.sound(e.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, .8, 1.6)
 
-                self.damage(e, 1)
+                self.damage(e, False, .27)
 
         else:
             for e in self.entities:
@@ -58,7 +58,7 @@ class Spell(PySpell):
 
                 self.sound(e.getLocation(), Sound.ENTITY_PLAYER_ATTACK_KNOCKBACK, 1, 1.3)
 
-                self.damage(e, 6)
+                self.damage(e, False, 1.2, .2, 0, .3, .5, 0, 0)
                 if self.clone:
                     self.sound(e.getLocation(), Sound.ENTITY_BLAZE_DEATH, 1, 1.2)
                     self.sound(e.getLocation(), Sound.ENTITY_BLAZE_AMBIENT, 1, 1.6)

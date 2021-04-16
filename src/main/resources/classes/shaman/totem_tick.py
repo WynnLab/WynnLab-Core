@@ -53,7 +53,7 @@ class Spell(PySpell):
                     self.sound(l, Sound.ENTITY_BLAZE_DEATH, .3, 1)
 
                 for e in self.nearbyMobs(l, 4, 4, 4):
-                    self.damage(e, 4)
+                    self.damage(e, False, 1, .8, 0, 0, 0, .2, 0)
 
         else:
             if self.totem.isOnGround() and self.t >= 20:
@@ -71,7 +71,7 @@ class Spell(PySpell):
                             PySpell.heal(e, self.player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() / 10)
 
                         else:
-                            self.damage(e, 1)
+                            self.damage(e, False, .2, .8, 0, 0, 0, 0, .2)
 
                 l = self.totem.getLocation().clone().add(Math.sin(self.t * 10 * DEG2RAD) * 8, .7, Math.cos(self.t * 10 * DEG2RAD) * 8)
                 self.particle(l, Particle.FIREWORKS_SPARK if self.clone else Particle.TOTEM, 1, 0, 0, 0, 0)

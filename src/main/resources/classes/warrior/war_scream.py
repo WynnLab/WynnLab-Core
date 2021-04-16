@@ -42,4 +42,4 @@ class Spell(PySpell):
             self.particle(self.scream_loc, Particle.EXPLOSION_LARGE, 1, 0, 0, 0, 0)
 
             for e in self.nearbyMobs(self.scream_loc, 3, 3, 3):
-                self.damage(e, 1)
+                self.damage(e, False, .3, 0, 0, 0, 0, .75, .25)

@@ -25,7 +25,7 @@ class Spell(PySpell):
                 continue
             self.hit.add(e)
 
-            self.damage(e, 6)
+            self.damage(e, False, 1.5, .7, 0, .3, 0, 0, 0)
             e.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 100, 1))
             e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 20, 8))
 

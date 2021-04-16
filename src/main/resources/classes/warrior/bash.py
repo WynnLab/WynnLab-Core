@@ -48,7 +48,7 @@ class Spell(PySpell):
 
         hit_count = 0
         for e in self.nearbyMobs(self.bash_loc, 6, 6, 6):
-            self.damage(e, 6)
+            self.damage(e, False, 1.3, .6, .4, 0, 0, 0, 0)
             self.knockback(e, 2)
             hit_count += 1
 

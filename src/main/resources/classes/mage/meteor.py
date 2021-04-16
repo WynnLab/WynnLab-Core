@@ -59,9 +59,12 @@ class Spell(PySpell):
             self.sound(self.target, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, .8)
 
             for e in self.nearbyMobs(self.target, 3, 3, 3):
-                self.damage(e, 15)
+                self.damage(e, False, 5, .4, .3, 0, 0, .3, 0)
 
         if self.t >= 20 and self.t % 10 == 0:
             self.sound(self.target, Sound.BLOCK_CAMPFIRE_CRACKLE, 2, 1)
             self.particle(self.target, Particle.SPELL_WITCH if self.clone else Particle.FLAME, 98, 7, 1, 7, .2)
             self.particle(self.target, Particle.SMOKE_NORMAL, 98, 7, 3, 7, .2)
+
+            for e in self.nearbyMobs(self.target, 7, 3, 7):
+                self.damage(e, False, 1.25)

@@ -17,6 +17,8 @@ fun PersistentDataContainer.getString(key: String) = this[key, PersistentDataTyp
 
 fun PersistentDataContainer.getInt(key: String) = this[key, PersistentDataType.INTEGER]
 
+fun PersistentDataContainer.getIntArray(key: String) = this[key, PersistentDataType.INTEGER_ARRAY]
+
 fun PersistentDataContainer.getContainer(key: String) = this[key, PersistentDataType.TAG_CONTAINER]
 
 fun PersistentDataContainer.getContainerArray(key: String) = this[key, PersistentDataType.TAG_CONTAINER_ARRAY]

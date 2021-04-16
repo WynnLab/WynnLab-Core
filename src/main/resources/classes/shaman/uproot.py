@@ -106,7 +106,7 @@ class Spell(PySpell):
             e.setVelocity(p_l.clone().multiply(2 if isinstance(e, Mob) else 1))
 
             if isinstance(e, Mob):
-                self.damage(e, 2)
+                self.damage(e, False, .5, .7, .3, 0, 0, 0, 0)
 
         self.sound(l, Sound.BLOCK_LAVA_EXTINGUISH, 1, .7)
         self.sound(l, Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 1, 1.7)

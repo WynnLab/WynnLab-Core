@@ -10,7 +10,7 @@ class Spell(PySpell):
     def tick(self):
         if self.t == 0:
             self.e.setVelocity(Vector(0, 1.75, 0))
-            self.damage(self.e, 5)
+            self.damage(self.e, False, 3, .7, .2, .1, 0, 0, 0)
             self.sound(self.e.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 1 if self.clone else .5, 1)
 
         elif self.t < 8:
@@ -20,7 +20,7 @@ class Spell(PySpell):
 
         elif self.t == 8:
             self.e.setVelocity(Vector(0, 0, 0))
-            self.damage(self.e, 2)
+            self.damage(self.e, False, .5, .6, 0, .4, 0, 0, 0)
 
             self.explode()
 
@@ -35,7 +35,7 @@ class Spell(PySpell):
             self.particle(self.e.getLocation(), Particle.FIREWORKS_SPARK if self.clone else Particle.SMOKE_LARGE, 10 if self.clone else 2, .6, .6, .6, .5 if self.clone else 0)
 
         else:
-            self.damage(self.e, 3)
+            self.damage(self.e, False, .5, .8, 0, .2, 0, 0, 0)
             self.explode()
             self.cancel()
 

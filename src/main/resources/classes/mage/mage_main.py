@@ -27,4 +27,4 @@ class Spell(PySpell):
                     continue
                 self.hit.add(e)
 
-                self.damage(e, 2)
+                self.damage(e, True, 1)

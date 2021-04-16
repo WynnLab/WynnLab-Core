@@ -9,7 +9,7 @@ class Dummy(location: Location) : EntityVindicator(EntityTypes.VINDICATOR, (loca
     init {
         setLocation(location.x, location.y, location.z, location.yaw, location.pitch)
 
-        collides = false
+        //collides = false
 
         customName = ChatComponentText("Dummy")
         customNameVisible = true

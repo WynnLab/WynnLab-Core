@@ -75,4 +75,4 @@ class Spell(PySpell):
                 continue
             self.hit.add(e)
 
-            self.damage(e, 7)
+            self.damage(e, False, 2, .7, 0, 0, .3, 0, 0)

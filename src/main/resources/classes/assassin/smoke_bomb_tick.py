@@ -19,7 +19,7 @@ class Spell(PySpell):
             self.sound(self.l,Sound.BLOCK_FIRE_EXTINGUISH, .3 , 1)
 
             for e in self.nearbyMobs(self.l, 3, 3, 3):
-                self.damage(e, 2)
+                self.damage(e, False, .6, .45, .25, 0, 0, 0, .3)
                 e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 101, 2))
 
         if self.t == 0:

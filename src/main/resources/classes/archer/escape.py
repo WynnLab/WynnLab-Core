@@ -42,6 +42,6 @@ class Spell(PySpell):
                 self.sound(Sound.ENTITY_IRON_GOLEM_DEATH, 1, 1)
 
                 for e in self.nearbyMobs(8, 10, 8):
-                    self.damage(e, 4)
+                    self.damage(e, False, 1, .5, 0, 0, 0, 0, .5)
 
             self.player.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 3600, 2, True, False, True))

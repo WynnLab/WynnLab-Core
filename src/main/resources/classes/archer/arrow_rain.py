@@ -1,5 +1,5 @@
 from org.bukkit import Material, Particle, Sound
-from org.bukkit.entity import EntityType
+from org.bukkit.entity import EntityType, Player
 from org.bukkit.inventory import ItemStack
 from org.bukkit.util import Vector
 
@@ -39,7 +39,7 @@ class Spell(PySpell):
 def delete_arrow(event):
     hit = event.getHitEntity()
     if not hit is None and not isinstance(hit, Player):
-        PySpell.damage(event.getEntity().getShooter(), hit, 4)
+        PySpell.damage(event.getEntity().getShooter(), hit, False, 2, .7, 0, 0, 0, 0, .3)
 
     event.getEntity().remove()
 

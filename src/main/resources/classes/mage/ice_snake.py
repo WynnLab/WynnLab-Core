@@ -30,4 +30,4 @@ class Spell(PySpell):
             self.hit.add(e)
 
             e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 300, 4))
-            self.damage(e, 1)
+            self.damage(e, False, .7, .5, 0, 0, .5, 0, 0)

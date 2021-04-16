@@ -8,6 +8,7 @@ import com.wynnlab.events.SpellCastEvent
 import com.wynnlab.items.WynnItem
 import com.wynnlab.localization.Language
 import com.wynnlab.plugin
+import com.wynnlab.random
 import com.wynnlab.util.RefreshRunnable
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -209,6 +210,65 @@ fun Player.getId(key: String): Int {
         sum += ((item.itemMeta ?: continue).data.getContainer("ids") ?: continue).getInt(key) ?: continue
     }
     return sum
+}
+
+fun Player.getSkill(index: Int): Int {
+    return 0
+}
+
+fun skillPercentage(points: Int): Double = 0.0
+
+// Damage Type: 0 -> Melee Neutral, 1 -> Melee Elemental, 2 -> Spell Neutral, 3 -> Spell Elemental
+val standardConversion = doubleArrayOf(1.0, .0, .0, .0, .0, .0)
+private val noDamage = doubleArrayOf(.0, .0, .0, .0, .0, .0)
+fun Player.getDamage(melee: Boolean, multiplier: Double = 1.0, conversion: DoubleArray = standardConversion): DoubleArray {
+    val result = noDamage
+
+    // Melee Neutral = (Base Dam) * (1 + (IDs) - (Def)) + (Raw Melee)
+    // Melee Elemental = (Base Dam) * (1 + (IDs)) - ((Ele Def) * (1 + (Ele Def %)))
+    // Spell Neutral = (Base Dam) * (1 + (IDs) - (Def)) * (Att Speed) * (Spell Base Multiplier) + (Raw Spell) * (Spell Base Multiplier)
+    // Spell Elemental = [(Base Dam) * (1 + (IDs)) - ((Ele Def) * (1 + (Ele Def %)))] * (Att Speed) * (Spell Base Multiplier)
+
+    val strength = skillPercentage(getSkill(0))
+    val dexterity = if (random.nextDouble() < skillPercentage(getSkill(1))) 1.0 else .0
+
+    val damageRanges = if (hasWeaponInHand() ?: return noDamage)
+        inventory.itemInMainHand.itemMeta.data.getIntArray("damage") ?: return noDamage
+    else return noDamage
+
+    val damages = DoubleArray(6) { i ->
+        (damageRanges[i * 2 + 1] - damageRanges[i * 2].let { if (it > 0) random.nextInt(it) else it } + damageRanges[i * 2]).toDouble()
+    }
+
+    repeat(6) { i ->
+        damages[i] = if (i > 0) damages[0] * conversion[i] + damages[i] else damages[0] * conversion[0]
+    }
+
+    val ids = DoubleArray(6) { i ->
+        var value = strength + dexterity
+        value += if (melee)
+            getId("spell_damage") / 100.0
+        else
+            getId("damage_bonus") / 100.0
+        if (i > 0)
+            value += getId("bonus__damage") / 100.0
+        value
+    }
+
+    if (melee) {
+        result[0] = damages[0] * (1 + ids[0] /*- def*/) + getId("damage_bonus_raw")
+        repeat(5) { i ->
+            result[i + 1] = damages[i + 1] * (1 + ids[i + 1]) /*- def*/
+        }
+    } else {
+        val attackSpeedSpellMultiplier = attackSpeed!!.spellMultiplier
+        result[0] = (damages[0] * (1 + ids[0] /*- def*/) * attackSpeedSpellMultiplier + getId("spell_damage_raw")) * multiplier
+        repeat(5) { i ->
+            result[i + 1] = (damages[i + 1] * (1 + ids[i + 1]) /*- def*/) * attackSpeedSpellMultiplier * multiplier
+        }
+    }
+
+    return result
 }
 
 fun Player.getArmorHealth(): Int {

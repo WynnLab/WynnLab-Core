@@ -1,7 +1,9 @@
 package com.wynnlab.spells
 
 import com.wynnlab.api.data
+import com.wynnlab.api.getDamage
 import com.wynnlab.api.getInt
+import com.wynnlab.api.standardConversion
 import com.wynnlab.classes
 import com.wynnlab.entities.Hologram
 import com.wynnlab.plugin
@@ -61,7 +63,7 @@ abstract class PySpell : Runnable {
     // Util functions
     ///////////////////////////////////////////////////////////////////////////
     
-    fun damage(e: LivingEntity, amount: Double) = damage(player, e, amount)
+    fun damage(e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) = damage(player, e, melee, multiplier, *conversion)
 
     fun knockback(target: Entity, amount: Double) = knockback(target, player.eyeLocation.direction.add(player.velocity).multiply(.5), amount)
     
@@ -89,16 +91,51 @@ abstract class PySpell : Runnable {
         }
 
         @JvmStatic
-        fun damage(source: Entity, e: LivingEntity, amount: Double) {
-            e.damage(amount, source)
+        fun damage(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) {
+            val damage = source.getDamage(melee, multiplier, if (conversion.isNotEmpty()) doubleArrayOf(*conversion) else standardConversion)
+            var space = false
+            val damageText = buildString {
+                damage.onEachIndexed { i, d ->
+                    if (space)
+                        append(' ')
+                    val di = d.toInt()
+                    if (di > 0) {
+                        append('§')
+                        append(when (i) {
+                            0 -> '4'
+                            1 -> '2'
+                            2 -> 'e'
+                            3 -> 'b'
+                            4 -> 'c'
+                            5 -> 'f'
+                            else -> '0'
+                        })
+                        append('-')
+                        append(di)
+                        append(when (i) {
+                            0 -> '❤'
+                            1 -> '✤'
+                            2 -> '✦'
+                            3 -> '❉'
+                            4 -> '✹'
+                            5 -> '❋'
+                            else -> 'x'
+                        })
+                        space = true
+                    } else {
+                        space = false
+                    }
+                }
+            }
+
+            e.damage(damage.sum(), source)
             e.noDamageTicks = 0
 
             val diLocation = e.eyeLocation.clone().add(random.nextDouble() * .5, random.nextDouble() * .5 + .5, random.nextDouble() * .5)
-            val di = Hologram(diLocation,
-                "§4-${amount.toInt()}❤")
+            val di = Hologram(diLocation, damageText)
             di.spawn(e.world)
             di.bukkitEntity.velocity = diLocation.clone().subtract(e.location).multiply(0.5).toVector()
-            di.removeAfter(10)
+            di.removeAfter(15)
         }
 
         @JvmStatic

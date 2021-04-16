@@ -18,7 +18,7 @@ class Spell(PySpell):
 def delete_arrow(event):
     hit = event.getHitEntity()
     if not hit is None and not isinstance(hit, Player):
-        PySpell.damage(event.getEntity().getShooter(), hit, 4)
+        PySpell.damage(event.getEntity().getShooter(), hit, True, 1)
 
     event.getEntity().remove()
 

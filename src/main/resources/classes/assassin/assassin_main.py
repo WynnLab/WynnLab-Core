@@ -22,4 +22,4 @@ class Spell(PySpell):
         self.particle(l, Particle.SWEEP_ATTACK, 1, 0, 0, 0, 0)
 
         for e in self.nearbyMobs(l, 2, 2, 2):
-            self.damage(e, 2)
+            self.damage(e, True, 1)

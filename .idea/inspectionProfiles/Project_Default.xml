@@ -52,6 +52,9 @@
           <option value="classes.shaman.totem_tick.isinstance" />
           <option value="classes.shaman.totem_tick.DEG2RAD" />
           <option value="classes.warrior.uppercut.set" />
+          <option value="classes.archer.arrow_rain.isinstance" />
+          <option value="classes.archer.arrow_storm.isinstance" />
+          <option value="classes.mage.teleport.set" />
         </list>
       </option>
     </inspection_tool>

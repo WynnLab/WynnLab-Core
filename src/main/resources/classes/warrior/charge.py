@@ -53,7 +53,7 @@ class Spell(PySpell):
 
         hit_count = 0
         for e in self.nearbyMobs(1.5, 2, 1.5):
-            self.damage(e, 5)
+            self.damage(e, False, 1.5, .6, 0, 0, 0, .4, 0)
             PySpell.knockback(e, e.getLocation().clone().subtract(self.player.getLocation()).toVector(), 1)
             hit_count += 1
 

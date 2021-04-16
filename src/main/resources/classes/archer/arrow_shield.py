@@ -81,7 +81,7 @@ class Spell(PySpell):
         self.cooldown -= 1
 
     def activate(self, e):
-        self.damage(e, 2)
+        self.damage(e, False, 1, .7, 0, 0, 0, 0, .3)
 
         e.setVelocity(e.getLocation().toVector().subtract(self.player.getLocation().toVector()).setY(0).normalize().add(Vector(0, 1, 0)))
 
