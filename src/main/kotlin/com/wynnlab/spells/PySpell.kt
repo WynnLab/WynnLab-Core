@@ -127,10 +127,13 @@ abstract class PySpell : Runnable {
         @JvmStatic
         fun nearbyMobs(player: Player, x: Double, y: Double, z: Double) = nearbyMobs(player.world, player.location, x, y, z)
 
-        @JvmStatic
-        @Suppress("unchecked_cast")
+        @[JvmStatic Suppress("unchecked_cast")]
         fun nearbyMobs(world: World, location: Location, x: Double, y: Double, z: Double): Collection<Mob> =
             world.getNearbyEntities(location, x, y, z) { it !is Player && it is Mob } as Collection<Mob>
+
+        @[JvmStatic Suppress("unused")]
+        fun nearbyMobsAndTag(world: World, location: Location, x: Double, y: Double, z: Double, tag: String): Collection<Entity> =
+            world.getNearbyEntities(location, x, y, z) { it !is Player && (it is Mob || it.scoreboardTags.contains(tag)) }
 
         @JvmStatic
         fun castSpell(player: Player, clazz: String, index: Int, vararg args: Any?) = classes[clazz]?.spells?.get(index)

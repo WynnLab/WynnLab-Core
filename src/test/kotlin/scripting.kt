@@ -1,4 +1,5 @@
 import org.python.util.PythonInterpreter
+import java.util.function.Predicate
 
 fun main() {
     val pythonInterpreter = PythonInterpreter()
@@ -8,13 +9,15 @@ fun main() {
         val code = py.compile("""
             def doSth(ic):
                 print(ic)
+                True
             
-            s = S(doSth)
+            s = S(Predicate(lambda a: doSth(a)))
             
             s.fn.invoke('Hi')
         """.trimIndent())
 
         py.set("S", S::class.java)
+        py.set("Predicate", p.Predicate::class.java)
 
         py.exec(code)
     }
@@ -25,7 +28,7 @@ fun PythonInterpreter.print(name: String) {
     println("${value::class.simpleName} $name = $value")
 }
 
-class S(val fn: (String) -> Unit)
+class S(val fn: Predicate<String>)
 
 fun echo(it: String) = println(it)
 

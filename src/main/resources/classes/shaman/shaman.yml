@@ -15,7 +15,7 @@ class:
       script: shaman_main.py
     - ==: com.wynnlab.spells.Spell
       cost: 4
-      maxTick: 400
+      maxTick: 0
       script: totem.py
     - ==: com.wynnlab.spells.Spell
       cost: 1
@@ -27,5 +27,8 @@ class:
       script: aura.py
     - ==: com.wynnlab.spells.Spell
       cost: 6
-      maxTick: 0
+      maxTick: 20
       script: uproot.py
+    - ==: com.wynnlab.spells.Spell
+      maxTick: 400
+      script: totem_tick.py

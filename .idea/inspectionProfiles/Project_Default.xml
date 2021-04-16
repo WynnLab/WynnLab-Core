@@ -46,6 +46,11 @@
           <option value="classes.shaman.aura.range" />
           <option value="classes.shaman.aura.set" />
           <option value="classes.shaman.haul.set" />
+          <option value="classes.shaman.uproot.isinstance" />
+          <option value="classes.shaman.uproot.range" />
+          <option value="classes.shaman.uproot.DEG2RAD" />
+          <option value="classes.shaman.totem_tick.isinstance" />
+          <option value="classes.shaman.totem_tick.DEG2RAD" />
         </list>
       </option>
     </inspection_tool>

@@ -46,6 +46,7 @@ val resources = arrayOf(
     "classes/shaman/haul.py",
     "classes/shaman/aura.py",
     "classes/shaman/uproot.py",
+    "classes/shaman/totem_tick.py",
 
     "classes/warrior/warrior.yml",
     "classes/warrior/warrior_main.py",
