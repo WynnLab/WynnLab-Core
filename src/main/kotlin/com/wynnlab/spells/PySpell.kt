@@ -65,7 +65,7 @@ abstract class PySpell : Runnable {
     
     fun damage(e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) = damage(player, e, melee, multiplier, *conversion)
 
-    fun knockback(target: Entity, amount: Double) = knockback(target, player, amount)
+    fun knockback(target: Entity, amount: Double) = knockbackFromPlayer(target, player, amount)
     
     fun particle(location: Location, particle: Particle, count: Int, offX: Double, offY: Double, offZ: Double, speed: Double) =
         particle(player, location, particle, count, offX, offY, offZ, speed, null)
@@ -137,7 +137,7 @@ abstract class PySpell : Runnable {
         }
 
         @JvmStatic
-        fun knockback(target: Entity, player: Player, amount: Double) {
+        fun knockbackFromPlayer(target: Entity, player: Player, amount: Double) {
             knockback(target, player.eyeLocation.direction.add(player.velocity).multiply(.5), amount)
         }
 

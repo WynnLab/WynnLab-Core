@@ -40,6 +40,7 @@ def delete_arrow(event):
     hit = event.getHitEntity()
     if not hit is None and not isinstance(hit, Player):
         PySpell.damage(event.getEntity().getShooter(), hit, False, 2, .7, 0, 0, 0, 0, .3)
+        PySpell.knockbackFromPlayer(hit, event.getEntity().getShooter(), .5)
 
     event.getEntity().remove()
 

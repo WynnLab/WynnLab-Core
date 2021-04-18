@@ -43,5 +43,6 @@ class Spell(PySpell):
 
                 for e in self.nearbyMobs(8, 10, 8):
                     self.damage(e, False, 1, .5, 0, 0, 0, 0, .5)
+                    PySpell.knockback(e, VectorUP, .5)
 
             self.player.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 3600, 2, True, False, True))

@@ -31,3 +31,4 @@ class Spell(PySpell):
 
             e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 300, 4))
             self.damage(e, False, .7, .5, 0, 0, .5, 0, 0)
+            PySpell.knockback(e, VectorUP, .5)

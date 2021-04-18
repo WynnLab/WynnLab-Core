@@ -23,3 +23,4 @@ class Spell(PySpell):
 
         for e in self.nearbyMobs(l, 2, 2, 2):
             self.damage(e, True, 1)
+            self.knockback(e, .5)

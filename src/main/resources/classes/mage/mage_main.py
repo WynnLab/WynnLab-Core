@@ -28,3 +28,4 @@ class Spell(PySpell):
                 self.hit.add(e)
 
                 self.damage(e, True, 1)
+                self.knockback(e, .5)

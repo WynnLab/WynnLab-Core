@@ -60,4 +60,5 @@ class Spell(PySpell):
                     self.hit.add(e)
 
                     self.damage(e, False, 1, .8, 0, .2, 0, 0, 0)
+                    PySpell.knockback(e, VectorUP, 2)
                     e.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 100, 0, True, False))

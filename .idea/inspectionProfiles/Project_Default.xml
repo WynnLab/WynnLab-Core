@@ -55,6 +55,12 @@
           <option value="classes.archer.arrow_rain.isinstance" />
           <option value="classes.archer.arrow_storm.isinstance" />
           <option value="classes.mage.teleport.set" />
+          <option value="classes.archer.escape.VectorUP" />
+          <option value="classes.mage.ice_snake.VectorUP" />
+          <option value="classes.assassin.spin_attack.VectorUP" />
+          <option value="classes.mage.meteor.VectorUP" />
+          <option value="classes.shaman.haul.VectorUP" />
+          <option value="classes.shaman.totem_tick.VectorUP" />
         </list>
       </option>
     </inspection_tool>

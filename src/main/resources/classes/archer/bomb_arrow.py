@@ -38,6 +38,7 @@ def bomb_hit(event):
 
     for e in PySpell.nearbyMobs(arrow.getWorld(), arrow.getLocation(), 4, 4, 4):
         PySpell.damage(player, e, False, 2.5, .6, .25, 0, 0, .15, 0)
+        PySpell.knockbackFromPlayer(e, event.getEntity().getShooter(), 1)
         e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 60, 4, True, False, True))
 
     PySpell.sound(player, arrow.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 1.3)

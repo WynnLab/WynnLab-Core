@@ -54,6 +54,7 @@ class Spell(PySpell):
 
                 for e in self.nearbyMobs(l, 4, 4, 4):
                     self.damage(e, False, 1, .8, 0, 0, 0, .2, 0)
+                    PySpell.knockback(e, VectorUP, .5)
 
         else:
             if self.totem.isOnGround() and self.t >= 20:

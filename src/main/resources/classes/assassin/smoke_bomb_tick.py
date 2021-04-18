@@ -20,6 +20,7 @@ class Spell(PySpell):
 
             for e in self.nearbyMobs(self.l, 3, 3, 3):
                 self.damage(e, False, .6, .45, .25, 0, 0, 0, .3)
+                PySpell.knockback(e, VectorUP, .5)
                 e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 101, 2))
 
         if self.t == 0:

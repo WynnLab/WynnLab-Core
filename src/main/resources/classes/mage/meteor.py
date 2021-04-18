@@ -68,3 +68,4 @@ class Spell(PySpell):
 
             for e in self.nearbyMobs(self.target, 7, 3, 7):
                 self.damage(e, False, 1.25)
+                PySpell.knockback(e, VectorUP, .5)

@@ -45,16 +45,19 @@ class Spell(PySpell):
                 continue
             self.hit.add(e)
             self.damage(e, True, .333)
+            self.knockback(e, .1)
         for e in self.nearbyMobs(self.p_center, 1, 2, 1):
             if e in self.hit:
                 continue
             self.hit.add(e)
             self.damage(e, True, .333)
+            self.knockback(e, .1)
         for e in self.nearbyMobs(self.p_right, 1, 2, 1):
             if e in self.hit:
                 continue
             self.hit.add(e)
             self.damage(e, True, .333)
+            self.knockback(e, .1)
 
     def particles(self, l):
         if self.clone:
