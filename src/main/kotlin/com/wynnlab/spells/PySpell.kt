@@ -65,7 +65,7 @@ abstract class PySpell : Runnable {
     
     fun damage(e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) = damage(player, e, melee, multiplier, *conversion)
 
-    fun knockback(target: Entity, amount: Double) = knockback(target, player.eyeLocation.direction.add(player.velocity).multiply(.5), amount)
+    fun knockback(target: Entity, amount: Double) = knockback(target, player, amount)
     
     fun particle(location: Location, particle: Particle, count: Int, offX: Double, offY: Double, offZ: Double, speed: Double) =
         particle(player, location, particle, count, offX, offY, offZ, speed, null)
@@ -102,24 +102,12 @@ abstract class PySpell : Runnable {
                     if (di > 0) {
                         append('§')
                         append(when (i) {
-                            0 -> '4'
-                            1 -> '2'
-                            2 -> 'e'
-                            3 -> 'b'
-                            4 -> 'c'
-                            5 -> 'f'
-                            else -> '0'
+                            0 -> '4'; 1 -> '2'; 2 -> 'e'; 3 -> 'b'; 4 -> 'c'; 5 -> 'f'; else -> '0'
                         })
                         append('-')
                         append(di)
                         append(when (i) {
-                            0 -> '❤'
-                            1 -> '✤'
-                            2 -> '✦'
-                            3 -> '❉'
-                            4 -> '✹'
-                            5 -> '❋'
-                            else -> 'x'
+                            0 -> '❤'; 1 -> '✤'; 2 -> '✦'; 3 -> '❉'; 4 -> '✹'; 5 -> '❋'; else -> 'x'
                         })
                         space = true
                     } else {
@@ -146,6 +134,11 @@ abstract class PySpell : Runnable {
         @JvmStatic
         fun knockback(target: Entity, direction: Vector, amount: Double) {
             target.velocity = (target.velocity + direction.clone().normalizeOnXZ().multiply(amount).multiply(.225)).add(direction.clone().normalize().multiply(.25))
+        }
+
+        @JvmStatic
+        fun knockback(target: Entity, player: Player, amount: Double) {
+            knockback(target, player.eyeLocation.direction.add(player.velocity).multiply(.5), amount)
         }
 
         @JvmStatic

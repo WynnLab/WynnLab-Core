@@ -11,6 +11,7 @@ import org.bukkit.Bukkit
 import org.bukkit.GameRule
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.util.Vector
 import org.python.util.PythonInterpreter
 
 class Main : JavaPlugin() {
@@ -21,6 +22,7 @@ class Main : JavaPlugin() {
         python.set("random", random)
         python.set("RAD2DEG", RAD2DEG)
         python.set("DEG2RAD", DEG2RAD)
+        python.set("VectorUP", Vector(0, 1, 0))
 
         saveAllResources()
     }
@@ -75,6 +77,7 @@ class Main : JavaPlugin() {
     val playerEventsListener by lazy { PlayerEventsListener() }
     val projectileHitListener by lazy { ProjectileHitListener() }
     val guiListener by lazy { GUIListener() }
+    val damageListener by lazy { DamageListener() }
 
     private fun registerListeners() {
         val manager = Bukkit.getPluginManager()
@@ -84,6 +87,7 @@ class Main : JavaPlugin() {
         manager.registerEvents(playerEventsListener, this)
         manager.registerEvents(projectileHitListener, this)
         manager.registerEvents(guiListener, this)
+        manager.registerEvents(damageListener, this)
     }
 
     private fun registerSerializers() {

@@ -14,14 +14,25 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CompassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.compass.title", 200) /*TODO: skill points*/, 3) {
+class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, player.getLocalizedText("gui.compass.title", 200 - skills.sum()), 3) {
+
+    constructor(player: Player) : this(player, player.getSkills())
+
     init {
         registerListener { e ->
             e.isCancelled = true
             when (e.slot) {
+                4 -> { player.data.setIntArray("skill_points", intArrayOf(0, 0, 0, 0, 0)); reopen() }
+
+                11 -> { player.data.setIntArray("skill_points", skills.apply { set(0, get(0) + 1) }); reopen() }
+
                 18 -> WynnLabSettings().show()
             }
         }
+    }
+
+    private fun reopen() { // TODO: efficiency
+        CompassGUI(player).show()
     }
 
     override fun update() {
@@ -33,14 +44,15 @@ class CompassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.comp
         })
 
         // Skill points
-        inventory.setItem( 11, ItemStack(Material.ENCHANTED_BOOK).meta {
+        inventory.setItem( 11, ItemStack(Material.BOOK).meta {
             setDisplayName(language.getMessage("gui.compass.upgrade_skill", language.getMessage("elements.strength")))
             val lore = mutableListOf(" ")
-            lore.addAll(language.getMessage("gui.compass.upgrade_skill_numbers", 0.0, 1.0, 0, 0).split(NL_REGEX))
+            lore.addAll(language.getMessage("gui.compass.upgrade_skill_numbers",
+                skillPercentage(skills[0]) * 100.0, skillPercentage(skills[0] + 1) * 100.0, skills[0], skills[0] + 1).split(NL_REGEX))
             lore.add(" ")
             lore.addAll(language.getMessage("gui.compass.upgrade_skill_strength").split(NL_REGEX))
-            lore.add(" ")
-            lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
+            //lore.add(" ")
+            //lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
             this.lore = lore
         })
         inventory.setItem(12, ItemStack(Material.BOOK).meta { setDisplayName(language.getMessage("gui.compass.upgrade_skill", language.getMessage("elements.dexterity"))) })

@@ -14,6 +14,7 @@ import org.bukkit.persistence.PersistentDataContainer
 /**
  * Commands:
  * - itemdata
+ * - getid
  * - script //TODO
  */
 class DevCommands : CommandExecutor {

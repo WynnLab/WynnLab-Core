@@ -5,8 +5,6 @@ from org.bukkit.event.entity import EntityRegainHealthEvent
 
 from com.wynnlab.spells import PySpell
 
-from java.lang import Math
-
 class Spell(PySpell):
     def tick(self):
         if self.t % 20 > 0:
@@ -18,13 +16,16 @@ class Spell(PySpell):
         self.sound(Sound.ENTITY_EVOKER_CAST_SPELL, .5, 1.5)
         self.sound(Sound.BLOCK_LAVA_EXTINGUISH, 1, 1)
 
-        PySpell.heal(self.player, 50)
+        amount = self.player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() // 10
+        PySpell.heal(self.player, amount)
+        #self.player.sendMessage('{0}{1}{2}'.format(PySpell.colorText('[', '4'), PySpell.colorText('+{a}'.format(a=amount), 'c'), PySpell.colorText(']', '4')))
 
         for p in self.player.getNearbyEntities(4, 4, 4):
             if not isinstance(p, Player):
                 continue
 
-            PySpell.heal(p, 50)
+            PySpell.heal(p, amount)
+            #p.sendMessage('{0}{1}{2}{3}'.format(PySpell.colorText('[', '4'), PySpell.colorText('+{a}'.format(a=amount), 'c'), PySpell.colorText(']', '4'), PySpell.colorText('({pl})'.format(self.player.getName()), '7')))
             Bukkit.getPluginManager().callEvent(EntityRegainHealthEvent(p, 50, EntityRegainHealthEvent.RegainReason.CUSTOM))
 
             self.particle(p.getLocation().clone().add(0, 1, 0), Particle.FIREWORKS_SPARK, 16, .3, 1, .3, .05)

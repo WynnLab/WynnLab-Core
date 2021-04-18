@@ -15,6 +15,7 @@ import org.bukkit.ChatColor
 import org.bukkit.Effect
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
+import kotlin.math.round
 
 fun Player.sendWynnMessage(key: String, vararg format_args: Any?) =
     sendMessage(PREFIX + getLocalizedText(key, *format_args))
@@ -212,11 +213,27 @@ fun Player.getId(key: String): Int {
     return sum
 }
 
-fun Player.getSkill(index: Int): Int {
-    return 0
+fun Player.getSkills() = data.getIntArray("skill_points") ?: run {
+    data.setIntArray("skill_points", intArrayOf(0, 0, 0, 0, 0))
+    return intArrayOf(0, 0, 0, 0, 0)
 }
 
-fun skillPercentage(points: Int): Double = 0.0
+fun Player.getSkill(index: Int): Int =
+    (data.getIntArray("skill_points") ?: run {
+        data.setIntArray("skill_points", intArrayOf(0, 0, 0, 0, 0))
+        return 0
+    })[index]
+
+/*
+if(p>=150) return 80.8f;
+        else if(p<=0) return 0;
+        else return Math.round(10*(-0.0000000166f*p*p*p*p+0.0000122614f*p*p*p-0.0044972984f*p*p+0.9931907398f*p+0.0093811967f))/10f;
+ */
+fun skillPercentage(p: Int): Double = when {
+    p >= 150 -> .808
+    p <= 0 -> .0
+    else -> round(10.0 * (-0.0000000166 * p*p*p*p + 0.0000122614 * p*p*p - 0.0044972984 * p*p + 0.9931907398 * p + 0.0093811967)) / 1000.0
+}
 
 // Damage Type: 0 -> Melee Neutral, 1 -> Melee Elemental, 2 -> Spell Neutral, 3 -> Spell Elemental
 val standardConversion = doubleArrayOf(1.0, .0, .0, .0, .0, .0)
