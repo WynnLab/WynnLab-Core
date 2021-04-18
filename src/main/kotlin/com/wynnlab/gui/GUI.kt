@@ -27,6 +27,11 @@ abstract class GUI(
             })
     }
 
+    fun showSync() {
+        update()
+        player.openInventory(inventory)
+    }
+
     inline fun registerListener(crossinline action: (InventoryClickEvent) -> Unit) {
         plugin.guiListener.inventories[title] = {
             action(it)

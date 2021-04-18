@@ -130,6 +130,28 @@ gui:
       &7will&d increase &7any damage
       &7you deal and increase the &2✤ Earth
       &7damage you may inflict.
+    upgrade_skill_dexterity: |
+      &7Each point in this skill
+      &7will&d increase &7the chance
+      &7to do a critical hit (doubling
+      &7damage) and increase the &e✦ Thunder
+      &7damage you may inflict.
+    upgrade_skill_intelligence: |
+      &7Each point in this skill
+      &7will&d reduce &7mana used
+      &7by spells and increase the &b❉ Water
+      &7damage you may inflict.
+    upgrade_skill_defense: |
+      &7Each point in this skill
+      &7will&d reduce &7any damage
+      &7you take and increase the &c✹ Fire
+      &7damage you may inflict.
+    upgrade_skill_agility: |
+      &7Each point in this skill
+      &7will&d increase &7the chance
+      &7to dodge attacks and increase
+      &7the &f❋ Air &7damage you may
+      &7inflict.
 
     daily_rewards: '&eDaily Rewards'
 
