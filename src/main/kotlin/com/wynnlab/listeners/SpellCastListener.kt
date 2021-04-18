@@ -21,6 +21,9 @@ class CastListener : Listener {
 
         val cost = cost(player, e.spellId, spell.cost)
 
+        player.data.setInt("spell_cost_extra", if (player.data.getInt("last_spell") == e.spellId) (player.data.getInt("spell_cost_extra") ?: 0) + 1 else 0)
+        player.data.setInt("last_spell", e.spellId)
+
         if (e.spellId > 0) {
             if (player.foodLevel > cost) {
                 player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, .5f)
