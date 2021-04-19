@@ -17,18 +17,21 @@ class CastListener : Listener {
     fun onSpellCast(e: SpellCastEvent) {
         val player = e.player
         val spellClass = player.getWynnClass()?.let { classes[it] } ?: return
-        val spell = spellClass.spells[e.spellId]
+        val spellId = e.spellId
+        val spell = spellClass.spells[spellId]
 
-        val cost = cost(player, e.spellId, spell.cost)
+        val cost = cost(player, spellId, spell.cost)
 
-        player.data.setInt("spell_cost_extra", if (player.data.getInt("last_spell") == e.spellId) (player.data.getInt("spell_cost_extra") ?: 0) + 1 else 0)
-        player.data.setInt("last_spell", e.spellId)
+        if (spellId > 0) {
+            player.data.setInt("spell_cost_extra", if (player.data.getInt("last_spell") == spellId) (player.data.getInt("spell_cost_extra") ?: 0) + 1 else 0)
+            player.data.setInt("last_spell", spellId)
+        }
 
-        if (e.spellId > 0) {
+        if (spellId > 0) {
             if (player.foodLevel > cost) {
                 player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, .5f)
                 player.updateActionBar(
-                    "${player.getLocalizedText("classes.${player.getWynnClass()}.spells.${if (player.isCloneClass) "${spell.ordinal}c" else spell.ordinal.toString()}")} Cast " +
+                    "${player.getLocalizedText("classes.${player.getWynnClass()}.spells.${if (player.isCloneClass) "${spellId}c" else spellId.toString()}")} Cast " +
                             "§3[§b-${cost}✺§3]"
                 )
                 player.foodLevel -= cost

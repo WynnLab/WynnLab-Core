@@ -3,7 +3,12 @@ package com.wynnlab
 import com.wynnlab.api.*
 import com.wynnlab.essentials.Rank
 import com.wynnlab.util.getWynncraftAPIResult
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -45,6 +50,12 @@ object Players {
 
         player.healthScale = 20.0
         player.isHealthScaled = true
+
+        player.sendPlayerListHeaderAndFooter(
+            Component.text("play.WYNNLAB.tk", NamedTextColor.LIGHT_PURPLE, TextDecoration.UNDERLINED),
+            Component.text("Join our Discord:", NamedTextColor.YELLOW).append(Component.text("https://discord.gg/7ktHKn2nZG", NamedTextColor.AQUA, TextDecoration.ITALIC))
+                //.append(Component.newline()).append(Component.text("")))
+        )
 
         player.data.run {
             remove("rr_action_bar")

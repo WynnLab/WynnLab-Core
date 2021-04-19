@@ -1,5 +1,5 @@
 name: WynnLab
-version: 1.0-SNAPSHOT
+version: 1.0
 main: com.wynnlab.Main
 depend: [ KBukkit, PyBukkit ]
 authors: [ Siinus ]

@@ -1,7 +1,15 @@
 package com.wynnlab.listeners
 
-import com.wynnlab.spells.PySpell
+import com.wynnlab.api.data
+import com.wynnlab.api.getString
+import com.wynnlab.api.setString
+import com.wynnlab.plugin
+import com.wynnlab.util.RefreshRunnable
+import org.bukkit.Bukkit
+import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
+import org.bukkit.boss.BarColor
+import org.bukkit.boss.BarStyle
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -39,7 +47,62 @@ class DamageListener : Listener {
             .append(currentHealth.toInt()).append(if (percentage < 0.5833) "§8|" else "§c|").append(if (percentage < 0.75) "§8|" else "|")
             .append(if (percentage < 9167) "§8|" else "|").append("§4]").toString()
 
+        //if (entity.data.getString("old_name") != null)
+        //    return
+
+        val oldName = entity.data.getString("old_name") ?:
+            entity.customName?.takeIf { entity.isCustomNameVisible } ?:
+            entity.name
+
+        entity.data.setString("old_name", oldName)
+
         entity.customName = newName
         entity.isCustomNameVisible = true
+
+        // BossBar
+       /*val tag = "boss_bar_${entity.entityId}"
+        if (tag in player.scoreboardTags)
+            Bukkit.bo
+        player.addScoreboardTag(tag)*/
+        val bbKey = NamespacedKey(plugin, "boss_bar_${entity.entityId}")
+        val currentBB = Bukkit.getBossBar(bbKey)
+        currentBB?.apply {
+            setTitle("$oldName§r§f - §4${currentHealth.toInt()}§c❤")
+
+            if (entity.isDead) {
+                removeAll()
+                Bukkit.removeBossBar(bbKey)
+                return
+            }
+        }
+
+        val bossBar = currentBB ?: Bukkit.createBossBar(
+            bbKey,
+            "$oldName§r§f - §4${currentHealth.toInt()}§c❤",
+            BarColor.RED, BarStyle.SOLID
+        )
+
+        bossBar.progress = percentage
+
+        bossBar.addPlayer(player)
+
+        /*val bossBar = BossBar.bossBar(
+            Component.text(oldName)
+                .append(Component.text(" - ", NamedTextColor.WHITE))
+                .append(Component.text(currentHealth.toInt(), NamedTextColor.DARK_RED))
+                .append(Component.text("❤", NamedTextColor.RED)),
+                //.append(), TODO: Damage & Defense
+            percentage.toFloat(),
+            BossBar.Color.RED,
+            BossBar.Overlay.PROGRESS,
+            setOf()
+        )*/
+
+        RefreshRunnable(entity.data, "damage_${entity.entityId}") {
+            bossBar.removePlayer(player)
+            entity.customName = oldName
+        }.schedule(100)
+
+
     }
 }

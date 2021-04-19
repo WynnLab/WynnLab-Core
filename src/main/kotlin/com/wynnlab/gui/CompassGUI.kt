@@ -4,15 +4,20 @@ import com.wynnlab.NL_REGEX
 import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.guilds.Guild
+import com.wynnlab.plugin
+import net.minecraft.server.v1_16_R3.*
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataContainer
 import java.util.*
 
-open class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, player.getLocalizedText("gui.compass.title", 200 - skills.sum()), 3) {
+class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, player.getLocalizedText("gui.compass.title", 200 - skills.sum()), 3) {
     constructor(player: Player) : this(player, player.getSkills())
 
     val spLeft = 200 - skills.sum()
@@ -36,46 +41,23 @@ open class CompassGUI(player: Player, private val skills: IntArray) : GUI(player
     }
 
     private fun reopen(slot: Int) {
-        (if (slot == -1) ReopenedCompassGUI(null, null, null, null, null, null, null)
-        else ReopenedCompassGUI(
-            currentDefenseStats,//.takeUnless { slot == 3 },
-            currentDamageStats,//.takeUnless { slot == 0 || slot == 1 },
-            currentStrengthBook.takeUnless { slot == 0 },
-            currentDexterityBook.takeUnless { slot == 1 },
-            currentIntelligenceBook.takeUnless { slot == 2 },
-            currentDefenseBook.takeUnless { slot == 3 },
-            currentAgilityBook.takeUnless { slot == 4 },
-        )).show()
-    }
+        val nmsPlayer = (player as CraftPlayer).handle
+        val packet = PacketPlayOutOpenWindow(nmsPlayer.activeContainer.windowId, Containers.GENERIC_9X3,
+            ChatMessage(player.getLocalizedText("gui.compass.title", 200 - skills.sum())))
+        nmsPlayer.playerConnection.sendPacket(packet)
 
-    private inner class ReopenedCompassGUI(
-        val defenseStats: ItemStack?,
-        val damageStats: ItemStack?,
-        val strength: ItemStack?,
-        val dexterity: ItemStack?,
-        val intelligence: ItemStack?,
-        val defense: ItemStack?,
-        val agility: ItemStack?
-    ) : CompassGUI(player, player.getSkills()) {
-        override fun update() {
-            inventory.setItem(4, resetSkillPoints)
-
-            inventory.setItem(11, strength ?: strengthBook())
-            inventory.setItem(12, dexterity ?: dexterityBook())
-            inventory.setItem(13, intelligence ?: intelligenceBook())
-            inventory.setItem(14, defense ?: defenseBook())
-            inventory.setItem(15, agility ?: agilityBook())
-
-            inventory.setItem(22, jukebox)
-
-            inventory.setItem(0, tomes)
-            inventory.setItem(9, guildBanner)
-            inventory.setItem(18, settings)
-
-            inventory.setItem(8, idStats)
-            inventory.setItem(17, defenseStats ?: defenseStats())
-            inventory.setItem(26, damageStats ?: damageStats())
-        }
+        Bukkit.getScheduler().runTaskLater(plugin, Runnable {
+            if (slot == -1 || slot == 0)
+                inventory.setItem(11, strengthBook())
+            if (slot == -1 || slot == 1)
+                inventory.setItem(12, dexterityBook())
+            if (slot == -1 || slot == 2)
+                inventory.setItem(13, intelligenceBook())
+            if (slot == -1 || slot == 3)
+                inventory.setItem(14, defenseBook())
+            if (slot == -1 || slot == 4)
+                inventory.setItem(15, agilityBook())
+        }, 1L) //TODO
     }
 
     override fun update() {
@@ -83,7 +65,7 @@ open class CompassGUI(player: Player, private val skills: IntArray) : GUI(player
         inventory.setItem(4, resetSkillPoints)
 
         // Skill points
-        inventory.setItem( 11, currentStrengthBook)
+        inventory.setItem(11, currentStrengthBook)
         inventory.setItem(12, currentDexterityBook)
         inventory.setItem(13, currentIntelligenceBook)
         inventory.setItem(14, currentDefenseBook)

@@ -93,13 +93,17 @@ abstract class PySpell : Runnable {
         @JvmStatic
         fun damage(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) {
             val damage = source.getDamage(melee, multiplier, if (conversion.isNotEmpty()) doubleArrayOf(*conversion) else standardConversion)
+
+            e.damage(damage.sum(), source)
+            e.noDamageTicks = 0
+
             var space = false
             val damageText = buildString {
                 damage.onEachIndexed { i, d ->
                     if (space)
                         append(' ')
                     val di = d.toInt()
-                    if (di > 0) {
+                    space = if (di > 0) {
                         append('§')
                         append(when (i) {
                             0 -> '4'; 1 -> '2'; 2 -> 'e'; 3 -> 'b'; 4 -> 'c'; 5 -> 'f'; else -> '0'
@@ -109,15 +113,12 @@ abstract class PySpell : Runnable {
                         append(when (i) {
                             0 -> '❤'; 1 -> '✤'; 2 -> '✦'; 3 -> '❉'; 4 -> '✹'; 5 -> '❋'; else -> 'x'
                         })
-                        space = true
+                        true
                     } else {
-                        space = false
+                        false
                     }
                 }
             }
-
-            e.damage(damage.sum(), source)
-            e.noDamageTicks = 0
 
             val diLocation = e.eyeLocation.clone().add(random.nextDouble() * .5, random.nextDouble() * .5 + .5, random.nextDouble() * .5)
             val di = Hologram(diLocation, damageText)
