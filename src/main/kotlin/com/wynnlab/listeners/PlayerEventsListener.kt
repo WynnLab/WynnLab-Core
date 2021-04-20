@@ -3,12 +3,19 @@ package com.wynnlab.listeners
 import com.wynnlab.Players
 import com.wynnlab.api.*
 import com.wynnlab.plugin
+import com.wynnlab.spells.PySpell
+import org.bukkit.Material
+import org.bukkit.Particle
+import org.bukkit.Sound
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.AsyncPlayerChatEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.event.player.PlayerToggleSneakEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.FireworkMeta
 
 class PlayerEventsListener : Listener {
     @EventHandler
@@ -50,7 +57,29 @@ class PlayerEventsListener : Listener {
         e.deathMessage = deathMessages.random().replace("$", e.entity.name)
     }
 
+    @EventHandler
+    fun onPlayerToggleSneak(e: PlayerToggleSneakEvent) {
+        val player = e.player
+        if (e.isSneaking) {
+            if (player.isGliding) {
+                player.boostElytra(fireworks)
+
+                PySpell.particle(player, player.location, Particle.CLOUD, 10, .5, .5, .5, .5)
+                PySpell.particle(player, player.location, Particle.SQUID_INK, 10, .5, .5, .5, .5)
+                PySpell.particle(player, player.location, Particle.LAVA, 10, .5, .5, .5, .5)
+
+                PySpell.sound(player, Sound.ENTITY_PLAYER_ATTACK_KNOCKBACK , .3f, .6f)
+                PySpell.sound(player, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, .8f, 1f)
+                PySpell.sound(player, Sound.ENTITY_BLAZE_SHOOT, 1f, 1.1f)
+            }
+        }
+    }
+
     companion object {
         val deathMessages = setOf("$ didn't know about RRR")
+
+        val fireworks = ItemStack(Material.FIREWORK_ROCKET).metaAs<FireworkMeta> {
+            power = 2
+        }
     }
 }
