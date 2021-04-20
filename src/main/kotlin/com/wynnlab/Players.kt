@@ -51,9 +51,9 @@ object Players {
         player.healthScale = 20.0
         player.isHealthScaled = true
 
-        player.sendPlayerListHeaderAndFooter(
+        player.sendPlayerListHeader/*AndFooter*/(
             Component.text("play.WYNNLAB.tk", NamedTextColor.LIGHT_PURPLE, TextDecoration.UNDERLINED),
-            Component.text("Join our Discord:", NamedTextColor.YELLOW).append(Component.text("https://discord.gg/7ktHKn2nZG", NamedTextColor.AQUA, TextDecoration.ITALIC))
+            //Component.text("Join our Discord:", NamedTextColor.YELLOW).append(Component.text("https://discord.gg/7ktHKn2nZG", NamedTextColor.AQUA, TextDecoration.ITALIC))
                 //.append(Component.newline()).append(Component.text("")))
         )
 
@@ -79,22 +79,21 @@ object Players {
                 lore = listOf("§7Having less soul points increases", "§7the chance of dropping items upon", "§7death",
                 )//" ", "§cShift Right-Click to enable hunted")
             })
-            setItem(13, ItemStack(Material.DIAMOND_AXE).setAppearance(93).meta {
-                addItemFlags(*ItemFlag.values())
-                setDisplayName("§6Magic Pouch")
-                lore = listOf(
-                    "§fLeft-Click §7to view contents",
-                    " "
-                )
-            }) // TODO: ingredient pouch
-            // 94 Empty 95 Half 96 Full
+
+            player.updatePouch()
+
             loadAPIData(player)
         }
     }
 
     private fun loadAPIData(player: Player) {
         getWynncraftAPIResult("https://api.wynncraft.com/v2/player/${player.name}/stats").task().let { root ->
-            val data = (root["data"] as JSONArray)[0] as JSONObject
+            val data = try {
+                (root["data"] as JSONArray)[0] as JSONObject
+            } catch (e: ArrayIndexOutOfBoundsException) {
+                Rank.PLAYER.apply(player)
+                return
+            }
 
             var rank = when (data["rank"] as String) {
                 "Player" -> when (((data["meta"] as JSONObject)["tag"] as JSONObject)["value"] as String?) {

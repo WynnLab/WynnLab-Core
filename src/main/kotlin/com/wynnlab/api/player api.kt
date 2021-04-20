@@ -13,8 +13,12 @@ import com.wynnlab.util.RefreshRunnable
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Effect
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemFlag
+import org.bukkit.inventory.ItemStack
+import org.bukkit.metadata.FixedMetadataValue
 import kotlin.math.round
 
 fun Player.sendWynnMessage(key: String, vararg format_args: Any?) =
@@ -295,4 +299,20 @@ fun Player.getArmorHealth(): Int {
         sum += (item.itemMeta ?: continue).data.getInt("health") ?: continue
     }
     return sum
+}
+
+fun Player.updatePouch(add: ItemStack? = null) {
+    inventory.setItem(13, ItemStack(Material.DIAMOND_AXE).setAppearance(93).meta {
+                addItemFlags(*ItemFlag.values())
+                setDisplayName("§6Magic Pouch")
+                lore = listOf(
+                    "§fLeft-Click §7to view contents",
+                    //" "
+                )
+            })
+
+}
+
+fun Player.showPouch() {
+    setMetadata("a", FixedMetadataValue(plugin, Bukkit.createInventory(null, 5)))
 }
