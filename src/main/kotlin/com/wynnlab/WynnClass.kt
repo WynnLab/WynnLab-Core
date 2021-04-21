@@ -53,7 +53,7 @@ data class WynnClass(
     }
 }
 
-val classes = hashMapOf<String, WynnClass>()
+val classes = linkedMapOf<String, WynnClass>()
 
 internal var spellOrdinal = 0
 
@@ -76,6 +76,8 @@ fun loadClasses() {
         val wynnClass = config.getSerializable("class", WynnClass::class.java) ?: continue
         classes[wynnClass.id] = wynnClass
     }
+
+    classes.remove("MONK")?.let { classes["MONK"] = it }
 
     //plugin.logger.log(Level.INFO, "Classes: $classes")
     //plugin.logger.log(Level.INFO, "Listeners: ${plugin.projectileHitListener.tags}")

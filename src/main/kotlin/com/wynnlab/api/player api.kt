@@ -6,6 +6,7 @@ import com.wynnlab.PREFIX
 import com.wynnlab.WynnClass
 import com.wynnlab.events.SpellCastEvent
 import com.wynnlab.items.WynnItem
+import com.wynnlab.listeners.GUIListener
 import com.wynnlab.localization.Language
 import com.wynnlab.plugin
 import com.wynnlab.random
@@ -32,6 +33,7 @@ fun Player.sendWynnMessageNonNls(message: String) {
 }
 
 fun Player.setWynnClass(wynnClass: String) {
+    if (wynnClass == "MONK" && !isOp) return //TODO
     data.setString("class", wynnClass)
     updatePrefix()
 }
@@ -301,6 +303,33 @@ fun Player.getArmorHealth(): Int {
     return sum
 }
 
+fun Player.testInventory() {
+    wynnEquipment.forEachIndexed { i, item ->
+        if (i != 0 && item == null) {
+            if (i <= 4) {
+                inventory.getItem(104 - i)?.let { realItem ->
+                    sendWynnMessage("messages.wrong_item")
+                    inventory.setItem(104 - i, null)
+                    inventory.addItem(realItem)
+                }
+            } else {
+                inventory.getItem(4 + i)?.let { realItem ->
+                    sendWynnMessage("messages.wrong_item")
+                    val barriers = booleanArrayOf(false, false, false, false)
+                    while (inventory.firstEmpty() in 9..12) {
+                        val fe = inventory.firstEmpty()
+                        inventory.setItem(fe, GUIListener.barrier)
+                        barriers[fe - 9] = true
+                    }
+                    inventory.addItem(realItem)
+                    barriers.forEachIndexed { i, b -> if (b) inventory.setItem(i + 9, null) }
+                    inventory.setItem(4 + i, null)
+                }
+            }
+        }
+    }
+}
+
 fun Player.updatePouch(add: ItemStack? = null) {
     inventory.setItem(13, ItemStack(Material.DIAMOND_AXE).setAppearance(93).meta {
                 addItemFlags(*ItemFlag.values())
@@ -309,6 +338,7 @@ fun Player.updatePouch(add: ItemStack? = null) {
                     "§fLeft-Click §7to view contents",
                     //" "
                 )
+                data.setBoolean("pouch", true)
             })
 
 }

@@ -1,0 +1,31 @@
+class:
+  ==: com.wynnlab.WynnClass
+  id: MONK
+  item: BARRIER #WOODEN_SHOVEL
+  #item_damage: 1
+  metaStats:
+    damage: 0
+    defence: 0
+    range: 0
+    spells: 0
+  invertedControls: false
+  spells:
+    - ==: com.wynnlab.spells.Spell
+      maxTick: 0
+      script: monk_main.py
+    - ==: com.wynnlab.spells.Spell
+      cost: 0
+      maxTick: 0
+      script: shield.py
+    - ==: com.wynnlab.spells.Spell
+      cost: 0
+      maxTick: 0
+      script: step.py
+    - ==: com.wynnlab.spells.Spell
+      cost: 0
+      maxTick: 0
+      script: silence.py
+    - ==: com.wynnlab.spells.Spell
+      cost: 0
+      maxTick: 0
+      script: control.py

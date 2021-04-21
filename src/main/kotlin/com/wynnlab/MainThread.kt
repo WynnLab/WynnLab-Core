@@ -3,6 +3,7 @@ package com.wynnlab
 import com.wynnlab.api.getArmorHealth
 import com.wynnlab.api.getId
 import com.wynnlab.api.standardActionBar
+import com.wynnlab.api.testInventory
 import com.wynnlab.spells.PySpell
 import org.bukkit.Bukkit
 import org.bukkit.attribute.Attribute
@@ -40,6 +41,8 @@ object MainThread : Runnable {
                 // Jump height
                 val jumpHeight = player.getId("jump_height")
                 if (jumpHeight != 0) player.addPotionEffect(PotionEffect(PotionEffectType.JUMP, 21, jumpHeight - 1, true, false, false))
+
+                player.testInventory()
             }
 
             // Mana regen and health regen

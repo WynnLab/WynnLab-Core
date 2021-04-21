@@ -1,9 +1,6 @@
 package com.wynnlab.listeners
 
-import com.wynnlab.api.data
-import com.wynnlab.api.getString
-import com.wynnlab.api.showPouch
-import com.wynnlab.api.updatePouch
+import com.wynnlab.api.*
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -48,7 +45,7 @@ class GUIListener : Listener {
                 // Magic pouch
                 13 -> {
                     val player = e.whoClicked as? Player ?: return
-                    if (e.cursor != null) {
+                    if (e.cursor != null && !e.cursor!!.itemMeta.data.getBoolean("pouch")) {
                         player.playSound(player.location, Sound.ENTITY_HORSE_SADDLE, 1f, .9f)
                         player.updatePouch(e.cursor)
                         e.cursor = null
@@ -58,13 +55,11 @@ class GUIListener : Listener {
                     e.isCancelled = true
                 }
             }
-            return
+        } else if (e.view.topInventory == inventory) {
+            inventories[e.view.title]?.invoke(e)
         }
 
-        if (e.view.topInventory != inventory)
-            return
-
-        inventories[e.view.title]?.invoke(e)
+        (e.whoClicked as? Player)?.testInventory()
     }
 
     val inventories = hashMapOf<String, (InventoryClickEvent) -> Unit>()
@@ -76,12 +71,12 @@ class GUIListener : Listener {
 
     @EventHandler
     fun onPlayerDropItem(e: PlayerDropItemEvent) {
-        if (e.player.inventory.heldItemSlot in 6..8) e.isCancelled = true
+        if (e.player.inventory.heldItemSlot in 6..8 && e.player.gameMode == GameMode.ADVENTURE) e.isCancelled = true
     }
 
     @EventHandler
     fun onPlayerSwapItem(e: PlayerSwapHandItemsEvent) {
-        if (e.player.inventory.heldItemSlot in 6..8) e.isCancelled = true
+        if (e.player.inventory.heldItemSlot in 6..8 && e.player.gameMode == GameMode.ADVENTURE) e.isCancelled = true
     }
 
     private fun shiftOutAccessory(inv: Inventory, slot: Int): Boolean {
@@ -92,7 +87,7 @@ class GUIListener : Listener {
             inv.setItem(fe, barrier)
             barriers[fe - 9] = true
         }
-        inv.setItem(inv.firstEmpty(), itemToMove)
+        itemToMove?.let { inv.addItem(it) }
         barriers.forEachIndexed { i, b -> if (b) inv.setItem(i + 9, null) }
         inv.setItem(slot, null)
         return false

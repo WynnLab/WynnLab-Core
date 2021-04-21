@@ -23,6 +23,8 @@ fun PersistentDataContainer.getContainer(key: String) = this[key, PersistentData
 
 fun PersistentDataContainer.getContainerArray(key: String) = this[key, PersistentDataType.TAG_CONTAINER_ARRAY]
 
+fun PersistentDataContainer.getBoolean(key: String) = this[key, PersistentDataType.BYTE] == 1.toByte()
+
 
 operator fun <T, Z> PersistentDataContainer.set(key: String, type: PersistentDataType<T, Z>, value: Z) =
     set(NamespacedKey(plugin, key), type, value!!)
@@ -38,5 +40,8 @@ fun PersistentDataContainer.setContainer(key: String, value: PersistentDataConta
     container.value()
     set(key, PersistentDataType.TAG_CONTAINER, container)
 }
+
+fun PersistentDataContainer.setBoolean(key: String, value: Boolean) = set(key, PersistentDataType.BYTE, if (value) 1.toByte() else 0.toByte())
+
 
 fun PersistentDataContainer.remove(key: String) = remove(NamespacedKey(plugin, key))

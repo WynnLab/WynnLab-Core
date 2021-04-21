@@ -11,6 +11,7 @@ messages:
   class_change: '&aType &6/class &ato change your class'
   class_select: '&cType &6/class &cto select a class'
   totem_out: '&cYour totem is out!'
+  wrong_item: "&cYou can't use that item"
 classes:
   MAGE:
     className: 'Mage'
@@ -102,6 +103,20 @@ classes:
       3c: Wind Surge
       4:  Uproot
       4c: Gale Funnel
+  MONK:
+    className: '&kMonk'
+    cloneName: '&kDragon Warrior'
+    lore: |
+      &7&k Here goes the shaman lore
+    spells:
+      1: Shield
+      1c: Forcefield
+      2: Step
+      2c: Wind
+      3: Silence
+      3c: Touch
+      4: Control
+      4c: Dragon Breath
 gui:
   class:
     title: 'Select a class'

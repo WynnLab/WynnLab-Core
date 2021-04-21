@@ -56,6 +56,13 @@ val resources = arrayOf(
     "classes/warrior/war_scream.py",
     "classes/warrior/uppercut_throw.py",
 
+    "classes/monk/monk.yml",
+    "classes/monk/monk_main.py",
+    "classes/monk/shield.py",
+    "classes/monk/step.py",
+    "classes/monk/silence.py",
+    "classes/monk/control.py",
+
     /////////////////////////////////////
     // Languages
     /////////////////////////////////////
