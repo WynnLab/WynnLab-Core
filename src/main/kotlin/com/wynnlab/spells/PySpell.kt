@@ -101,15 +101,19 @@ abstract class PySpell : Runnable {
                 if (random.nextDouble() < attackSpeed.stealChance) {
                     val ms = source.getId("mana_steal")
                     if (ms != 0) {
-                        val l = source.location.clone().add(.0, 1.0, .0)
+                        val l = source.location.clone()
                         if (ms > 0)
-                            repeat(5) {
+                            repeat(5) { i ->
+                                l.add(if (i % 2 == 0) -.5 else .5, .2, if (i % 2 == 1) -.5 else .5)
                                 particle(source, l, Particle.SPELL_MOB, 0, 1.0, 1.0, 1.0, 1.0)
+                                l.add(if (i % 2 == 1) -.5 else .5, .2, if (i % 2 == 0) -.5 else .5)
                                 particle(source, l, Particle.SPELL_MOB, 0, 0.0, 1.0, 1.0, 1.0)
                             }
                         else
-                            repeat(5) {
+                            repeat(5) { i ->
+                                l.add(if (i % 2 == 0) -.5 else .5, .2, if (i % 2 == 1) -.5 else .5)
                                 particle(source, l, Particle.SPELL_MOB, 0, 0.0, 0.0, 0.0, 1.0)
+                                l.add(if (i % 2 == 1) -.5 else .5, .2, if (i % 2 == 0) -.5 else .5)
                                 particle(source, l, Particle.SPELL_MOB, 0, 0.0, 0.0, 1.0, 1.0)
                             }
                         source.foodLevel = (source.foodLevel + ms).coerceIn(1, 20)
@@ -117,7 +121,52 @@ abstract class PySpell : Runnable {
                 }
             }
 
+            // Exploding
+            if (melee && random.nextDouble() < (source.getId("exploding") / 100.0 * multiplier)) {
+                sound(source, e.location, Sound.ENTITY_GENERIC_EXPLODE, 1f, 1f)
+                particle(source, e.location.clone().add(.0, 1.0, .0), Particle.EXPLOSION_LARGE, 3, .5, 1.0, .5, .0)
+                nearbyMobs(e.world, e.location, 2.0, 2.0, 2.0).forEach { if(e != it) damageBy(source, it, melee, multiplier / 3.0, *conversion) }
+            }
+
+            // Poison
+            if (melee) {
+                val poison = source.getId("poison").coerceAtLeast(0)
+                if (poison > 0) {
+                    val task = poisonTask(e, poison, source)
+                    task.id = Bukkit.getScheduler().runTaskTimer(plugin, task, 0L, 20L).taskId
+                }
+            }
+
             // Damage
+            damageBy(source, e, melee, multiplier, *conversion)
+        }
+
+        private fun poisonTask(e: LivingEntity, poison: Int, source: Player) = object : Runnable {
+            @Volatile
+            private var c = 0
+
+            var id = 0
+
+            private var l = e.location.clone()
+
+            override fun run() {
+                if (c < 2)
+                    ++c
+                else
+                    Bukkit.getScheduler().cancelTask(id)
+
+                l = e.location.clone()
+
+                e.damage(poison / 3.0, source)
+                repeat(10) { i ->
+                    l.add(if (i % 2 == 0) -.5 else .5, .2, if (i % 2 == 1) -.5 else .5)
+                    particle(source, l, Particle.SPELL_MOB, 0, .2, .8, .05, 1.0)
+                }
+            }
+        }
+
+        @JvmStatic
+        fun damageBy(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) {
             val damage = source.getDamage(melee, multiplier, if (conversion.isNotEmpty()) doubleArrayOf(*conversion) else standardConversion)
 
             e.damage(damage.sum(), source)

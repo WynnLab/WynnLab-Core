@@ -257,13 +257,13 @@ class WynnItem(
     }
 
     enum class AttackSpeed(val str: String, val cooldown: Int, val spellMultiplier: Double, val stealChance: Double) {
-        SUPER_SLOW("Super Slow", 39, .51, .078),
-        VERY_SLOW("Very Slow", 25, .83, .107),
-        SLOW("Slow", 13, 1.5, .133),
+        SUPER_SLOW("Super Slow", 39, .51, .654),
+        VERY_SLOW("Very Slow", 25, .83, .402),
+        SLOW("Slow", 13, 1.5, .222),
         NORMAL("Normal", 10, 2.05, .163),
-        FAST("Fast", 8, 2.5, .222),
-        VERY_FAST("Very Fast", 6, 3.1, .402),
-        SUPER_FAST("Super Fast", 4, 4.3, .654),
+        FAST("Fast", 8, 2.5, .133),
+        VERY_FAST("Very Fast", 6, 3.1, .107),
+        SUPER_FAST("Super Fast", 4, 4.3, .078),
     }
 
     enum class AccessoryType {

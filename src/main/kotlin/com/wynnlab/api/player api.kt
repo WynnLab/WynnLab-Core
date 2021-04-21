@@ -272,11 +272,11 @@ fun Player.getDamage(melee: Boolean, multiplier: Double = 1.0, conversion: Doubl
     val ids = DoubleArray(6) { i ->
         var value = strength + dexterity
         value += if (melee)
-            getId("spell_damage") / 100.0
-        else
             getId("damage_bonus") / 100.0
+        else
+            getId("spell_damage") / 100.0
         if (i > 0)
-            value += getId("bonus__damage") / 100.0
+            value += getId("bonus_${elementNamesLC[i - 1]}_damage") / 100.0
         value
     }
 
@@ -295,6 +295,8 @@ fun Player.getDamage(melee: Boolean, multiplier: Double = 1.0, conversion: Doubl
 
     return result
 }
+
+private val elementNamesLC = arrayOf("earth", "thunder", "water", "fire", "air")
 
 fun Player.getArmorHealth(): Int {
     var sum = 0
