@@ -1,9 +1,6 @@
 package com.wynnlab.spells
 
-import com.wynnlab.api.data
-import com.wynnlab.api.getDamage
-import com.wynnlab.api.getInt
-import com.wynnlab.api.standardConversion
+import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.entities.Hologram
 import com.wynnlab.plugin
@@ -92,6 +89,35 @@ abstract class PySpell : Runnable {
 
         @JvmStatic
         fun damage(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) {
+            // LS / MS
+            source.weaponAttackSpeed?.let { attackSpeed ->
+                if (random.nextDouble() < attackSpeed.stealChance) {
+                    val ls = source.getId("life_steal")
+                    if (ls != 0) {
+                        particle(source, source.location.clone().add(.0, 1.0, .0), if (ls > 0) Particle.HEART else Particle.DAMAGE_INDICATOR, 10, .5, 1.0, .5, .2)
+                        heal(source, ls.toDouble())
+                    }
+                }
+                if (random.nextDouble() < attackSpeed.stealChance) {
+                    val ms = source.getId("mana_steal")
+                    if (ms != 0) {
+                        val l = source.location.clone().add(.0, 1.0, .0)
+                        if (ms > 0)
+                            repeat(5) {
+                                particle(source, l, Particle.SPELL_MOB, 0, 1.0, 1.0, 1.0, 1.0)
+                                particle(source, l, Particle.SPELL_MOB, 0, 0.0, 1.0, 1.0, 1.0)
+                            }
+                        else
+                            repeat(5) {
+                                particle(source, l, Particle.SPELL_MOB, 0, 0.0, 0.0, 0.0, 1.0)
+                                particle(source, l, Particle.SPELL_MOB, 0, 0.0, 0.0, 1.0, 1.0)
+                            }
+                        source.foodLevel = (source.foodLevel + ms).coerceIn(1, 20)
+                    }
+                }
+            }
+
+            // Damage
             val damage = source.getDamage(melee, multiplier, if (conversion.isNotEmpty()) doubleArrayOf(*conversion) else standardConversion)
 
             e.damage(damage.sum(), source)

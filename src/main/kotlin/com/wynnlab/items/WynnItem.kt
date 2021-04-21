@@ -256,14 +256,14 @@ class WynnItem(
         LEATHER("LEATHER"), GOLD("GOLDEN"), CHAIN("CHAINMAIL"), IRON("IRON"), DIAMOND("DIAMOND")
     }
 
-    enum class AttackSpeed(val str: String, val cooldown: Int, val spellMultiplier: Double) {
-        SUPER_SLOW("Super Slow", 39, .51),
-        VERY_SLOW("Very Slow", 25, .83),
-        SLOW("Slow", 13, 1.5),
-        NORMAL("Normal", 10, 2.05),
-        FAST("Fast", 8, 2.5),
-        VERY_FAST("Very Fast", 6, 3.1),
-        SUPER_FAST("Super Fast", 4, 4.3),
+    enum class AttackSpeed(val str: String, val cooldown: Int, val spellMultiplier: Double, val stealChance: Double) {
+        SUPER_SLOW("Super Slow", 39, .51, .078),
+        VERY_SLOW("Very Slow", 25, .83, .107),
+        SLOW("Slow", 13, 1.5, .133),
+        NORMAL("Normal", 10, 2.05, .163),
+        FAST("Fast", 8, 2.5, .222),
+        VERY_FAST("Very Fast", 6, 3.1, .402),
+        SUPER_FAST("Super Fast", 4, 4.3, .654),
     }
 
     enum class AccessoryType {

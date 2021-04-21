@@ -47,7 +47,9 @@ fun Player.hasWeaponInHand(): Boolean? {
 fun Player.checkWeapon() =
     hasWeaponInHand()?.also { if (!it) sendMessage("§cYou cannot use this weapon!") } == true
 
-val Player.attackSpeed get() = if (hasWeaponInHand() == true) inventory.itemInMainHand.getAttackSpeed() else null
+val Player.weaponAttackSpeed get() = if (hasWeaponInHand() == true) inventory.itemInMainHand.getAttackSpeed() else null
+
+val Player.attackSpeed get() = weaponAttackSpeed?.let { WynnItem.AttackSpeed.values()[(it.ordinal + getId("attack_speed_bonus")).coerceIn(0, 6)] }
 
 fun Player.cooldown(): Boolean {
     val attackSpeed = attackSpeed ?: return false
@@ -284,7 +286,7 @@ fun Player.getDamage(melee: Boolean, multiplier: Double = 1.0, conversion: Doubl
             result[i + 1] = damages[i + 1] * (1 + ids[i + 1]) /*- def*/
         }
     } else {
-        val attackSpeedSpellMultiplier = attackSpeed!!.spellMultiplier
+        val attackSpeedSpellMultiplier = weaponAttackSpeed!!.spellMultiplier
         result[0] = (damages[0] * (1 + ids[0] /*- def*/) * attackSpeedSpellMultiplier + getId("spell_damage_raw")) * multiplier
         repeat(5) { i ->
             result[i + 1] = (damages[i + 1] * (1 + ids[i + 1]) /*- def*/) * attackSpeedSpellMultiplier * multiplier
