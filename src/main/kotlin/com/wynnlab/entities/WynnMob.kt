@@ -6,6 +6,7 @@ import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.entity.Projectile
 import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.inventory.ItemStack
@@ -28,9 +29,9 @@ data class WynnMob(
     val defense: Double,
     val elementalDamage: Elemental<IntRange>?,
     val elementalDefense: Elemental<Int>?,
-    val ambientSound: Sound?,
-    val hurtSound: Sound?,
-    val deathSound: Sound?,
+    val ambientSound: SoundEffect?,
+    val hurtSound: SoundEffect?,
+    val deathSound: SoundEffect?,
     val kbResistance: Double,
     val equipment: Equipment,
     val spells: List<MobSpell>
@@ -42,11 +43,26 @@ data class WynnMob(
 
             customName = ChatComponentText("${this@WynnMob.name} §6[Lv. $level]")
             customNameVisible = true
+
+            getAttributeInstance(GenericAttributes.MAX_HEALTH)!!.value = this@WynnMob.health.toDouble()
+            health = this@WynnMob.health.toFloat()
+
+            getAttributeInstance(GenericAttributes.MOVEMENT_SPEED)?.value = this@WynnMob.speed
+
+            equipment.run {
+                mainHand?.let { setSlot(EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(it), true) }
+            }
         }
 
         override fun initPathfinder() {
             this@WynnMob.ai.initPathfinder(goalSelector, targetSelector, this)
         }
+
+        override fun getSoundAmbient(): SoundEffect? = ambientSound
+
+        override fun getSoundHurt(damagesource: DamageSource?): SoundEffect? = hurtSound
+
+        override fun getSoundDeath(): SoundEffect? = deathSound
     }
 
     fun spawn(location: Location) {
@@ -72,19 +88,30 @@ data class WynnMob(
     )
 
     enum class AI(val initPathfinder: (PathfinderGoalSelector, PathfinderGoalSelector, EntityCreature) -> Unit) {
-        NONE({ g, t, e ->
+        NONE({ g, _, e ->
             g.a(0, PathfinderGoalFloat(e))
         }),
-        NO_ATTACK({ g, t, e ->
-            g.a(1, PathfinderGoalRandomStroll(e, .5))
-            g.a(2, PathfinderGoalLookAtPlayer(e, EntityPlayer::class.java, .5f))
+        NO_ATTACK({ g, _, e ->
+            g.a(2, PathfinderGoalRandomStroll(e, 1.0))
+            g.a(1, PathfinderGoalLookAtPlayer(e, EntityHuman::class.java, .5f))
             g.a(0, PathfinderGoalRandomLookaround(e))
-        }), MELEE({ g, t, e ->
+        }),
+        MELEE({ g, t, e ->
+            t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
 
-        }), RANGED({ g, t, e ->
+            g.a(3, PathfinderGoalMeleeAttack(e, 1.0, true))
 
-        }), SUPPORT({ g, t, e ->
+            NO_ATTACK.initPathfinder(g, t, e)
+        }),
+        RANGED({ g, t, e ->
+            t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
 
+            //g.a(3, PathfinderGoalArrowAttack(e, 1.0, true))
+
+            NO_ATTACK.initPathfinder(g, t, e)
+        }),
+        SUPPORT({ g, t, e ->
+            NO_ATTACK.initPathfinder(g, t, e)
         })
     }
 

@@ -1,0 +1,101 @@
+package com.wynnlab.entities
+
+import com.wynnlab.spells.MobSpell
+import net.minecraft.server.v1_16_R3.Entity
+import net.minecraft.server.v1_16_R3.EntityTypes
+import net.minecraft.server.v1_16_R3.EntityVindicator
+import org.bukkit.Location
+import org.bukkit.Sound
+import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
+import org.bukkit.entity.Projectile
+import org.bukkit.entity.Vindicator
+
+class WEntityImpl<B : org.bukkit.entity.Entity>(
+    val location: Location,
+    val name: String,
+    val level: Int,
+    val ai: WynnMob.AI,
+    val health: Int,
+    val regen: Int,
+    val damage: IntRange,
+    val attackSpeed: Double,
+    val projectile: Class<out Projectile>?,
+    val speed: Double,
+    val vision: Double,
+    val invisible: Boolean = false,
+    val burning: Boolean = false,
+    val baby: Boolean = false,
+    val defense: Double,
+    val elementalDamage: WynnMob.Elemental<IntRange>?,
+    val elementalDefense: WynnMob.Elemental<Int>?,
+    val ambientSound: Sound,
+    val hurtSound: Sound,
+    val deathSound: Sound,
+    val kbResistance: Double,
+    val spells: List<MobSpell>
+) : WEntity<B> {
+    override fun init(entity: Entity) {
+        entity.setLocation(location.x, location.y, location.z, location.yaw, location.pitch)
+    }
+}
+
+interface WEntity<B : org.bukkit.entity.Entity> : CustomEntity<B> {
+    fun init(entity: Entity)
+}
+
+class WVindicator(
+    location: Location,
+    name: String,
+    level: Int,
+    ai: WynnMob.AI,
+    health: Int,
+    regen: Int,
+    damage: IntRange,
+    attackSpeed: Double,
+    projectile: Class<out Projectile>?,
+    speed: Double,
+    vision: Double,
+    invisible: Boolean = false,
+    burning: Boolean = false,
+    baby: Boolean = false,
+    defense: Double,
+    elementalDamage: WynnMob.Elemental<IntRange>?,
+    elementalDefense: WynnMob.Elemental<Int>?,
+    ambientSound: Sound,
+    hurtSound: Sound,
+    deathSound: Sound,
+    kbResistance: Double,
+    spells: List<MobSpell>
+) : EntityVindicator(EntityTypes.VINDICATOR, (location.world as CraftWorld).handle),
+    WEntity<Vindicator> by WEntityImpl(location, name, level, ai, health, regen, damage, attackSpeed, projectile, speed, vision, invisible, burning, baby, defense, elementalDamage, elementalDefense, ambientSound, hurtSound, deathSound, kbResistance, spells) {
+    init {
+        init(this)
+    }
+}
+fun createWVindicator(
+    location: Location,
+    name: String,
+    level: Int,
+    ai: WynnMob.AI,
+    health: Int,
+    regen: Int,
+    damage: IntRange,
+    attackSpeed: Double,
+    projectile: Class<out Projectile>?,
+    speed: Double,
+    vision: Double,
+    invisible: Boolean = false,
+    burning: Boolean = false,
+    baby: Boolean = false,
+    defense: Double,
+    elementalDamage: WynnMob.Elemental<IntRange>?,
+    elementalDefense: WynnMob.Elemental<Int>?,
+    ambientSound: Sound,
+    hurtSound: Sound,
+    deathSound: Sound,
+    kbResistance: Double,
+    spells: List<MobSpell>
+) = WVindicator(location, name, level, ai, health, regen, damage, attackSpeed, projectile, speed, vision, invisible, burning, baby, defense, elementalDamage, elementalDefense, ambientSound, hurtSound, deathSound, kbResistance, spells)
+
+val entityTypeToClass: Map<EntityTypes<out Entity>, (Location, String, Int, WynnMob.AI, Int, Int, IntRange, Double, Class<out Projectile>?, Double, Double, Boolean, Boolean, Boolean, Double, WynnMob.Elemental<IntRange>?, WynnMob.Elemental<Int>?, Sound, Sound, Sound, Double, List<MobSpell>) -> Entity> =
+    hashMapOf(EntityTypes.VINDICATOR to ::createWVindicator)
