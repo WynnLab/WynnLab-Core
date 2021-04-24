@@ -44,3 +44,9 @@ commands:
   dummy:
     description: Spawns a dummy
     usage: /dummy
+  upload:
+    description: Uploads a file
+    usage: /upload item|music|file
+  wlrl:
+    description: WynnLab reload
+    usage: /wlrl classes|class <name>
