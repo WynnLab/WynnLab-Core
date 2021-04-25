@@ -50,3 +50,6 @@ commands:
   wlrl:
     description: WynnLab reload
     usage: /wlrl classes|class <name>
+  mob:
+    description: Spawn a WynnLab mob
+    usage: /mob <name>

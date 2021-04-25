@@ -13,17 +13,19 @@ inline val PersistentDataHolder.data get() = persistentDataContainer
 operator fun <T, Z> PersistentDataContainer.get(key: String, type: PersistentDataType<T, Z>) =
     try { this[NamespacedKey(plugin, key), type] } catch (e: IllegalArgumentException) { null }
 
-fun PersistentDataContainer.getString(key: String) = this[key, PersistentDataType.STRING]
+fun PersistentDataContainer.getString(key: String, default: String? = null) = this[key, PersistentDataType.STRING] ?: default
 
-fun PersistentDataContainer.getInt(key: String) = this[key, PersistentDataType.INTEGER]
+fun PersistentDataContainer.getInt(key: String, default: Int? = null) = this[key, PersistentDataType.INTEGER] ?: default
 
-fun PersistentDataContainer.getIntArray(key: String) = this[key, PersistentDataType.INTEGER_ARRAY]
+fun PersistentDataContainer.getIntArray(key: String, default: IntArray? = null) = this[key, PersistentDataType.INTEGER_ARRAY] ?: default
 
-fun PersistentDataContainer.getContainer(key: String) = this[key, PersistentDataType.TAG_CONTAINER]
+fun PersistentDataContainer.getContainer(key: String, default: PersistentDataContainer? = null) = this[key, PersistentDataType.TAG_CONTAINER] ?: default
 
-fun PersistentDataContainer.getContainerArray(key: String) = this[key, PersistentDataType.TAG_CONTAINER_ARRAY]
+fun PersistentDataContainer.getContainerArray(key: String, default: Array<PersistentDataContainer>? = null): Array<PersistentDataContainer>? = this[key, PersistentDataType.TAG_CONTAINER_ARRAY] ?: default
 
-fun PersistentDataContainer.getBoolean(key: String) = this[key, PersistentDataType.BYTE] == 1.toByte()
+fun PersistentDataContainer.getBoolean(key: String, default: Boolean = false): Boolean { return (this[key, PersistentDataType.BYTE] ?: return default) != 0.toByte() }
+
+fun PersistentDataContainer.getDouble(key: String, default: Double? = null) = this[key, PersistentDataType.DOUBLE] ?: default
 
 
 operator fun <T, Z> PersistentDataContainer.set(key: String, type: PersistentDataType<T, Z>, value: Z) =
@@ -42,6 +44,8 @@ fun PersistentDataContainer.setContainer(key: String, value: PersistentDataConta
 }
 
 fun PersistentDataContainer.setBoolean(key: String, value: Boolean) = set(key, PersistentDataType.BYTE, if (value) 1.toByte() else 0.toByte())
+
+fun PersistentDataContainer.setDouble(key: String, value: Double) = set(key, PersistentDataType.DOUBLE, value)
 
 
 fun PersistentDataContainer.remove(key: String) = remove(NamespacedKey(plugin, key))

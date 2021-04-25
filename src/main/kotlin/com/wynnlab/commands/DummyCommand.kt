@@ -1,5 +1,6 @@
 package com.wynnlab.commands
 
+import com.wynnlab.entities.Dummy
 import com.wynnlab.entities.WynnMob
 import com.wynnlab.random
 import net.minecraft.server.v1_16_R3.EntityTypes
@@ -19,13 +20,13 @@ class DummyCommand : CommandExecutor {
         if (args.isNotEmpty())
             return false
 
-        //Dummy(sender.location).spawn(sender.world)
-        val wynnMob = WynnMob("Dummy", EntityTypes.VINDICATOR, WynnMob.AI.values()[random.nextInt(4)], 0, 100000, 0, 0..0,
+        Dummy(sender.location).spawn(sender.world)
+        /*val wynnMob = WynnMob("Dummy", EntityTypes.VINDICATOR, WynnMob.AI.values()[random.nextInt(4)], 0, 100000, 0, 0..0,
         1.0, null, .1, .0, false, false, false, .0,
         null, null, SoundEffects.ENTITY_DONKEY_DEATH, SoundEffects.BLOCK_GLASS_BREAK, SoundEffects.ENTITY_ENDER_DRAGON_DEATH, .0,
-            WynnMob.Equipment(null), listOf())
+            WynnMob.Equipment(null), listOf())*/
 
-        wynnMob.spawn(sender.location)
+        //wynnMob.spawn(sender.location)
 
         return true
     }

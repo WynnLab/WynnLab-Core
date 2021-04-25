@@ -1,0 +1,13 @@
+mob:
+  ==: com.wynnlab.entities.WynnMob
+  name: '&cDummy'
+  mob_type: VINDICATOR
+  ai: MELEE
+  level: 0
+  health: 100000
+  regen: 0
+  damage: 0-0
+  attack_speed: 1
+  speed: .2
+  vision: 0
+  defense: 0
