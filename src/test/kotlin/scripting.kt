@@ -11,15 +11,16 @@ fun main() {
                 print(ic)
                 True
             
-            s = S(Predicate(lambda a: doSth(a)))
+            #s = S(Predicate(lambda a: doSth(a)))
             
-            s.fn.invoke('Hi')
+            #s.fn.invoke('Hi')
         """.trimIndent())
 
         py.set("S", S::class.java)
         py.set("Predicate", p.Predicate::class.java)
 
         py.exec(code)
+        println(py.get("doSth")::class.java)
     }
 }
 

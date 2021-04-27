@@ -9,10 +9,20 @@ mob:
   damage: 0-0
   attack_speed: 1
   speed: .2
-  vision: 0
+  vision: 10
   defense: 0
   equipment:
-    ==: com.wynnlab.entities.WynnMob.Equipment
-    mainHand:
+    ==: com.wynnlab.entities.WynnMob$Equipment
+    main_hand:
       ==: org.bukkit.inventory.ItemStack
       type: IRON_AXE
+  spells:
+    - ==: com.wynnlab.spells.MobSpell
+      name: Pull
+      max_tick: 0
+      script: pull.py
+    - ==: com.wynnlab.spells.MobSpell
+      name: BBPull
+      max_tick: 0
+      has_boss_bar: true
+      script: pull.py

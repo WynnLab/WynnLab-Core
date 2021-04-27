@@ -4,6 +4,7 @@ import com.wynnlab.commands.*
 import com.wynnlab.entities.WynnMob
 import com.wynnlab.listeners.*
 import com.wynnlab.localization.loadLanguages
+import com.wynnlab.spells.MobSpell
 import com.wynnlab.spells.Spell
 import com.wynnlab.util.DEG2RAD
 import com.wynnlab.util.RAD2DEG
@@ -101,6 +102,7 @@ class Main : JavaPlugin() {
         ConfigurationSerialization.registerClass(Spell::class.java)
         ConfigurationSerialization.registerClass(WynnMob::class.java)
         ConfigurationSerialization.registerClass(WynnMob.Equipment::class.java)
+        ConfigurationSerialization.registerClass(MobSpell::class.java)
     }
 
     private fun setGameRules() {

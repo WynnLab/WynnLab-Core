@@ -62,7 +62,7 @@ data class WynnMob(
         }
 
         override fun initPathfinder() {
-            this@WynnMob.ai.initPathfinder(goalSelector, targetSelector, this)
+            this@WynnMob.ai.initPathfinder(goalSelector, targetSelector, this, this@WynnMob)
         }
 
         override fun getSoundAmbient(): SoundEffect? = ambientSound
@@ -122,7 +122,7 @@ data class WynnMob(
             val equipment = map["equipment"] as Equipment ??: Equipment(null, null, null, null, null, null)
             val spells = map["spells"] as List<MobSpell> ??: listOf()
 
-            return WynnMob(name, mobType, ai, level, health, regen, damage, attackSpeed, projectile, speed, vision, defense, elementalDamage, elementalDefense, ambientSound, hurtSound, deathSound, kbResistance, equipment, spells)
+            return WynnMob(name, mobType, ai, level, health, regen, damage, attackSpeed, projectile, speed, vision, defense, elementalDamage, elementalDefense, ambientSound, hurtSound, deathSound, kbResistance, equipment, spells).also { println(it) }
         }
     }
 
@@ -148,28 +148,28 @@ data class WynnMob(
                 val legs = (map["legs"] as ItemStack?)?.let { CraftItemStack.asNMSCopy(it) }
                 val feet = (map["feet"] as ItemStack?)?.let { CraftItemStack.asNMSCopy(it) }
 
-                return Equipment(mainHand, offHand, head, chest, legs, feet)
+                return Equipment(mainHand, offHand, head, chest, legs, feet).also { println(it) }
             }
         }
     }
 
-    enum class AI(val initPathfinder: (PathfinderGoalSelector, PathfinderGoalSelector, EntityCreature) -> Unit) {
-        NONE({ g, _, e ->
+    enum class AI(val initPathfinder: (PathfinderGoalSelector, PathfinderGoalSelector, EntityCreature, WynnMob) -> Unit) {
+        NONE({ g, _, e, _ ->
             g.a(0, PathfinderGoalFloat(e))
         }),
-        NO_ATTACK({ g, _, e ->
+        NO_ATTACK({ g, _, e, _ ->
             g.a(2, PathfinderGoalRandomStroll(e, 1.0))
             g.a(3, PathfinderGoalLookAtPlayer(e, EntityHuman::class.java, .5f))
             g.a(1, PathfinderGoalRandomLookaround(e))
 
             g.a(0, PathfinderGoalFloat(e))
         }),
-        MELEE({ g, t, e ->
+        MELEE({ g, t, e, m ->
             t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
 
             g.a(2, PathfinderGoalMeleeAttack(e, .5, true))
 
-            g.a(1, PathfinderGoalCastSpell(e, 10.0, listOf(MobSpell("Hi", 20, 10))))
+            g.a(1, PathfinderGoalCastSpell(e, m.vision, m.spells))
 
             g.a(4, PathfinderGoalRandomStroll(e, 1.0))
             g.a(5, PathfinderGoalLookAtPlayer(e, EntityHuman::class.java, .5f))
@@ -177,15 +177,15 @@ data class WynnMob(
 
             g.a(0, PathfinderGoalFloat(e))
         }),
-        RANGED({ g, t, e ->
+        RANGED({ g, t, e, m ->
             t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
 
             //g.a(3, PathfinderGoalArrowAttack(e, 1.0, true))
 
-            NO_ATTACK.initPathfinder(g, t, e)
+            NO_ATTACK.initPathfinder(g, t, e, m)
         }),
-        SUPPORT({ g, t, e ->
-            NO_ATTACK.initPathfinder(g, t, e)
+        SUPPORT({ g, t, e, m ->
+            NO_ATTACK.initPathfinder(g, t, e, m)
         })
     }
 
