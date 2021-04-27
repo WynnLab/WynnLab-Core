@@ -4,7 +4,6 @@ import com.wynnlab.api.*
 import com.wynnlab.spells.MobSpell
 import net.minecraft.server.v1_16_R3.*
 import org.bukkit.ChatColor
-import net.minecraft.server.v1_16_R3.ItemStack as NMSItemStack
 import org.bukkit.Location
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
@@ -12,6 +11,7 @@ import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.entity.Projectile
 import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.inventory.ItemStack
+import net.minecraft.server.v1_16_R3.ItemStack as NMSItemStack
 
 data class WynnMob(
     val name: String,
@@ -167,9 +167,9 @@ data class WynnMob(
         MELEE({ g, t, e ->
             t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
 
-            g.a(1, PathfinderGoalMeleeAttack(e, 1.0, true))
+            g.a(2, PathfinderGoalMeleeAttack(e, .5, true))
 
-            g.a(2, PathfinderGoalCastSpell(e))
+            g.a(1, PathfinderGoalCastSpell(e, 10.0, listOf(MobSpell("Hi", 20, 10))))
 
             g.a(4, PathfinderGoalRandomStroll(e, 1.0))
             g.a(5, PathfinderGoalLookAtPlayer(e, EntityHuman::class.java, .5f))

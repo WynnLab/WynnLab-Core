@@ -11,3 +11,8 @@ mob:
   speed: .2
   vision: 0
   defense: 0
+  equipment:
+    ==: com.wynnlab.entities.WynnMob.Equipment
+    mainHand:
+      ==: org.bukkit.inventory.ItemStack
+      type: IRON_AXE

@@ -1,6 +1,7 @@
 package com.wynnlab
 
 import com.wynnlab.commands.*
+import com.wynnlab.entities.WynnMob
 import com.wynnlab.listeners.*
 import com.wynnlab.localization.loadLanguages
 import com.wynnlab.spells.Spell
@@ -98,6 +99,8 @@ class Main : JavaPlugin() {
     private fun registerSerializers() {
         ConfigurationSerialization.registerClass(WynnClass::class.java)
         ConfigurationSerialization.registerClass(Spell::class.java)
+        ConfigurationSerialization.registerClass(WynnMob::class.java)
+        ConfigurationSerialization.registerClass(WynnMob.Equipment::class.java)
     }
 
     private fun setGameRules() {
