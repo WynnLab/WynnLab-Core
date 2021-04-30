@@ -1,11 +1,7 @@
 package com.wynnlab.listeners
 
-import com.wynnlab.api.addLeftClick
-import com.wynnlab.api.addRightClick
-import com.wynnlab.api.checkWeapon
-import com.wynnlab.api.hasWeaponInHand
+import com.wynnlab.api.*
 import com.wynnlab.gui.CompassGUI
-import org.bukkit.Effect
 import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -23,9 +19,16 @@ class PlayerClickListener : Listener {
             return
         if (e.animationType != PlayerAnimationType.ARM_SWING)
             return
+
+        e.player.inventory.itemInMainHand.itemMeta?.data?.getString("type")?.let {
+            lcEvents[it]?.invoke(e)
+        }
+
         if (!e.player.checkWeapon())
             return
+
         e.player.addLeftClick()
+
         e.isCancelled = true
     }
 
@@ -50,11 +53,56 @@ class PlayerClickListener : Listener {
                 e.isCancelled = true
             }
             else -> {
+                e.player.inventory.itemInMainHand.itemMeta?.data?.getString("type")?.let {
+                    rcEvents[it]?.invoke(e)
+                }
+
                 if (!e.player.checkWeapon())
                     return
+
                 e.player.addRightClick()
                 e.isCancelled = true
             }
         }
     }
+
+    val rcEvents = hashMapOf<String, (PlayerInteractEvent) -> Unit>(
+        "HELMET" to { e ->
+            val l = e.player.inventory.helmet
+            e.player.inventory.helmet = e.player.inventory.itemInMainHand
+            e.player.inventory.setItemInMainHand(l)
+        },
+        "CHESTPLATE" to { e ->
+            val l = e.player.inventory.chestplate
+            e.player.inventory.chestplate = e.player.inventory.itemInMainHand
+            e.player.inventory.setItemInMainHand(l)
+        },
+        "LEGGINGS" to { e ->
+            val l = e.player.inventory.leggings
+            e.player.inventory.leggings = e.player.inventory.itemInMainHand
+            e.player.inventory.setItemInMainHand(l)
+        },
+        "BOOTS" to { e ->
+            val l = e.player.inventory.boots
+            e.player.inventory.boots = e.player.inventory.itemInMainHand
+            e.player.inventory.setItemInMainHand(l)
+        },
+        "RING" to { e ->
+            val l = e.player.inventory.getItem(9)
+            e.player.inventory.setItem(9, e.player.inventory.itemInMainHand)
+            e.player.inventory.setItemInMainHand(l)
+        },
+        "BRACELET" to { e ->
+            val l = e.player.inventory.getItem(11)
+            e.player.inventory.setItem(11, e.player.inventory.itemInMainHand)
+            e.player.inventory.setItemInMainHand(l)
+        },
+        "NECKLACE" to { e ->
+            val l = e.player.inventory.getItem(12)
+            e.player.inventory.setItem(12, e.player.inventory.itemInMainHand)
+            e.player.inventory.setItemInMainHand(l)
+        }
+    )
+
+    val lcEvents = hashMapOf<String, (PlayerAnimationEvent) -> Unit>()
 }

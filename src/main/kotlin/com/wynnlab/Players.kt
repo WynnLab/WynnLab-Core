@@ -2,17 +2,15 @@ package com.wynnlab
 
 import com.wynnlab.api.*
 import com.wynnlab.essentials.Rank
+import com.wynnlab.items.APIException
 import com.wynnlab.util.getWynncraftAPIResult
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BookMeta
 import org.json.simple.JSONArray
@@ -87,7 +85,7 @@ object Players {
     }
 
     private fun loadAPIData(player: Player) {
-        getWynncraftAPIResult("https://api.wynncraft.com/v2/player/${player.name}/stats").task().let { root ->
+        try { getWynncraftAPIResult("https://api.wynncraft.com/v2/player/${player.name}/stats").task().let { root ->
             val data = try {
                 (root["data"] as JSONArray)[0] as JSONObject
             } catch (e: ArrayIndexOutOfBoundsException) {
@@ -124,6 +122,6 @@ object Players {
                     guildTag?.let { player.data.setString("guild_tag", it) }
                 }
             }
-        }
+        } } catch (_: APIException) { Rank.PLAYER.apply(player) }
     }
 }

@@ -3,6 +3,20 @@ messages:
   no_class: "&cDu hast noch keine Klasse gewählt"
   class_change: '&aGib &6/class &aein, um eine andere Klasse zu benutzen'
   class_select: '&cGib &6/class &cein, um eine Klasse zu wählen'
+
+items:
+  items:
+    combat_lv_min: '%s &7Level Min: %d'
+
+  heal_potion:
+    title: '&cTrank der Heilung &4[%d/3]'
+    effects: '&4Effekte:'
+    heal: '&4- &7Heilung: &f%d &c❤'
+    duration: '&4- &7-Dauer: &f3 Sekunden'
+    lore: |
+      &8Dieser Trank regeneriert
+      &8deine Leben in 3 Sekunden
+
 classes:
   MAGE:
     className: 'Magier'

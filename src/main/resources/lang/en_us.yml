@@ -5,6 +5,7 @@ commands:
   invalid_target: '&cPlease specify a valid target'
   no_target: '&cPlease specify a target'
   no_op: '&cYou need to be an operator to perform this command'
+
 messages:
   current_class: '&aYour current class is &3[%s]'
   no_class: "&cYou haven't selected a class yet"
@@ -12,6 +13,21 @@ messages:
   class_select: '&cType &6/class &cto select a class'
   totem_out: '&cYour totem is out!'
   wrong_item: "&cYou can't use that item"
+
+items:
+  items:
+    combat_lv_min: '%s &7Combat Lv. Min: %d'
+
+  heal_potion:
+    title: '&cPotion of Healing &4[%d/3]'
+    effects: '&4Effects:'
+    heal: '&4- &7Heal: &f%d &c❤'
+    duration: '&4- &7Duration: &f3 Seconds'
+    lore: |
+      &8Drinking this potion will
+      &8regenerate your health over
+      &83 seconds.
+
 classes:
   MAGE:
     className: 'Mage'

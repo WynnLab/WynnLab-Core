@@ -1,5 +1,6 @@
 package com.wynnlab.commands
 
+import com.wynnlab.items.SpecialItems
 import com.wynnlab.items.WynnItem
 import com.wynnlab.items.getAPIResults
 import com.wynnlab.plugin
@@ -15,11 +16,18 @@ class ItemCommand : CommandExecutor {
             sender.sendMessage("§cThis command can only be executed by players")
             return true
         }
+
         if (args.isEmpty()) {
             sender.sendMessage("§cPlease specify an item name")
             return false
         }
+
         val itemName = args.joinToString(" ")
+
+        try {
+            sender.inventory.addItem(SpecialItems.valueOf(itemName).itemStack(sender))
+        } catch (ignored: IllegalArgumentException) {  }
+
         getAPIResults(itemName).execute { jsonObjects ->
             if (jsonObjects.isEmpty()) {
                 sender.sendMessage("§c\"$itemName\" was not found")
@@ -39,6 +47,7 @@ class ItemCommand : CommandExecutor {
                 }
             }
         }
+
         return true
     }
 }
