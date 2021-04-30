@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.inventory.Inventory
@@ -18,33 +19,54 @@ import org.bukkit.inventory.ItemStack
 class GUIListener : Listener {
     @EventHandler(priority = EventPriority.HIGH)
     fun onInventoryClick(e: InventoryClickEvent) {
-        if (e.whoClicked.gameMode != GameMode.ADVENTURE)
+        val player = e.whoClicked as? Player ?: return
+
+        if (player.gameMode != GameMode.ADVENTURE)
             return
 
-        val inventory = e.clickedInventory ?: return
+        val clickedInventory = e.clickedInventory ?: return
+        val playerInventory = player.inventory
+        val upperInventory = e.inventory
+
+        val slot = e.slot
 
         e.currentItem?.let { item ->
-            when (val type = item.itemMeta?.data?.getString("type")) {
-                "RING", "BRACELET", "NECKLACE" -> {
-                    if (e.isShiftClick) {
-                        e.isCancelled = when (e.slot) {
-                            9, 10, 11, 12 -> if (inventory == e.whoClicked.inventory) shiftOutAccessory(e.whoClicked.inventory, e.slot) else
-                                shiftInAccessory(type, e.whoClicked.inventory, e.slot)
-                            else -> shiftInAccessory(type, e.whoClicked.inventory, e.slot)
+            if (upperInventory != playerInventory && upperInventory == clickedInventory && e.isShiftClick) {
+                val barriers = booleanArrayOf(false, false, false, false)
+
+                while (playerInventory.firstEmpty() in 9..12) {
+                    val fe = playerInventory.firstEmpty()
+                    playerInventory.setItem(fe, barrier)
+                    barriers[fe - 9] = true
+                }
+
+                playerInventory.addItem(item)
+                barriers.forEachIndexed { i, b -> if (b) playerInventory.setItem(i + 9, null) }
+                upperInventory.setItem(slot, null)
+
+                e.isCancelled = true
+            } else if (player.openInventory.type == InventoryType.CRAFTING) {
+                when (val type = item.itemMeta?.data?.getString("type")) {
+                    "RING", "BRACELET", "NECKLACE" -> {
+                        if (e.isShiftClick) {
+                            e.isCancelled = when (slot) {
+                                9, 10, 11, 12 -> if (clickedInventory == playerInventory) shiftOutAccessory(playerInventory, slot) else
+                                    shiftInAccessory(type, playerInventory, slot)
+                                else -> shiftInAccessory(type, playerInventory, slot)
+                            }
                         }
                     }
                 }
             }
         }
 
-        if (inventory == e.whoClicked.inventory) {
-            when (e.slot) {
+        if (clickedInventory == playerInventory) {
+            when (slot) {
                 // Prevent moving hotbar action items
                 6, 7, 8 -> e.isCancelled = true
 
                 // Magic pouch
                 13 -> {
-                    val player = e.whoClicked as? Player ?: return
                     if (e.cursor != null && !e.cursor!!.itemMeta.data.getBoolean("pouch")) {
                         player.playSound(player.location, Sound.ENTITY_HORSE_SADDLE, 1f, .9f)
                         player.updatePouch(e.cursor)
@@ -55,11 +77,11 @@ class GUIListener : Listener {
                     e.isCancelled = true
                 }
             }
-        } else if (e.view.topInventory == inventory) {
+        } else if (e.view.topInventory == clickedInventory) {
             inventories[e.view.title]?.invoke(e)
         }
 
-        (e.whoClicked as? Player)?.testInventory()
+        (player as? Player)?.testInventory()
     }
 
     val inventories = hashMapOf<String, (InventoryClickEvent) -> Unit>()
@@ -108,6 +130,6 @@ class GUIListener : Listener {
     }
 
     companion object {
-        val barrier = ItemStack(Material.BARRIER)
+        val barrier = ItemStack(Material.SNOW)
     }
 }
