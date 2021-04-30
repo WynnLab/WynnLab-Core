@@ -12,6 +12,10 @@ class ProjectileHitListener : Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onProjectileHit(e: ProjectileHitEvent) {
         val proj = e.entity
+
+        if ("mob_projectile" in proj.scoreboardTags)
+            proj.remove()
+
         if (proj.shooter !is Player)
             return
 

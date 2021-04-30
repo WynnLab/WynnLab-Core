@@ -7,6 +7,7 @@ import com.wynnlab.spells.MobSpell
 import net.minecraft.server.v1_16_R3.*
 import org.bukkit.ChatColor
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
@@ -25,6 +26,7 @@ data class WynnMob(
     val damage: IntRange,
     val attackSpeed: Double,
     val projectile: Class<out Projectile>?,
+    val projectileMaterial: Material?,
     val speed: Double,
     val vision: Double,
     //val invisible: Boolean = false,
@@ -111,6 +113,7 @@ data class WynnMob(
             val damage = (map["damage"] as String).split('-').let { it[0].toInt()..it[1].toInt() }
             val attackSpeed = (map["attack_speed"] as Number).toDouble()
             val projectile = (map["projectile"] as String?)?.let { Class.forName("org.bukkit.entity.$it") as Class<out Projectile> }
+            val projectileMaterial = (map["projectile_material"] as String?)?.let { Material.getMaterial(it) }
             val speed = (map["speed"] as Number).toDouble()
             val vision = (map["vision"] as Number).toDouble()
             val defense = (map["defense"] as Number).toDouble()
@@ -124,7 +127,7 @@ data class WynnMob(
             val equipment = map["equipment"] as Equipment ??: Equipment(null, null, null, null, null, null)
             val spells = map["spells"] as List<MobSpell> ??: listOf()
 
-            return WynnMob(name, mobType, ai, level, health, regen, damage, attackSpeed, projectile, speed, vision, defense, elementalDamage, elementalDefense, ambientSound, hurtSound, deathSound, kbResistance, equipment, spells).also { println(it) }
+            return WynnMob(name, mobType, ai, level, health, regen, damage, attackSpeed, projectile, projectileMaterial, speed, vision, defense, elementalDamage, elementalDefense, ambientSound, hurtSound, deathSound, kbResistance, equipment, spells).also { println(it) }
         }
     }
 
@@ -186,7 +189,7 @@ data class WynnMob(
 
             g.a(1, PathfinderGoalCastSpell(e, m.vision, m.spells))
 
-            g.a(2, PathfinderGoalRangedAttack(e, m.vision, (m.attackSpeed * 20).toInt(), m.projectile!!))
+            g.a(2, PathfinderGoalRangedAttack(e, m.vision, (m.attackSpeed * 20).toInt(), m.projectile!!, m.projectileMaterial))
 
             g.a(3, PathfinderGoalRandomLookaround(e))
             g.a(4, PathfinderGoalRandomStroll(e, 1.0))

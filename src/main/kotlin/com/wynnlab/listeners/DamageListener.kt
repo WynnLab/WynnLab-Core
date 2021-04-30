@@ -61,6 +61,10 @@ class DamageListener : Listener {
         entity.isCustomNameVisible = true
 
         // BossBar
+
+        if (entity.health < e.damage)
+            return
+
        /*val tag = "boss_bar_${entity.entityId}"
         if (tag in player.scoreboardTags)
             Bukkit.bo
