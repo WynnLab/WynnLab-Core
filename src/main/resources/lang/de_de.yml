@@ -12,7 +12,7 @@ items:
     title: '&cTrank der Heilung &4[%d/3]'
     effects: '&4Effekte:'
     heal: '&4- &7Heilung: &f%d &c❤'
-    duration: '&4- &7-Dauer: &f3 Sekunden'
+    duration: '&4- &7Dauer: &f3 Sekunden'
     lore: |
       &8Dieser Trank regeneriert
       &8deine Leben in 3 Sekunden

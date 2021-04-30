@@ -7,12 +7,15 @@ import com.wynnlab.spells.PySpell
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.PotionMeta
 
 enum class SpecialItems(val itemStack: (Player) -> ItemStack, private val rightClick: ((Player, ItemStack) -> Unit)?) {
     HealPotion ({ p ->
         ItemStack(Material.POTION).metaAs<PotionMeta> {
+        addItemFlags(*ItemFlag.values())
+
         color = Color.FUCHSIA
 
         setDisplayName(p.getLocalizedText("items.heal_potion.title", 3))

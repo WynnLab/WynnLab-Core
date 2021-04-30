@@ -71,9 +71,11 @@ data class MobSpell(
 
     abstract class Ticks(
         val caster: Entity,
-        val target: Entity,
+        val target: Entity
     ) {
-        internal var t = 0
+        val data: Any? = null
+
+        var t = 0
 
         abstract fun tick(): Boolean
     }
