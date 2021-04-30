@@ -46,10 +46,10 @@ commands:
     usage: /dummy
   upload:
     description: Uploads a file
-    usage: /upload item|music|file
+    usage: /upload item|mob|mob_spell|music/*|file*/
   wlrl:
     description: WynnLab reload
-    usage: /wlrl classes|class <name>
+    usage: /wlrl mobs|mob <name>|classes|class <name>
   mob:
     description: Spawn a WynnLab mob
     usage: /mob <name>

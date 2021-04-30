@@ -1,4 +1,4 @@
-package com.wynnlab.entities
+package com.wynnlab.entities.pathfinder
 
 import com.wynnlab.plugin
 import com.wynnlab.spells.MobSpell
@@ -8,6 +8,7 @@ import net.minecraft.server.v1_16_R3.PathfinderGoal
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
+import java.util.*
 
 class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Double, private val spells: List<MobSpell>) : PathfinderGoal() {
     private val range = range * range
@@ -21,7 +22,7 @@ class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Doubl
     private var ticks: MobSpell.Ticks? = null
 
     init {
-        //a(EnumSet.of(PathfinderGoal.Type.))
+        a(EnumSet.of(Type.LOOK))
     }
 
     override fun a(): Boolean {
@@ -68,7 +69,7 @@ class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Doubl
         } else if (prepare == 0) {
             if (spell!!.hasBossBar) {
                 spell!!.bossBar!!.removeAll()
-                Bukkit.removeBossBar(NamespacedKey(plugin, "prepare_${spell!!.name}_${creature.uniqueID}"))
+                Bukkit.removeBossBar(NamespacedKey(plugin, "prepare_${creature.id}"))
             }
 
             ticks = spell!!.newInstance(creature.bukkitEntity, target!!.bukkitEntity)

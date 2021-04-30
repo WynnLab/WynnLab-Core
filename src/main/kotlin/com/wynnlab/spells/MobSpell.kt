@@ -64,7 +64,7 @@ data class MobSpell(
 
         // BossBar
         if (hasBossBar) {
-           bossBar = if (hasBossBar) Bukkit.createBossBar(NamespacedKey(plugin, "prepare_${name}_${caster.uniqueId}"),
+           bossBar = if (hasBossBar) Bukkit.createBossBar(NamespacedKey(plugin, "prepare_${caster.entityId}"),
                "§5Preparing: §f$name", BarColor.PURPLE, BarStyle.SOLID, BarFlag.DARKEN_SKY) else null
         }
     }

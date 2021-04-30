@@ -15,6 +15,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDeathEvent
 
 class DamageListener : Listener {
     @EventHandler
@@ -50,7 +51,7 @@ class DamageListener : Listener {
         //if (entity.data.getString("old_name") != null)
         //    return
 
-        val oldName = entity.data.getString("old_name") ?:
+        val oldName = entity.data.getString("old_name") ?: entity.data.getString("name") ?:
             entity.customName?.takeIf { entity.isCustomNameVisible } ?:
             entity.name
 
@@ -64,7 +65,7 @@ class DamageListener : Listener {
         if (tag in player.scoreboardTags)
             Bukkit.bo
         player.addScoreboardTag(tag)*/
-        val bbKey = NamespacedKey(plugin, "boss_bar_${entity.entityId}")
+        val bbKey = NamespacedKey(plugin, "damage_${entity.entityId}")
         val currentBB = Bukkit.getBossBar(bbKey)
         currentBB?.apply {
             setTitle("$oldName§r§f - §4${currentHealth.toInt()}§c❤")
@@ -79,7 +80,7 @@ class DamageListener : Listener {
         val bossBar = currentBB ?: Bukkit.createBossBar(
             bbKey,
             "$oldName§r§f - §4${currentHealth.toInt()}§c❤",
-            BarColor.RED, BarStyle.SOLID
+            BarColor.RED, BarStyle.SEGMENTED_10
         )
 
         bossBar.progress = percentage
@@ -102,7 +103,19 @@ class DamageListener : Listener {
             bossBar.removePlayer(player)
             entity.customName = oldName
         }.schedule(100)
+    }
 
+    @EventHandler
+    fun onEntityDeath(e: EntityDeathEvent) {
+        if (e.entity is Player)
+            return
 
+        val damageKey = NamespacedKey(plugin, "damage_${e.entity.entityId}")
+        Bukkit.getBossBar(damageKey)?.removeAll()
+        Bukkit.removeBossBar(damageKey)
+
+        val prepareKey = NamespacedKey(plugin, "prepare_${e.entity.entityId}")
+        (Bukkit.getBossBar(prepareKey) ?: return).removeAll()
+        Bukkit.removeBossBar(prepareKey)
     }
 }

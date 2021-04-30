@@ -36,7 +36,7 @@ class MobCommand : CommandExecutor {
             config.load(file)
 
             config.getSerializable("mob", WynnMob::class.java)
-        } ?: run {
+        }?.also { mobs[mobName] = it } ?: run {
             sender.sendMessage("§cMalformed config")
             return true
         }
@@ -46,5 +46,5 @@ class MobCommand : CommandExecutor {
         return true
     }
 
-    private val mobs = hashMapOf<String, WynnMob>()
+    val mobs = hashMapOf<String, WynnMob>()
 }

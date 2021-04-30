@@ -34,6 +34,8 @@ class GMCommands : CommandExecutor {
 
         val newFileLoc = when (args[0]) {
             "item" -> File(plugin.dataFolder, "custom_items")
+            "mob" -> File(plugin.dataFolder, "mobs")
+            "mob_spell" -> File(File(plugin.dataFolder, "mobs"), "scripts")
             "music" -> File(Bukkit.getPluginManager().getPlugin("JukeBox")?.dataFolder, "songs")
             else -> return false
         }
@@ -79,6 +81,19 @@ class GMCommands : CommandExecutor {
             return false
 
         when (args[0]) {
+            "mobs" -> {
+                plugin.mobCommand.mobs.clear()
+            }
+            "mob" -> {
+                if (args.size < 2) {
+                    sender.sendMessage("§cPlease specify a mob to reload")
+                    return false
+                }
+                plugin.mobCommand.mobs.remove(args[1]) ?: run {
+                    sender.sendMessage("§cThe mob ${args[1]} doesn't exist")
+                    return false
+                }
+            }
             "classes" -> {
                 classes.clear()
                 loadClasses()

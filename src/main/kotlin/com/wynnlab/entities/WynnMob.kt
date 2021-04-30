@@ -1,6 +1,8 @@
 package com.wynnlab.entities
 
 import com.wynnlab.api.*
+import com.wynnlab.entities.pathfinder.PathfinderGoalCastSpell
+import com.wynnlab.entities.pathfinder.PathfinderGoalRangedAttack
 import com.wynnlab.spells.MobSpell
 import net.minecraft.server.v1_16_R3.*
 import org.bukkit.ChatColor
@@ -158,31 +160,39 @@ data class WynnMob(
             g.a(0, PathfinderGoalFloat(e))
         }),
         NO_ATTACK({ g, _, e, _ ->
+            g.a(1, PathfinderGoalRandomLookaround(e))
             g.a(2, PathfinderGoalRandomStroll(e, 1.0))
             g.a(3, PathfinderGoalLookAtPlayer(e, EntityHuman::class.java, .5f))
-            g.a(1, PathfinderGoalRandomLookaround(e))
 
             g.a(0, PathfinderGoalFloat(e))
         }),
         MELEE({ g, t, e, m ->
+            //t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, 10, true, false) { (e.bukkitEntity.lastDamageCause?.entity as org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity).handle == it })
             t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
-
-            g.a(2, PathfinderGoalMeleeAttack(e, .5, true))
 
             g.a(1, PathfinderGoalCastSpell(e, m.vision, m.spells))
 
+            g.a(2, PathfinderGoalMeleeAttack(e, 1.0, true))
+
+            g.a(3, PathfinderGoalRandomLookaround(e))
             g.a(4, PathfinderGoalRandomStroll(e, 1.0))
             g.a(5, PathfinderGoalLookAtPlayer(e, EntityHuman::class.java, .5f))
-            g.a(3, PathfinderGoalRandomLookaround(e))
 
             g.a(0, PathfinderGoalFloat(e))
         }),
         RANGED({ g, t, e, m ->
+            //t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
             t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
 
-            //g.a(3, PathfinderGoalArrowAttack(e, 1.0, true))
+            g.a(1, PathfinderGoalCastSpell(e, m.vision, m.spells))
 
-            NO_ATTACK.initPathfinder(g, t, e, m)
+            g.a(2, PathfinderGoalRangedAttack(e, m.vision, (m.attackSpeed * 20).toInt(), m.projectile!!))
+
+            g.a(3, PathfinderGoalRandomLookaround(e))
+            g.a(4, PathfinderGoalRandomStroll(e, 1.0))
+            g.a(5, PathfinderGoalLookAtPlayer(e, EntityHuman::class.java, .5f))
+
+            g.a(0, PathfinderGoalFloat(e))
         }),
         SUPPORT({ g, t, e, m ->
             NO_ATTACK.initPathfinder(g, t, e, m)
