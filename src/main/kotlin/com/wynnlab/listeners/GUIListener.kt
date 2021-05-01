@@ -32,18 +32,7 @@ class GUIListener : Listener {
 
         e.currentItem?.let { item ->
             if (upperInventory != playerInventory && upperInventory == clickedInventory && e.isShiftClick) {
-                val barriers = booleanArrayOf(false, false, false, false)
-
-                while (playerInventory.firstEmpty() in 9..12) {
-                    val fe = playerInventory.firstEmpty()
-                    playerInventory.setItem(fe, barrier)
-                    barriers[fe - 9] = true
-                }
-
-                playerInventory.addItem(item)
-                barriers.forEachIndexed { i, b -> if (b) playerInventory.setItem(i + 9, null) }
-                upperInventory.setItem(slot, null)
-
+                shiftOtherItem(playerInventory, upperInventory, slot, item)
                 e.isCancelled = true
             } else if (player.openInventory.type == InventoryType.CRAFTING) {
                 when (val type = item.itemMeta?.data?.getString("type")) {
@@ -56,8 +45,16 @@ class GUIListener : Listener {
                             }
                         }
                     }
+                    else -> {
+                        shiftOtherItem(playerInventory, playerInventory, slot, item)
+                        e.isCancelled = true
+                    }
                 }
             }
+        }
+
+        when (e.hotbarButton) {
+            6, 7, 8 -> e.isCancelled = true
         }
 
         if (clickedInventory == playerInventory) {
@@ -65,8 +62,27 @@ class GUIListener : Listener {
                 // Prevent moving hotbar action items
                 6, 7, 8 -> e.isCancelled = true
 
+                // Prevent from moving wrong items to accessory slots
+                9, 10, 11, 12 -> {
+                    (e.cursor ?: e.currentItem)?.let { item ->
+                        when (val type = item.itemMeta?.data?.getString("type")) {
+                            "RING", "BRACELET", "NECKLACE" -> {}
+                            else -> e.isCancelled = true
+                        }
+                    }
+                }
+
                 // Magic pouch
                 13 -> {
+                    if (e.hotbarButton >= 0) {
+                        player.playSound(player.location, Sound.ENTITY_HORSE_SADDLE, 1f, .9f)
+
+                        player.updatePouch(playerInventory.getItem(e.hotbarButton))
+                        playerInventory.setItem(e.hotbarButton, null)
+
+                        e.isCancelled = true
+                    }
+
                     if (e.cursor != null && !e.cursor!!.itemMeta.data.getBoolean("pouch")) {
                         player.playSound(player.location, Sound.ENTITY_HORSE_SADDLE, 1f, .9f)
                         player.updatePouch(e.cursor)
@@ -74,6 +90,7 @@ class GUIListener : Listener {
                     } else {
                         player.showPouch()
                     }
+
                     e.isCancelled = true
                 }
             }
@@ -127,6 +144,22 @@ class GUIListener : Listener {
             inv.setItem(slot, null)
             true
         } else false
+    }
+
+    private fun shiftOtherItem(oldInventory: Inventory, newInventory: Inventory, slot: Int, item: ItemStack) {
+        val barriers = booleanArrayOf(false, false, false, false)
+
+        while (oldInventory.firstEmpty() in 9..12) {
+            val fe = oldInventory.firstEmpty()
+            oldInventory.setItem(fe, barrier)
+            barriers[fe - 9] = true
+        }
+
+        newInventory.setItem(slot, null)
+
+        oldInventory.addItem(item)
+
+        barriers.forEachIndexed { i, b -> if (b) oldInventory.setItem(i + 9, null) }
     }
 
     companion object {
