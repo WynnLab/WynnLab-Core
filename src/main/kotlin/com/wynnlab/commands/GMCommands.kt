@@ -15,7 +15,7 @@ import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
 
-class GMCommands : CommandExecutor {
+object GMCommands : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean =
         when (label) {
             "upload" -> upload(sender, args)
@@ -82,14 +82,14 @@ class GMCommands : CommandExecutor {
 
         when (args[0]) {
             "mobs" -> {
-                plugin.mobCommand.mobs.clear()
+                MobCommand.mobs.clear()
             }
             "mob" -> {
                 if (args.size < 2) {
                     sender.sendMessage("§cPlease specify a mob to reload")
                     return false
                 }
-                plugin.mobCommand.mobs.remove(args[1]) ?: run {
+                MobCommand.mobs.remove(args[1]) ?: run {
                     sender.sendMessage("§cThe mob ${args[1]} doesn't exist")
                     return false
                 }

@@ -1,17 +1,12 @@
 package com.wynnlab.commands
 
 import com.wynnlab.entities.Dummy
-import com.wynnlab.entities.WynnMob
-import com.wynnlab.random
-import net.minecraft.server.v1_16_R3.EntityTypes
-import net.minecraft.server.v1_16_R3.SoundEffect
-import net.minecraft.server.v1_16_R3.SoundEffects
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class DummyCommand : CommandExecutor {
+object DummyCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) {
             sender.sendMessage("§cThis command can only be executed by players")

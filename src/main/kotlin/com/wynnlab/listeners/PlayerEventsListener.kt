@@ -2,7 +2,7 @@ package com.wynnlab.listeners
 
 import com.wynnlab.Players
 import com.wynnlab.api.*
-import com.wynnlab.plugin
+import com.wynnlab.commands.EssentialsCommands
 import com.wynnlab.spells.PySpell
 import org.bukkit.Material
 import org.bukkit.Particle
@@ -39,7 +39,7 @@ class PlayerEventsListener : Listener {
     fun onPlayerLeave(e: PlayerQuitEvent) {
         e.quitMessage = "§7[§c-§7]§r ${e.player.prefix}${e.player.name}"
         prefixes.remove(e.player)
-        plugin.essentialsCommands.conversations.remove(e.player)
+        EssentialsCommands.conversations.remove(e.player)
     }
 
     @EventHandler

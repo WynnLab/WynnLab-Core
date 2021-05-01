@@ -1,6 +1,7 @@
 package com.wynnlab
 
-import com.wynnlab.commands.*
+import com.wynnlab.commands.registerCommands
+import com.wynnlab.commands.tab_completers.registerTabCompleters
 import com.wynnlab.entities.WynnMob
 import com.wynnlab.listeners.*
 import com.wynnlab.localization.loadLanguages
@@ -32,6 +33,8 @@ class Main : JavaPlugin() {
     override fun onEnable() {
         registerListeners()
         registerCommands()
+        registerTabCompleters()
+
         registerSerializers()
 
         setGameRules()
@@ -48,34 +51,6 @@ class Main : JavaPlugin() {
 
     override fun onDisable() {
         python.close()
-    }
-
-    val classCommand by lazy { ClassCommand() }
-    val itemCommand by lazy { ItemCommand() }
-    val castCommand by lazy { CastCommand() }
-    val rankCommand by lazy { RankCommand() }
-    val devCommands by lazy { DevCommands() }
-    val essentialsCommands by lazy { EssentialsCommands() }
-    val dummyCommand by lazy { DummyCommand() }
-    val gmCommands by lazy { GMCommands() }
-    val mobCommand by lazy { MobCommand() }
-
-    private fun registerCommands() {
-        getCommand("class")?.setExecutor(classCommand)
-        getCommand("item")?.setExecutor(itemCommand)
-        getCommand("cast")?.setExecutor(castCommand)
-        getCommand("rank")?.setExecutor(rankCommand)
-        getCommand("itemdata")?.setExecutor(devCommands)
-        getCommand("getid")?.setExecutor(devCommands)
-        getCommand("script")?.setExecutor(devCommands)
-        getCommand("msg")?.setExecutor(essentialsCommands)
-        getCommand("r")?.setExecutor(essentialsCommands)
-        getCommand("party")?.setExecutor(essentialsCommands)
-        getCommand("p")?.setExecutor(essentialsCommands)
-        getCommand("dummy")?.setExecutor(dummyCommand)
-        getCommand("upload")?.setExecutor(gmCommands)
-        getCommand("wlrl")?.setExecutor(gmCommands)
-        getCommand("mob")?.setExecutor(mobCommand)
     }
 
     val castListener by lazy { CastListener() }

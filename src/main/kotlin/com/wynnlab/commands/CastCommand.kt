@@ -1,8 +1,6 @@
 package com.wynnlab.commands
 
 import com.wynnlab.api.getWynnClass
-import com.wynnlab.classes
-import com.wynnlab.entities.Hologram
 import com.wynnlab.events.SpellCastEvent
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
@@ -10,7 +8,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class CastCommand : CommandExecutor {
+object CastCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) {
             sender.sendMessage("§cThis command can only be executed by players")
