@@ -34,7 +34,7 @@ class GUIListener : Listener {
             if (upperInventory != playerInventory && upperInventory == clickedInventory && e.isShiftClick) {
                 shiftOtherItem(playerInventory, upperInventory, slot, item)
                 e.isCancelled = true
-            } else if (player.openInventory.type == InventoryType.CRAFTING) {
+            } else if (player.openInventory.type == InventoryType.CRAFTING && e.isShiftClick) {
                 when (val type = item.itemMeta?.data?.getString("type")) {
                     "RING", "BRACELET", "NECKLACE" -> {
                         if (e.isShiftClick) {
@@ -64,26 +64,25 @@ class GUIListener : Listener {
 
                 // Prevent from moving wrong items to accessory slots
                 9, 10, 11, 12 -> {
-                    (e.cursor ?: e.currentItem)?.let { item ->
-                        when (val type = item.itemMeta?.data?.getString("type")) {
-                            "RING", "BRACELET", "NECKLACE" -> {}
-                            else -> e.isCancelled = true
-                        }
+                    (e.cursor ?: e.currentItem ?: if (e.hotbarButton > 0) playerInventory.getItem(e.hotbarButton) else null)?.let { item ->
+                        if (when (/*val type = */item.itemMeta?.data?.getString("type")) {
+                            "RING" -> !(slot == 9 || slot == 10)
+                            "BRACELET" -> slot != 11
+                            "NECKLACE" -> slot != 12
+                            else -> true
+                        })
+                            e.isCancelled = true
                     }
                 }
 
                 // Magic pouch
                 13 -> {
-                    if (e.hotbarButton >= 0) {
+                    if (e.hotbarButton in 0..5) {
                         player.playSound(player.location, Sound.ENTITY_HORSE_SADDLE, 1f, .9f)
 
                         player.updatePouch(playerInventory.getItem(e.hotbarButton))
                         playerInventory.setItem(e.hotbarButton, null)
-
-                        e.isCancelled = true
-                    }
-
-                    if (e.cursor != null && !e.cursor!!.itemMeta.data.getBoolean("pouch")) {
+                    } else if (e.cursor != null && e.cursor!!.itemMeta?.data?.getBoolean("pouch") == false) {
                         player.playSound(player.location, Sound.ENTITY_HORSE_SADDLE, 1f, .9f)
                         player.updatePouch(e.cursor)
                         e.cursor = null
