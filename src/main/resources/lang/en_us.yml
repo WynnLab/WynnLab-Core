@@ -13,6 +13,30 @@ messages:
   class_select: '&cType &6/class &cto select a class'
   totem_out: '&cYour totem is out!'
   wrong_item: "&cYou can't use that item"
+  no_player: '&cPlease specify a player'
+  player_not_exist: "&cThis player doesn't exist"
+
+  no_party: "&cYou aren't currently in a party"
+  party_not_owner: "&cYou don't own this party"
+  party_create: '&aYour party was created successfully!'
+
+  party_invite_send: "&aYou invited &6%s&a to your party!"
+  party_invite_get: "&6%s&a invited you to a party!"
+  party_join_left: "&dClick "
+  party_join_link: "&e&nhere"
+  party_join_right: "&d to join"
+  party_join_hover: "&fClick to join"
+
+  party_no_invite: "&cYou haven't been invited to a party yet"
+  party_already_joined: '&cYou have already joined the party'
+  party_already_other: '&cYou have already joined another party'
+  party_leave: '&fType &e/party leave&f to leave your current party'
+  party_joined: '&6%s&a joined the party!'
+  party_joined_you: '&aYou joined the party!'
+  party_left: '&6%s&f left the party!'
+  party_left_you: '&fYou left the party!'
+
+  party_promote: '&dYou are now the owner of the party!'
 
 items:
   items:

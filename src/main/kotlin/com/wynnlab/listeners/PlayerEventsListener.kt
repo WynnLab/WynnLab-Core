@@ -3,6 +3,7 @@ package com.wynnlab.listeners
 import com.wynnlab.Players
 import com.wynnlab.api.*
 import com.wynnlab.commands.EssentialsCommands
+import com.wynnlab.essentials.Party
 import com.wynnlab.spells.PySpell
 import org.bukkit.Material
 import org.bukkit.Particle
@@ -37,9 +38,15 @@ class PlayerEventsListener : Listener {
 
     @EventHandler
     fun onPlayerLeave(e: PlayerQuitEvent) {
-        e.quitMessage = "§7[§c-§7]§r ${e.player.prefix}${e.player.name}"
-        prefixes.remove(e.player)
-        EssentialsCommands.conversations.remove(e.player)
+        val player = e.player
+
+        e.quitMessage = "§7[§c-§7]§r ${player.prefix}${player.name}"
+        prefixes.remove(player)
+
+        // Remove player from activities
+        EssentialsCommands.conversations.remove(player)
+        Party.invites.remove(player)
+        Party.members[player]?.removeMember(player)
     }
 
     @EventHandler
