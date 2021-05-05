@@ -24,6 +24,9 @@ dependencies {
     // Craftbukkit & NMS
     compileOnly name: 'craftbukkit-1.16.5'
 
+    // WynnScript
+    compileOnly name: 'WynnScript2-1.0-all'
+
     // Kotlin
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 

@@ -26,7 +26,7 @@ data class WynnClass(
         if (itemDamage != 0) out["item_damage"] = itemDamage
         out["metaStats"] = mapOf("damage" to metaStats.v1, "defence" to metaStats.v2, "range" to metaStats.v3, "spells" to metaStats.v4)
         out["invertedControls"] = invertedControls
-        out["spells"] = spells.map { it.serialize() }
+        out["spells"] = spells
 
         return out
     }

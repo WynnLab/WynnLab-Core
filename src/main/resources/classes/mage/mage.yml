@@ -9,9 +9,12 @@ class:
     spells: 5
   invertedControls: false
   spells:
-    - ==: com.wynnlab.spells.Spell
+    #- ==: com.wynnlab.spells.Spell
+    #  maxTick: 0
+    #  script: mage_main.py
+    - ==: com.wynnlab.spells.PlayerSpell
       maxTick: 0
-      script: mage_main.py
+      script: mage_main.ws2
     - ==: com.wynnlab.spells.Spell
       cost: 6
       maxTick: 40

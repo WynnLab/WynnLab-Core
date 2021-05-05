@@ -1,0 +1,26 @@
+# PlayerSpell
+
+function init(player, clone) {
+    this.hit = set();
+}
+
+function tick(t, player, clone) {
+    var l1 = player.eyeLocation.clone().subtract(0, .5, 0);
+    var l2 = player.eyeLocation.add(self.player.eyeLocation.direction.multiply(7)).subtract(0, .5, 0);
+
+    player.sound(Sound.ITEM_TRIDENT_THROW, 1, 1.5);
+    player.sound(Sound.ITEM_TRIDENT_RIPTIDE_3, .2, 1);
+    if (clone) { player.sound(Sound.ENTITY_SHULKER_SHOOT, .5, 1.5); }
+
+    for (l in locations(l1, l2, .5) {
+        player.particle(l, clone ? Particle.SQUID_INK : Particle.CLOUD, 2, 0, 0, 0, .1);
+        player.particle(l, clone ? Particle.SPELL_WITCH : Particle.CRIT, 1, 0, 0, 0, 0);
+        player.particle(l, Particle.CRIT_MAGIC, 1, 0, 0, 0, .1);
+
+        for (e in player.nearbyMobs(l, .5, .5, .5)) {
+            if (!this.hit.add(e)) { continue; }
+
+            player.damage(e, true, 1)
+        }
+    }
+}

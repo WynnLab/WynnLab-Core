@@ -1,6 +1,5 @@
 package com.wynnlab.spells
 
-import com.wynnlab.api.getLocalizedText
 import com.wynnlab.api.isCloneClass
 import com.wynnlab.currentClassLoadFolder
 import com.wynnlab.python
@@ -41,13 +40,22 @@ import java.io.FileReader
     UPROOT("Uproot", "Gale funnel" /*TODO*/, 6),
 }*/
 
-data class Spell(
-    val cost: Int,
-    val maxTick: Int,
-    val pythonClass: PyType,
+interface Spell : ConfigurationSerializable {
+    val cost: Int
+    val maxTick: Int
     val ordinal: Int
-) : ConfigurationSerializable {
-    fun cast(player: Player, vararg args: Any?) {
+
+    fun cast(player: Player, vararg args: Any?)
+}
+
+@Deprecated("Use WynnScript")
+data class PythonSpell (
+    override val cost: Int,
+    override val maxTick: Int,
+    val pythonClass: PyType,
+    override val ordinal: Int
+) : Spell, ConfigurationSerializable {
+    override fun cast(player: Player, vararg args: Any?) {
         val instance = pythonClass.__call__(Array(args.size) { i -> Py.java2py(args[i]) })
         instance.__setattr__("player", Py.java2py(player))
         instance.__setattr__("clone", PyBoolean(player.isCloneClass))
@@ -68,7 +76,7 @@ data class Spell(
     companion object {
         @JvmStatic
         @Suppress("unused")
-        fun deserialize(map: Map<String, Any>): Spell {
+        fun deserialize(map: Map<String, Any>): PythonSpell {
             val cost = (map["cost"] as Number? ?: 0).toInt()
             val maxTick = (map["maxTick"] as Number).toInt()
 
@@ -80,7 +88,7 @@ data class Spell(
             python.exec(script)
             val pythonClass: PyType = python.get("Spell") as PyType //TODO: name
 
-            return Spell(cost, maxTick, pythonClass, spellOrdinal++)
+            return PythonSpell(cost, maxTick, pythonClass, spellOrdinal++)
         }
     }
 }
