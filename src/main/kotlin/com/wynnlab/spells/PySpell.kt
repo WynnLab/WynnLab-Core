@@ -129,7 +129,7 @@ abstract class PySpell : Runnable {
 
         @JvmStatic
         fun castSpell(player: Player, clazz: String, index: Int, vararg args: Any?) =
-            com.wynnlab.spells.castSpell(player, clazz, index, args)
+            com.wynnlab.spells.castSpell(player, clazz, index, *args)
 
         @[JvmStatic Suppress("unused")]
         fun colorText(text: String, color: String) = com.wynnlab.spells.colorText(text, color)

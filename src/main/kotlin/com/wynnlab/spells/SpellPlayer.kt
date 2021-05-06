@@ -64,7 +64,7 @@ class SpellPlayer(
         nearbyMobsAndTag(player.world, location, x, y, z, tag)
 
     fun castSpell(clazz: String, index: Int, vararg args: Any?) =
-        castSpell(player, clazz, index, args)
+        castSpell(player, clazz, index, *args)
 
     @Suppress("unused")
     fun message(message: List<String>) = player.sendMessage(message.joinToString(""))
