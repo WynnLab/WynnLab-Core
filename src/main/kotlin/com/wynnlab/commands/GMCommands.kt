@@ -6,7 +6,6 @@ import com.wynnlab.loadClasses
 import com.wynnlab.plugin
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
@@ -15,7 +14,7 @@ import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
 
-object GMCommands : CommandExecutor {
+object GMCommands : BaseCommand("upload", "wlrl") {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean =
         when (label) {
             "upload" -> upload(sender, args)

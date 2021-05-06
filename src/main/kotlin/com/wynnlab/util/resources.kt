@@ -40,6 +40,7 @@ val resources = arrayOf(
 
     "classes/mage/mage.yml",
     "classes/mage/mage_main.py",
+    "classes/mage/mage_main.ws2",
     "classes/mage/heal.py",
     "classes/mage/teleport.py",
     "classes/mage/meteor.py",

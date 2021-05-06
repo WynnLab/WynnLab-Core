@@ -3,16 +3,14 @@ package com.wynnlab.listeners
 import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.events.SpellCastEvent
-import com.wynnlab.spells.Spell
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
-import org.bukkit.event.Listener
 import kotlin.math.ceil
 import kotlin.math.floor
 
-class CastListener : Listener {
+class CastListener : BaseListener() {
     @EventHandler(priority = EventPriority.HIGH)
     fun onSpellCast(e: SpellCastEvent) {
         val player = e.player

@@ -3,6 +3,8 @@ package com.wynnlab.spells
 import com.wynnlab.api.isCloneClass
 import com.wynnlab.currentClassLoadFolder
 import com.wynnlab.spellOrdinal
+import com.wynnlab.util.BaseSerializable
+import com.wynnlab.util.ConfigurationDeserializable
 import com.wynnlab.util.LocationIterator
 import com.wynnlab.util.TickRunnable
 import com.wynnlab.wynnscript.CompiledWynnScript
@@ -13,7 +15,6 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
-import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.entity.Player
 import java.io.File
 import java.io.FileReader
@@ -23,18 +24,23 @@ data class PlayerSpell(
     override val maxTick: Int,
     val script: CompiledWynnScript,
     override val ordinal: Int
-) : Spell, ConfigurationSerializable {
+) : Spell, BaseSerializable<PlayerSpell>() {
     init {
-        script["list"] = Invocable { _, args -> listOf(*args) }
-        script["set"] = Invocable { _, args -> setOf(*args) }
+        script["print"] = Invocable { _, args -> if (args.size != 1) throw IllegalArgumentException() else
+            println(args[0])
+        }
+
+        script["array"] = Invocable { _, args -> args }
+        script["list"] = Invocable { _, args -> mutableListOf(*args) }
+        script["set"] = Invocable { _, args -> mutableSetOf(*args) }
         script["map"] = Invocable { _, args -> if (args.isNotEmpty()) throw IllegalArgumentException() else
-            mapOf<Any?, Any?>()
+            mutableMapOf<Any?, Any?>()
         }
 
         script["SpellUtils"] = SpellUtils
 
         script["locations"] = Invocable { _, args -> if (args.size != 3) throw IllegalArgumentException() else
-            LocationIterator(args[0] as Location, args[1] as Location, (args[1] as Location).clone().subtract(args[0] as Location).toVector(), (args[2] as Number).toDouble())
+            LocationIterator(args[0] as Location, args[1] as Location, (args[2] as Number).toDouble())
         }
 
         script["Material"] = Material::class.java
@@ -43,12 +49,12 @@ data class PlayerSpell(
     }
 
     override fun cast(player: Player, vararg args: Any?) {
-        script.reset()
+        script.resetData()
 
         val spellPlayer = SpellPlayer(player)
         val clone = player.isCloneClass
 
-        object : TickRunnable() {
+        (object : TickRunnable() {
             override fun init() {
                 script.setData("taskId", taskId)
                 try {
@@ -59,7 +65,7 @@ data class PlayerSpell(
             override fun tick() {
                 script("tick", t, spellPlayer, clone)
             }
-        }
+        }).schedule()
     }
 
     override fun serialize(): MutableMap<String, Any> {
@@ -71,10 +77,12 @@ data class PlayerSpell(
         return out
     }
 
-    companion object {
+    override val deserializer = Companion
+
+    companion object : ConfigurationDeserializable<PlayerSpell> {
         @JvmStatic
         @Suppress("unused")
-        fun deserialize(map: Map<String, Any>): PlayerSpell {
+        override fun deserialize(map: Map<String, Any?>): PlayerSpell {
             val cost = (map["cost"] as Number? ?: 0).toInt()
             val maxTick = (map["maxTick"] as Number).toInt()
 

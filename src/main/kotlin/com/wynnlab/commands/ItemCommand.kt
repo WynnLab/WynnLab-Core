@@ -6,11 +6,10 @@ import com.wynnlab.items.getAPIResults
 import com.wynnlab.plugin
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-object ItemCommand : CommandExecutor {
+object ItemCommand : BaseCommand("item") {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) {
             sender.sendMessage("§cThis command can only be executed by players")

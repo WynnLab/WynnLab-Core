@@ -13,11 +13,10 @@ import org.bukkit.boss.BarStyle
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDeathEvent
 
-class DamageListener : Listener {
+class DamageListener : BaseListener() {
     @EventHandler
     fun onEntityDamageEntity(e: EntityDamageByEntityEvent) {
         e.isCancelled = true

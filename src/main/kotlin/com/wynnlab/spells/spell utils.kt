@@ -5,6 +5,7 @@ package com.wynnlab.spells
 import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.entities.Hologram
+import com.wynnlab.listeners.ProjectileHitListener
 import com.wynnlab.plugin
 import com.wynnlab.random
 import com.wynnlab.util.normalizeOnXZ
@@ -23,7 +24,7 @@ val SpellUtils = Class.forName("com.wynnlab.spells.SpellUtils")
 
 @Suppress("unused")
 fun registerProjectileHit(tag: String, e: (ProjectileHitEvent) -> Unit) {
-    plugin.projectileHitListener.tags[tag] = e
+    ProjectileHitListener.tags[tag] = e
 }
 
 fun damage(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) {

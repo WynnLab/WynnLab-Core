@@ -4,11 +4,12 @@ import com.wynnlab.api.*
 import com.wynnlab.entities.pathfinder.PathfinderGoalCastSpell
 import com.wynnlab.entities.pathfinder.PathfinderGoalRangedAttack
 import com.wynnlab.spells.MobSpell
+import com.wynnlab.util.BaseSerializable
+import com.wynnlab.util.ConfigurationDeserializable
 import net.minecraft.server.v1_16_R3.*
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.entity.Projectile
@@ -41,7 +42,7 @@ data class WynnMob(
     val kbResistance: Double,
     val equipment: Equipment,
     val spells: List<MobSpell>
-) : ConfigurationSerializable {
+) : BaseSerializable<WynnMob>() {
     // Custom entity inner class
     private inner class C(location: Location) : EntityCreature(mobType, (location.world as CraftWorld).handle) {
         init {
@@ -101,9 +102,11 @@ data class WynnMob(
         TODO("Not yet implemented")
     }
 
-    companion object {
+    override val deserializer = Companion
+
+    companion object : ConfigurationDeserializable<WynnMob> {
         @[JvmStatic Suppress("unused", "unchecked_cast")]
-        fun deserialize(map: Map<String, Any>): WynnMob {
+        override fun deserialize(map: Map<String, Any?>): WynnMob {
             val name = ChatColor.translateAlternateColorCodes('&', map["name"] as String)
             val mobType = EntityTypes::class.java.getDeclaredField((map["mob_type"] as String).toUpperCase())[null] as EntityTypes<out EntityCreature>
             val ai = AI.valueOf((map["ai"] as String).toUpperCase())
@@ -138,14 +141,16 @@ data class WynnMob(
         val chest: NMSItemStack?,
         val legs: NMSItemStack?,
         val feet: NMSItemStack?
-    ) : ConfigurationSerializable {
+    ) : BaseSerializable<Equipment>() {
         override fun serialize(): MutableMap<String, Any> {
             TODO("Not yet implemented")
         }
 
-        companion object {
+        override val deserializer = Companion
+
+        companion object : ConfigurationDeserializable<Equipment> {
             @[JvmStatic Suppress("unused", "unchecked_cast")]
-            fun deserialize(map: Map<String, Any>): Equipment {
+            override fun deserialize(map: Map<String, Any?>): Equipment {
                 val mainHand = (map["main_hand"] as ItemStack?)?.let { CraftItemStack.asNMSCopy(it) }
                 val offHand = (map["offhand"] as ItemStack?)?.let { CraftItemStack.asNMSCopy(it) }
                 val head = (map["head"] as ItemStack?)?.let { CraftItemStack.asNMSCopy(it) }

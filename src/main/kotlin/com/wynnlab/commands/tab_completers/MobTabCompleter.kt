@@ -3,10 +3,9 @@ package com.wynnlab.commands.tab_completers
 import com.wynnlab.plugin
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import org.bukkit.command.TabCompleter
 import java.io.File
 
-object MobTabCompleter : TabCompleter {
+object MobTabCompleter : BaseTabCompleter("mob") {
     override fun onTabComplete(
         sender: CommandSender,
         command: Command,

@@ -9,25 +9,25 @@ class:
     spells: 5
   invertedControls: false
   spells:
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       maxTick: 0
       script: warrior_main.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 6
       maxTick: 10
       script: bash.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 4
       maxTick: 10
       script: charge.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 8
       maxTick: 5
       script: uppercut.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 4
       maxTick: 20
       script: war_scream.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       maxTick: 20
       script: uppercut_throw.py

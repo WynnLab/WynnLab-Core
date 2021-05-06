@@ -4,6 +4,8 @@ import com.wynnlab.api.isCloneClass
 import com.wynnlab.currentClassLoadFolder
 import com.wynnlab.python
 import com.wynnlab.spellOrdinal
+import com.wynnlab.util.BaseSerializable
+import com.wynnlab.util.ConfigurationDeserializable
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.entity.Player
 import org.python.core.Py
@@ -54,7 +56,8 @@ data class PythonSpell (
     override val maxTick: Int,
     val pythonClass: PyType,
     override val ordinal: Int
-) : Spell, ConfigurationSerializable {
+) : Spell, BaseSerializable<PythonSpell>() {
+
     override fun cast(player: Player, vararg args: Any?) {
         val instance = pythonClass.__call__(Array(args.size) { i -> Py.java2py(args[i]) })
         instance.__setattr__("player", Py.java2py(player))
@@ -73,10 +76,12 @@ data class PythonSpell (
         return out
     }
 
-    companion object {
+    override val deserializer = Companion
+
+    companion object : ConfigurationDeserializable<PythonSpell> {
         @JvmStatic
         @Suppress("unused")
-        fun deserialize(map: Map<String, Any>): PythonSpell {
+        override fun deserialize(map: Map<String, Any?>): PythonSpell {
             val cost = (map["cost"] as Number? ?: 0).toInt()
             val maxTick = (map["maxTick"] as Number).toInt()
 

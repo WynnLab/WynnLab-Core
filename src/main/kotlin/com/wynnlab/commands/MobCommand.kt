@@ -3,13 +3,12 @@ package com.wynnlab.commands
 import com.wynnlab.entities.WynnMob
 import com.wynnlab.plugin
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import java.io.File
 
-object MobCommand : CommandExecutor {
+object MobCommand : BaseCommand("mob") {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) {
             sender.sendMessage("§cThis command can only be executed by players")

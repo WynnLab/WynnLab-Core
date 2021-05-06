@@ -5,14 +5,13 @@ import com.wynnlab.gui.CompassGUI
 import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
-import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerAnimationEvent
 import org.bukkit.event.player.PlayerAnimationType
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
 
-class PlayerClickListener : Listener {
+class PlayerClickListener : BaseListener() {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onLeftClick(e: PlayerAnimationEvent) {
         if (e.player.gameMode != GameMode.ADVENTURE)
@@ -66,43 +65,45 @@ class PlayerClickListener : Listener {
         }
     }
 
-    val rcEvents = hashMapOf<String, (PlayerInteractEvent) -> Unit>(
-        "HELMET" to { e ->
-            val l = e.player.inventory.helmet
-            e.player.inventory.helmet = e.player.inventory.itemInMainHand
-            e.player.inventory.setItemInMainHand(l)
-        },
-        "CHESTPLATE" to { e ->
-            val l = e.player.inventory.chestplate
-            e.player.inventory.chestplate = e.player.inventory.itemInMainHand
-            e.player.inventory.setItemInMainHand(l)
-        },
-        "LEGGINGS" to { e ->
-            val l = e.player.inventory.leggings
-            e.player.inventory.leggings = e.player.inventory.itemInMainHand
-            e.player.inventory.setItemInMainHand(l)
-        },
-        "BOOTS" to { e ->
-            val l = e.player.inventory.boots
-            e.player.inventory.boots = e.player.inventory.itemInMainHand
-            e.player.inventory.setItemInMainHand(l)
-        },
-        "RING" to { e ->
-            val l = e.player.inventory.getItem(9)
-            e.player.inventory.setItem(9, e.player.inventory.itemInMainHand)
-            e.player.inventory.setItemInMainHand(l)
-        },
-        "BRACELET" to { e ->
-            val l = e.player.inventory.getItem(11)
-            e.player.inventory.setItem(11, e.player.inventory.itemInMainHand)
-            e.player.inventory.setItemInMainHand(l)
-        },
-        "NECKLACE" to { e ->
-            val l = e.player.inventory.getItem(12)
-            e.player.inventory.setItem(12, e.player.inventory.itemInMainHand)
-            e.player.inventory.setItemInMainHand(l)
-        }
-    )
+    companion object {
+        val rcEvents = hashMapOf<String, (PlayerInteractEvent) -> Unit>(
+            "HELMET" to { e ->
+                val l = e.player.inventory.helmet
+                e.player.inventory.helmet = e.player.inventory.itemInMainHand
+                e.player.inventory.setItemInMainHand(l)
+            },
+            "CHESTPLATE" to { e ->
+                val l = e.player.inventory.chestplate
+                e.player.inventory.chestplate = e.player.inventory.itemInMainHand
+                e.player.inventory.setItemInMainHand(l)
+            },
+            "LEGGINGS" to { e ->
+                val l = e.player.inventory.leggings
+                e.player.inventory.leggings = e.player.inventory.itemInMainHand
+                e.player.inventory.setItemInMainHand(l)
+            },
+            "BOOTS" to { e ->
+                val l = e.player.inventory.boots
+                e.player.inventory.boots = e.player.inventory.itemInMainHand
+                e.player.inventory.setItemInMainHand(l)
+            },
+            "RING" to { e ->
+                val l = e.player.inventory.getItem(9)
+                e.player.inventory.setItem(9, e.player.inventory.itemInMainHand)
+                e.player.inventory.setItemInMainHand(l)
+            },
+            "BRACELET" to { e ->
+                val l = e.player.inventory.getItem(11)
+                e.player.inventory.setItem(11, e.player.inventory.itemInMainHand)
+                e.player.inventory.setItemInMainHand(l)
+            },
+            "NECKLACE" to { e ->
+                val l = e.player.inventory.getItem(12)
+                e.player.inventory.setItem(12, e.player.inventory.itemInMainHand)
+                e.player.inventory.setItemInMainHand(l)
+            }
+        )
 
-    val lcEvents = hashMapOf<String, (PlayerAnimationEvent) -> Unit>()
+        val lcEvents = hashMapOf<String, (PlayerAnimationEvent) -> Unit>()
+    }
 }

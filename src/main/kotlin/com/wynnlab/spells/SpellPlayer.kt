@@ -10,10 +10,21 @@ import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
 class SpellPlayer(
-    private val player: Player
+    val player: Player
 ) {
+    fun getLocation() = player.location.clone()
+    fun getEyeLocation() = player.eyeLocation.clone()
+    fun getDirection() = player.eyeLocation.direction.clone()
+
+    fun damage(e: LivingEntity, melee: Boolean, multiplier: Double) =
+        this.damage(e, melee, multiplier, *doubleArrayOf())
+
     fun damage(e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) =
         damage(player, e, melee, multiplier, *conversion)
+
+    @Suppress("unused")
+    fun damageBy(e: LivingEntity, melee: Boolean, multiplier: Double) =
+        this.damageBy(e, melee, multiplier, *doubleArrayOf())
 
     @Suppress("unused")
     fun damageBy(e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) =
@@ -54,4 +65,7 @@ class SpellPlayer(
 
     fun castSpell(clazz: String, index: Int, vararg args: Any?) =
         castSpell(player, clazz, index, args)
+
+    @Suppress("unused")
+    fun message(message: List<String>) = player.sendMessage(message.joinToString(""))
 }

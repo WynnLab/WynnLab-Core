@@ -4,11 +4,10 @@ import com.wynnlab.api.sendWynnMessage
 import com.wynnlab.essentials.Party
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-object EssentialsCommands : CommandExecutor {
+object EssentialsCommands : BaseCommand("msg", "r", "party", "p") {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) {
             sender.sendMessage("§cThis command can only be executed by players")

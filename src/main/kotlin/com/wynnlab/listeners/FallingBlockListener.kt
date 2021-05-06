@@ -1,16 +1,15 @@
 package com.wynnlab.listeners
 
 import com.wynnlab.plugin
-import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityChangeBlockEvent
-import org.bukkit.Material
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.entity.FallingBlock
+import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
+import org.bukkit.event.entity.EntityChangeBlockEvent
 
-class FallingBlockListener : Listener {
+class FallingBlockListener : BaseListener() {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onTouchGround(e: EntityChangeBlockEvent) {
         if (e.entity is FallingBlock) {

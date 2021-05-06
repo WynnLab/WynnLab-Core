@@ -2,9 +2,8 @@ package com.wynnlab.commands.tab_completers
 
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import org.bukkit.command.TabCompleter
 
-object RankTabCompleter : TabCompleter {
+object RankTabCompleter : BaseTabCompleter("rank") {
     override fun onTabComplete(
         sender: CommandSender,
         command: Command,

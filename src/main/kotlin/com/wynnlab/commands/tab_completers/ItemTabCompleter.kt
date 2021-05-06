@@ -3,9 +3,8 @@ package com.wynnlab.commands.tab_completers
 import com.wynnlab.items.getAPIResults
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import org.bukkit.command.TabCompleter
 
-object ItemTabCompleter : TabCompleter {
+object ItemTabCompleter : BaseTabCompleter("item") {
     override fun onTabComplete(
         sender: CommandSender,
         command: Command,

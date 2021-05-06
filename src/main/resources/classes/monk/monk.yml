@@ -10,22 +10,22 @@ class:
     spells: 0
   invertedControls: false
   spells:
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       maxTick: 0
       script: monk_main.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 0
       maxTick: 0
       script: shield.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 0
       maxTick: 0
       script: step.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 0
       maxTick: 0
       script: silence.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 0
       maxTick: 0
       script: control.py

@@ -4,7 +4,6 @@ import com.wynnlab.api.getId
 import com.wynnlab.api.sendWynnMessage
 import com.wynnlab.localization.Language
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -14,7 +13,7 @@ import org.bukkit.entity.Player
  * - getid
  * - script //TODO
  */
-object DevCommands : CommandExecutor {
+object DevCommands : BaseCommand("itemdata", "getid") {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (!sender.isOp) {
             sender.sendMessage("§4You need to be an operator to execute this command")

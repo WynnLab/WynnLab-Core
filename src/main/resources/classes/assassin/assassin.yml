@@ -9,28 +9,28 @@ class:
     spells: 3
   invertedControls: false
   spells:
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       maxTick: 0
       script: assassin_main.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 6
       maxTick: 16
       script: spin_attack.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 1
       maxTick: 0
       script: vanish.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 8
       maxTick: 22
       script: multihit.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 8
       maxTick: 0
       script: smoke_bomb.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       maxTick: 0
       script: vanish_end.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       maxTick: 180
       script: smoke_bomb_tick.py

@@ -2,6 +2,8 @@ package com.wynnlab.spells
 
 import com.wynnlab.plugin
 import com.wynnlab.python
+import com.wynnlab.util.BaseSerializable
+import com.wynnlab.util.ConfigurationDeserializable
 import com.wynnlab.util.DEG2RAD
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
@@ -11,7 +13,6 @@ import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarFlag
 import org.bukkit.boss.BarStyle
 import org.bukkit.boss.BossBar
-import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.entity.Entity
 import org.python.core.Py
 import org.python.core.PyBoolean
@@ -27,7 +28,7 @@ data class MobSpell(
     val hasBossBar: Boolean = false,
 
     val pyFunction: PyFunction,
-) : ConfigurationSerializable {
+) : BaseSerializable<MobSpell>() {
     val cooldown = prepareTime + maxTick + 20
 
     var bossBar: BossBar? = null
@@ -84,9 +85,11 @@ data class MobSpell(
         TODO("Not yet implemented")
     }
 
-    companion object {
+    override val deserializer = Companion
+
+    companion object : ConfigurationDeserializable<MobSpell> {
         @[JvmStatic Suppress("unused", "unchecked_cast")]
-        fun deserialize(map: Map<String, Any>): MobSpell {
+        override fun deserialize(map: Map<String, Any?>): MobSpell {
             val name = map["name"] as String
             val maxTick = (map["max_tick"] as Number).toInt()
             val prepareTime = (map["prepare_time"] as Number ??: 10).toInt()

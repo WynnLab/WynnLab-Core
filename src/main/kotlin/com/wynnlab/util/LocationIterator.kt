@@ -1,27 +1,30 @@
 package com.wynnlab.util
 
 import org.bukkit.Location
-import org.bukkit.util.Vector
 
 class LocationIterator(
     val start: Location,
     val end: Location,
-    val direction: Vector,
     val step: Double
 ) : Iterable<Location> {
+    private val d = end.clone().subtract(start).toVector().normalize().multiply(step)
+
     override operator fun iterator(): Iterator<Location> =
         object : Iterator<Location> {
+            private var l = start
+
             private var iStep = 0.0
             private val dist: Double = end.distance(start)
 
             override operator fun hasNext(): Boolean {
-                return iStep < dist
+                return iStep <= dist
             }
 
             override operator fun next(): Location {
-                val add: Location = start.clone().add(direction.clone().multiply(iStep))
+                val r = l
+                l.add(d)
                 iStep += step
-                return add
+                return r
             }
         }
 }

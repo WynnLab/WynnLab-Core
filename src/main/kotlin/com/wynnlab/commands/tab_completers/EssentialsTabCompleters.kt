@@ -2,10 +2,9 @@ package com.wynnlab.commands.tab_completers
 
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 
-object EssentialsTabCompleters : TabCompleter {
+object EssentialsTabCompleters : BaseTabCompleter("msg", "party") {
     override fun onTabComplete(
         sender: CommandSender,
         command: Command,

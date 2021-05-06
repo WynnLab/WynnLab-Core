@@ -1,5 +1,6 @@
 package com.wynnlab.gui
 
+import com.wynnlab.listeners.GUIListener
 import com.wynnlab.localization.Language
 import com.wynnlab.plugin
 import org.bukkit.Bukkit
@@ -33,7 +34,7 @@ abstract class GUI(
     }
 
     inline fun registerListener(crossinline action: (InventoryClickEvent) -> Unit) {
-        plugin.guiListener.inventories[title] = {
+        GUIListener.inventories[title] = {
             action(it)
             update()
         }

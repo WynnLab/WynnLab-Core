@@ -10,25 +10,25 @@ class:
     spells: 5
   invertedControls: false
   spells:
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       maxTick: 15
       script: shaman_main.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 4
       maxTick: 0
       script: totem.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 1
       maxTick: 300
       script: haul.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 8
       maxTick: 30
       script: aura.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       cost: 6
       maxTick: 20
       script: uproot.py
-    - ==: com.wynnlab.spells.Spell
+    - ==: com.wynnlab.spells.PythonSpell
       maxTick: 400
       script: totem_tick.py

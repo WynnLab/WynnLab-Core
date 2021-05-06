@@ -3,9 +3,10 @@
 package com.wynnlab
 
 import com.wynnlab.spells.Spell
+import com.wynnlab.util.BaseSerializable
+import com.wynnlab.util.ConfigurationDeserializable
 import org.bukkit.Material
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.configuration.serialization.ConfigurationSerializable
 import java.io.File
 import java.util.logging.Level
 
@@ -16,7 +17,7 @@ data class WynnClass(
     val metaStats: Tuple4<Int>,
     val invertedControls: Boolean,
     val spells: List<Spell>
-) : ConfigurationSerializable {
+) : BaseSerializable<WynnClass>() {
 
     override fun serialize(): Map<String, Any> {
         val out = LinkedHashMap<String, Any>()
@@ -31,10 +32,12 @@ data class WynnClass(
         return out
     }
 
-    companion object {
+    override val deserializer = Companion
+
+    companion object : ConfigurationDeserializable<WynnClass> {
         @JvmStatic
         @Suppress("unused", "unchecked_cast")
-        fun deserialize(map: Map<String, Any>): WynnClass {
+        override fun deserialize(map: Map<String, Any?>): WynnClass {
             val id = map["id"] as String
             val item = Material.valueOf(map["item"] as String)
             val itemDamage = (map["item_damage"] as Number??: 0).toInt()

@@ -2,17 +2,14 @@ package com.wynnlab
 
 import com.wynnlab.commands.registerCommands
 import com.wynnlab.commands.tab_completers.registerTabCompleters
-import com.wynnlab.entities.WynnMob
-import com.wynnlab.listeners.*
+import com.wynnlab.listeners.registerListeners
 import com.wynnlab.localization.loadLanguages
-import com.wynnlab.spells.MobSpell
-import com.wynnlab.spells.Spell
 import com.wynnlab.util.DEG2RAD
 import com.wynnlab.util.RAD2DEG
+import com.wynnlab.util.registerSerializers
 import com.wynnlab.util.saveAllResources
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
-import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.util.Vector
 import org.python.util.PythonInterpreter
@@ -31,10 +28,10 @@ class Main : JavaPlugin() {
     }
 
     override fun onEnable() {
-        registerListeners()
         registerCommands()
         registerTabCompleters()
-
+        registerCommands()
+        registerListeners()
         registerSerializers()
 
         setGameRules()
@@ -51,33 +48,6 @@ class Main : JavaPlugin() {
 
     override fun onDisable() {
         python.close()
-    }
-
-    val castListener by lazy { CastListener() }
-    val playerClickListener by lazy { PlayerClickListener() }
-    val fallingBlockListener by lazy { FallingBlockListener() }
-    val playerEventsListener by lazy { PlayerEventsListener() }
-    val projectileHitListener by lazy { ProjectileHitListener() }
-    val guiListener by lazy { GUIListener() }
-    val damageListener by lazy { DamageListener() }
-
-    private fun registerListeners() {
-        val manager = Bukkit.getPluginManager()
-        manager.registerEvents(castListener, this)
-        manager.registerEvents(playerClickListener, this)
-        manager.registerEvents(fallingBlockListener, this)
-        manager.registerEvents(playerEventsListener, this)
-        manager.registerEvents(projectileHitListener, this)
-        manager.registerEvents(guiListener, this)
-        manager.registerEvents(damageListener, this)
-    }
-
-    private fun registerSerializers() {
-        ConfigurationSerialization.registerClass(WynnClass::class.java)
-        ConfigurationSerialization.registerClass(Spell::class.java)
-        ConfigurationSerialization.registerClass(WynnMob::class.java)
-        ConfigurationSerialization.registerClass(WynnMob.Equipment::class.java)
-        ConfigurationSerialization.registerClass(MobSpell::class.java)
     }
 
     private fun setGameRules() {

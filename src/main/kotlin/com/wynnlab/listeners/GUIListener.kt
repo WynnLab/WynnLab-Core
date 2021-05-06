@@ -7,7 +7,6 @@ import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
-import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryType
@@ -16,7 +15,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
-class GUIListener : Listener {
+class GUIListener : BaseListener() {
     @EventHandler(priority = EventPriority.HIGH)
     fun onInventoryClick(e: InventoryClickEvent) {
         val player = e.whoClicked as? Player ?: return
@@ -100,8 +99,6 @@ class GUIListener : Listener {
         (player as? Player)?.testInventory()
     }
 
-    val inventories = hashMapOf<String, (InventoryClickEvent) -> Unit>()
-
     @EventHandler
     fun onInventoryClose(e: InventoryCloseEvent) {
         inventories.remove(e.view.title)
@@ -163,5 +160,7 @@ class GUIListener : Listener {
 
     companion object {
         val barrier = ItemStack(Material.SNOW)
+
+        val inventories = hashMapOf<String, (InventoryClickEvent) -> Unit>()
     }
 }
