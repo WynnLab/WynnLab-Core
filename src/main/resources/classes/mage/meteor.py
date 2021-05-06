@@ -29,7 +29,7 @@ class Spell(PySpell):
             self.origin = self.target.clone().add(random.nextDouble() * 5 - 2.5, 21, random.nextDouble() * 5 - 2.5)
             self.direction = self.origin.clone().subtract(self.target).toVector().normalize()
 
-            for l in LocationIterator(self.target, self.origin, self.direction, .5):
+            for l in LocationIterator(self.target, self.origin, .5):
                 self.particle(l, Particle.SOUL_FIRE_FLAME if self.clone else Particle.FLAME, 1, 0, 0, 0, 0)
 
             self.direction.multiply(-1)

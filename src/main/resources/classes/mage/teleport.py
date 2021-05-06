@@ -18,10 +18,10 @@ class Spell(PySpell):
         particle_dir = particle_start.getDirection()
         self.player.teleport(target)
 
-        for l in LocationIterator(particle_start, target, particle_dir, .5):
+        for l in LocationIterator(particle_start, target, .5):
             self.particle(l.clone().subtract(0, 1, 0) if self.clone else l, Particle.DRIP_LAVA if self.clone else Particle.FLAME, 1, 0, 0, 0, 0)
 
-        for l in LocationIterator(particle_start, target, particle_dir, 1):
+        for l in LocationIterator(particle_start, target, 1):
             self.particle(l, Particle.VILLAGER_ANGRY if self.clone else Particle.LAVA, 1, 0, 0, 0, 0)
 
             for e in self.nearbyMobs(l, .5, 2, .5):
