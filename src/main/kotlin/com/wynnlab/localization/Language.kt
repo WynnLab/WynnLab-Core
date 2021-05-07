@@ -21,11 +21,17 @@ class Language(name: String) {
         if (language_fallbacks[shortLC] == null) language_fallbacks[shortLC] = name
     }
 
-    fun getMessage(key: String, vararg format_args: Any?): String = config.getString(key)?.let {
-        String.format(ChatColor.translateAlternateColorCodes('&', it), *format_args)
-    } ?:
+    fun getMessage(key: String, vararg format_args: Any?): String = getMessageOrNull(key, *format_args) ?:
     Language[language_fallbacks[shortLC]!!].getMessageOrNull(key, *format_args) ?:
     en_us.getMessageOrNull(key, *format_args) ?: "§4Nls: §r$key"
+
+    fun getRandomMessage(key: String, vararg format_args: Any?): String = getRandomMessageOrNull(key, *format_args) ?:
+    Language[language_fallbacks[shortLC]!!].getMessageOrNull(key, *format_args) ?:
+    en_us.getRandomMessageOrNull(key, *format_args) ?: "§4Nls: §r$key"
+
+    private fun getRandomMessageOrNull(key: String, vararg format_args: Any?) = config.getList(key)?.let {
+        it.randomOrNull()?.let { r -> String.format(ChatColor.translateAlternateColorCodes('&', r as String), *format_args) }
+    }
 
     private fun getMessageOrNull(key: String, vararg format_args: Any?): String? = config.getString(key)?.let {
         String.format(ChatColor.translateAlternateColorCodes('&', it), *format_args)

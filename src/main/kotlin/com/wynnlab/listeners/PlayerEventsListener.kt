@@ -4,10 +4,9 @@ import com.wynnlab.Players
 import com.wynnlab.api.*
 import com.wynnlab.commands.EssentialsCommands
 import com.wynnlab.essentials.Party
+import com.wynnlab.localization.Language
 import com.wynnlab.spells.PySpell
-import org.bukkit.Material
-import org.bukkit.Particle
-import org.bukkit.Sound
+import org.bukkit.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.AsyncPlayerChatEvent
@@ -31,7 +30,7 @@ class PlayerEventsListener : BaseListener() {
         } ?: run {
             player.sendWynnMessage("messages.no_class")
             player.sendWynnMessage("messages.class_select")
-            player.performCommand("wynnlab:class")
+            player.performCommand("/wynnlab:class")
         }
     }
 
@@ -49,7 +48,38 @@ class PlayerEventsListener : BaseListener() {
     }
 
     @EventHandler
-    fun onPlayerChat(e: AsyncPlayerChatEvent) {
+    fun onPlayerChat(@Suppress("depreciation") e: AsyncPlayerChatEvent) {
+        val message = StringBuilder(e.message) //ChatColor.translateAlternateColorCodes('&', e.message)
+        val selfMessage = StringBuilder(message)
+
+        var mentions = false
+
+        val matcher = mentionPattern.matcher(message)
+        while (matcher.find()) {
+            val name = message.substring(matcher.start(), matcher.end())
+            Bukkit.getPlayer(name).let { p ->
+                if (p != null && p.name == name) {
+                    if (p.name != e.player.name) {
+                        selfMessage.insert(matcher.start(), ChatColor.DARK_AQUA).insert(matcher.end() + 2, ChatColor.RESET)
+                        p.sendMessage("${e.player.displayName}: §r${StringBuilder(message).insert(matcher.start(), ChatColor.AQUA).insert(matcher.end() + 2, ChatColor.RESET)}")
+                        p.playSound(p.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, .7f)
+                        e.recipients.remove(p)
+                        mentions = true
+                    }
+                } else {
+                    selfMessage.insert(matcher.start(), ChatColor.RED).insert(matcher.end() + 2, ChatColor.RESET)
+                    mentions = true
+                }
+            }
+        }
+
+        if (mentions) {
+            e.recipients.remove(e.player)
+            e.player.sendMessage("${e.player.displayName}: §r$selfMessage")
+        }
+
+        e.message = message.toString()
+
         e.format = "%s: §r%s"
     }
 
@@ -60,7 +90,7 @@ class PlayerEventsListener : BaseListener() {
         e.setShouldDropExperience(false)
         e.droppedExp = 0
 
-        e.deathMessage = deathMessages.random().replace("$", e.entity.name)
+        e.deathMessage = e.entity.let { Language[it.locale].getRandomMessage("death_messages", it.name) }
     }
 
     @EventHandler
@@ -81,11 +111,22 @@ class PlayerEventsListener : BaseListener() {
         }
     }
 
-    companion object {
-        val deathMessages = setOf("$ didn't know about RRR")
+    /*private fun formatChatMessage(msg: String) {
 
+    }*/
+
+    companion object {
         val fireworks = ItemStack(Material.FIREWORK_ROCKET).metaAs<FireworkMeta> {
             power = 2
         }
+
+        val mentionPattern = Regex("(?<=@)\\w{3,16}").toPattern()
+
+        /*val chatPatternItalic = Regex("\\*.[^*]*\\*").toPattern()
+        val chatPatternBold = Regex("\\*\\*.(?:[^*]|\\*[^*])*.\\*\\*").toPattern()
+        val chatPatternBoldItalic = Regex("\\*\\*\\*.(?:[^*]|\\*[^*]|\\*\\*[^*])*.\\*\\*\\*").toPattern()
+        val chatPatternUnderlined = Regex("_.[^_]*_").toPattern()
+        val chatPatternStrikethrough = Regex("~~.(?:[^~]|~[^~])*.~~").toPattern()
+        val chatPatternObfuscated = Regex("\\|\\|.(?:[^|]|\\|[^|])*.\\|\\|").toPattern()*/
     }
 }

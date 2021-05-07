@@ -38,6 +38,27 @@ messages:
 
   party_promote: '&dYou are now the owner of the party!'
 
+death_messages:
+  - "&6%s&c was brought to an end..."
+  - "&6%s&c perished due to a lack of plot armor."
+  - "&6%s&c met their demise..."
+  - "&6%s&c died. Press F to pay respects."
+  - "&6%s&c thought that this would be as easy as Wynncraft. Wrong."
+  - "&6%s&c didn't have enough health regen."
+  - "&6%s&c decided to stress their bones. It wasn't a good idea."
+  - "&6%s&c somehow couldn't live."
+  - "&6%s&c decided to RE:start"
+  - "&6%s&c failed to realize that they weren't an anime protagonist."
+  - "&6%s&c's life ended heroically. I think."
+  - "&6%s&c met their disastrous fate."
+  - "&6%s&c forgot RRR was a thing."
+  - "&6%s&c embraced death a bit too much."
+  - "&6%s&c failed the vibe check."
+  - "&6%s&c thought they could facetank everything."
+  - "&6%s&c didn't know how to dodge attacks."
+  - "&6%s&c was slain."
+  - "&6%s&c rolled a nat 1."
+
 items:
   items:
     combat_lv_min: '%s &7Combat Lv. Min: %d'
