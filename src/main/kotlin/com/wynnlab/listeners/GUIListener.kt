@@ -25,15 +25,15 @@ class GUIListener : BaseListener() {
 
         val clickedInventory = e.clickedInventory ?: return
         val playerInventory = player.inventory
-        val upperInventory = e.inventory
+        //val upperInventory = e.inventory
 
         val slot = e.slot
 
         e.currentItem?.let { item ->
-            if (upperInventory != playerInventory && upperInventory == clickedInventory && e.isShiftClick) {
+            /*if (upperInventory != playerInventory && upperInventory == clickedInventory && e.isShiftClick) {
                 shiftOtherItem(playerInventory, upperInventory, slot, item)
                 e.isCancelled = true
-            } else if (player.openInventory.type == InventoryType.CRAFTING && e.isShiftClick) {
+            } else*/ if (player.openInventory.type == InventoryType.CRAFTING && e.isShiftClick) {
                 when (val type = item.itemMeta?.data?.getString("type")) {
                     "RING", "BRACELET", "NECKLACE" -> {
                         if (e.isShiftClick) {
@@ -44,10 +44,10 @@ class GUIListener : BaseListener() {
                             }
                         }
                     }
-                    else -> {
+                    /*else -> {
                         shiftOtherItem(playerInventory, playerInventory, slot, item)
                         e.isCancelled = true
-                    }
+                    }*/
                 }
             }
         }
@@ -63,14 +63,39 @@ class GUIListener : BaseListener() {
 
                 // Prevent from moving wrong items to accessory slots
                 9, 10, 11, 12 -> {
-                    (e.cursor ?: e.currentItem ?: if (e.hotbarButton > 0) playerInventory.getItem(e.hotbarButton) else null)?.let { item ->
-                        if (when (/*val type = */item.itemMeta?.data?.getString("type")) {
-                            "RING" -> !(slot == 9 || slot == 10)
-                            "BRACELET" -> slot != 11
-                            "NECKLACE" -> slot != 12
-                            else -> true
-                        })
+                    if (!e.isShiftClick) {
+                        val fromHotbar = e.hotbarButton in 0..5
+                        val newItem = (if (fromHotbar) playerInventory.getItem(e.hotbarButton) else e.cursor)
+
+                        val isOk = when (val type = newItem?.itemMeta?.data?.getString("type")) {
+                            "RING" -> slot == 9 || slot == 10
+                            "BRACELET" -> slot == 11
+                            "NECKLACE" -> slot == 12
+                            else -> {
+                                if (e.currentItem?.itemMeta?.data?.getString("type") != null) {
+                                    if (newItem == null || newItem.type == Material.AIR) {
+                                        e.cursor = e.currentItem
+                                        e.currentItem = snowForSlot(slot)
+                                    }
+                                    e.isCancelled = true
+                                }
+                                false
+                            }
+                        }
+                        if (isOk) {
+                            if (e.currentItem?.type != Material.SNOW)
+                                e.isCancelled = false
+                            else {
+                                e.isCancelled = true
+                                e.currentItem = newItem
+                                if (fromHotbar)
+                                    playerInventory.setItem(e.hotbarButton, null)
+                                else
+                                    e.cursor = null
+                            }
+                        } else {
                             e.isCancelled = true
+                        }
                     }
                 }
 
@@ -116,15 +141,11 @@ class GUIListener : BaseListener() {
 
     private fun shiftOutAccessory(inv: Inventory, slot: Int): Boolean {
         val itemToMove = inv.getItem(slot)
-        val barriers = booleanArrayOf(false, false, false, false)
-        while (inv.firstEmpty() in 9..12) {
-            val fe = inv.firstEmpty()
-            inv.setItem(fe, barrier)
-            barriers[fe - 9] = true
-        }
+
+        inv.setItem(slot, snowForSlot(slot))
+
         itemToMove?.let { inv.addItem(it) }
-        barriers.forEachIndexed { i, b -> if (b) inv.setItem(i + 9, null) }
-        inv.setItem(slot, null)
+
         return false
     }
 
@@ -135,7 +156,10 @@ class GUIListener : BaseListener() {
             "NECKLACE" -> 12
             else -> return true // Never
         }
-        return if (inv.getItem(desiredSlot) == null || desiredSlot == 9 && (inv.getItem(10) == null).also { desiredSlot = 10 }) {
+        return if (!( // Inverted because null item
+            inv.getItem(desiredSlot)?.type != Material.SNOW
+            && (desiredSlot != 9 || (inv.getItem(10)?.type != Material.SNOW).also { if (!it) desiredSlot = 10 })
+        )) {
             inv.setItem(desiredSlot, inv.getItem(slot))
             inv.setItem(slot, null)
             true
@@ -143,24 +167,22 @@ class GUIListener : BaseListener() {
     }
 
     private fun shiftOtherItem(oldInventory: Inventory, newInventory: Inventory, slot: Int, item: ItemStack) {
-        val barriers = booleanArrayOf(false, false, false, false)
-
-        while (oldInventory.firstEmpty() in 9..12) {
-            val fe = oldInventory.firstEmpty()
-            oldInventory.setItem(fe, barrier)
-            barriers[fe - 9] = true
-        }
-
-        newInventory.setItem(slot, null)
+        newInventory.setItem(slot, snowForSlot(slot))
 
         oldInventory.addItem(item)
-
-        barriers.forEachIndexed { i, b -> if (b) oldInventory.setItem(i + 9, null) }
     }
 
     companion object {
-        val barrier = ItemStack(Material.SNOW)
-
         val inventories = hashMapOf<String, (InventoryClickEvent) -> Unit>()
+
+        fun snowForSlot(slot: Int) = ItemStack(Material.SNOW, 1).meta {
+            setDisplayName(when (slot) {
+                9 -> "§7Ring Slot§1"
+                10 -> "§7Ring Slot§2"
+                11 -> "§7Bracelet Slot"
+                12 -> "§7Necklace Slot"
+                else -> null
+            })
+        }
     }
 }

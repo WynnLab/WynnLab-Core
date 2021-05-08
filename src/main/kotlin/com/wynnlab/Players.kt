@@ -78,6 +78,19 @@ object Players {
                 )//" ", "§cShift Right-Click to enable hunted")
             })
 
+            setItem(9, ItemStack(Material.SNOW).meta {
+                setDisplayName("§7Ring Slot§1")
+            })
+            setItem(10, ItemStack(Material.SNOW).meta {
+                setDisplayName("§7Ring Slot§2")
+            })
+            setItem(11, ItemStack(Material.SNOW).meta {
+                setDisplayName("§7Bracelet Slot")
+            })
+            setItem(12, ItemStack(Material.SNOW).meta {
+                setDisplayName("§7Necklace Slot")
+            })
+
             player.updatePouch()
 
             loadAPIData(player)

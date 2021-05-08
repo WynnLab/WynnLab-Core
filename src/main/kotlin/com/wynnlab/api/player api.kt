@@ -318,16 +318,13 @@ fun Player.testInventory() {
                 }
             } else {
                 inventory.getItem(4 + i)?.let { realItem ->
-                    sendWynnMessage("messages.wrong_item")
-                    val barriers = booleanArrayOf(false, false, false, false)
-                    while (inventory.firstEmpty() in 9..12) {
-                        val fe = inventory.firstEmpty()
-                        inventory.setItem(fe, GUIListener.barrier)
-                        barriers[fe - 9] = true
+                    if (realItem.type != Material.SNOW) {
+                        sendWynnMessage("messages.wrong_item")
+
+                        inventory.setItem(4 + i, GUIListener.snowForSlot(4 + i))
+
+                        inventory.addItem(realItem)
                     }
-                    inventory.addItem(realItem)
-                    barriers.forEachIndexed { i, b -> if (b) inventory.setItem(i + 9, null) }
-                    inventory.setItem(4 + i, null)
                 }
             }
         }
