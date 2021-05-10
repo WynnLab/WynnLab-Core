@@ -5,6 +5,7 @@ package com.wynnlab.spells
 import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.entities.Hologram
+import com.wynnlab.items.WynnItem
 import com.wynnlab.listeners.ProjectileHitListener
 import com.wynnlab.plugin
 import com.wynnlab.random
@@ -29,55 +30,80 @@ fun registerProjectileHit(tag: String, e: (ProjectileHitEvent) -> Unit) {
 
 fun damage(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) {
     // LS / MS
-    source.weaponAttackSpeed?.let { attackSpeed ->
-        if (random.nextDouble() < attackSpeed.stealChance) {
-            val ls = source.getId("life_steal")
-            if (ls != 0) {
-                particle(source, source.location.clone().add(.0, 1.0, .0), if (ls > 0) Particle.HEART else Particle.DAMAGE_INDICATOR, 10, .5, 1.0, .5, .2)
-                heal(source, ls.toDouble())
+    if (melee) {
+        source.weaponAttackSpeed?.let<WynnItem.AttackSpeed, Unit> { attackSpeed ->
+            if ("no_life_steal" !in source.scoreboardTags && random.nextDouble() < attackSpeed.stealChance) {
+                val ls = source.getId("life_steal")
+                if (ls != 0) {
+                    source.addScoreboardTag("life_steal")
+                }
+            } else {
+                source.addScoreboardTag("no_life_steal")
             }
-        }
-        if (random.nextDouble() < attackSpeed.stealChance) {
-            val ms = source.getId("mana_steal")
-            if (ms != 0) {
-                val l = source.location.clone()
-                if (ms > 0)
-                    repeat(5) { i ->
-                        l.add(if (i % 2 == 0) -.5 else .5, .2, if (i % 2 == 1) -.5 else .5)
-                        particle(source, l, Particle.SPELL_MOB, 0, 1.0, 1.0, 1.0, 1.0)
-                        l.add(if (i % 2 == 1) -.5 else .5, .2, if (i % 2 == 0) -.5 else .5)
-                        particle(source, l, Particle.SPELL_MOB, 0, 0.0, 1.0, 1.0, 1.0)
-                    }
-                else
-                    repeat(5) { i ->
-                        l.add(if (i % 2 == 0) -.5 else .5, .2, if (i % 2 == 1) -.5 else .5)
-                        particle(source, l, Particle.SPELL_MOB, 0, 0.0, 0.0, 0.0, 1.0)
-                        l.add(if (i % 2 == 1) -.5 else .5, .2, if (i % 2 == 0) -.5 else .5)
-                        particle(source, l, Particle.SPELL_MOB, 0, 0.0, 0.0, 1.0, 1.0)
-                    }
-                source.foodLevel = (source.foodLevel + ms).coerceIn(1, 20)
+
+            if ("no_mana_steal" !in source.scoreboardTags && random.nextDouble() < attackSpeed.stealChance) {
+                val ms = source.getId("mana_steal")
+                if (ms != 0) {
+                    source.addScoreboardTag("mana_steal")
+                }
+            } else {
+                source.addScoreboardTag("no_mana_steal")
             }
         }
     }
 
     // Exploding
-    if (melee && random.nextDouble() < (source.getId("exploding") / 100.0 * multiplier)) {
-        sound(source, e.location, Sound.ENTITY_GENERIC_EXPLODE, 1f, 1f)
-        particle(source, e.location.clone().add(.0, 1.0, .0), Particle.EXPLOSION_LARGE, 3, .5, 1.0, .5, .0)
-        nearbyMobs(e.world, e.location, 2.0, 2.0, 2.0).forEach { if(e != it) damageBy(source, it, melee, multiplier / 3.0, *conversion) }
+    if (melee && "no_exploding" !in source.scoreboardTags && random.nextDouble() < (source.getId("exploding") / 100.0 * multiplier)) {
+        source.addScoreboardTag("exploding")
+    } else {
+        source.addScoreboardTag("no_exploding")
     }
 
     // Poison
     if (melee) {
         val poison = source.getId("poison").coerceAtLeast(0)
         if (poison > 0) {
-            val task = poisonTask(e, poison, source)
-            task.id = Bukkit.getScheduler().runTaskTimer(plugin, task, 0L, 20L).taskId
+            poison(source, e, poison)
         }
     }
 
     // Damage
     damageBy(source, e, melee, multiplier, *conversion)
+}
+
+fun lifeSteal(ls: Int, source: Player) {
+    particle(source, source.location.clone().add(.0, 1.0, .0), if (ls > 0) Particle.HEART else Particle.DAMAGE_INDICATOR, 10, .5, 1.0, .5, .2)
+    heal(source, ls.toDouble())
+}
+
+fun manaSteal(ms: Int, source: Player) {
+    val l = source.location.clone()
+    if (ms > 0)
+        repeat(5) { i ->
+            l.add(if (i % 2 == 0) -.5 else .5, .2, if (i % 2 == 1) -.5 else .5)
+            particle(source, l, Particle.SPELL_MOB, 0, 1.0, 1.0, 1.0, 1.0)
+            l.add(if (i % 2 == 1) -.5 else .5, .2, if (i % 2 == 0) -.5 else .5)
+            particle(source, l, Particle.SPELL_MOB, 0, 0.0, 1.0, 1.0, 1.0)
+        }
+    else
+        repeat(5) { i ->
+            l.add(if (i % 2 == 0) -.5 else .5, .2, if (i % 2 == 1) -.5 else .5)
+            particle(source, l, Particle.SPELL_MOB, 0, 0.0, 0.0, 0.0, 1.0)
+            l.add(if (i % 2 == 1) -.5 else .5, .2, if (i % 2 == 0) -.5 else .5)
+            particle(source, l, Particle.SPELL_MOB, 0, 0.0, 0.0, 1.0, 1.0)
+        }
+    source.foodLevel = (source.foodLevel + ms).coerceIn(1, 20)
+}
+
+fun exploding(source: Player, e: LivingEntity, multiplier: Double, conversion: DoubleArray) {
+    sound(source, e.location, Sound.ENTITY_GENERIC_EXPLODE, 1f, 1f)
+    particle(source, e.location.clone().add(.0, 1.0, .0), Particle.EXPLOSION_LARGE, 3, .5, 1.0, .5, .0)
+    nearbyMobs(e.world, e.location, 2.0, 2.0, 2.0).forEach { if(e != it) damageBy(source, it, true, multiplier / 3.0, *conversion) }
+}
+
+fun poison(source: Player, e: LivingEntity, poison: Int) {
+    val task = poisonTask(e, poison, source)
+    task.id = Bukkit.getScheduler().runTaskTimer(plugin, task, 0L, 20L).taskId
 }
 
 private fun poisonTask(e: LivingEntity, poison: Int, source: Player) = object : Runnable {

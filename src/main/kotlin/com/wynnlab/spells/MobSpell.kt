@@ -4,6 +4,7 @@ import com.wynnlab.plugin
 import com.wynnlab.util.BaseSerializable
 import com.wynnlab.util.ConfigurationDeserializable
 import com.wynnlab.util.DEG2RAD
+import com.wynnlab.util.prepareScript
 import com.wynnlab.wynnscript.CompiledWynnScript
 import com.wynnlab.wynnscript.NoSuchFunctionException
 import com.wynnlab.wynnscript.WynnScript
@@ -29,6 +30,10 @@ data class MobSpell(
 
     val script: CompiledWynnScript,
 ) : BaseSerializable<MobSpell>() {
+    init {
+        prepareScript(script)
+    }
+
     val cooldown = prepareTime + maxTick + 20
 
     var bossBar: BossBar? = null

@@ -6,6 +6,7 @@ import com.wynnlab.spellOrdinal
 import com.wynnlab.util.BaseSerializable
 import com.wynnlab.util.ConfigurationDeserializable
 import com.wynnlab.util.TickRunnable
+import com.wynnlab.util.prepareScript
 import com.wynnlab.wynnscript.CompiledWynnScript
 import com.wynnlab.wynnscript.NoSuchFunctionException
 import com.wynnlab.wynnscript.WynnScript
@@ -20,10 +21,10 @@ data class PlayerSpell(
     override val ordinal: Int
 ) : Spell, BaseSerializable<PlayerSpell>() {
     init {
-
+        prepareScript(script)
     }
 
-    override fun cast(player: Player, vararg args: Any?) {
+    override fun invoke(player: Player, vararg args: Any?) {
         script.resetData()
 
         val spellPlayer = SpellPlayer(player)
