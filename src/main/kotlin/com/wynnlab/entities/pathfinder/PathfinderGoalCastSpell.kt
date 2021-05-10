@@ -4,6 +4,7 @@ import com.wynnlab.plugin
 import com.wynnlab.spells.MobSpell
 import net.minecraft.server.v1_16_R3.EntityCreature
 import net.minecraft.server.v1_16_R3.EntityLiving
+import net.minecraft.server.v1_16_R3.EntityPlayer
 import net.minecraft.server.v1_16_R3.PathfinderGoal
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
@@ -19,7 +20,7 @@ class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Doubl
     private var target: EntityLiving? = null
 
     private var spell: MobSpell? = null
-    private var ticks: MobSpell.Ticks? = null
+    private var runnable: MobSpell.Ticks? = null
 
     init {
         a(EnumSet.of(Type.LOOK))
@@ -31,7 +32,7 @@ class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Doubl
             return false
         }
 
-        target = creature.goalTarget
+        target = (creature.goalTarget as? EntityPlayer) ?: return false
 
         if (target == null)
             return false
@@ -72,15 +73,15 @@ class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Doubl
                 Bukkit.removeBossBar(NamespacedKey(plugin, "prepare_${creature.id}"))
             }
 
-            ticks = spell!!.newInstance(creature.bukkitEntity, target!!.bukkitEntity)
+            runnable = spell!!.newInstance(creature.bukkitEntity, target!!.bukkitEntity as Player)
             --prepare
         }
 
-        if (!(ticks!!.tick()))
+        if (!(runnable!!.tick()))
             return false
 
-        ++ticks!!.t
+        ++runnable!!.t
 
-        return ticks!!.t <= spell!!.maxTick
+        return runnable!!.t <= spell!!.maxTick
     }
 }

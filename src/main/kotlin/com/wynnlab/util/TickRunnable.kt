@@ -9,7 +9,7 @@ abstract class TickRunnable : Runnable {
     private var _taskId = -1
     val taskId get() = _taskId
 
-    private var scheduled = false
+    protected var scheduled = false
     var maxTick = 0
 
     open fun init() {}

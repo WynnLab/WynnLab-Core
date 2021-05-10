@@ -170,13 +170,13 @@ data class WynnMob(
         NO_ATTACK({ g, _, e, _ ->
             g.a(1, PathfinderGoalRandomLookaround(e))
             g.a(2, PathfinderGoalRandomStroll(e, 1.0))
-            g.a(3, PathfinderGoalLookAtPlayer(e, EntityHuman::class.java, .5f))
+            g.a(3, PathfinderGoalLookAtPlayer(e, EntityPlayer::class.java, .5f))
 
             g.a(0, PathfinderGoalFloat(e))
         }),
         MELEE({ g, t, e, m ->
             //t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, 10, true, false) { (e.bukkitEntity.lastDamageCause?.entity as org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity).handle == it })
-            t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
+            t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityPlayer::class.java, true))
 
             g.a(1, PathfinderGoalCastSpell(e, m.vision, m.spells))
 
@@ -184,13 +184,13 @@ data class WynnMob(
 
             g.a(3, PathfinderGoalRandomLookaround(e))
             g.a(4, PathfinderGoalRandomStroll(e, 1.0))
-            g.a(5, PathfinderGoalLookAtPlayer(e, EntityHuman::class.java, .5f))
+            g.a(5, PathfinderGoalLookAtPlayer(e, EntityPlayer::class.java, .5f))
 
             g.a(0, PathfinderGoalFloat(e))
         }),
         RANGED({ g, t, e, m ->
             //t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
-            t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
+            t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityPlayer::class.java, true))
 
             g.a(1, PathfinderGoalCastSpell(e, m.vision, m.spells))
 

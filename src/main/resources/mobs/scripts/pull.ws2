@@ -1,0 +1,5 @@
+# MobSpell
+
+function tick(t, caster, target) {
+    target.player.velocity = caster.location.clone().subtract(target.location).toVector();
+}

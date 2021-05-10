@@ -1,10 +1,12 @@
 package com.wynnlab.spells
 
 import com.wynnlab.plugin
-import com.wynnlab.python
 import com.wynnlab.util.BaseSerializable
 import com.wynnlab.util.ConfigurationDeserializable
 import com.wynnlab.util.DEG2RAD
+import com.wynnlab.wynnscript.CompiledWynnScript
+import com.wynnlab.wynnscript.NoSuchFunctionException
+import com.wynnlab.wynnscript.WynnScript
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
@@ -14,9 +16,7 @@ import org.bukkit.boss.BarFlag
 import org.bukkit.boss.BarStyle
 import org.bukkit.boss.BossBar
 import org.bukkit.entity.Entity
-import org.python.core.Py
-import org.python.core.PyBoolean
-import org.python.core.PyFunction
+import org.bukkit.entity.Player
 import java.io.File
 import kotlin.math.cos
 import kotlin.math.sin
@@ -27,18 +27,34 @@ data class MobSpell(
     val prepareTime: Int = 10,
     val hasBossBar: Boolean = false,
 
-    val pyFunction: PyFunction,
+    val script: CompiledWynnScript,
 ) : BaseSerializable<MobSpell>() {
     val cooldown = prepareTime + maxTick + 20
 
     var bossBar: BossBar? = null
 
-    fun newInstance(caster: Entity, target: Entity): Ticks {
-        Bukkit.broadcastMessage("${caster.name} casted $name at ${target.name}")
+    fun newInstance(caster: Entity, target: Player): Ticks {
+        //Bukkit.broadcastMessage("${caster.name} casted $name at ${target.name}")
 
-        return object : Ticks(caster, target) {
-            override fun tick() =
-                (pyFunction.__call__(Py.java2py(this)) as PyBoolean).booleanValue
+        return object : Ticks() {
+            override fun init() {
+                script.setData("task", this)
+                try {
+                    script("init", caster, target)
+                } catch (_: NoSuchFunctionException) {
+                } catch (e: Throwable) {
+                    (target as? Player?)?.let { reportError(e, "§cError at initializing script", it) }
+                }
+            }
+
+            override fun tick(): Boolean {
+                return try {
+                    script("tick", t, caster, target) != false
+                } catch (e: Throwable) {
+                    (target as? Player?)?.let { reportError(e, "§cError at executing script (tick $t)", it) }
+                    false
+                }
+            }
         }
     }
 
@@ -70,15 +86,16 @@ data class MobSpell(
         }
     }
 
-    abstract class Ticks(
-        val caster: Entity,
-        val target: Entity
-    ) {
-        val data: Any? = null
-
+    abstract class Ticks {
         var t = 0
 
+        abstract fun init(): Unit
+
         abstract fun tick(): Boolean
+
+        fun delay() {
+            --t
+        }
     }
 
     override fun serialize(): MutableMap<String, Any> {
@@ -95,13 +112,11 @@ data class MobSpell(
             val prepareTime = (map["prepare_time"] as Number ??: 10).toInt()
             val hasBossBar = map["has_boss_bar"] == true
 
-            val pyFunctionFileName = map["script"] as String
-            val pyFunctionFile = File(File(File(plugin.dataFolder, "mobs"), "scripts"), pyFunctionFileName)
-            val pyCode = python.compile(pyFunctionFile.reader())
-            python.exec(pyCode)
-            val pyFunction = python.get("tick") as PyFunction
+            val scriptFileName = map["script"] as String
+            val scriptFile = File(File(File(plugin.dataFolder, "mobs"), "scripts"), scriptFileName)
+            val script = WynnScript(scriptFile.reader()).compile()
 
-            return MobSpell(name, maxTick, prepareTime, hasBossBar, pyFunction).also { println(it) }
+            return MobSpell(name, maxTick, prepareTime, hasBossBar, script)
         }
     }
 }

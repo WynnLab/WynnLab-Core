@@ -14,7 +14,7 @@ fun saveAllResources() {
 val resources = arrayOf(
     // Temp
     "mobs/dummy.yml",
-    "mobs/scripts/pull.py",
+    "mobs/scripts/pull.ws2",
 
 
     /////////////////////////////////////

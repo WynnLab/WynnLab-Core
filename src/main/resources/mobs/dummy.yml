@@ -20,9 +20,9 @@ mob:
     - ==: com.wynnlab.spells.MobSpell
       name: Pull
       max_tick: 0
-      script: pull.py
+      script: pull.ws2
     - ==: com.wynnlab.spells.MobSpell
       name: BBPull
       max_tick: 0
       has_boss_bar: true
-      script: pull.py
+      script: pull.ws2
