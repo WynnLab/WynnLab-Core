@@ -28,7 +28,8 @@ fun registerProjectileHit(tag: String, e: (ProjectileHitEvent) -> Unit) {
     ProjectileHitListener.tags[tag] = e
 }
 
-fun damage(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) {
+fun damage(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) =
+    Bukkit.getScheduler().runTaskAsynchronously(plugin) { ->
     // LS / MS
     if (melee) {
         source.weaponAttackSpeed?.let<WynnItem.AttackSpeed, Unit> { attackSpeed ->
@@ -54,7 +55,7 @@ fun damage(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, 
 
     // Exploding
     if (melee && "no_exploding" !in source.scoreboardTags && random.nextDouble() < (source.getId("exploding") / 100.0 * multiplier)) {
-        source.addScoreboardTag("exploding")
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin) { exploding(source, e, multiplier, conversion) }
     } else {
         source.addScoreboardTag("no_exploding")
     }
@@ -140,9 +141,6 @@ private fun poisonTask(e: LivingEntity, poison: Int, source: Player) = object : 
 fun damageBy(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) {
     val damage = source.getDamage(melee, multiplier, if (conversion.isNotEmpty()) doubleArrayOf(*conversion) else standardConversion)
 
-    e.damage(damage.sum(), source)
-    e.noDamageTicks = 0
-
     var space = false
     val damageText = buildString {
         damage.onEachIndexed { i, d ->
@@ -168,8 +166,15 @@ fun damageBy(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double
 
     val diLocation = e.eyeLocation.clone().add(random.nextDouble() * .5, random.nextDouble() * .5 + .5, random.nextDouble() * .5)
     val di = Hologram(diLocation, damageText)
-    di.spawn(e.world)
-    di.bukkitEntity.velocity = diLocation.clone().subtract(e.location).multiply(0.5).toVector()
+
+    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin) {
+        e.damage(damage.sum(), source)
+        e.noDamageTicks = 0
+
+        di.spawn(e.world)
+        di.bukkitEntity.velocity = diLocation.clone().subtract(e.location).multiply(0.5).toVector()
+    }
+
     di.removeAfter(15)
 }
 
