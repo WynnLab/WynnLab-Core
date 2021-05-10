@@ -6,6 +6,10 @@ import com.wynnlab.python
 import com.wynnlab.spellOrdinal
 import com.wynnlab.util.BaseSerializable
 import com.wynnlab.util.ConfigurationDeserializable
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.event.ClickEvent
+import net.kyori.adventure.text.event.HoverEvent
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.entity.Player
 import org.python.core.Py
@@ -50,6 +54,25 @@ interface Spell : ConfigurationSerializable {
     fun cast(player: Player, vararg args: Any?)
 }
 
+@Suppress("unchecked_cast")
+fun reportError(e: Throwable, msg: String, player: Player) {
+    player.sendMessage("§4=====================")
+    player.sendMessage(msg)
+    player.sendMessage("§bPlease immediately submit a bug report on GitHub!")
+    val stackTrace = e.stackTraceToString()
+    player.sendMessage(
+        Component.text("Error: (${e::class.qualifiedName}) $e ")
+            .color(NamedTextColor.DARK_RED)
+            .append(
+                Component.text("[Stack trace]")
+                    .color(NamedTextColor.YELLOW)
+                    .hoverEvent { HoverEvent.showText(Component.text("Copy")) as HoverEvent<Any> }
+                    .clickEvent(ClickEvent.copyToClipboard(e.stackTraceToString()))
+            )
+    )
+    player.sendMessage("§4=====================")
+}
+
 @Deprecated("Use WynnScript")
 data class PythonSpell (
     override val cost: Int,
@@ -58,13 +81,32 @@ data class PythonSpell (
     override val ordinal: Int
 ) : Spell, BaseSerializable<PythonSpell>() {
 
-    override fun cast(player: Player, vararg args: Any?) {
-        val instance = pythonClass.__call__(Array(args.size) { i -> Py.java2py(args[i]) })
-        instance.__setattr__("player", Py.java2py(player))
-        instance.__setattr__("clone", PyBoolean(player.isCloneClass))
-        instance.__setattr__("maxTick", PyInteger(maxTick))
+    override fun cast(player: Player, vararg args: Any?)  {
+        val instance = try {
+            pythonClass.__call__(Array(args.size) { i -> Py.java2py(args[i]) })
+        } catch (e: Throwable) {
+            reportError(e, "§cError instantiating §nPython §cSpell ($ordinal)", player)
+            return
+        }
+        try {
+            instance.__setattr__("player", Py.java2py(player))
+            instance.__setattr__("clone", PyBoolean(player.isCloneClass))
+            instance.__setattr__("maxTick", PyInteger(maxTick))
+        } catch (e: Throwable) {
+            reportError(e, "§cError setting attributes for §nPython §cSpell ($ordinal)", player)
+            return
+        }
 
-        instance("schedule")
+        try {
+            instance("schedule")
+        } catch (e: Throwable) {
+            reportError(e, "§cError executing §nPython §cSpell ($ordinal)", player)
+            try {
+                instance("cancel")
+            } catch (e: Throwable) {
+                reportError(e, "§c§lVery critical§c error instantiating §nPython §cSpell ($ordinal)", player)
+            }
+        }
     }
 
     override fun serialize(): MutableMap<String, Any> {

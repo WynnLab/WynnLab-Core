@@ -88,11 +88,18 @@ private fun poisonTask(e: LivingEntity, poison: Int, source: Player) = object : 
 
     private var l = e.location.clone()
 
+    init {
+        if (!e.addScoreboardTag("poisoned"))
+            c = 2
+    }
+
     override fun run() {
         if (c < 2)
             ++c
-        else
+        else {
+            e.removeScoreboardTag("poisoned")
             Bukkit.getScheduler().cancelTask(id)
+        }
 
         l = e.location.clone()
 

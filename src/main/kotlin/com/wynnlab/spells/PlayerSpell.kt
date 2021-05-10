@@ -54,18 +54,27 @@ data class PlayerSpell(
         val spellPlayer = SpellPlayer(player)
         val clone = player.isCloneClass
 
-        (object : TickRunnable() {
+        val runnable = object : TickRunnable() {
             override fun init() {
                 script.setData("taskId", taskId)
                 try {
                     script("init", spellPlayer, clone, *args)
-                } catch (_: NoSuchFunctionException) {}
+                } catch (_: NoSuchFunctionException) {
+                } catch (e: Throwable) {
+                    reportError(e, "§cError at initializing script", player)
+                }
             }
 
             override fun tick() {
-                script("tick", t, spellPlayer, clone)
+                try {
+                    script("tick", t, spellPlayer, clone)
+                } catch (e: Throwable) {
+                    reportError(e, "§cError at executing script (tick $t)", player)
+                }
             }
-        }).schedule()
+        }
+
+        runnable.schedule()
     }
 
     override fun serialize(): MutableMap<String, Any> {

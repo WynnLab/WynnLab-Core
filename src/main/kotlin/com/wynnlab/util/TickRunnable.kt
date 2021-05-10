@@ -27,7 +27,12 @@ abstract class TickRunnable : Runnable {
     final override fun run() {
         if (scheduled) {
             if (t <= maxTick) {
-                tick()
+                try {
+                    tick()
+                } catch (e: Throwable) {
+                    cancel()
+                    throw e
+                }
                 ++t
             } else {
                 cancel()

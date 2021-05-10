@@ -33,7 +33,13 @@ abstract class PySpell : Runnable {
     final override fun run() {
         if (scheduled) {
             if (t <= maxTick) {
-                tick()
+                try {
+                    tick()
+                } catch (e: Throwable) {
+                    cancel()
+                    println("Canceled task $taskId due to (${e::class.simpleName}) $e")
+                    reportError(e, "Error at executing spell $taskId", player)
+                }
                 ++t
             } else {
                 cancel()
