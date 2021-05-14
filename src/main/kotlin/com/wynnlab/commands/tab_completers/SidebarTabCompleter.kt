@@ -11,13 +11,13 @@ object SidebarTabCompleter : BaseTabCompleter("sidebar", "sb") {
         command: Command,
         alias: String,
         args: Array<out String>
-    ): List<String> {
-        if (args.size != 1 || sender !is Player) return emptyList()
+    ): List<String>? {
+        if (args.size != 1 || sender !is Player) return null
 
         return when {
-            sender.hasScoreboardTag("ffa") -> ffaSbs
-            sender.hasScoreboardTag("duel") -> duelSbs
-            else -> sbs
+            sender.hasScoreboardTag("ffa") -> completeWord(ffaSbs, args[0])
+            sender.hasScoreboardTag("duel") -> completeWord(duelSbs, args[0])
+            else -> completeWord(sbs, args[0])
         }
     }
 

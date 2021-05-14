@@ -9,9 +9,9 @@ object CastTabCompleter : BaseTabCompleter("cast") {
         command: Command,
         alias: String,
         args: Array<out String>
-    ): List<String> = if (args.size == 1)
+    ): List<String>? = if (args.size == 1)
         castIds
-    else emptyList()
+    else null
 
     private val castIds = listOf("1", "2", "3", "4")
 }

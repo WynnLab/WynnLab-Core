@@ -9,16 +9,16 @@ object GMTabCompleters : BaseTabCompleter("upload", "wlrl") {
         command: Command,
         alias: String,
         args: Array<out String>
-    ): List<String> =
+    ): List<String>? =
         when (alias) {
             "upload" -> if (args.size == 1)
                 completeWord(uploadArgs, args[0])
-                else emptyList()
+                else null
             "wlrl" -> when {
                 args.size == 1 -> completeWord(wlrlArgs, args[0])
-                else -> emptyList()
+                else -> null
             }
-            else -> emptyList()
+            else -> null
         }
 
     private val uploadArgs = listOf("item", "mob", "mob_spell", "music")

@@ -9,9 +9,9 @@ object ClassTabCompleter : BaseTabCompleter("class") {
         command: Command,
         alias: String,
         args: Array<out String>
-    ): List<String> = if (args.size == 1)
+    ): List<String>? = if (args.size == 1)
         completeWord(classes, args[0])
-    else emptyList()
+    else null
 
     private val classes = listOf("archer", "assassin", "mage", "shaman", "warrior")
 }

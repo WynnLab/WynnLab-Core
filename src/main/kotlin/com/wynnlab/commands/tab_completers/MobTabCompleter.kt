@@ -11,9 +11,9 @@ object MobTabCompleter : BaseTabCompleter("mob") {
         command: Command,
         alias: String,
         args: Array<out String>
-    ): List<String> {
+    ): List<String>? {
         if (args.isEmpty())
-            return emptyList()
+            return null
 
         return completeWord(
             (File(plugin.dataFolder, "mobs").list() ?: return emptyList()).asList()

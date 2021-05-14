@@ -10,9 +10,9 @@ object ItemTabCompleter : BaseTabCompleter("item") {
         command: Command,
         alias: String,
         args: Array<out String>
-    ): List<String> {
+    ): List<String>? {
         if (args.isEmpty())
-            return emptyList()
+            return null
 
         val itemName = args.joinToString(" ")
 

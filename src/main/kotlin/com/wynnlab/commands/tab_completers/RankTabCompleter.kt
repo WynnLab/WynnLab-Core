@@ -9,9 +9,9 @@ object RankTabCompleter : BaseTabCompleter("rank") {
         command: Command,
         alias: String,
         args: Array<out String>
-    ): List<String> = if (args.size == 1)
+    ): List<String>? = if (args.size == 1)
         completeWord(ranks, args[0])
-    else emptyList()
+    else null
 
     private val ranks = listOf("player", "vip", "vip+", "hero", "champion", "ct", "mod", "admin")
 }
