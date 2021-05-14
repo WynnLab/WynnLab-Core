@@ -2,6 +2,7 @@ package com.wynnlab.util
 
 import com.wynnlab.WynnClass
 import com.wynnlab.entities.WynnMob
+import com.wynnlab.locations.Location
 import com.wynnlab.spells.MobSpell
 import com.wynnlab.spells.PlayerSpell
 import com.wynnlab.spells.PythonSpell
@@ -28,6 +29,7 @@ fun registerSerializers() {
     registerSerializer<Spell>()
     registerSerializer<WynnClass>()
     registerSerializer<WynnMob>()
+    registerSerializer<Location>()
 }
 
 private inline fun <reified T : ConfigurationSerializable> registerSerializer() =

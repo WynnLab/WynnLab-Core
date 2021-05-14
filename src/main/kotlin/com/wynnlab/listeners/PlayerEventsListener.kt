@@ -5,6 +5,7 @@ import com.wynnlab.api.*
 import com.wynnlab.commands.EssentialsCommands
 import com.wynnlab.essentials.Party
 import com.wynnlab.localization.Language
+import com.wynnlab.locations.locations
 import com.wynnlab.scoreboard.Scoreboard
 import com.wynnlab.spells.PySpell
 import org.bukkit.*
@@ -47,6 +48,7 @@ class PlayerEventsListener : BaseListener() {
         Party.invites.remove(player)
         Party.members[player]?.removeMember(player)
         Scoreboard.scoreboards.remove(player)
+        locations.remove(player)
     }
 
     @EventHandler

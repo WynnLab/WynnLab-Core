@@ -38,6 +38,10 @@ messages:
 
   party_promote: '&dYou are now the owner of the party!'
 
+titles:
+  location:
+    enter: '&7You are now entering §r%s'
+
 death_messages:
   - "&6%s&c was brought to an end..."
   - "&6%s&c perished due to a lack of plot armor."

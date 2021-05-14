@@ -4,6 +4,7 @@ import com.wynnlab.commands.registerCommands
 import com.wynnlab.commands.tab_completers.registerTabCompleters
 import com.wynnlab.listeners.registerListeners
 import com.wynnlab.localization.loadLanguages
+import com.wynnlab.locations.loadLocations
 import com.wynnlab.scoreboard.Scoreboard
 import com.wynnlab.util.DEG2RAD
 import com.wynnlab.util.RAD2DEG
@@ -43,6 +44,8 @@ class Main : JavaPlugin() {
         loadClasses()
 
         loadLanguages()
+
+        loadLocations()
 
         Bukkit.getServer().spigot().spigotConfig.set("settings.attribute.maxHealth.max", 1000000)
     }

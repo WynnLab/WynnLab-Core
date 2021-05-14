@@ -12,6 +12,11 @@ fun saveAllResources() {
 }
 
 val resources = arrayOf(
+    /////////////////////////////////////
+    // Top Level
+    /////////////////////////////////////
+    "locations.yml",
+
     // Temp
     "mobs/dummy.yml",
     "mobs/scripts/pull.ws2",

@@ -1,0 +1,16 @@
+locations:
+  - ==: com.wynnlab.locations.Location
+    name: Test
+    pos1:
+      ==: org.bukkit.Location
+      world: world
+      x: 200
+      y: 77
+      z: 81
+    pos2:
+      ==: org.bukkit.Location
+      world: world
+      x: 202
+      y: 78
+      z: 83
+    announce: true

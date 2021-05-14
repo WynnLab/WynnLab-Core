@@ -4,6 +4,7 @@ import com.wynnlab.api.getArmorHealth
 import com.wynnlab.api.getId
 import com.wynnlab.api.standardActionBar
 import com.wynnlab.api.testInventory
+import com.wynnlab.locations.updateLocations
 import com.wynnlab.spells.PySpell
 import org.bukkit.Bukkit
 import org.bukkit.attribute.Attribute
@@ -107,6 +108,9 @@ object MainThread : /*Runnable, */Listener {
 
             // Test Inventory
             player.testInventory()
+
+            // Locations
+            player.updateLocations()
 
             // Sidebar
             // player.updateSidebar() // TODO: a lot of things

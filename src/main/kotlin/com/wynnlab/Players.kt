@@ -3,6 +3,7 @@ package com.wynnlab
 import com.wynnlab.api.*
 import com.wynnlab.essentials.Rank
 import com.wynnlab.items.APIException
+import com.wynnlab.locations.updateLocations
 import com.wynnlab.util.getWynncraftAPIResult
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -95,6 +96,9 @@ object Players {
 
             loadAPIData(player)
         }
+
+        // Locations
+        player.updateLocations()
     }
 
     private fun loadAPIData(player: Player) {
