@@ -7,11 +7,15 @@ import com.wynnlab.api.testInventory
 import com.wynnlab.spells.PySpell
 import org.bukkit.Bukkit
 import org.bukkit.attribute.Attribute
+import org.bukkit.event.Event
+import org.bukkit.event.EventHandler
+import org.bukkit.event.HandlerList
+import org.bukkit.event.Listener
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 
-object MainThread : Runnable {
-    @Volatile
+object MainThread : /*Runnable, */Listener {
+    /*@Volatile
     var tick = 0
 
     override fun run() {
@@ -60,9 +64,82 @@ object MainThread : Runnable {
         }
 
         ++tick
-    }
+    }*/
 
     fun schedule() {
-        Bukkit.getScheduler().runTaskTimer(plugin, this, 1L, 1L)
+        //Bukkit.getScheduler().runTaskTimer(plugin, this, 1L, 1L)
+        Bukkit.getPluginManager().registerEvents(this, plugin)
+        Bukkit.getScheduler().runTaskTimer(plugin, Runnable { onTick(EveryTick) }, 1L, 1L)
+        Bukkit.getScheduler().runTaskTimer(plugin, Runnable { onSecond(EverySecond) }, 20L, 20L)
+        Bukkit.getScheduler().runTaskTimer(plugin, Runnable { on4Seconds(Every4Seconds) }, 80L, 80L)
     }
+
+    @EventHandler
+    fun onTick(e: EveryTick) {
+        for (player in Bukkit.getOnlinePlayers()) {
+            // Send action bar
+            player.standardActionBar()
+
+            // Reset exhaustion to not lose mana except in spell casts
+            player.exhaustion = 0f
+
+            // Store max health and set attribute
+            val maxHealth = (505 + player.getId("health_bonus") + player.getArmorHealth()).coerceIn(1, 1000000).toDouble()
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue = maxHealth
+
+            if (!player.hasPotionEffect(PotionEffectType.INVISIBILITY) && "invis" in player.scoreboardTags)
+                PySpell.castSpell(player, "ASSASSIN", 5)
+
+            // Walk speed
+            player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!.baseValue = .1 + player.getId("speed") * .001
+        }
+    }
+
+    @EventHandler
+    fun onSecond(e: EverySecond) {
+        for (player in Bukkit.getOnlinePlayers()) {
+            // Natural mana regen
+            player.foodLevel = (player.foodLevel + if (player.hasPotionEffect(PotionEffectType.INVISIBILITY)) -1 else 1).coerceIn(0, 20)
+
+            // Jump height
+            val jumpHeight = player.getId("jump_height")
+            if (jumpHeight != 0) player.addPotionEffect(PotionEffect(PotionEffectType.JUMP, 21, jumpHeight - 1, true, false, false))
+
+            // Test Inventory
+            player.testInventory()
+
+            // Sidebar
+            // player.updateSidebar() // TODO: a lot of things
+        }
+    }
+
+    @EventHandler
+    fun on4Seconds(e: Every4Seconds) {
+        for (player in Bukkit.getOnlinePlayers()) {
+            val maxHealth = (505 + player.getId("health_bonus") + player.getArmorHealth()).coerceIn(1, 1000000).toDouble()
+            if (!player.hasPotionEffect(PotionEffectType.INVISIBILITY)) player.foodLevel = (player.foodLevel + player.getId("mana_regen")).coerceIn(0, 20)
+            player.health = (player.health + player.getId("health_regen_raw") * (1 + player.getId("health_regen") / 100f)).coerceIn(1.0, maxHealth)
+        }
+    }
+}
+
+object EveryTick : Event() {
+    override fun getHandlers(): HandlerList = handlerList
+
+    @JvmStatic
+    val handlerList = HandlerList()
+}
+
+object EverySecond : Event() {
+    override fun getHandlers(): HandlerList = handlerList
+
+    @JvmStatic
+    val handlerList = HandlerList()
+}
+
+object Every4Seconds : Event() {
+    override fun getHandlers(): HandlerList = handlerList
+
+    @JvmStatic
+    val handlerList = HandlerList()
 }
