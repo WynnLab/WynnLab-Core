@@ -10,6 +10,7 @@ import com.wynnlab.listeners.GUIListener
 import com.wynnlab.localization.Language
 import com.wynnlab.plugin
 import com.wynnlab.random
+import com.wynnlab.scoreboard.scoreboards
 import com.wynnlab.util.RefreshRunnable
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -21,6 +22,8 @@ import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.metadata.FixedMetadataValue
 import kotlin.math.round
+
+fun Player.hasScoreboardTag(tag: String) = tag in scoreboardTags
 
 fun Player.sendWynnMessage(key: String, vararg format_args: Any?) =
     sendMessage(PREFIX + getLocalizedText(key, *format_args))
@@ -346,4 +349,8 @@ fun Player.updatePouch(add: ItemStack? = null) {
 
 fun Player.showPouch() {
     setMetadata("a", FixedMetadataValue(plugin, Bukkit.createInventory(null, 5)))
+}
+
+fun Player.updateSidebar() {
+    scoreboards[data.getString("scoreboard")]?.update(this)
 }

@@ -59,6 +59,16 @@ death_messages:
   - "&6%s&c was slain."
   - "&6%s&c rolled a nat 1."
 
+sidebars:
+  info: "§a§l§nInformation"
+  partyHealth: "§a§lParty: §cHealth"
+  ffaHealth: "§6§lFFA: §cHealth"
+  duelHealth: "§b§nDuel: §cHealth"
+  bossDamage: "§a§lBossfight: §eDamage"
+  ffaDamage: "§6§lFFA: §eDamage"
+  duelDamage: "§b§lDuel: §eDamage"
+  ffaKills: "§6§lFFA: §aKills"
+
 items:
   items:
     combat_lv_min: '%s &7Combat Lv. Min: %d'

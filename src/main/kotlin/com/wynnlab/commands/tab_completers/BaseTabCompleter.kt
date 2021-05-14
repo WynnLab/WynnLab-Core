@@ -15,6 +15,7 @@ fun registerTabCompleters() {
     registerTabCompleter(ItemTabCompleter)
     registerTabCompleter(MobTabCompleter)
     registerTabCompleter(RankTabCompleter)
+    registerTabCompleter(SidebarTabCompleter)
 }
 
 private fun registerTabCompleter(tabCompleter: BaseTabCompleter) {

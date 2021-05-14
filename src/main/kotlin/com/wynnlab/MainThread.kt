@@ -42,7 +42,11 @@ object MainThread : Runnable {
                 val jumpHeight = player.getId("jump_height")
                 if (jumpHeight != 0) player.addPotionEffect(PotionEffect(PotionEffectType.JUMP, 21, jumpHeight - 1, true, false, false))
 
+                // Test Inventory
                 player.testInventory()
+
+                // Sidebar
+                // player.updateSidebar() // TODO: a lot of things
             }
 
             // Mana regen and health regen
