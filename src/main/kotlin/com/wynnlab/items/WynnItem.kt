@@ -1,13 +1,13 @@
 package com.wynnlab.items
 
 import com.wynnlab.api.*
-import com.wynnlab.classes
 import com.wynnlab.localization.Language
 import com.wynnlab.util.Optional
 import com.wynnlab.util.optionalAs
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
@@ -27,6 +27,7 @@ class WynnItem(
     private val addedLore: String?,
     private val material: Material,
     private val itemDamage: Int,
+    private val enchantGlint: Boolean,
     private val damage: OptRange,
     private val earthDamage: OptRange,
     private val thunderDamage: OptRange,
@@ -119,6 +120,9 @@ class WynnItem(
 
         meta.lore = lore
         item.itemMeta = meta
+
+        if (enchantGlint)
+            item.addEnchantment(Enchantment.DURABILITY, 1)
     }
 
     private fun setData(item: ItemStack) {
@@ -197,6 +201,7 @@ class WynnItem(
                 (json["addedLore"] as String?).ifNullNull(),
                 material,
                 itemDamage,
+                (json["enchantGlint"] ?: false) as Boolean,
                 json["damage"].optionalAs<String>().toIntRange(),
                 json["earthDamage"].optionalAs<String>().toIntRange(),
                 json["thunderDamage"].optionalAs<String>().toIntRange(),
@@ -253,7 +258,7 @@ class WynnItem(
     }
 
     enum class ArmorType(val repr: String) {
-        LEATHER("LEATHER"), GOLD("GOLDEN"), CHAIN("CHAINMAIL"), IRON("IRON"), DIAMOND("DIAMOND")
+        LEATHER("LEATHER"), GOLD("GOLDEN"), CHAIN("CHAINMAIL"), IRON("IRON"), DIAMOND("DIAMOND"), NETHERITE("NETHERITE")
     }
 
     enum class AttackSpeed(val str: String, val cooldown: Int, val spellMultiplier: Double, val stealChance: Double) {

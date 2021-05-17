@@ -20,7 +20,7 @@ class Location(
         if (!announce) return false
 
         player.sendTitle(player.getLocalizedText("titles.location.enter", name),
-            subtitle?.let { player.getLocalizedText(it) }, 5, 30, 10)
+            subtitle?.let { player.getLocalizedText(it) }, 10, 30, 10)
 
         return true
     }
