@@ -41,6 +41,8 @@ messages:
 titles:
   location:
     enter: '&7You are now entering §r%s'
+    leave: '&7You are now leaving §r%s'
+    discover: '&6Area discovered: §e%s'
 
 death_messages:
   - "&6%s&c was brought to an end..."
