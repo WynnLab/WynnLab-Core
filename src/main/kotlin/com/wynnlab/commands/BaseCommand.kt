@@ -14,6 +14,7 @@ fun registerCommands() {
     registerCommand(GMCommands)
     registerCommand(ItemCommand)
     registerCommand(MobCommand)
+    registerCommand(PVPCommand)
     registerCommand(RankCommand)
     registerCommand(SidebarCommand)
 }

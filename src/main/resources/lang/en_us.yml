@@ -38,6 +38,10 @@ messages:
 
   party_promote: '&dYou are now the owner of the party!'
 
+  pvp:
+    on: '§f[§cPVP§f]§e is now§a activated!'
+    off: '§f[§cPVP§f]§e is now§c deactivated!'
+
 titles:
   location:
     enter: '&7You are now entering §r%s'

@@ -44,6 +44,15 @@ fun Player.setWynnClass(wynnClass: String) {
 
 fun Player.getWynnClass() = data.getString("class")
 
+fun Player.togglePVP() {
+    if (addScoreboardTag("pvp")) {
+        sendWynnMessage("messages.pvp.on")
+    } else {
+        removeScoreboardTag("pvp")
+        sendWynnMessage("messages.pvp.off")
+    }
+}
+
 fun Player.hasWeaponInHand(): Boolean? {
     return getWynnClass()?.let { it == (inventory.itemInMainHand.getClassReq() ?: return null) }
 }
