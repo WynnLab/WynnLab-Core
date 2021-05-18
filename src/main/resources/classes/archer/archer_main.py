@@ -1,5 +1,5 @@
 from org.bukkit import Material, Sound
-from org.bukkit.entity import Arrow, Player, Snowball
+from org.bukkit.entity import Arrow, Mob, Player, Snowball
 from org.bukkit.inventory import ItemStack
 
 from com.wynnlab.spells import PySpell
@@ -17,7 +17,7 @@ class Spell(PySpell):
 
 def delete_arrow(event):
     hit = event.getHitEntity()
-    if not hit is None and not isinstance(hit, Player):
+    if not hit is None and (isinstance(hit, Mob) or isinstance(hit, Player) and hit.getScoreboardTags().contains('pvp') and event.getEntity().getShooter().getScoreboardTags().contains('pvp')):
         PySpell.damage(event.getEntity().getShooter(), hit, True, 1)
         PySpell.knockbackFromPlayer(hit, event.getEntity().getShooter(), .5)
 

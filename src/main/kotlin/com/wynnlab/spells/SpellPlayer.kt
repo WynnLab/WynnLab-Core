@@ -57,11 +57,11 @@ class SpellPlayer(
 
     @Suppress("unchecked_cast")
     fun nearbyMobs(location: Location, x: Double, y: Double, z: Double): Collection<Mob> =
-        nearbyMobs(player.world, location, x, y, z)
+        nearbyMobs(player, location, x, y, z)
 
     @Suppress("unused")
     fun nearbyMobsAndTag(location: Location, x: Double, y: Double, z: Double, tag: String): Collection<Entity> =
-        nearbyMobsAndTag(player.world, location, x, y, z, tag)
+        nearbyMobsAndTag(player, location, x, y, z, tag)
 
     fun castSpell(clazz: String, index: Int, vararg args: Any?) =
         castSpell(player, clazz, index, *args)

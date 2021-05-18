@@ -2,6 +2,7 @@ package com.wynnlab.listeners
 
 import com.wynnlab.api.data
 import com.wynnlab.api.getString
+import com.wynnlab.api.hasScoreboardTag
 import com.wynnlab.api.setString
 import com.wynnlab.plugin
 import com.wynnlab.util.RefreshRunnable
@@ -21,13 +22,15 @@ class DamageListener : BaseListener() {
     fun onEntityDamageEntity(e: EntityDamageByEntityEvent) {
         e.isCancelled = true
 
-        if (e.entity is Player) {
+        if (e.entity is Player && !e.entity.hasScoreboardTag("pvp")) {
             e.isCancelled = false
             return
         }
 
-        if (e.damager !is Player)
+        if (e.damager !is Player) {
+            e.isCancelled = false
             return
+        }
 
         if (e.entity !is LivingEntity)
             return

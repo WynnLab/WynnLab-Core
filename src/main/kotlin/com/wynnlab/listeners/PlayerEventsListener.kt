@@ -28,7 +28,7 @@ class PlayerEventsListener : BaseListener() {
         } ?: run {
             player.sendWynnMessage("messages.no_class")
             player.sendWynnMessage("messages.class_select")
-            player.performCommand("/wynnlab:class")
+            player.performCommand("class")
         }
     }
 

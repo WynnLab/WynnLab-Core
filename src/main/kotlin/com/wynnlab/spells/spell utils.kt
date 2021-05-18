@@ -11,7 +11,10 @@ import com.wynnlab.plugin
 import com.wynnlab.random
 import com.wynnlab.util.normalizeOnXZ
 import com.wynnlab.util.plus
-import org.bukkit.*
+import org.bukkit.Bukkit
+import org.bukkit.Location
+import org.bukkit.Particle
+import org.bukkit.Sound
 import org.bukkit.attribute.Attributable
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
@@ -21,7 +24,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.util.Vector
 
-val SpellUtils = Class.forName("com.wynnlab.spells.SpellUtils")
+val SpellUtils: Class<*> = Class.forName("com.wynnlab.spells.SpellUtils")
 
 @Suppress("unused")
 fun registerProjectileHit(tag: String, e: (ProjectileHitEvent) -> Unit) {
@@ -99,7 +102,7 @@ fun manaSteal(ms: Int, source: Player) {
 fun exploding(source: Player, e: LivingEntity, multiplier: Double, conversion: DoubleArray) {
     sound(source, e.location, Sound.ENTITY_GENERIC_EXPLODE, 1f, 1f)
     particle(source, e.location.clone().add(.0, 1.0, .0), Particle.EXPLOSION_LARGE, 3, .5, 1.0, .5, .0)
-    nearbyMobs(e.world, e.location, 2.0, 2.0, 2.0).forEach { if(e != it) damageBy(source, it, true, multiplier / 3.0, *conversion) }
+    nearbyMobs(source, e.location, 2.0, 2.0, 2.0).forEach { if(e != it) damageBy(source, it, true, multiplier / 3.0, *conversion) }
 }
 
 fun poison(source: Player, e: LivingEntity, poison: Int) {
@@ -208,15 +211,25 @@ fun sound(player: Player, location: Location, sound: Sound, volume: Float, pitch
     player.world.playSound(location, sound, volume, pitch)
 }
 
-fun nearbyMobs(player: Player, x: Double, y: Double, z: Double) = nearbyMobs(player.world, player.location, x, y, z)
+fun nearbyMobs(player: Player, x: Double, y: Double, z: Double) = nearbyMobs(player, player.location, x, y, z)
 
 @Suppress("unchecked_cast")
-fun nearbyMobs(world: World, location: Location, x: Double, y: Double, z: Double): Collection<Mob> =
-    world.getNearbyEntities(location, x, y, z) { it !is Player && it is Mob } as Collection<Mob>
+fun nearbyMobs(player: Player, location: Location, x: Double, y: Double, z: Double): Collection<Mob> {
+    return if (player.hasScoreboardTag("pvp")) {
+        player.world.getNearbyEntities(location, x, y, z) {
+            it is Mob || it is Player && it != player && it.hasScoreboardTag("pvp")
+        } as Collection<Mob>
+    } else
+        player.world.getNearbyEntities(location, x, y, z) { it is Mob } as Collection<Mob>
+}
 
 @Suppress("unused")
-fun nearbyMobsAndTag(world: World, location: Location, x: Double, y: Double, z: Double, tag: String): Collection<Entity> =
-    world.getNearbyEntities(location, x, y, z) { it !is Player && (it is Mob || it.scoreboardTags.contains(tag)) }
+fun nearbyMobsAndTag(player: Player, location: Location, x: Double, y: Double, z: Double, tag: String): Collection<Entity> {
+    return if (player.hasScoreboardTag("pvp"))
+        player.world.getNearbyEntities(location, x, y, z) { it is Mob || it is Player && it != player && it.hasScoreboardTag("pvp") || it.hasScoreboardTag("pvp") }
+    else
+        player.world.getNearbyEntities(location, x, y, z) { it is Mob || it.hasScoreboardTag(tag) }
+}
 
 fun castSpell(player: Player, clazz: String, index: Int, vararg args: Any?) = classes[clazz]?.spells?.get(index)
     ?.cast(player, *args)

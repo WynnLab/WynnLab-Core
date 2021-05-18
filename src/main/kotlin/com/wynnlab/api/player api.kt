@@ -17,13 +17,14 @@ import org.bukkit.ChatColor
 import org.bukkit.Effect
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.metadata.FixedMetadataValue
 import kotlin.math.round
 
-fun Player.hasScoreboardTag(tag: String) = tag in scoreboardTags
+fun Entity.hasScoreboardTag(tag: String) = tag in scoreboardTags
 
 fun Player.sendWynnMessage(key: String, vararg format_args: Any?) =
     sendMessage(PREFIX + getLocalizedText(key, *format_args))

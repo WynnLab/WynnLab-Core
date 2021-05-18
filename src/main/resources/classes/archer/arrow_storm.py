@@ -38,7 +38,7 @@ class Spell(PySpell):
 
 def delete_arrow(event):
     hit = event.getHitEntity()
-    if not hit is None and not isinstance(hit, Player):
+    if not hit is None and (isinstance(hit, Mob) or isinstance(hit, Player) and hit.getScoreboardTags().contains('pvp') and event.getEntity().getShooter().getScoreboardTags().contains('pvp'):
         PySpell.damage(event.getEntity().getShooter(), hit, False, .1, .6, 0, .25, 0, .15, 0)
         PySpell.knockbackFromPlayer(hit, event.getEntity().getShooter(), .5)
 

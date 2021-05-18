@@ -1,7 +1,10 @@
 package com.wynnlab.spells
 
 import com.wynnlab.plugin
-import org.bukkit.*
+import org.bukkit.Bukkit
+import org.bukkit.Location
+import org.bukkit.Particle
+import org.bukkit.Sound
 import org.bukkit.attribute.Attributable
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
@@ -78,7 +81,7 @@ abstract class PySpell : Runnable {
 
     @Suppress("unused")
     fun nearbyMobs(location: Location, x: Double, y: Double, z: Double) =
-        nearbyMobs(player.world, location, x, y, z)
+        nearbyMobs(player, location, x, y, z)
 
     companion object {
         @[JvmStatic Suppress("unused")]
@@ -126,12 +129,12 @@ abstract class PySpell : Runnable {
             com.wynnlab.spells.nearbyMobs(player, x, y, z)
 
         @[JvmStatic Suppress("unchecked_cast")]
-        fun nearbyMobs(world: World, location: Location, x: Double, y: Double, z: Double): Collection<Mob> =
-            com.wynnlab.spells.nearbyMobs(world, location, x, y, z)
+        fun nearbyMobs(player: Player, location: Location, x: Double, y: Double, z: Double): Collection<Mob> =
+            com.wynnlab.spells.nearbyMobs(player, location, x, y, z)
 
         @[JvmStatic Suppress("unused")]
-        fun nearbyMobsAndTag(world: World, location: Location, x: Double, y: Double, z: Double, tag: String): Collection<Entity> =
-            com.wynnlab.spells.nearbyMobsAndTag(world, location, x, y, z, tag)
+        fun nearbyMobsAndTag(player: Player, location: Location, x: Double, y: Double, z: Double, tag: String): Collection<Entity> =
+            com.wynnlab.spells.nearbyMobsAndTag(player, location, x, y, z, tag)
 
         @JvmStatic
         fun castSpell(player: Player, clazz: String, index: Int, vararg args: Any?) =

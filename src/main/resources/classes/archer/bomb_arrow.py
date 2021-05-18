@@ -36,7 +36,7 @@ def bomb_hit(event):
         next.addScoreboardTag('bomb_arrow')
         next.addScoreboardTag('bomb_hit_2' if arrow.getScoreboardTags().contains('bomb_hit_1') else 'bomb_hit_1')
 
-    for e in PySpell.nearbyMobs(arrow.getWorld(), arrow.getLocation(), 4, 4, 4):
+    for e in PySpell.nearbyMobs(arrow.getShooter(), arrow.getLocation(), 4, 4, 4):
         PySpell.damage(player, e, False, 2.5, .6, .25, 0, 0, .15, 0)
         PySpell.knockbackFromPlayer(e, event.getEntity().getShooter(), 1)
         e.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 60, 4, True, False, True))
