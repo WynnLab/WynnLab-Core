@@ -2,7 +2,6 @@ package com.wynnlab.essentials
 
 import com.wynnlab.PREFIX
 import com.wynnlab.api.sendWynnMessage
-import com.wynnlab.api.updateSidebar
 import com.wynnlab.localization.Language
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
@@ -16,23 +15,23 @@ data class Party(
 
     fun addMember(player: Player) {
         this.members.forEach {
-            it.sendWynnMessage("messages.party_joined", player.name)
+            it.sendWynnMessage("messages.party.joined", player.name)
         }
 
         this.members.add(player)
         Party.members[player] = this
 
-        player.sendWynnMessage("messages.party_joined_you")
+        player.sendWynnMessage("messages.party.joined_you")
     }
 
     fun removeMember(player: Player) {
-        player.sendWynnMessage("messages.party_left_you")
+        player.sendWynnMessage("messages.party.left_you")
 
         this.members.remove(player)
         Party.members.remove(player)
 
         this.members.forEach {
-            it.sendWynnMessage("messages.party_left", player.name)
+            it.sendWynnMessage("messages.party.left", player.name)
         }
 
         if (members.isEmpty()) {
@@ -46,7 +45,7 @@ data class Party(
     }
 
     fun promote(player: Player) {
-        player.sendWynnMessage("messages.party_promote")
+        player.sendWynnMessage("messages.party.promote")
 
         owner = player
     }
@@ -57,19 +56,19 @@ data class Party(
 
         val language = Language[player.locale]
 
-        player.sendMessage("$PREFIX${language.getMessage("messages.party_invite_get", owner.name)}")
+        player.sendMessage("$PREFIX${language.getMessage("messages.party.invite.get", owner.name)}")
 
         player.sendMessage(
-            Component.text("$PREFIX${language.getMessage("messages.party_join_left")}")
-                .append(Component.text(language.getMessage("messages.party_join_link"))
+            Component.text("$PREFIX${language.getMessage("messages.party.join.left")}")
+                .append(Component.text(language.getMessage("messages.party.join.link"))
                     .hoverEvent { HoverEvent.showText(
-                        Component.text(language.getMessage("messages.party_join_hover"))
+                        Component.text(language.getMessage("messages.party.join.hover"))
                     ) as HoverEvent<Any> }
                     .clickEvent(ClickEvent.runCommand("/party join")))
-                .append(Component.text(language.getMessage("messages.party_join_right")))
+                .append(Component.text(language.getMessage("messages.party.join.right")))
         )
 
-        owner.sendWynnMessage("messages.party_invite_send", player.name)
+        owner.sendWynnMessage("messages.party.invite.send", player.name)
     }
 
     companion object {

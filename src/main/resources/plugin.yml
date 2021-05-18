@@ -57,3 +57,6 @@ commands:
     description: Change the sidebar
     usage: /sidebar partyHealth
     aliases: [ sb ]
+  pvp:
+    description: Toggle pvp
+    usage: /pvp
