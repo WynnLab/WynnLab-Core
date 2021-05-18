@@ -98,7 +98,7 @@ object EssentialsCommands : BaseCommand("msg", "r", "party", "p") {
                     return false
                 }
 
-                party.invite(player)
+                party.invite(newMember)
 
                 true
             }
