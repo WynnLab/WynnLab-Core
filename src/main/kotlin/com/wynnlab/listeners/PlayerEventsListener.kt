@@ -2,11 +2,7 @@ package com.wynnlab.listeners
 
 import com.wynnlab.Players
 import com.wynnlab.api.*
-import com.wynnlab.commands.EssentialsCommands
-import com.wynnlab.essentials.Party
 import com.wynnlab.localization.Language
-import com.wynnlab.locations.locations
-import com.wynnlab.scoreboard.Scoreboard
 import com.wynnlab.spells.PySpell
 import org.bukkit.*
 import org.bukkit.event.EventHandler
@@ -44,11 +40,7 @@ class PlayerEventsListener : BaseListener() {
         prefixes.remove(player)
 
         // Remove player from activities
-        EssentialsCommands.conversations.remove(player)
-        Party.invites.remove(player)
-        Party.members[player]?.removeMember(player)
-        Scoreboard.scoreboards.remove(player)
-        locations.remove(player)
+        Players.removePlayerFromActivities(player)
     }
 
     @EventHandler

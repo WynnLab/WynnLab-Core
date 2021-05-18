@@ -5,7 +5,7 @@ import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
-import org.bukkit.boss.BossBar
+import org.bukkit.boss.KeyedBossBar
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import java.io.File
@@ -63,7 +63,7 @@ fun Player.updateLocations() {
     playerLocations[this] = LocationsAndBB(now, bb)
 }
 
-private fun createLBB(player: Player): BossBar =
+private fun createLBB(player: Player): KeyedBossBar =
     Bukkit.createBossBar(NamespacedKey(plugin, "locations_${player.name}"), "Title", BarColor.BLUE, BarStyle.SOLID).apply {
         isVisible = true
         progress = 1.0
@@ -75,7 +75,15 @@ val locations: MutableList<Location> = mutableListOf()
 
 class LocationsAndBB(
     val locations: List<Location>,
-    val bb: BossBar,
+    val bb: KeyedBossBar,
 )
 
 val playerLocations: MutableMap<Player, LocationsAndBB> = mutableMapOf()
+
+fun removePlayerLocations(player: Player) {
+    val labb = playerLocations.remove(player) ?: return
+    labb.bb.run {
+        removeAll()
+        Bukkit.removeBossBar(key)
+    }
+}

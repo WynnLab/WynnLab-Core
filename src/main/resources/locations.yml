@@ -1,16 +1,16 @@
 locations:
   - ==: com.wynnlab.locations.Location
-    name: Test
+    name: Insunis
     pos1:
       ==: org.bukkit.Location
-      world: world
-      x: 200
-      y: 77
-      z: 81
+      world: neww
+      x: 2041
+      y: 56
+      z: 1819
     pos2:
       ==: org.bukkit.Location
-      world: world
-      x: 202
-      y: 78
-      z: 83
+      world: neww
+      x: 2102
+      y: 111
+      z: 1884
     announce: true

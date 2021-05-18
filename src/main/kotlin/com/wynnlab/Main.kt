@@ -51,6 +51,8 @@ class Main : JavaPlugin() {
     }
 
     override fun onDisable() {
+        Bukkit.getOnlinePlayers().forEach(Players::removePlayerFromActivities)
+
         Scoreboard.scoreboards.clear()
 
         python.close()

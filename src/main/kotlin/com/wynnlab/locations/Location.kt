@@ -8,6 +8,7 @@ import org.bukkit.Sound
 import org.bukkit.SoundCategory
 import org.bukkit.entity.Player
 import org.bukkit.util.BoundingBox
+import java.util.*
 import org.bukkit.Location as _Location
 
 class Location(
@@ -21,7 +22,7 @@ class Location(
 
     override val deserializer = Companion
 
-    private val discovered = mutableListOf<Player>()
+    private val discovered = mutableListOf<UUID>()
 
     val bossBarTitle = "§3$name"
 
@@ -29,7 +30,7 @@ class Location(
         if (!announce) return false
 
         player.sendTitle(player.getLocalizedText(when {
-            player !in discovered -> "titles.location.discover"
+            player.uniqueId !in discovered -> "titles.location.discover"
             entering -> "titles.location.enter"
             else -> "titles.location.leave"
         }, name),
@@ -39,8 +40,8 @@ class Location(
     }
 
     fun discover(player: Player) {
-        if (player !in discovered) {
-            discovered.add(player)
+        if (player.uniqueId !in discovered) {
+            discovered.add(player.uniqueId)
 
             player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, 1f, 1f)
 

@@ -1,9 +1,13 @@
 package com.wynnlab
 
 import com.wynnlab.api.*
+import com.wynnlab.commands.EssentialsCommands
+import com.wynnlab.essentials.Party
 import com.wynnlab.essentials.Rank
 import com.wynnlab.items.APIException
+import com.wynnlab.locations.removePlayerLocations
 import com.wynnlab.locations.updateLocations
+import com.wynnlab.scoreboard.Scoreboard
 import com.wynnlab.util.getWynncraftAPIResult
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -140,5 +144,13 @@ object Players {
                 }
             }
         } } catch (_: APIException) { Rank.PLAYER.apply(player) }
+    }
+
+    fun removePlayerFromActivities(player: Player) {
+        EssentialsCommands.conversations.remove(player)
+        Party.invites.remove(player)
+        Party.members[player]?.removeMember(player)
+        Scoreboard.scoreboards.remove(player)
+        removePlayerLocations(player)
     }
 }
