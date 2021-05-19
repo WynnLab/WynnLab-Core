@@ -12,6 +12,7 @@ import com.wynnlab.util.registerSerializers
 import com.wynnlab.util.saveAllResources
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
+import org.bukkit.World
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.util.Vector
 import org.python.util.PythonInterpreter
@@ -60,20 +61,24 @@ class Main : JavaPlugin() {
 
     private fun setGameRules() {
         Bukkit.getWorlds().forEach {
-            it.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false)
-            it.setGameRule(GameRule.DISABLE_RAIDS, false)
-            it.setGameRule(GameRule.DO_FIRE_TICK, false)
-            it.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true)
-            it.setGameRule(GameRule.DO_LIMITED_CRAFTING, false)
-            it.setGameRule(GameRule.DO_MOB_SPAWNING, false)
-            it.setGameRule(GameRule.DO_PATROL_SPAWNING, false)
-            it.setGameRule(GameRule.FALL_DAMAGE, false)
-            it.setGameRule(GameRule.MOB_GRIEFING, false)
-            it.setGameRule(GameRule.NATURAL_REGENERATION, false)
-            //it.setGameRule(GameRule.REDUCED_DEBUG_INFO, true)
-            it.setGameRule(GameRule.SPAWN_RADIUS, 0)
-            it.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false)
+            setGameRules(it)
         }
+    }
+
+    fun setGameRules(world: World) {
+        world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false)
+        world.setGameRule(GameRule.DISABLE_RAIDS, false)
+        world.setGameRule(GameRule.DO_FIRE_TICK, false)
+        world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true)
+        world.setGameRule(GameRule.DO_LIMITED_CRAFTING, false)
+        world.setGameRule(GameRule.DO_MOB_SPAWNING, false)
+        world.setGameRule(GameRule.DO_PATROL_SPAWNING, false)
+        world.setGameRule(GameRule.FALL_DAMAGE, false)
+        world.setGameRule(GameRule.MOB_GRIEFING, false)
+        world.setGameRule(GameRule.NATURAL_REGENERATION, false)
+        //world.setGameRule(GameRule.REDUCED_DEBUG_INFO, true)
+        world.setGameRule(GameRule.SPAWN_RADIUS, 0)
+        world.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false)
     }
 }
 
