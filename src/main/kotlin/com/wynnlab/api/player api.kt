@@ -262,13 +262,15 @@ private val noDamage = doubleArrayOf(.0, .0, .0, .0, .0, .0)
 fun Player.getDamage(melee: Boolean, multiplier: Double = 1.0, conversion: DoubleArray = standardConversion): DoubleArray {
     val result = noDamage
 
+    val pvp = hasScoreboardTag("pvp")
+
     // Melee Neutral = (Base Dam) * (1 + (IDs) - (Def)) + (Raw Melee)
     // Melee Elemental = (Base Dam) * (1 + (IDs)) - ((Ele Def) * (1 + (Ele Def %)))
     // Spell Neutral = (Base Dam) * (1 + (IDs) - (Def)) * (Att Speed) * (Spell Base Multiplier) + (Raw Spell) * (Spell Base Multiplier)
     // Spell Elemental = [(Base Dam) * (1 + (IDs)) - ((Ele Def) * (1 + (Ele Def %)))] * (Att Speed) * (Spell Base Multiplier)
 
-    val strength = skillPercentage(getSkill(0))
-    val dexterity = if (random.nextDouble() < skillPercentage(getSkill(1))) 1.0 else .0
+    val strength = skillPercentage(getSkill(0)).let { if (pvp) it.coerceAtMost(.6) else it }
+    val dexterity = if (random.nextDouble() < skillPercentage(getSkill(1)).let { if (pvp) it.coerceAtMost(.35) else it }) 1.0 else .0
 
     val damageRanges = if (hasWeaponInHand() ?: return noDamage)
         inventory.itemInMainHand.itemMeta.data.getIntArray("damage") ?: return noDamage

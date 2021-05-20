@@ -133,7 +133,7 @@ private fun poisonTask(e: LivingEntity, poison: Int, source: Player) = object : 
 
         l = e.location.clone()
 
-        e.damage(poison / 3.0, source)
+        e.damage(if (source.hasScoreboardTag("pvp")) (poison / 3.0).coerceAtMost(3000.0) else poison / 3.0, source)
         repeat(10) { i ->
             l.add(if (i % 2 == 0) -.5 else .5, .2, if (i % 2 == 1) -.5 else .5)
             particle(source, l, Particle.SPELL_MOB, 0, .2, .8, .05, 1.0)

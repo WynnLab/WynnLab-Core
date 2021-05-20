@@ -46,6 +46,6 @@ class CastListener : BaseListener() {
     }
 
     private fun cost(player: Player, spellIndex: Int, cost: Int) =
-        floor(ceil(cost * (1.0 - skillPercentage(player.getSkill(2))) + player.getId("spell_cost_raw_$spellIndex")) *
+        floor(ceil(cost * (1.0 - skillPercentage(player.getSkill(2)).let { if (player.hasScoreboardTag("pvp")) it.coerceAtMost(.55) else it }) + player.getId("spell_cost_raw_$spellIndex")) *
                 (1.0 + player.getId("spell_cost_pct_$spellIndex") / 100.0) + (player.data.getInt("spell_cost_extra") ?: 0)).coerceAtLeast(1.0).toInt()
 }

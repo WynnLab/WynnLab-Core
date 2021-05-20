@@ -1,10 +1,8 @@
 package com.wynnlab.listeners
 
-import com.wynnlab.api.data
-import com.wynnlab.api.getString
-import com.wynnlab.api.hasScoreboardTag
-import com.wynnlab.api.setString
+import com.wynnlab.api.*
 import com.wynnlab.plugin
+import com.wynnlab.random
 import com.wynnlab.util.RefreshRunnable
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
@@ -37,8 +35,26 @@ class DamageListener : BaseListener() {
 
         val entity = e.entity as LivingEntity
         val player = e.damager as Player
+        val pvp = entity is Player //&& player is Player TODO
 
-        entity.damage(e.damage)
+        var damage = e.damage
+        if (entity is Player) {
+            if (pvp)
+                damage *= .26
+            // Defense
+            damage *= 1 - skillPercentage(entity.getSkill(0)).let { if (pvp) it.coerceAtMost(.40) else it }
+            // Agility
+            if (random.nextDouble() < skillPercentage(entity.getSkill(1)).let { if (pvp) it.coerceAtMost(.375) else it })
+                damage = .0
+        }
+
+        entity.damage(damage)
+
+        if (entity is Player) {
+            // TODO: reflection
+
+            return
+        }
 
         val currentHealth = entity.health
         val maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value
