@@ -20,7 +20,7 @@ class Spell(PySpell):
                 self.player.addScoreboardTag('arrow_shield')
                 PersistentDataAPI.setInt(PersistentDataAPI.getData(self.player), 'arrow_shield', 3)
             else:
-                arrows = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'arrow_shield')
+                arrows = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'arrow_shield', None)
                 PersistentDataAPI.setInt(PersistentDataAPI.getData(self.player), 'arrow_shield', 3)
                 if arrows <= 0:
                     self.player.removeScoreboardTag('arrow_shield')

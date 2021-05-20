@@ -226,9 +226,9 @@ fun nearbyMobs(player: Player, location: Location, x: Double, y: Double, z: Doub
 @Suppress("unused")
 fun nearbyMobsAndTag(player: Player, location: Location, x: Double, y: Double, z: Double, tag: String): Collection<Entity> {
     return if (player.hasScoreboardTag("pvp"))
-        player.world.getNearbyEntities(location, x, y, z) { it is Mob || it is Player && it != player && it.hasScoreboardTag("pvp") || it.hasScoreboardTag("pvp") }
+        player.world.getNearbyEntities(location, x, y, z) { it is Mob || it != player && (it is Player && it.hasScoreboardTag("pvp") || it.hasScoreboardTag(tag)) }
     else
-        player.world.getNearbyEntities(location, x, y, z) { it is Mob || it.hasScoreboardTag(tag) }
+        player.world.getNearbyEntities(location, x, y, z) { it is Mob || it.hasScoreboardTag(tag) && it != player }
 }
 
 fun castSpell(player: Player, clazz: String, index: Int, vararg args: Any?) = classes[clazz]?.spells?.get(index)

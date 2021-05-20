@@ -8,19 +8,19 @@ from com.wynnlab.spells import PySpell
 class Spell(PySpell):
     def tick(self):
         if self.player.getScoreboardTags().contains('totem'):
-            totem_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem')
+            totem_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem', None)
             if not totem_id is None:
                 for e in self.player.getWorld().getEntities():
                     if e.getEntityId() == totem_id:
                         e.remove()
 
-            holo_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem_holo')
+            holo_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem_holo', None)
             if not holo_id is None:
                 for e in self.player.getWorld().getEntities():
                     if e.getEntityId() == holo_id:
                         e.remove()
 
-            totem_task = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem_task')
+            totem_task = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem_task', None)
             if not totem_task is None:
                 Bukkit.getScheduler().cancelTask(totem_task)
 

@@ -15,7 +15,7 @@ class Spell(PySpell):
         if self.t == 0:
             # Find totem
             totem = None
-            totem_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem')
+            totem_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem', None)
             for e in self.player.getWorld().getEntities():
                 if e.getEntityId() == totem_id:
                     totem = e

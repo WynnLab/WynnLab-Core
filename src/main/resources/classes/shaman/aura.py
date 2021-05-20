@@ -15,7 +15,7 @@ class Spell(PySpell):
     def tick(self):
         if self.t == 0:
             # Find totem
-            totem_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem')
+            totem_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem', None)
             for e in self.player.getNearbyEntities(16, 16, 16):
                 if e.getEntityId() == totem_id:
                     self.totem = e

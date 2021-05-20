@@ -20,7 +20,7 @@ class Spell(PySpell):
         if self.t == 0 and self.player.getScoreboardTags().contains('totem'):
             # Find totem
             totem = None
-            totem_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem')
+            totem_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem', None)
             for e in self.player.getWorld().getEntities():
                 if e.getEntityId() == totem_id:
                     totem = e
@@ -33,13 +33,13 @@ class Spell(PySpell):
             totem_loc = totem.getLocation()
             totem.remove()
 
-            holo_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem_holo')
+            holo_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem_holo', None)
             if not holo_id is None:
                 for e in self.player.getWorld().getEntities():
                     if e.getEntityId() == holo_id:
                         e.remove()
 
-            task_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem_task')
+            task_id = PersistentDataAPI.getInt(PersistentDataAPI.getData(self.player), 'totem_task', None)
             if not task_id is None:
                 Bukkit.getScheduler().cancelTask(task_id)
 
@@ -93,7 +93,7 @@ class Spell(PySpell):
             self.catch(l, v, vi)
 
     def catchable_mobs(self, l):
-        return PySpell.nearbyMobsAndTag(self.player.getWorld(), l, 3, 3, 3, 'totem')
+        return PySpell.nearbyMobsAndTag(self.player, l, 3, 3, 3, 'totem')
 
     def catch(self, l, v, vi):
         for i in range(0, 360, 30):

@@ -94,6 +94,7 @@ object PVPCommand : BaseCommand("pvp") {
         Bukkit.getScheduler().runTaskTimer(plugin, { task ->
             if (world.playerCount < 1) {
                 Bukkit.getServer().unloadWorld(world, false)
+                Bukkit.getScheduler().runTaskAsynchronously(plugin) { -> deleteDir(File("./duel_instance_${player.uniqueId}")) }
                 task.cancel()
             }
         }, 20L, 20L)

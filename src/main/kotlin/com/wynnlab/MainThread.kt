@@ -146,7 +146,7 @@ object MainThread : /*Runnable, */Listener {
     private fun healthRegen(player: Player, pvp: Boolean) {
         val maxHealth = (505 + player.getId("health_bonus") + player.getArmorHealth()).coerceIn(1, 1000000).toDouble()
         val healthBonus = player.getId("health_regen_raw") * (1 + player.getId("health_regen") / 100f)
-        player.health = (player.health + if (healthBonus > 2500) (healthBonus - 2500) * .15f + 2500 else healthBonus).coerceIn(1.0, maxHealth)
+        player.health = (player.health + if (pvp && healthBonus > 2500) (healthBonus - 2500) * .15f + 2500 else healthBonus).coerceIn(1.0, maxHealth)
     }
 }
 
