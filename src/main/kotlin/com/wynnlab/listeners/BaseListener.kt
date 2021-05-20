@@ -8,6 +8,7 @@ abstract class BaseListener : Listener
 
 fun registerListeners() {
     registerListener(CastListener())
+    registerListener(CommandListener())
     registerListener(DamageListener())
     registerListener(FallingBlockListener())
     registerListener(GUIListener())
