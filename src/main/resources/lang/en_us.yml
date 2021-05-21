@@ -50,6 +50,14 @@ messages:
     stats: '&7You can see your stats with &b/stats'
     leave: '&7To leave type &f/leave'
 
+  stats:
+    stats_of: '&aStats of &6%s&a:'
+    kills: '&8- &fKills: &b%d'
+    deaths: '&8- &fDeaths: &b%d'
+    kd: '&8- &fK/D: &b%d'
+    damage_dealt: '&8- &fDamage Dealt: &b%d'
+    damage_taken: '&8- &fDamage Taken: &b%d'
+
   pvp:
     on: '§f[§cPVP§f]§e is now§a activated!'
     off: '§f[§cPVP§f]§e is now§c deactivated!'

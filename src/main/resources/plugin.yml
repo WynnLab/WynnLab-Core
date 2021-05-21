@@ -60,3 +60,13 @@ commands:
   pvp:
     description: Toggle pvp
     usage: /pvp
+  hub:
+    description: Go to the hub
+    usage: /hub
+  leave:
+    description: Leave the game you're in
+    usage: /leave
+    aliases: [ l ]
+  stats:
+    description: Show your stats in the current game mode
+    usage: /stats [<player>]

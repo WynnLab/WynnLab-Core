@@ -3,7 +3,7 @@ package com.wynnlab.commands.tab_completers
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 
-object NoTabCompleter : BaseTabCompleter("pvp") {
+object NoTabCompleter : BaseTabCompleter("pvp", "hub", "leave") {
     override fun onTabComplete(
         _0: CommandSender,
         _1: Command,

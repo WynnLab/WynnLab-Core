@@ -3,7 +3,7 @@ package com.wynnlab.gui
 import com.wynnlab.NL_REGEX
 import com.wynnlab.api.getLocalizedText
 import com.wynnlab.api.meta
-import com.wynnlab.commands.PVPCommand
+import com.wynnlab.commands.PVPCommands
 import com.wynnlab.pvp.FFA
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -17,7 +17,7 @@ class PVPGUI(player: Player) : GUI(player, player.getLocalizedText("gui.pvp.titl
             e.isCancelled = true
             when (e.slot) {
                 10 -> FFA.join(player)
-                16 -> PVPCommand.world(player)
+                16 -> PVPCommands.world(player)
             }
         }
     }
