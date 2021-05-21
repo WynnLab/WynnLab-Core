@@ -37,6 +37,11 @@ messages:
 
     promote: '&dDu bist nun der Manager der Party!'
 
+  ffa:
+    welcome: '&aWillkommen in der &cFFA &aArena'
+    stats: '&7Du siehst deine Stats mit &b/stats'
+    leave: '&7Um die Welt zu verlassen, schreibe &f/leave'
+
   pvp:
     on: '§f[§cPVP§f]§e is jetzt§a aktiviert!'
     off: '§f[§cPVP§f]§e is jetzt§c deaktiviert!'
@@ -202,6 +207,15 @@ gui:
       reset_default: '&7Zurück zu den Standardwerten'
       your_particles: '&fDeine Partikel: %s'
       other_particles: '&fSpielerpartikel: %s'
+
+    pvp:
+      title: 'Wähle einen Spielmodus'
+      ffa:
+        title: '&cFFA'
+        lore: |
+          &8Spiele gegen alle anderen
+          &8Spieler
+        online: '&7Online: %d/%d'
 
 elements:
   strength: '&2✤ Stärke'

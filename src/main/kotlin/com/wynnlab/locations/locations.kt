@@ -1,5 +1,6 @@
 package com.wynnlab.locations
 
+import com.wynnlab.api.hasScoreboardTag
 import com.wynnlab.plugin
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
@@ -57,7 +58,11 @@ fun Player.updateLocations() {
     }
 
     if (now.isEmpty()) {
-        bb.setTitle("§c")
+        if (hasScoreboardTag("ffa")) {
+            bb.setTitle("§cFFA §8- §6Kills: §b0 §6Deaths: §b0 §6K/D: §b0")
+        } else {
+            bb.setTitle("§c")
+        }
     }
 
     playerLocations[this] = LocationsAndBB(now, bb)

@@ -1,6 +1,6 @@
 package com.wynnlab.commands
 
-import com.wynnlab.api.togglePVP
+import com.wynnlab.gui.PVPGUI
 import com.wynnlab.plugin
 import org.bukkit.*
 import org.bukkit.command.Command
@@ -22,14 +22,14 @@ object PVPCommand : BaseCommand("pvp") {
             return true
         }
 
-        sender.togglePVP()
+        //sender.togglePVP()
 
-        world(sender)
+        PVPGUI(sender).show()
 
         return true
     }
 
-    private fun world(player: Player) {
+    internal fun world(player: Player) {
         player.sendMessage("Copying...")
         Bukkit.getScheduler().runTaskAsynchronously(plugin) { ->
             try {

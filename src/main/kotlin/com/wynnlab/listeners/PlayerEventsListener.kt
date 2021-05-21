@@ -3,14 +3,12 @@ package com.wynnlab.listeners
 import com.wynnlab.Players
 import com.wynnlab.api.*
 import com.wynnlab.localization.Language
+import com.wynnlab.pvp.FFA
 import com.wynnlab.spells.PySpell
 import org.bukkit.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.PlayerDeathEvent
-import org.bukkit.event.player.AsyncPlayerChatEvent
-import org.bukkit.event.player.PlayerJoinEvent
-import org.bukkit.event.player.PlayerQuitEvent
-import org.bukkit.event.player.PlayerToggleSneakEvent
+import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.FireworkMeta
 
@@ -107,9 +105,24 @@ class PlayerEventsListener : BaseListener() {
         }
     }
 
-    /*private fun formatChatMessage(msg: String) {
+    @EventHandler
+    fun onPlayerChangeWorld(e: PlayerChangedWorldEvent) {
+        val player = e.player
 
-    }*/
+        val from = e.from.name
+        val to = e.player.world.name
+
+        if (player.isOp)
+            e.player.sendMessage("§7[World] $from >> $to")
+
+        when (to) {
+            "FFA" -> FFA.onJoinWorld(player)
+        }
+
+        when (from) {
+            "FFA" -> FFA.onLeaveWorld(player)
+        }
+    }
 
     companion object {
         val fireworks = ItemStack(Material.FIREWORK_ROCKET).metaAs<FireworkMeta> {

@@ -5,17 +5,17 @@ import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.guilds.Guild
 import com.wynnlab.plugin
-import net.minecraft.server.v1_16_R3.*
+import net.minecraft.server.v1_16_R3.ChatMessage
+import net.minecraft.server.v1_16_R3.Containers
+import net.minecraft.server.v1_16_R3.PacketPlayOutOpenWindow
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataContainer
-import java.util.*
 
 class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, player.getLocalizedText("gui.compass.title", 200 - skills.sum()), 3) {
     constructor(player: Player) : this(player, player.getSkills())
@@ -267,6 +267,8 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
         }
 
         override fun update() {
+            decorate()
+
             inventory.setItem(4, ItemStack(Material.GOLDEN_SHOVEL).setAppearance(21).meta {
                 addItemFlags(*ItemFlag.values())
                 setDisplayName(language.getMessage("gui.compass.wl_settings.reset"))

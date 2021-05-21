@@ -8,7 +8,7 @@ class CommandListener : BaseListener() {
     fun onCommandPreprocess(e: PlayerCommandPreprocessEvent) {
         if (e.message == "/kill") {
             e.player.health = .0
-            e.message = ""
+            e.message = "/wynnlab:class"
         }
     }
 }

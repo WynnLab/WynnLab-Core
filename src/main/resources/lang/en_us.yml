@@ -45,6 +45,11 @@ messages:
 
     promote: '&dYou are now the owner of the party!'
 
+  ffa:
+    welcome: '&aWelcome to the &cFFA &aArena'
+    stats: '&7You can see your stats with &b/stats'
+    leave: '&7To leave type &f/leave'
+
   pvp:
     on: '§f[§cPVP§f]§e is now§a activated!'
     off: '§f[§cPVP§f]§e is now§c deactivated!'
@@ -216,6 +221,7 @@ gui:
       range: '&a➸ Range                 %s'
       spells: '&d✺ Spells                 %s'
       clone: '&8Right click for &b&l%s'
+
   compass:
     title: '&c%d &4skill points remaining'
 
@@ -294,6 +300,16 @@ gui:
       reset_default: '&7Back to default'
       your_particles: '&fYour particles: %s'
       other_particles: '&fPlayer particles: %s'
+
+  pvp:
+    title: 'Choose a game'
+    ffa:
+      title: '&cFFA'
+      # TODO: lore
+      lore: |
+        &8Play against all other players
+        &8on a map
+      online: '&7Online: %d/%d'
 
 elements:
   strength: '&2✤ Strength'

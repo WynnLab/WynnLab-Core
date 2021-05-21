@@ -49,8 +49,6 @@ class PlayerClickListener : BaseListener() {
                 e.isCancelled = true
             }
             8 -> {
-                if (e.player.isSneaking)
-                    e.player.togglePVP()
                 e.isCancelled = true
             }
             else -> {
