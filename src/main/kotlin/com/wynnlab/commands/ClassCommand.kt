@@ -1,5 +1,6 @@
 package com.wynnlab.commands
 
+import com.wynnlab.api.hasScoreboardTag
 import com.wynnlab.api.setWynnClass
 import com.wynnlab.gui.ClassGUI
 import org.bukkit.command.Command
@@ -12,6 +13,12 @@ object ClassCommand : BaseCommand("class") {
             sender.sendMessage("§cThis command can only be executed by players")
             return true
         }
+
+        if (sender.hasScoreboardTag("pvp")) {
+            sender.sendMessage("§cYou can't change your class in PVP")
+            return true
+        }
+
         if (args.size != 1) {
             return if (args.isEmpty()) {
                 ClassGUI(sender).show()

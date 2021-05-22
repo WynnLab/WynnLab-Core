@@ -1,5 +1,6 @@
 package com.wynnlab.commands
 
+import com.wynnlab.api.hasScoreboardTag
 import com.wynnlab.entities.Dummy
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -11,6 +12,12 @@ object DummyCommand : BaseCommand("dummy") {
             sender.sendMessage("§cThis command can only be executed by players")
             return true
         }
+
+        if (sender.hasScoreboardTag("pvp")) {
+            sender.sendMessage("§cYou can't spawn a dummy during pvp")
+            return true
+        }
+
         if (args.isNotEmpty())
             return false
 

@@ -1,5 +1,6 @@
 package com.wynnlab.commands
 
+import com.wynnlab.api.hasScoreboardTag
 import com.wynnlab.items.SpecialItems
 import com.wynnlab.items.WynnItem
 import com.wynnlab.items.getAPIResults
@@ -13,6 +14,11 @@ object ItemCommand : BaseCommand("item") {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) {
             sender.sendMessage("§cThis command can only be executed by players")
+            return true
+        }
+
+        if (sender.hasScoreboardTag("pvp")) {
+            sender.sendMessage("§cYou can't give yourself items during pvp")
             return true
         }
 

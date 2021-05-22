@@ -1,5 +1,6 @@
 package com.wynnlab.commands
 
+import com.wynnlab.api.hasScoreboardTag
 import com.wynnlab.entities.WynnMob
 import com.wynnlab.plugin
 import org.bukkit.command.Command
@@ -14,6 +15,12 @@ object MobCommand : BaseCommand("mob") {
             sender.sendMessage("§cThis command can only be executed by players")
             return true
         }
+
+        if (sender.hasScoreboardTag("pvp")) {
+            sender.sendMessage("§cYou can't spawn mobs during pvp")
+            return true
+        }
+
         if (args.isEmpty()) {
             sender.sendMessage("§cPlease specify a mob name")
             return false
