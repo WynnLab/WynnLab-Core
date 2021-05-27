@@ -7,9 +7,11 @@ class DynamicScoreboard(
     id: String,
     val text: (Player) -> List<String>
 ) : Scoreboard(id) {
-    override fun setScores(player: Player, o: Objective)  {
+    override fun setScores(player: Player, sb: org.bukkit.scoreboard.Scoreboard, o: Objective)  {
+        clear(sb, o)
         text(player).forEachIndexed { i, t ->
-            o.getScore(t).score = 15 - i
+            //o.getScore(t).score = 15 - i
+            setScore(sb, o, t, 15 - i)
         }
     }
 }

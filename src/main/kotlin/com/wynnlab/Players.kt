@@ -150,7 +150,7 @@ object Players {
         EssentialsCommands.conversations.remove(player)
         Party.invites.remove(player)
         Party.members[player]?.removeMember(player)
-        Scoreboard.scoreboards.remove(player)
+        Scoreboard.clear(player)
         removePlayerLocations(player)
     }
 }

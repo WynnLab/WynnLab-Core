@@ -10,6 +10,7 @@ import net.minecraft.server.v1_16_R3.Containers
 import net.minecraft.server.v1_16_R3.PacketPlayOutOpenWindow
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
@@ -25,7 +26,10 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
     init {
         registerListener { e ->
             e.isCancelled = true
-            val skillIncrease = if (e.isRightClick) 5 else if (e.isLeftClick) 1 else 0
+            var skillIncrease = if (e.isRightClick) 5 else if (e.isLeftClick) 1 else 0
+            if (spLeft < skillIncrease)
+                skillIncrease = 0
+            player.playSound(player.location, if (skillIncrease > 0) Sound.ENTITY_EXPERIENCE_ORB_PICKUP else Sound.BLOCK_ANVIL_PLACE, 1f, 1f)
             when (e.slot) {
                 4 -> { player.data.setIntArray("skill_points", intArrayOf(0, 0, 0, 0, 0)); reopen(-1) }
 

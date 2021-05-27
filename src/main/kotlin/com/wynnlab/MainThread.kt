@@ -1,14 +1,12 @@
 package com.wynnlab
 
 import com.wynnlab.api.*
+import com.wynnlab.localization.Language
 import com.wynnlab.locations.updateLocations
 import com.wynnlab.spells.PySpell
 import org.bukkit.Bukkit
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
-import org.bukkit.event.Event
-import org.bukkit.event.EventHandler
-import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
@@ -67,15 +65,16 @@ object MainThread : /*Runnable, */Listener {
 
     fun schedule() {
         //Bukkit.getScheduler().runTaskTimer(plugin, this, 1L, 1L)
-        Bukkit.getPluginManager().registerEvents(this, plugin)
-        Bukkit.getScheduler().runTaskTimer(plugin, Runnable { Bukkit.getPluginManager().callEvent(EveryTick) }, 1L, 1L)
-        Bukkit.getScheduler().runTaskTimer(plugin, Runnable { Bukkit.getPluginManager().callEvent(EverySecond) }, 20L, 20L)
-        Bukkit.getScheduler().runTaskTimer(plugin, Runnable { Bukkit.getPluginManager().callEvent(Every4Seconds) }, 80L, 80L)
-        Bukkit.getScheduler().runTaskTimer(plugin, Runnable { Bukkit.getPluginManager().callEvent(Every10Seconds) }, 200L, 200L)
+        //Bukkit.getPluginManager().registerEvents(this, plugin)
+        Bukkit.getScheduler().runTaskTimer(plugin, { -> /*Bukkit.getPluginManager().callEvent(EveryTick)*/ onTick() }, 1L, 1L)
+        Bukkit.getScheduler().runTaskTimer(plugin, { -> /*Bukkit.getPluginManager().callEvent(EverySecond)*/ onSecond() }, 20L, 20L)
+        Bukkit.getScheduler().runTaskTimer(plugin, { -> /*Bukkit.getPluginManager().callEvent(Every4Seconds)*/ on4Seconds() }, 80L, 80L)
+        Bukkit.getScheduler().runTaskTimer(plugin, { -> /*Bukkit.getPluginManager().callEvent(Every10Seconds)*/ on10Seconds() }, 200L, 200L)
+        Bukkit.getScheduler().runTaskTimer(plugin, { -> on5Minutes() }, 6000L, 6000L)
     }
 
-    @EventHandler
-    fun onTick(e: EveryTick) {
+    /*@EventHandler*/
+    fun onTick(/*e: EveryTick*/) {
         for (player in Bukkit.getOnlinePlayers()) {
             val pvp = player.hasScoreboardTag("pvp")
 
@@ -98,8 +97,8 @@ object MainThread : /*Runnable, */Listener {
         }
     }
 
-    @EventHandler
-    fun onSecond(e: EverySecond) {
+    /*@EventHandler*/
+    fun onSecond(/*e: EverySecond*/) {
         for (player in Bukkit.getOnlinePlayers()) {
             val pvp = player.hasScoreboardTag("pvp")
 
@@ -119,12 +118,12 @@ object MainThread : /*Runnable, */Listener {
             player.updateLocations()
 
             // Sidebar
-            // player.updateSidebar() // TODO: a lot of things
+            player.updateSidebar()
         }
     }
 
-    @EventHandler
-    fun on4Seconds(e: Every4Seconds) {
+    /*@EventHandler*/
+    fun on4Seconds(/*e: Every4Seconds*/) {
         for (player in Bukkit.getOnlinePlayers()) {
             if (!player.hasPotionEffect(PotionEffectType.INVISIBILITY)) player.foodLevel = (player.foodLevel + player.getId("mana_regen")).coerceIn(0, 20)
 
@@ -134,12 +133,18 @@ object MainThread : /*Runnable, */Listener {
         }
     }
 
-    @EventHandler
-    fun on10Seconds(e: Every10Seconds) {
+    /*@EventHandler*/
+    fun on10Seconds(/*e: Every10Seconds*/) {
         for (player in Bukkit.getOnlinePlayers()) {
             if (!player.hasScoreboardTag("pvp"))
                 continue
             healthRegen(player, true)
+        }
+    }
+
+    fun on5Minutes() {
+        for (player in Bukkit.getOnlinePlayers()) {
+            player.sendWynnMessageNonNls(Language[player.locale].getRandomMessage("tips"))
         }
     }
 
@@ -150,7 +155,7 @@ object MainThread : /*Runnable, */Listener {
     }
 }
 
-object EveryTick : Event() {
+/*object EveryTick : Event() {
     override fun getHandlers(): HandlerList = handlerList
 
     @JvmStatic
@@ -176,4 +181,4 @@ object Every10Seconds : Event() {
 
     @JvmStatic
     val handlerList = HandlerList()
-}
+}*/

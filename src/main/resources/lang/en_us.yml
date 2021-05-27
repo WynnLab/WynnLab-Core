@@ -90,10 +90,10 @@ death_messages:
   - "&6%s&c rolled a nat 1."
 
 sidebars:
-  info: "§a§l§nInformation"
+  info: "&8play.&b&lWYNNLAB&8.tk"
   partyHealth: "§a§lParty: §cHealth"
   ffaHealth: "§6§lFFA: §cHealth"
-  duelHealth: "§b§nDuel: §cHealth"
+  duelHealth: "§b§lDuel: §cHealth"
   bossDamage: "§a§lBossfight: §eDamage"
   ffaDamage: "§6§lFFA: §eDamage"
   duelDamage: "§b§lDuel: §eDamage"
@@ -218,6 +218,7 @@ classes:
       3c: Touch
       4: Control
       4c: Dragon Breath
+
 gui:
   class:
     title: 'Select a class'
@@ -325,3 +326,6 @@ elements:
   intelligence: '&b❉ Intelligence'
   defense: '&c✹ Defense'
   agility: '&f❋ Agility'
+
+tips:
+  - "&3Type &b/pvp &3to join a pvp game"

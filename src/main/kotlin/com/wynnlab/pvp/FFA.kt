@@ -30,6 +30,10 @@ object FFA {
         player.sendWynnMessage("messages.ffa.welcome")
         player.sendWynnMessage("messages.ffa.stats")
         player.sendWynnMessage("messages.ffa.leave")
+
+        players.forEach {
+            it.sendMessage("§8[§cFFA§8] §a>> §r${player.playerListName}")
+        }
     }
 
     fun onLeaveWorld(player: Player) {
@@ -37,5 +41,9 @@ object FFA {
         player.removeScoreboardTag("ffa")
 
         players.remove(player)
+
+        players.forEach {
+            it.sendMessage("§8[§cFFA§8] §4<< §r${player.playerListName}")
+        }
     }
 }

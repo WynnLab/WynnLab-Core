@@ -7,6 +7,7 @@ import com.wynnlab.pvp.FFA
 import org.bukkit.Statistic
 import org.bukkit.entity.Player
 import org.bukkit.scoreboard.Objective
+import org.bukkit.scoreboard.Scoreboard as _Sb
 
 val InfoSidebar = DynamicScoreboard(
     "info"
@@ -56,11 +57,13 @@ val DuelDamageSidebar = DamageSidebar(
 val FFAKillsSidebar = object : Scoreboard(
     "ffaKills"
 ) {
-    override fun setScores(player: Player, o: Objective) {
+    override fun setScores(player: Player, sb: _Sb, o: Objective) {
+        clear(sb, o)
         if (!player.hasScoreboardTag("ffa")) return
         FFA.players.forEach { m ->
             val k = m.getStatistic(Statistic.PLAYER_KILLS)
-            o.getScore("§${if (k > 0) 'f' else '7'}${m.name}").score = k
+            //o.getScore("§${if (k > 0) 'f' else '7'}${m.name}").score = k
+            setScore(sb, o, "§${if (k > 0) 'f' else '7'}${m.name}", k)
         }
     }
 }

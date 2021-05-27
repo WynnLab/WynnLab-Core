@@ -133,7 +133,7 @@ gui:
     reset_skills: '&eFertigkeitspunke zurücksetzen'
     reset_skills_cost: '&7Preis: &f0 Seelenpunkte'
 
-    upgrade_skill: '&dVerbessere deine %s&d-Fähigkeit'
+    upgrade_skill: '&dVerbessere deine %s'
     upgrade_skill_numbers: |
       &r       &7&lJetzt         &6&lDann
       &r       &a%.1f%%     §a>§2>§a>§2>    &e%.1f%%
@@ -149,7 +149,7 @@ gui:
       &derhöht &7die Chance einen
       &7kritischen Treffer (Doppelter
       &7Schaden) zu landen und erhöht
-      &7den &e✦ Blitz&-Schaden den
+      &7den &e✦ Blitz&7-Schaden den
       &7du machst.
     upgrade_skill_intelligence: |
       &7Jeder Punkt in dieser Fähigkeit
@@ -223,3 +223,6 @@ elements:
   intelligence: '&b❉ Intelligenz'
   defense: '&c✹ Verteidigung'
   agility: '&f❋ Agilität'
+
+  tps:
+    - '&3Mit &b/pvp &3kommst du ins PvP-Menü'

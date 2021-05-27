@@ -10,6 +10,7 @@ import com.wynnlab.listeners.GUIListener
 import com.wynnlab.localization.Language
 import com.wynnlab.plugin
 import com.wynnlab.random
+import com.wynnlab.scoreboard.InfoSidebar
 import com.wynnlab.scoreboard.scoreboards
 import com.wynnlab.util.RefreshRunnable
 import org.bukkit.Bukkit
@@ -203,6 +204,7 @@ fun Player.wynnPrefix(): String {
 
 fun Player.updatePrefix() {
     setDisplayName(wynnPrefix()+prefix+name)
+    setPlayerListName(prefix+name)
 }
 
 val Player.wynnEquipment get() = inventory.let { inv -> arrayOf(
@@ -364,5 +366,9 @@ fun Player.showPouch() {
 }
 
 fun Player.updateSidebar() {
-    scoreboards[data.getString("scoreboard")]?.update(this)
+    val sb = scoreboards[data.getString("scoreboard")]
+    if (sb == null)
+        InfoSidebar.update(this)
+    else
+        sb.update(this)
 }

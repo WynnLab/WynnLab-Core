@@ -3,10 +3,8 @@ package com.wynnlab.essentials
 import com.wynnlab.api.data
 import com.wynnlab.api.prefix
 import com.wynnlab.api.setString
-import com.wynnlab.util.registerMainTeam
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
-import org.bukkit.scoreboard.Team
 
 enum class Rank(
     val donation: Boolean,
@@ -24,16 +22,16 @@ enum class Rank(
     MOD(false, "§6[§eMOD§6] ", ChatColor.GOLD),
     ADMIN(false, "§4[§cADMIN§4] ", ChatColor.DARK_RED);
 
-    private val team: Team = registerMainTeam("WynnLab.${name}")
+    /*private val team: Team = registerMainTeam("WynnLab.${name}")
 
     init {
         team.color = color
         team.prefix = tag
         team.displayName = name
-    }
+    }*/
 
     fun apply(player: Player) {
-        team.addEntry(player.name)
+        //team.addEntry(player.name)
         player.prefix = tag+color
         player.data.setString("rank", name)
     }

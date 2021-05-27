@@ -3,6 +3,7 @@ package com.wynnlab.listeners
 import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.events.SpellCastEvent
+import com.wynnlab.util.RefreshRunnable
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -23,6 +24,11 @@ class CastListener : BaseListener() {
         if (spellId > 0) {
             player.data.setInt("spell_cost_extra", if (player.data.getInt("last_spell") == spellId) (player.data.getInt("spell_cost_extra") ?: 0) + 1 else 0)
             player.data.setInt("last_spell", spellId)
+
+            RefreshRunnable(player.data, "spell_cost_extra") {
+                player.data.setInt("spell_cost_extra", 0)
+                player.data.setInt("last_spell", 0)
+            }.schedule(100L)
         }
 
         if (spellId > 0) {
