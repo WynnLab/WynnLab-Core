@@ -80,7 +80,7 @@ var Player.isCloneClass
 get() = "clone" in scoreboardTags
 set(value) { if (value) addScoreboardTag("clone") else removeScoreboardTag("clone") }
 
-val Player.invertedControls get() = getWynnClass()?.let { WynnClass[it] }?.invertedControls ?: false
+val Player.invertedControls get() = (getWynnClass()?.let { WynnClass[it] } as? WynnClass)?.invertedControls ?: false
 
 fun Player.castSpell(id: Int) {
     Bukkit.getPluginManager().callEvent(SpellCastEvent(this, id))

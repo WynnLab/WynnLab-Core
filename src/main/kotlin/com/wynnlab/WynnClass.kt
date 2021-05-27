@@ -2,6 +2,7 @@
 
 package com.wynnlab
 
+import com.wynnlab.registry.ClassRegistry
 import com.wynnlab.spells.Spell
 import com.wynnlab.util.BaseSerializable
 import com.wynnlab.util.ConfigurationDeserializable
@@ -56,7 +57,7 @@ data class WynnClass(
     }
 }
 
-val classes = linkedMapOf<String, WynnClass>()
+val classes = linkedMapOf<String, Any>()
 
 internal var spellOrdinal = 0
 
@@ -81,6 +82,10 @@ fun loadClasses() {
     }
 
     classes.remove("MONK")?.let { classes["MONK"] = it }
+
+    ClassRegistry.entries.forEach {
+        classes["R_$it"] = it
+    }
 
     //plugin.logger.log(Level.INFO, "Classes: $classes")
     //plugin.logger.log(Level.INFO, "Listeners: ${plugin.projectileHitListener.tags}")

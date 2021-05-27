@@ -1,8 +1,12 @@
 package com.wynnlab.listeners
 
+import com.wynnlab.WynnClass
 import com.wynnlab.api.*
 import com.wynnlab.classes
+import com.wynnlab.classes.BaseClass
+import com.wynnlab.classes.BasePlayerSpell
 import com.wynnlab.events.SpellCastEvent
+import com.wynnlab.spells.Spell
 import com.wynnlab.util.RefreshRunnable
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -17,9 +21,9 @@ class CastListener : BaseListener() {
         val player = e.player
         val spellClass = player.getWynnClass()?.let { classes[it] } ?: return
         val spellId = e.spellId
-        val spell = spellClass.spells[spellId]
+        val spell = ((spellClass as? WynnClass)?.spells ?: (spellClass as BaseClass).spells)[spellId]
 
-        val cost = cost(player, spellId, spell.cost)
+        val cost = cost(player, spellId, (spell as? Spell)?.cost ?: 0)
 
         if (spellId > 0) {
             player.data.setInt("spell_cost_extra", if (player.data.getInt("last_spell") == spellId) (player.data.getInt("spell_cost_extra") ?: 0) + 1 else 0)
@@ -48,7 +52,7 @@ class CastListener : BaseListener() {
             if (player.cooldown()) return
         }
 
-        spell.cast(player)
+        (spell as? Spell)?.cast(player) ?: (spell as BasePlayerSpell).tick()
     }
 
     private fun cost(player: Player, spellIndex: Int, cost: Int) =

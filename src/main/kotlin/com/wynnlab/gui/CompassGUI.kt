@@ -1,6 +1,7 @@
 package com.wynnlab.gui
 
 import com.wynnlab.NL_REGEX
+import com.wynnlab.WynnClass
 import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.guilds.Guild
@@ -221,6 +222,9 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
         addIdValues(lore)
         this.lore = lore
     }
+
+    //TODO: remove
+    val Any.id get() = if (this is WynnClass) this.id else "CLASS"
 
     private fun defenseStats() = ItemStack(Material.IRON_CHESTPLATE).meta {
         addItemFlags(*ItemFlag.values())

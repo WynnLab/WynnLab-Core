@@ -2,8 +2,10 @@
 
 package com.wynnlab.spells
 
+import com.wynnlab.WynnClass
 import com.wynnlab.api.*
 import com.wynnlab.classes
+import com.wynnlab.classes.BaseClass
 import com.wynnlab.entities.Hologram
 import com.wynnlab.items.WynnItem
 import com.wynnlab.listeners.ProjectileHitListener
@@ -231,8 +233,8 @@ fun nearbyMobsAndTag(player: Player, location: Location, x: Double, y: Double, z
         player.world.getNearbyEntities(location, x, y, z) { it is Mob || it.hasScoreboardTag(tag) && it != player }
 }
 
-fun castSpell(player: Player, clazz: String, index: Int, vararg args: Any?) = classes[clazz]?.spells?.get(index)
-    ?.cast(player, *args)
+fun castSpell(player: Player, clazz: String, index: Int, vararg args: Any?) = (classes[clazz] as? WynnClass)?.spells?.get(index)
+    ?.cast(player, *args) ?: (classes[clazz] as? BaseClass)?.spells?.get(index)?.constructor?.invoke(player)?.tick()
 
 @Suppress("unused")
 fun colorText(text: String, color: String) = "§$color$text"

@@ -27,6 +27,9 @@ dependencies {
     // WynnScript
     compileOnly name: 'WynnScript2-1.0-all'
 
+    // Script API
+    compileOnly name: 'WynnLabScriptAPI-1.0-SNAPSHOT'
+
     // Kotlin
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 

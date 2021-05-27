@@ -1,10 +1,13 @@
 package com.wynnlab.gui
 
 import com.wynnlab.NL_REGEX
+import com.wynnlab.WynnClass
 import com.wynnlab.api.getLocalizedText
 import com.wynnlab.api.sendWynnMessage
 import com.wynnlab.api.setWynnClass
 import com.wynnlab.classes
+import com.wynnlab.classes.BaseClass
+import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
@@ -44,10 +47,20 @@ class ClassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.class.
         }
     }
 
+    //TODO: remove
+    val Any.id get() = if (this is WynnClass) this.id else "CLASS"
+
     override fun update() {
         val iterator = itemPositions.iterator()
 
         for (clazz in classes.values) {
+            if (clazz is BaseClass) {
+                inventory.setItem(iterator.nextInt(), ItemStack(Material.BARRIER))
+                continue
+            }
+            if (clazz !is WynnClass)
+                continue
+
             val item = ItemStack(clazz.item)
             val meta = item.itemMeta
 
