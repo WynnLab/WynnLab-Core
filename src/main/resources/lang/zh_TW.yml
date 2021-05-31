@@ -1,8 +1,105 @@
 ---
+commands:
+  no_receiver: '&cPlease specify a receiver'
+  no_message: '&cPlease specify a message'
+  no_conversation: "&cYou aren't in a conversation"
+  invalid_target: '&cPlease specify a valid target'
+  no_target: '&cPlease specify a target'
+  no_op: '&cYou need to be an operator to perform this command'
+messages:
+  current_class: '&aYour current class is &3[%s]'
+  no_class: "&cYou haven't selected a class yet"
+  class_change: '&aType &6/class &ato change your class'
+  class_select: '&cType &6/class &cto select a class'
+  totem_out: '&cYour totem is out!'
+  wrong_item: "&cYou can't use that item"
+  no_player: '&cPlease specify a player'
+  player_not_exist: "&cThis player doesn't exist"
+  party:
+    no_party: "&cYou aren't currently in a party"
+    not_owner: "&cYou don't own this party"
+    create: '&aYour party was created successfully!'
+    invite:
+      send: "&aYou invited &6%s&a to your party!"
+      get: "&6%s&a invited you to a party!"
+    join:
+      left: "&dClick "
+      link: "&e&nhere"
+      right: "&d to join"
+      hover: "&fClick to join"
+    no_invite: "&cYou haven't been invited to a party yet"
+    already_joined: '&cYou have already joined the party'
+    already_other: '&cYou have already joined another party'
+    leave: '&fType &e/party leave&f to leave your current party'
+    joined: '&6%s&a joined the party!'
+    joined_you: '&aYou joined the party!'
+    left: '&6%s&f left the party!'
+    left_you: '&fYou left the party!'
+    promote: '&dYou are now the owner of the party!'
+  ffa:
+    welcome: '&aWelcome to the &cFFA &aArena'
+    stats: '&7You can see your stats with &b/stats'
+    leave: '&7To leave type &f/leave'
+  stats:
+    stats_of: '&aStats of &6%s&a:'
+    kills: '&8- &fKills: &b%d'
+    deaths: '&8- &fDeaths: &b%d'
+    kd: '&8- &fK/D: &b%d'
+    damage_dealt: '&8- &fDamage Dealt: &b%d'
+    damage_taken: '&8- &fDamage Taken: &b%d'
+  pvp:
+    on: '§f[§cPVP§f]§e is now§a activated!'
+    off: '§f[§cPVP§f]§e is now§c deactivated!'
+titles:
+  location:
+    enter: '&7You are now entering §r%s'
+    leave: '&7You are now leaving §r%s'
+    discover: '&6Area discovered: §e%s'
+death_messages:
+  - "&6%s&c was brought to an end..."
+  - "&6%s&c perished due to a lack of plot armor."
+  - "&6%s&c met their demise..."
+  - "&6%s&c died. Press F to pay respects."
+  - "&6%s&c thought that this would be as easy as Wynncraft. Wrong."
+  - "&6%s&c didn't have enough health regen."
+  - "&6%s&c decided to stress their bones. It wasn't a good idea."
+  - "&6%s&c somehow couldn't live."
+  - "&6%s&c decided to RE:start"
+  - "&6%s&c failed to realize that they weren't an anime protagonist."
+  - "&6%s&c's life ended heroically. I think."
+  - "&6%s&c met their disastrous fate."
+  - "&6%s&c forgot RRR was a thing."
+  - "&6%s&c embraced death a bit too much."
+  - "&6%s&c failed the vibe check."
+  - "&6%s&c thought they could facetank everything."
+  - "&6%s&c didn't know how to dodge attacks."
+  - "&6%s&c was slain."
+  - "&6%s&c rolled a nat 1."
+sidebars:
+  info: "&8play.&b&lWYNNLAB&8.tk"
+  partyHealth: "§a§lParty: §cHealth"
+  ffaHealth: "§6§lFFA: §cHealth"
+  duelHealth: "§b§lDuel: §cHealth"
+  bossDamage: "§a§lBossfight: §eDamage"
+  ffaDamage: "§6§lFFA: §eDamage"
+  duelDamage: "§b§lDuel: §eDamage"
+  ffaKills: "§6§lFFA: §aKills"
+items:
+  items:
+    combat_lv_min: '%s &7Combat Lv. Min: %d'
+  heal_potion:
+    title: '&cPotion of Healing &4[%d/3]'
+    effects: '&4Effects:'
+    heal: '&4- &7Heal: &f%d &c❤'
+    duration: '&4- &7Duration: &f3 Seconds'
+    lore: |
+      &8Drinking this potion will
+      &8regenerate your health over
+      &83 seconds.
 classes:
   MAGE:
-    className: 'ساحر'
-    cloneName: 'ساحر اسود'
+    className: 'Mage'
+    cloneName: 'Dark Wizard'
     lore: |
       &7Mages are naturally talented
       &7in the magical arts. While
@@ -11,9 +108,18 @@ classes:
       &7offer a great amount of
       &7utility and versatility
       &7with their spells.
+    spells:
+      1: Heal
+      1c: Remedy
+      2: Teleport
+      2c: Blink
+      3: Meteor
+      3c: Death Star
+      4: Ice Snake
+      4c: Crystal Reptile
   ARCHER:
-    className: رامي اسهم
-    cloneName: صياد
+    className: Archer
+    cloneName: Hunter
     lore: |
       &7Benefiting from the highest
       &7range in the game, Archers
@@ -23,9 +129,18 @@ classes:
       &7of damage. But they must
       &7be wary of attacks, as their
       &7defence is low.
+    spells:
+      1: Arrow Storm
+      1c: Bolt Blizzard
+      2: Escape
+      2c: Spider Jump
+      3: Bomb Arrow
+      3c: Creeper Dart
+      4: Arrow Shield
+      4c: Dagger Aura
   ASSASSIN:
-    className: مغتال
-    cloneName: نينجا
+    className: Assassin
+    cloneName: Ninja
     lore: |
       &7The Assassin is the deadliest
       &7of all the classes, exploiting
@@ -35,13 +150,150 @@ classes:
       &7they endanger themselves
       &7by having to get extremely
       &7close to the enemy.
+    spells:
+      1: Spin Attack
+      1c: Whirlwind
+      2: Vanish
+      2c: Shadow Clone
+      3: Multihit
+      3c: Shadow Assault
+      4: Smoke Bomb
+      4c: Noxious Cloud
+  WARRIOR:
+    className: Warrior
+    cloneName: Knight
+    lore: |
+      &7 Here goes the warrior lore
+    spells:
+      1: Bash
+      1c: Holy Blast
+      2: Charge
+      2c: Leap
+      3: Uppercut
+      3c: Heaven Jolt
+      4: War Scream
+      4c: Cry of the Gods
+  SHAMAN:
+    className: Shaman
+    cloneName: Skyseer
+    lore: |
+      &7 Here goes the shaman lore
+    spells:
+      1: Totem
+      1c: Sky Emblem
+      2: Haul
+      2c: Soar
+      3: Aura
+      3c: Wind Surge
+      4: Uproot
+      4c: Gale Funnel
+  MONK:
+    className: '&kMonk'
+    cloneName: '&kDragon Warrior'
+    lore: |
+      &7&k Here goes the shaman lore
+    spells:
+      1: Shield
+      1c: Forcefield
+      2: Step
+      2c: Wind
+      3: Silence
+      3c: Touch
+      4: Control
+      4c: Dragon Breath
 gui:
   class:
-    select: 'انت الان &3[%s]'
+    title: 'Select a class'
+    select: 'You are now &3[%s]'
     item:
-      title: '&fحدد &6&l%s'
-      damage: '&6⚔ الدمج               %s'
-      defence: '&c❤ الدفاع              %s'
-      range: '&a➸ النطاق                 %s'
-      spells: '&d✺ التعويذات                 %s'
-      clone: '&8اظغط الزر الايمن لـ &b&l%s'
+      title: '&fSelect &6&l%s'
+      damage: '&6⚔ Damage               %s'
+      defence: '&c❤ Defence              %s'
+      range: '&a➸ Range                 %s'
+      spells: '&d✺ Spells                 %s'
+      clone: '&8Right click for &b&l%s'
+  compass:
+    title: '&c%d &4skill points remaining'
+    reset_skills: '&eReset Skill Points'
+    reset_skills_cost: '&7Cost: &f0 Soul Points'
+    upgrade_skill: '&dUpgrade your %s &dskill'
+    upgrade_skill_numbers: |
+      &r       &7&lNow           &6&lNext
+      &r       &a%.1f%%     §a>§2>§a>§2>    &e%.1f%%
+      &r     &7%d points          §6%d points
+    upgrade_skill_modified: '&aThis skill was modified by your equipment'
+    upgrade_skill_strength: |
+      &7Each point in this skill
+      &7will&d increase &7any damage
+      &7you deal and increase the &2✤ Earth
+      &7damage you may inflict.
+    upgrade_skill_dexterity: |
+      &7Each point in this skill
+      &7will&d increase &7the chance
+      &7to do a critical hit (doubling
+      &7damage) and increase the &e✦ Thunder
+      &7damage you may inflict.
+    upgrade_skill_intelligence: |
+      &7Each point in this skill
+      &7will&d reduce &7mana used
+      &7by spells and increase the &b❉ Water
+      &7damage you may inflict.
+    upgrade_skill_defense: |
+      &7Each point in this skill
+      &7will&d reduce &7any damage
+      &7you take and increase the &c✹ Fire
+      &7damage you may inflict.
+    upgrade_skill_agility: |
+      &7Each point in this skill
+      &7will&d increase &7the chance
+      &7to dodge attacks and increase
+      &7the &f❋ Air &7damage you may
+      &7inflict.
+    daily_rewards: '&eDaily Rewards'
+    mastery_tomes: '&5&lMastery Tomes'
+    mastery_tomes_lore: |
+      &7Tomes are special raid rewards
+      &7which can buff your character
+    no_guild: '&cYou are not in a guild yet!'
+    guild_rank: '&7Rank: &f%s'
+    guild_joined: '&7Joined: &f%s'
+    guild_open: '&8Open guild management'
+    guild_view: '&b&lView Your Guild'
+    settings: '&f&lSettings'
+    settings_lore: '&7WynnLab settings'
+    player_info: "&e&l&o%s's Info"
+    player_rank: '&7Rank: &f%s'
+    player_level: '&7Combat Lv: &f%d'
+    player_class: '&7Class: &f%s'
+    player_quests: '&7Quests: &f%d/%d'
+    player_ids: '&dID Bonuses:'
+    defense: '&f&lDefense Info'
+    defense_basic: '&bBasic Defense:'
+    defense_health: '&b- &4❤ Health: &f%s/%s'
+    damage: '&f&lDamage Info'
+    main_attack_damage: '&3[%c] &bMain Attack:'
+    total_damage: '&b- Total Damage (+Bonus): &f%d-%d'
+    spell_damage: '&5[%s] &d%s Spell: &f%d-%d'
+    wl_settings:
+      title: 'WynnLab Settings'
+      reset: '&eReset Settings'
+      reset_default: '&7Back to default'
+      your_particles: '&fYour particles: %s'
+      other_particles: '&fPlayer particles: %s'
+  pvp:
+    title: 'Choose a game'
+    ffa:
+      title: '&cFFA'
+      #TODO: lore
+      lore: |
+        &8Play against all other players
+        &8on a map
+      online: '&7Online: %d/%d'
+elements:
+  strength: '&2✤ Strength'
+  dexterity: '&e✦ Dexterity'
+  intelligence: '&b❉ Intelligence'
+  defense: '&c✹ Defense'
+  agility: '&f❋ Agility'
+tips:
+  - "&3Type &b/pvp &3to join a pvp game"
