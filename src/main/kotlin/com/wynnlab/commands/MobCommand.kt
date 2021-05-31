@@ -2,7 +2,7 @@ package com.wynnlab.commands
 
 import com.wynnlab.api.hasScoreboardTag
 import com.wynnlab.entities.WynnMob
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
@@ -29,7 +29,7 @@ object MobCommand : BaseCommand("mob") {
         val mobName = args.joinToString(" ")
 
         val mob = mobs[mobName] ?: run {
-            val folder = File(plugin.dataFolder, "mobs")
+            val folder = File(wynnlab.dataFolder, "mobs")
             folder.mkdir()
 
             val file = File(folder, "$mobName.yml")

@@ -1,6 +1,6 @@
 package com.wynnlab.listeners
 
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 
@@ -19,5 +19,5 @@ fun registerListeners() {
 }
 
 private fun registerListener(listener: BaseListener) {
-    Bukkit.getPluginManager().registerEvents(listener, plugin)
+    Bukkit.getPluginManager().registerEvents(listener, wynnlab)
 }

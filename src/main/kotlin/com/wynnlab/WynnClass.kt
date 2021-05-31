@@ -62,17 +62,17 @@ val classes = linkedMapOf<String, Any>()
 internal var spellOrdinal = 0
 
 fun loadClasses() {
-    val classFolder = File(plugin.dataFolder, "classes")
+    val classFolder = File(wynnlab.dataFolder, "classes")
 
     if (!classFolder.exists()) {
-        plugin.logger.log(Level.WARNING, "No classes loaded")
+        wynnlab.logger.log(Level.WARNING, "No classes loaded")
         return
     }
 
     for (f in classFolder.listFiles { f, _ -> f.isDirectory } ?: return) {
         currentClassLoadFolder = f
 
-        plugin.logger.log(Level.INFO, "Loading class ${f.name} ...")
+        wynnlab.logger.log(Level.INFO, "Loading class ${f.name} ...")
 
         val configFile = File(f, "${f.name}.yml")
         val config = YamlConfiguration()

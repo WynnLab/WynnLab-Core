@@ -3,7 +3,7 @@ package com.wynnlab.commands
 import com.wynnlab.WynnClass
 import com.wynnlab.classes
 import com.wynnlab.loadClasses
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -32,9 +32,9 @@ object GMCommands : BaseCommand("upload", "wlrl") {
             return false
 
         val newFileLoc = when (args[0]) {
-            "item" -> File(plugin.dataFolder, "custom_items")
-            "mob" -> File(plugin.dataFolder, "mobs")
-            "mob_spell" -> File(File(plugin.dataFolder, "mobs"), "scripts")
+            "item" -> File(wynnlab.dataFolder, "custom_items")
+            "mob" -> File(wynnlab.dataFolder, "mobs")
+            "mob_spell" -> File(File(wynnlab.dataFolder, "mobs"), "scripts")
             "music" -> File(Bukkit.getPluginManager().getPlugin("JukeBox")?.dataFolder, "songs")
             else -> return false
         }
@@ -106,7 +106,7 @@ object GMCommands : BaseCommand("upload", "wlrl") {
                     sender.sendMessage("§cThe class ${args[1]} doesn't exist")
                     return true
                 }
-                val configFile = (File(plugin.dataFolder, "classes").listFiles { _, name -> name.equals(args[1]) })?.let { files ->
+                val configFile = (File(wynnlab.dataFolder, "classes").listFiles { _, name -> name.equals(args[1]) })?.let { files ->
                     if (files.isEmpty()) null
                     else files[0]
                 } ?: run {

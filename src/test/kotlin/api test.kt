@@ -1,4 +1,3 @@
-import com.wynnlab.items.WynnItem
 import com.wynnlab.items.getAPIResults
 
 fun main() {

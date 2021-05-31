@@ -59,7 +59,7 @@ class WynnItem(
         return item
     }
 
-    fun updateLore(item: ItemStack, player: Player) {
+    private fun updateLore(item: ItemStack, player: Player) {
         val meta = item.itemMeta
 
         if (meta is Damageable) {

@@ -244,7 +244,7 @@ class Identifications(
             )
         }
 
-        fun Number.bestID(identified: Boolean) = toInt().let {
+        private fun Number.bestID(identified: Boolean) = toInt().let {
             if (identified)
                 when {
                     it < 0 -> (it * 0.7).coerceAtMost(-1.0)

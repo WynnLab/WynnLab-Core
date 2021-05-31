@@ -1,6 +1,6 @@
 package com.wynnlab.commands
 
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.command.CommandExecutor
 
 abstract class BaseCommand(vararg val names: String) : CommandExecutor
@@ -21,5 +21,5 @@ fun registerCommands() {
 
 private fun registerCommand(command: BaseCommand) {
     for (name in command.names)
-        plugin.getCommand(name)?.setExecutor(command)
+        wynnlab.getCommand(name)?.setExecutor(command)
 }

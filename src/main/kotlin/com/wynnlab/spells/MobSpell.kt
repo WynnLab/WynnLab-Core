@@ -1,6 +1,6 @@
 package com.wynnlab.spells
 
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import com.wynnlab.util.BaseSerializable
 import com.wynnlab.util.ConfigurationDeserializable
 import com.wynnlab.util.DEG2RAD
@@ -82,11 +82,11 @@ data class MobSpell(
                     Bukkit.getScheduler().cancelTask(taskId)
             }
         }
-        particles.taskId = Bukkit.getScheduler().runTaskTimer(plugin, particles, 0L, 20L).taskId
+        particles.taskId = Bukkit.getScheduler().runTaskTimer(wynnlab, particles, 0L, 20L).taskId
 
         // BossBar
         if (hasBossBar) {
-           bossBar = if (hasBossBar) Bukkit.createBossBar(NamespacedKey(plugin, "prepare_${caster.entityId}"),
+           bossBar = if (hasBossBar) Bukkit.createBossBar(NamespacedKey(wynnlab, "prepare_${caster.entityId}"),
                "§5Preparing: §f$name", BarColor.PURPLE, BarStyle.SOLID, BarFlag.DARKEN_SKY) else null
         }
     }
@@ -94,7 +94,7 @@ data class MobSpell(
     abstract class Ticks {
         var t = 0
 
-        abstract fun init(): Unit
+        abstract fun init()
 
         abstract fun tick(): Boolean
 
@@ -118,7 +118,7 @@ data class MobSpell(
             val hasBossBar = map["has_boss_bar"] == true
 
             val scriptFileName = map["script"] as String
-            val scriptFile = File(File(File(plugin.dataFolder, "mobs"), "scripts"), scriptFileName)
+            val scriptFile = File(File(File(wynnlab.dataFolder, "mobs"), "scripts"), scriptFileName)
             val script = WynnScript(scriptFile.reader()).compile()
 
             return MobSpell(name, maxTick, prepareTime, hasBossBar, script)

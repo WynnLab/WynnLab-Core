@@ -1,32 +1,31 @@
 package com.wynnlab.localization
 
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.ChatColor
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
+import java.util.*
 import java.util.logging.Level
 
-class Language(name: String) {
-    private val shortLC = name.split('_')[0]
-
+class Language(private val locale: Locale) {
     private val config = YamlConfiguration()
 
     init {
-        val file = File(languageFolder, "$name.yml")
+        val file = File(languageFolder, "${locale.toLanguageTag().toLowerCase().replace('-', '_')}.yml")
         config.load(file)
     }
 
     init {
-        languages[name] = this
-        if (language_fallbacks[shortLC] == null) language_fallbacks[shortLC] = name
+        languages[locale] = this
+        if (language_fallbacks[locale.language] == null) language_fallbacks[locale.language] = locale
     }
 
     fun getMessage(key: String, vararg format_args: Any?): String = getMessageOrNull(key, *format_args) ?:
-    Language[language_fallbacks[shortLC]!!].getMessageOrNull(key, *format_args) ?:
+    Language[language_fallbacks[locale.language]!!].getMessageOrNull(key, *format_args) ?:
     en_us.getMessageOrNull(key, *format_args) ?: "§4Nls: §r$key"
 
     fun getRandomMessage(key: String, vararg format_args: Any?): String = getRandomMessageOrNull(key, *format_args) ?:
-    Language[language_fallbacks[shortLC]!!].getMessageOrNull(key, *format_args) ?:
+    Language[language_fallbacks[locale.language]!!].getMessageOrNull(key, *format_args) ?:
     en_us.getRandomMessageOrNull(key, *format_args) ?: "§4Nls: §r$key"
 
     private fun getRandomMessageOrNull(key: String, vararg format_args: Any?) = config.getList(key)?.let {
@@ -38,25 +37,25 @@ class Language(name: String) {
     }
 
     companion object {
-        private val languages = hashMapOf<String, Language>()
-        private val language_fallbacks = hashMapOf<String, String>()
+        private val languages = hashMapOf<Locale, Language>()
+        private val language_fallbacks = hashMapOf<String, Locale>()
 
-        val en_us = Language("en_us")
-        operator fun get(locale: String) = languages[locale] ?:
-        languages[language_fallbacks[locale.split('_')[0]]] ?:
+        val en_us = Language(Locale.US)
+        operator fun get(locale: Locale) = languages[locale] ?:
+        languages[language_fallbacks[locale.language]] ?:
         en_us
     }
 }
 
-private val languageFolder by lazy { File(plugin.dataFolder, "lang") }
+private val languageFolder by lazy { File(wynnlab.dataFolder, "lang") }
 
 fun loadLanguages() {
     for (f in languageFolder.list() ?: return) {
         val name = f.substring(0, f.length - 4)
-        plugin.logger.log(Level.INFO, "Loading language $name ...")
+        wynnlab.logger.log(Level.INFO, "Loading language $name ...")
         try {
-            if (name == "en_us") Language["en_us"]
-            else Language(name)
+            if (name == "en_us") Language[Locale.US]
+            else Language(Locale.US)
         } catch (e: Exception) {
             e.printStackTrace()
             continue

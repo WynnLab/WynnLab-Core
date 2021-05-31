@@ -3,7 +3,6 @@ package com.wynnlab.items
 import com.wynnlab.NL_REGEX
 import com.wynnlab.api.*
 import com.wynnlab.listeners.PlayerClickListener
-import com.wynnlab.plugin
 import com.wynnlab.spells.PySpell
 import org.bukkit.Color
 import org.bukkit.Material

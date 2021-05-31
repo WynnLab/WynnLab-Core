@@ -5,24 +5,31 @@ package com.wynnlab.api
 import com.wynnlab.PREFIX
 import com.wynnlab.WynnClass
 import com.wynnlab.events.SpellCastEvent
+import com.wynnlab.extensions.data
 import com.wynnlab.items.WynnItem
 import com.wynnlab.listeners.GUIListener
 import com.wynnlab.localization.Language
-import com.wynnlab.plugin
 import com.wynnlab.random
 import com.wynnlab.scoreboard.InfoSidebar
 import com.wynnlab.scoreboard.scoreboards
 import com.wynnlab.util.RefreshRunnable
+import com.wynnlab.wynnlab
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextComponent
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.Effect
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.metadata.FixedMetadataValue
+import org.bukkit.persistence.PersistentDataType
 import kotlin.math.round
 
 fun Entity.hasScoreboardTag(tag: String) = tag in scoreboardTags
@@ -31,7 +38,7 @@ fun Player.sendWynnMessage(key: String, vararg format_args: Any?) =
     sendMessage(PREFIX + getLocalizedText(key, *format_args))
 
 fun Player.getLocalizedText(key: String, vararg format_args: Any?) =
-    Language[locale.toLowerCase()].getMessage(key, *format_args)
+    Language[locale()].getMessage(key, *format_args)
 
 fun Player.sendWynnMessageNonNls(message: String) {
     sendMessage(PREFIX + message)
@@ -69,7 +76,7 @@ fun Player.cooldown(): Boolean {
     val attackSpeed = attackSpeed ?: return false
     return if ("cooldown" !in scoreboardTags) {
         addScoreboardTag("cooldown")
-        Bukkit.getScheduler().runTaskLater(plugin, Runnable { removeScoreboardTag("cooldown") }, attackSpeed.cooldown.toLong())
+        Bukkit.getScheduler().runTaskLater(wynnlab, Runnable { removeScoreboardTag("cooldown") }, attackSpeed.cooldown.toLong())
         setCooldown(inventory.itemInMainHand.type, attackSpeed.cooldown)
         false
     } else
@@ -94,18 +101,18 @@ fun Player.addLeftClick(invertedControls: Boolean = false) {
     when {
         "rrx" in scoreboardTags -> {
             scoreboardTags.remove("rrx")
-            updateActionBar(if (invertedControls) "§a§nL§r-§a§nL§r-§a§nR" else "§a§nR§r-§a§nR§r-§a§nL")
+            updateActionBar(if (invertedControls) abComponent('L', 'L', 'R') else abComponent('R', 'R', 'L'))
             castSpell(4)
         }
         "rlx" in scoreboardTags -> {
             scoreboardTags.remove("rlx")
-            updateActionBar(if (invertedControls) "§a§nL§r-§a§nR§r-§a§nR" else "§a§nR§r-§a§nL§r-§a§nL")
+            updateActionBar(if (invertedControls) abComponent('L', 'R', 'R') else abComponent('R', 'L', 'L'))
             castSpell(3)
         }
         "rxx" in scoreboardTags -> {
             scoreboardTags.remove("rxx")
             scoreboardTags.add("rlx")
-            updateActionBar(if (invertedControls) "§a§nL§r-§a§nR§r-§n?" else "§a§nR§r-§a§nL§r-§n?")
+            updateActionBar(if (invertedControls) abComponent('L', 'R', '?') else abComponent('R', 'L', '?'))
         }
         else -> {
             castSpell(0)
@@ -124,26 +131,34 @@ fun Player.addRightClick(invertedControls: Boolean = false) {
     when {
         "rrx" in scoreboardTags -> {
             scoreboardTags.remove("rrx")
-            updateActionBar(if (invertedControls) "§a§nL§r-§a§nL§r-§a§nL" else "§a§nR§r-§a§nR§r-§a§nR")
+            updateActionBar(if (invertedControls) abComponent('L', 'L', 'L') else abComponent('R', 'R', 'R'))
             castSpell(2)
         }
         "rlx" in scoreboardTags -> {
             scoreboardTags.remove("rlx")
-            updateActionBar(if (invertedControls) "§a§nL§r-§a§nR§r-§a§nL" else "§a§nR§r-§a§nL§r-§a§nR")
+            updateActionBar(if (invertedControls) abComponent('L', 'R', 'L') else abComponent('R', 'L', 'R'))
             castSpell(1)
         }
         "rxx" in scoreboardTags -> {
             scoreboardTags.remove("rxx")
             scoreboardTags.add("rrx")
-            updateActionBar(if (invertedControls) "§a§nL§r-§a§nL§r-§n?" else "§a§nR§r-§a§nR§r-§n?")
+            updateActionBar(if (invertedControls) abComponent('L', 'L', '?') else abComponent('R', 'R', '?'))
         }
         else -> {
             scoreboardTags.add("rxx")
-            updateActionBar(if (invertedControls) "§a§nL§r-§n?§r-§n?" else "§a§nR§r-§n?§r-§n?")
+            updateActionBar(if (invertedControls) abComponent('L', '?', '?') else abComponent('R', '?', '?'))
         }
     }
     scheduleCancelSpellClicks()
     playEffect(location, Effect.CLICK1, null)
+}
+
+private fun abComponent(lr1: Char, lr2: Char, lr3: Char): TextComponent {
+    fun charComponent(c: Char) = if (c == '?') Component.text(c, NamedTextColor.WHITE)
+        else Component.text(c, TextColor.color(0x82c63b), TextDecoration.UNDERLINED)
+    //updateActionBar(if (invertedControls) "§a§nL§r-§a§nR§r-§n?" else "§a§nR§r-§a§nL§r-§n?")
+    val dash = Component.text("-", TextColor.color(0xdddddd))
+    return charComponent(lr1).append(dash).append(charComponent(lr2)).append(dash).append(charComponent(lr3))
 }
 
 private fun Player.scheduleCancelSpellClicks() {
@@ -156,7 +171,7 @@ fun Player.cancelSpellClicks() {
     removeScoreboardTag("rlx")
 }
 
-fun Player.updateActionBar(msg: String) {
+fun Player.updateActionBar(msg: TextComponent) {
     sendWynnActionBar(msg)
     if ("action_bar" !in scoreboardTags)
         addScoreboardTag("action_bar")
@@ -168,22 +183,43 @@ fun Player.updateActionBar(msg: String) {
 
 fun Player.standardActionBar() {
     if ("action_bar" !in scoreboardTags) {
-        sendWynnActionBar("")
+        sendWynnActionBar(Component.text(""))
     }
 }
 
-private fun Player.sendWynnActionBar(msg: String) {
-    val health = "§4[§c❤ ${health.toInt()}/${getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value?.toInt()}§4]§r"
-    val mana = "§3[§b✺ $foodLevel/20§3]§r"
-    val mlD2 = (ChatColor.stripColor(msg)!!.length) / 2
-    sendActionBar(buildString {
+private fun Player.sendWynnActionBar(msg: TextComponent) {
+    //val health = "§4[§c❤ ${health.toInt()}/${getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value?.toInt()}§4]§r"
+    //val mana = "§3[§b✺ $foodLevel/20§3]§r"
+    //val mlD2 = (ChatColor.stripColor(msg)!!.length) / 2
+    /*sendActionBar(buildString {
         append(health)
         repeat(20 - health.length + 8 - mlD2) { append(' ') }
         append(msg)
         append("§r")
         repeat(20 - mana.length + 8 - mlD2) { append(' ') }
         append(mana)
-    })
+    })*/
+    val health = Component.text("[", TextColor.color(0xb0232f))
+        .append(Component.text("❤ ", TextColor.color(0xd92b3a)))
+        .append(Component.text(health.toInt(), TextColor.color(0xe82738)))
+        .append(Component.text("/", TextColor.color(0xd92b3a)))
+        .append(Component.text(getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value.toInt(), TextColor.color(0xe82738)))
+        .append(Component.text("]", TextColor.color(0xb0232f)))
+
+    val mana = Component.text("[", TextColor.color(0x23abb0))
+        .append(Component.text("✺ ", TextColor.color(0x2bd3d9)))
+        .append(Component.text(foodLevel, TextColor.color(0x23e1e8)))
+        .append(Component.text("/", TextColor.color(0x2bd3d9)))
+        .append(Component.text("20", TextColor.color(0x23e1e8)))
+        .append(Component.text("]", TextColor.color(0x23abb0)))
+
+    val mlD2 = msg.content().length / 2
+    sendActionBar(health
+        .append(Component.text((StringBuffer().apply { repeat((20 - health.content().length - mlD2) / 2) { append(' ') } }).toString()))
+        .append(msg)
+        .append(Component.text((StringBuffer().apply { repeat((20 - mana.content().length - mlD2) / 2) { append(' ') } }).toString()))
+        .append(mana)
+    )
 }
 
 var Player.prefix: String
@@ -195,16 +231,26 @@ set(value) {
 
 val prefixes = hashMapOf<Player, String>()
 
-fun Player.wynnPrefix(): String {
-    val classId = getWynnClass() ?: return "§r"
+fun Player.wynnPrefix(): TextComponent {
+    val classId = getWynnClass() ?: return Component.text("§r")
     val classPrefix = if (isCloneClass) Language.en_us.getMessage("classes.$classId.cloneName")
         else Language.en_us.getMessage("classes.$classId.className")
-    return "§7[106/${classPrefix.substring(0..1)}${data.getString("guild_tag")?.let { "/$it" } ?: ""}] §r"
+    //return "§7[106/${classPrefix.substring(0..1)}${data.getString("guild_tag")?.let { "/$it" } ?: ""}] §r"
+    return Component.text("[", TextColor.color(0x888888))
+        .append(Component.text(106, TextColor.color(0x99cc99)))
+        .append(Component.text("/", TextColor.color(0x888888)))
+        .append(Component.text(classPrefix.substring(0, 2), TextColor.color(0xcc9999)))
+        .append(Component.text(if (data.has(NamespacedKey(wynnlab, "guild_tag"), PersistentDataType.STRING)) "/" else "", TextColor.color(0x888888)))
+        .append(Component.text(data.getString("guild_tag") ?: "", TextColor.color(0x99b0cc)))
+        .append(Component.text("]", TextColor.color(0x888888)))
+        .append(Component.text(" §r"))
 }
 
 fun Player.updatePrefix() {
-    setDisplayName(wynnPrefix()+prefix+name)
-    setPlayerListName(prefix+name)
+    //setDisplayName(wynnPrefix()+prefix+name)
+    displayName(wynnPrefix().append(Component.text(prefix+name)))
+    //setPlayerListName(prefix+name)
+    playerListName(Component.text(prefix+name))
 }
 
 val Player.wynnEquipment get() = inventory.let { inv -> arrayOf(
@@ -351,18 +397,26 @@ fun Player.testInventory() {
 fun Player.updatePouch(add: ItemStack? = null) {
     inventory.setItem(13, ItemStack(Material.DIAMOND_AXE).setAppearance(93).meta {
                 addItemFlags(*ItemFlag.values())
-                setDisplayName("§6Magic Pouch")
-                lore = listOf(
+                //setDisplayName("§6Magic Pouch")
+                /*lore = listOf(
                     "§fLeft-Click §7to view contents",
                     //" "
-                )
+                )*/
+        displayName(Component.text("Magic Pouch", TextColor.color(0xedd953)))
+        lore(listOf(
+            Component.text("Left-Click", NamedTextColor.WHITE)
+                .append(Component.text(" to view contents", NamedTextColor.GRAY)),
+            Component.text("Shift-Right-Click", NamedTextColor.WHITE)
+                .append(Component.text(" to clear", NamedTextColor.GRAY))
+        ))
+
                 data.setBoolean("pouch", true)
             })
 
 }
 
 fun Player.showPouch() {
-    setMetadata("a", FixedMetadataValue(plugin, Bukkit.createInventory(null, 5)))
+    setMetadata("a", FixedMetadataValue(wynnlab, Bukkit.createInventory(null, 5)))
 }
 
 fun Player.updateSidebar() {

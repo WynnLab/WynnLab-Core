@@ -16,7 +16,7 @@ abstract class Scoreboard(
 ) {
     val objectives = hashMapOf<Player, Objective>()
 
-    val scores = hashMapOf<Objective, MutableSet<Int>>()
+    private val scores = hashMapOf<Objective, MutableSet<Int>>()
 
     fun update(player: Player) /*= Bukkit.getScheduler().runTaskAsynchronously(plugin, Runnable*/ {
         val sb = scoreboards[player]
@@ -67,18 +67,18 @@ abstract class Scoreboard(
         scores[o]?.add(s)
     }
 
-    fun showScore(o: Objective, s: Int) {
+    private fun showScore(o: Objective, s: Int) {
         val n = "§${s.toString(0x10)}"
         //if (o.getScore(n).isScoreSet)
         //    return
         o.getScore(n).score = s
     }
 
-    fun removeScore(sb: _Sb, o: Objective, s: Int) {
+    private fun removeScore(sb: _Sb, o: Objective, s: Int) {
         hideScore(sb, o, s)
     }
 
-    fun hideScore(sb: _Sb, o: Objective, s: Int) {
+    private fun hideScore(sb: _Sb, o: Objective, s: Int) {
         val n = "§${s.toString(0x10)}"
         if (o.getScore(n).isScoreSet)
             return

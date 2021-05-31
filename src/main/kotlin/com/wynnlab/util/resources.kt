@@ -1,14 +1,14 @@
 package com.wynnlab.util
 
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import java.util.logging.Level
 
 fun saveAllResources() {
-    plugin.logger.log(Level.INFO, "Saving resources...")
+    wynnlab.logger.log(Level.INFO, "Saving resources...")
     resources.forEach {
-        plugin.saveResource(it, true)
+        wynnlab.saveResource(it, true)
     }
-    plugin.logger.log(Level.INFO, "... Done")
+    wynnlab.logger.log(Level.INFO, "... Done")
 }
 
 val resources = arrayOf(

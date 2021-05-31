@@ -8,6 +8,9 @@ import com.wynnlab.classes.BasePlayerSpell
 import com.wynnlab.events.SpellCastEvent
 import com.wynnlab.spells.Spell
 import com.wynnlab.util.RefreshRunnable
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -38,14 +41,21 @@ class CastListener : BaseListener() {
         if (spellId > 0) {
             if (player.foodLevel > cost) {
                 player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, .5f)
-                player.updateActionBar(
-                    "${player.getLocalizedText("classes.${player.getWynnClass()}.spells.${if (player.isCloneClass) "${spellId}c" else spellId.toString()}")} Cast " +
-                            "§3[§b-${cost}✺§3]"
+                player.updateActionBar(Component.text(
+                    player.getLocalizedText("classes.${player.getWynnClass()}.spells.${if (player.isCloneClass) "${spellId}c" else spellId.toString()}"
+                    ), TextColor.color(0x75ebf0))
+                    .append(Component.text(" Cast ", TextColor.color(0x9feaed)))
+                    .append(Component.text("[",TextColor.color(0x23abb0)))
+                    .append(Component.text(-cost, TextColor.color(0x23e1e8)))
+                    .append(Component.text("✺ ", TextColor.color(0x2bd3d9)))
+                    .append(Component.text("]",TextColor.color(0x23abb0)))
+                    //"${} Cast " +
+                    //        "§3[§b-${cost}✺§3]"
                 )
                 player.foodLevel -= cost
             } else {
                 player.playSound(player.location, Sound.BLOCK_ANVIL_PLACE, 1f, 1f)
-                player.updateActionBar("§4Not enough mana!")
+                player.updateActionBar(Component.text("Not enough mana!", NamedTextColor.DARK_RED))
                 return
             }
         } else {

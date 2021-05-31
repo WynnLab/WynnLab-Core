@@ -1,4 +1,3 @@
-import jdk.nashorn.api.scripting.ScriptObjectMirror
 import javax.script.ScriptEngineManager
 
 fun main() {

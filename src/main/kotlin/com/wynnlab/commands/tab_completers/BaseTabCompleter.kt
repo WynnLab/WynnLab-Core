@@ -1,6 +1,6 @@
 package com.wynnlab.commands.tab_completers
 
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.command.TabCompleter
 
 abstract class BaseTabCompleter(vararg val names: String) : TabCompleter {
@@ -21,5 +21,5 @@ fun registerTabCompleters() {
 
 private fun registerTabCompleter(tabCompleter: BaseTabCompleter) {
     for (name in tabCompleter.names)
-        plugin.getCommand(name)?.tabCompleter = tabCompleter
+        wynnlab.getCommand(name)?.tabCompleter = tabCompleter
 }

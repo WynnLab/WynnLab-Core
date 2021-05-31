@@ -1,7 +1,7 @@
 package com.wynnlab.locations
 
 import com.wynnlab.api.hasScoreboardTag
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.boss.BarColor
@@ -13,7 +13,7 @@ import java.io.File
 
 @Suppress("unchecked_cast")
 fun loadLocations() {
-    val file = File(plugin.dataFolder, "locations.yml")
+    val file = File(wynnlab.dataFolder, "locations.yml")
     if (!file.exists()) return
 
     val config = YamlConfiguration()
@@ -69,7 +69,7 @@ fun Player.updateLocations() {
 }
 
 private fun createLBB(player: Player): KeyedBossBar =
-    Bukkit.createBossBar(NamespacedKey(plugin, "locations_${player.name}"), "Title", BarColor.BLUE, BarStyle.SOLID).apply {
+    Bukkit.createBossBar(NamespacedKey(wynnlab, "locations_${player.name}"), "Title", BarColor.BLUE, BarStyle.SOLID).apply {
         isVisible = true
         progress = 1.0
 

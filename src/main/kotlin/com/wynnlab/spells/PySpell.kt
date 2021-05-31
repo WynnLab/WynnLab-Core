@@ -1,6 +1,6 @@
 package com.wynnlab.spells
 
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Particle
@@ -18,7 +18,7 @@ abstract class PySpell : Runnable {
     var t = 0
 
     private var _taskId = -1
-    val taskId get() = _taskId
+    private val taskId get() = _taskId
 
     private var scheduled = false
     var maxTick = 0
@@ -52,7 +52,7 @@ abstract class PySpell : Runnable {
 
     fun schedule() {
         init()
-        _taskId = Bukkit.getScheduler().runTaskTimer(plugin, this, 0L, 1L).taskId
+        _taskId = Bukkit.getScheduler().runTaskTimer(wynnlab, this, 0L, 1L).taskId
         scheduled = true
     }
 

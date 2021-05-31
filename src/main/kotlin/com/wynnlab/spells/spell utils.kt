@@ -9,7 +9,7 @@ import com.wynnlab.classes.BaseClass
 import com.wynnlab.entities.Hologram
 import com.wynnlab.items.WynnItem
 import com.wynnlab.listeners.ProjectileHitListener
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import com.wynnlab.random
 import com.wynnlab.util.normalizeOnXZ
 import com.wynnlab.util.plus
@@ -34,7 +34,7 @@ fun registerProjectileHit(tag: String, e: (ProjectileHitEvent) -> Unit) {
 }
 
 fun damage(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) =
-    Bukkit.getScheduler().runTaskAsynchronously(plugin) { ->
+    Bukkit.getScheduler().runTaskAsynchronously(wynnlab) { ->
     // LS / MS
     if (melee) {
         source.weaponAttackSpeed?.let<WynnItem.AttackSpeed, Unit> { attackSpeed ->
@@ -60,7 +60,7 @@ fun damage(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, 
 
     // Exploding
     if (melee && "no_exploding" !in source.scoreboardTags && random.nextDouble() < (source.getId("exploding") / 100.0 * multiplier)) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin) { exploding(source, e, multiplier, conversion) }
+        Bukkit.getScheduler().scheduleSyncDelayedTask(wynnlab) { exploding(source, e, multiplier, conversion) }
     } else {
         source.addScoreboardTag("no_exploding")
     }
@@ -109,7 +109,7 @@ fun exploding(source: Player, e: LivingEntity, multiplier: Double, conversion: D
 
 fun poison(source: Player, e: LivingEntity, poison: Int) {
     val task = poisonTask(e, poison, source)
-    task.id = Bukkit.getScheduler().runTaskTimer(plugin, task, 0L, 20L).taskId
+    task.id = Bukkit.getScheduler().runTaskTimer(wynnlab, task, 0L, 20L).taskId
 }
 
 private fun poisonTask(e: LivingEntity, poison: Int, source: Player) = object : Runnable {
@@ -172,7 +172,7 @@ fun damageBy(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double
     val diLocation = e.eyeLocation.clone().add(random.nextDouble() * .5, random.nextDouble() * .5 + .5, random.nextDouble() * .5)
     val di = Hologram(diLocation, damageText)
 
-    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin) {
+    Bukkit.getScheduler().scheduleSyncDelayedTask(wynnlab) {
         e.damage(damage.sum(), source)
         e.noDamageTicks = 0
 

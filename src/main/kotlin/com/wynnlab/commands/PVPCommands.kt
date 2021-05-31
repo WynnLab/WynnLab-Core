@@ -3,7 +3,7 @@ package com.wynnlab.commands
 import com.wynnlab.api.hasScoreboardTag
 import com.wynnlab.api.sendWynnMessage
 import com.wynnlab.gui.PVPGUI
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.*
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -39,7 +39,7 @@ object PVPCommands : BaseCommand("pvp", "hub", "leave", "stats") {
         return true
     }
 
-    fun hub(sender: CommandSender, args: Array<out String>): Boolean {
+    private fun hub(sender: CommandSender, args: Array<out String>): Boolean {
         if (args.isNotEmpty())
             return false
 
@@ -53,7 +53,7 @@ object PVPCommands : BaseCommand("pvp", "hub", "leave", "stats") {
         return true
     }
 
-    fun leave(sender: CommandSender, args: Array<out String>): Boolean {
+    private fun leave(sender: CommandSender, args: Array<out String>): Boolean {
         if (args.isNotEmpty())
             return false
 
@@ -72,7 +72,7 @@ object PVPCommands : BaseCommand("pvp", "hub", "leave", "stats") {
         return true
     }
 
-    fun stats(sender: CommandSender, args: Array<out String>): Boolean {
+    private fun stats(sender: CommandSender, args: Array<out String>): Boolean {
         if (args.size > 1)
             return false
 
@@ -103,7 +103,7 @@ object PVPCommands : BaseCommand("pvp", "hub", "leave", "stats") {
 
     internal fun world(player: Player) {
         player.sendMessage("Copying...")
-        Bukkit.getScheduler().runTaskAsynchronously(plugin) { ->
+        Bukkit.getScheduler().runTaskAsynchronously(wynnlab) { ->
             try {
                 Files.copy(File("./world/").toPath(), File("./duel_instance_${player.uniqueId}/").toPath(),
                     StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, LinkOption.NOFOLLOW_LINKS)
@@ -114,16 +114,16 @@ object PVPCommands : BaseCommand("pvp", "hub", "leave", "stats") {
             }
             copyDir(File("./world"), File("./duel_instance_${player.uniqueId}"))
             File("./duel_instance_${player.uniqueId}/uid.dat").delete()
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(wynnlab) {
                 loadWorld(player)
             }
         }
     }
 
-    fun loadWorld(player: Player) {
+    private fun loadWorld(player: Player) {
         player.sendMessage("Starting wc")
 
-        val wc = WorldCreator.ofNameAndKey("duel_instance_${player.uniqueId}",NamespacedKey(plugin, "duel_instance_${player.uniqueId}"))
+        val wc = WorldCreator.ofNameAndKey("duel_instance_${player.uniqueId}",NamespacedKey(wynnlab, "duel_instance_${player.uniqueId}"))
         player.sendMessage("Initialized wc")
 
         wc.type(WorldType.FLAT)
@@ -144,7 +144,7 @@ object PVPCommands : BaseCommand("pvp", "hub", "leave", "stats") {
         world.noTickViewDistance = 2
         world.viewDistance = 8
 
-        plugin.setGameRules(world)
+        wynnlab.setGameRules(world)
         player.sendMessage("Set game rules")
 
         world.worldBorder.apply {
@@ -159,14 +159,14 @@ object PVPCommands : BaseCommand("pvp", "hub", "leave", "stats") {
 
         player.sendMessage("Done")
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin) { ->
+        Bukkit.getScheduler().runTaskAsynchronously(wynnlab) { ->
             deleteDir(File("./duel_instance_${player.uniqueId}"))
         }
 
-        Bukkit.getScheduler().runTaskTimer(plugin, { task ->
+        Bukkit.getScheduler().runTaskTimer(wynnlab, { task ->
             if (world.playerCount < 1) {
                 Bukkit.getServer().unloadWorld(world, false)
-                Bukkit.getScheduler().runTaskAsynchronously(plugin) { -> deleteDir(File("./duel_instance_${player.uniqueId}")) }
+                Bukkit.getScheduler().runTaskAsynchronously(wynnlab) { -> deleteDir(File("./duel_instance_${player.uniqueId}")) }
                 task.cancel()
             }
         }, 20L, 20L)
@@ -174,7 +174,7 @@ object PVPCommands : BaseCommand("pvp", "hub", "leave", "stats") {
         player.gameMode = GameMode.CREATIVE
     }
 
-    fun copyDir(from: File, to: File) {
+    private fun copyDir(from: File, to: File) {
         from.list()!!.forEach { n ->
             val f = File(from, n)
             val t =  File(to, n)
@@ -184,7 +184,7 @@ object PVPCommands : BaseCommand("pvp", "hub", "leave", "stats") {
         }
     }
 
-    fun deleteDir(dir: File) {
+    private fun deleteDir(dir: File) {
         fun deleteDir(dir: File) {
             dir.listFiles()!!.forEach { f ->
                 if (f.isDirectory)

@@ -3,7 +3,7 @@ package com.wynnlab.util
 import com.wynnlab.api.getInt
 import com.wynnlab.api.remove
 import com.wynnlab.api.setInt
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.Bukkit
 import org.bukkit.persistence.PersistentDataContainer
 
@@ -24,7 +24,7 @@ abstract class RefreshRunnable(private val data: PersistentDataContainer, privat
     abstract fun task()
 
     fun schedule(delay: Long) {
-        Bukkit.getScheduler().runTaskLater(plugin, this, delay)
+        Bukkit.getScheduler().runTaskLater(wynnlab, this, delay)
         data.setInt("RR_$id", (data.getInt("RR_$id") ?: 0) + 1)
     }
 

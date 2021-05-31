@@ -44,7 +44,7 @@ data class Party(
         }
     }
 
-    fun promote(player: Player) {
+    private fun promote(player: Player) {
         player.sendWynnMessage("messages.party.promote")
 
         owner = player
@@ -54,7 +54,7 @@ data class Party(
     fun invite(player: Player) {
         invites[player] = this
 
-        val language = Language[player.locale]
+        val language = Language[player.locale()]
 
         player.sendMessage("$PREFIX${language.getMessage("messages.party.invite.get", owner.name)}")
 

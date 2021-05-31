@@ -1,7 +1,7 @@
 package com.wynnlab.listeners
 
 import com.wynnlab.api.*
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import com.wynnlab.random
 import com.wynnlab.util.RefreshRunnable
 import org.bukkit.Bukkit
@@ -87,7 +87,7 @@ class DamageListener : BaseListener() {
         if (tag in player.scoreboardTags)
             Bukkit.bo
         player.addScoreboardTag(tag)*/
-        val bbKey = NamespacedKey(plugin, "damage_${entity.entityId}")
+        val bbKey = NamespacedKey(wynnlab, "damage_${entity.entityId}")
         val currentBB = Bukkit.getBossBar(bbKey)
         currentBB?.apply {
             setTitle("$oldName§r§f - §4${currentHealth.toInt()}§c❤")
@@ -132,11 +132,11 @@ class DamageListener : BaseListener() {
         if (e.entity is Player)
             return
 
-        val damageKey = NamespacedKey(plugin, "damage_${e.entity.entityId}")
+        val damageKey = NamespacedKey(wynnlab, "damage_${e.entity.entityId}")
         Bukkit.getBossBar(damageKey)?.removeAll()
         Bukkit.removeBossBar(damageKey)
 
-        val prepareKey = NamespacedKey(plugin, "prepare_${e.entity.entityId}")
+        val prepareKey = NamespacedKey(wynnlab, "prepare_${e.entity.entityId}")
         (Bukkit.getBossBar(prepareKey) ?: return).removeAll()
         Bukkit.removeBossBar(prepareKey)
     }

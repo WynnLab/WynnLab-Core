@@ -42,7 +42,7 @@ class PlayerEventsListener : BaseListener() {
     }
 
     @EventHandler
-    fun onPlayerChat(@Suppress("depreciation") e: AsyncPlayerChatEvent) {
+    fun onPlayerChat(e: AsyncPlayerChatEvent) {
         val message = StringBuilder(e.message) //ChatColor.translateAlternateColorCodes('&', e.message)
         val selfMessage = StringBuilder(message)
 
@@ -84,7 +84,7 @@ class PlayerEventsListener : BaseListener() {
         e.setShouldDropExperience(false)
         e.droppedExp = 0
 
-        e.deathMessage = e.entity.let { Language[it.locale].getRandomMessage("death_messages", it.name) }
+        e.deathMessage = e.entity.let { Language[it.locale()].getRandomMessage("death_messages", it.name) }
     }
 
     @EventHandler

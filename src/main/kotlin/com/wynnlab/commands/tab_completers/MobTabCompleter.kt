@@ -1,6 +1,6 @@
 package com.wynnlab.commands.tab_completers
 
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import java.io.File
@@ -16,7 +16,7 @@ object MobTabCompleter : BaseTabCompleter("mob") {
             return null
 
         return completeWord(
-            (File(plugin.dataFolder, "mobs").list() ?: return emptyList()).asList()
+            (File(wynnlab.dataFolder, "mobs").list() ?: return emptyList()).asList()
                 .filter { it.endsWith(".yml") }.map { it.substring(0, it.length - 4) },
             args[0])
     }

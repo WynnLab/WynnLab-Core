@@ -3,7 +3,7 @@ package com.wynnlab.pvp
 import org.bukkit.entity.Player
 
 object Duels {
-    val duels = mutableMapOf<Player, Duel>()
+    private val duels = mutableMapOf<Player, Duel>()
 
     operator fun get(player: Player) = duels[player]
 }

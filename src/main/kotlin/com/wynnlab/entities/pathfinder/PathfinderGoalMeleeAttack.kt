@@ -1,4 +1,3 @@
 package com.wynnlab.entities.pathfinder
 
-class PathfinderGoalMeleeAttack {
-}
+class PathfinderGoalMeleeAttack

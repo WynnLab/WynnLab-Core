@@ -1,6 +1,6 @@
 package com.wynnlab.util
 
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.Bukkit
 
 abstract class TickRunnable : Runnable {
@@ -9,7 +9,7 @@ abstract class TickRunnable : Runnable {
     private var _taskId = -1
     val taskId get() = _taskId
 
-    protected var scheduled = false
+    private var scheduled = false
     var maxTick = 0
 
     open fun init() {}
@@ -42,7 +42,7 @@ abstract class TickRunnable : Runnable {
 
     fun schedule() {
         init()
-        _taskId = Bukkit.getScheduler().runTaskTimer(plugin, this, 0L, 1L).taskId
+        _taskId = Bukkit.getScheduler().runTaskTimer(wynnlab, this, 0L, 1L).taskId
         scheduled = true
     }
 }

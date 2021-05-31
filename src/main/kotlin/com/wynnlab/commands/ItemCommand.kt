@@ -4,7 +4,8 @@ import com.wynnlab.api.hasScoreboardTag
 import com.wynnlab.items.SpecialItems
 import com.wynnlab.items.WynnItem
 import com.wynnlab.items.getAPIResults
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -42,12 +43,12 @@ object ItemCommand : BaseCommand("item") {
                 val wynnItem = WynnItem.parse(jsonObjects[0])
                 sender.inventory.addItem(wynnItem.generateNewItem(sender))
             } else {
-                val inv = Bukkit.createInventory(sender, (jsonObjects.size / 9 + 1) * 9, "Your items")
+                val inv = Bukkit.createInventory(sender, (jsonObjects.size / 9 + 1) * 9, Component.text("Your Items"))
                 val wynnItems = jsonObjects.mapNotNull { WynnItem.parse(it).takeUnless { we -> we.isNormal() } }
                 inv.addItem(*Array(wynnItems.size) { i ->
                     wynnItems[i].generateNewItem(sender)
                 })
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin) {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(wynnlab) {
                     sender.openInventory(inv)
                 }
             }

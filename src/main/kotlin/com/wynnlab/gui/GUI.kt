@@ -3,7 +3,7 @@ package com.wynnlab.gui
 import com.wynnlab.api.meta
 import com.wynnlab.listeners.GUIListener
 import com.wynnlab.localization.Language
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -17,9 +17,9 @@ abstract class GUI(
 ) {
     val inventory = Bukkit.createInventory(player, rows * 9, title)
 
-    protected val language = Language[player.locale.toLowerCase()]
+    protected val language = Language[player.locale()]
 
-    val decorator get() = com.wynnlab.gui.decorator
+    private val decorator get() = com.wynnlab.gui.decorator
 
     fun decorate() {
         var i = 0
@@ -36,9 +36,9 @@ abstract class GUI(
 
     fun show() {
         Bukkit.getScheduler().runTaskAsynchronously(
-            plugin, Runnable {
+            wynnlab, Runnable {
                 update()
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin) {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(wynnlab) {
                     player.openInventory(inventory)
                 }
             })

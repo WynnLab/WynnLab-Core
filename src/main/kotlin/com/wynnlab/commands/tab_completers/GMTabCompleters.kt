@@ -1,3 +1,5 @@
+@file:Suppress("IntroduceWhenSubject")
+
 package com.wynnlab.commands.tab_completers
 
 import org.bukkit.command.Command

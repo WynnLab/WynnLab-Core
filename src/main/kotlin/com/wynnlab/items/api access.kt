@@ -1,6 +1,6 @@
 package com.wynnlab.items
 
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import com.wynnlab.util.Deferred
 import com.wynnlab.util.getWynncraftAPIResult
 import com.wynnlab.util.jsonParser
@@ -22,6 +22,6 @@ fun getAPIResults(search: String): Deferred<List<JSONObject>> = Deferred {
     items
 }
 
-val customItemFolder by lazy { try { File(plugin.dataFolder, "custom_items") } catch (e: FileNotFoundException) { null } }
+val customItemFolder by lazy { try { File(wynnlab.dataFolder, "custom_items") } catch (e: FileNotFoundException) { null } }
 
 class APIException(message: String) : Exception("Could not access the API ($message)")

@@ -11,6 +11,7 @@ import com.wynnlab.scoreboard.Scoreboard
 import com.wynnlab.util.getWynncraftAPIResult
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
@@ -22,7 +23,7 @@ import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 
 object Players {
-    val players get() = Bukkit.getOnlinePlayers()
+    val players: Collection<Player> get() = Bukkit.getOnlinePlayers()
 
     fun initPlayers() {
         //initTeams()
@@ -67,33 +68,55 @@ object Players {
 
         player.inventory.run {
             setItem(6, ItemStack(Material.COMPASS).meta {
-                setDisplayName("§bCharacter Info")
-                lore = listOf("§6View and manage your skills")
+                //setDisplayName("§bCharacter Info")
+                displayName(Component.text("Character Info", TextColor.color(0x2f8ed6)))
+                //lore = listOf("§6View and manage your skills")//cc832b
+                lore(listOf(Component.text("View and manage your skills", TextColor.color(0x74b3e3))))
             })
             setItem(7, ItemStack(Material.WRITTEN_BOOK).metaAs<BookMeta> {
                 title = "§dQuest Book"
                 author = "WynnLab"
                 generation = BookMeta.Generation.ORIGINAL
             }.meta {
-            lore = listOf("", "§5Quests: §d0/0 §5[100%]")
+                //lore = listOf("", "§5Quests: §d0/0 §5[100%]")
+                lore(listOf(Component.text(""),
+                    Component.text("Quests: ", TextColor.color(0x993ce6))
+                        .append(Component.text("0/0", TextColor.color(0xc13ce6)))
+                        .append(Component.text(" [", TextColor.color(0x732dad)))
+                        .append(Component.text("100%", TextColor.color(0x993ce6)))
+                        .append(Component.text("]", TextColor.color(0x732dad)))
+                ))
             })
             setItem(8, ItemStack(Material.NETHER_STAR, 15).meta {
-                setDisplayName("§e§l§o15§b Soul Points")
-                lore = listOf("§7Having less soul points increases", "§7the chance of dropping items upon", "§7death",
-                )//" ", "§cShift Right-Click to enable hunted")
+                //setDisplayName("§e§l§o15§b Soul Points")
+                displayName(
+                    Component.text("15", NamedTextColor.YELLOW)
+                        .append(Component.text(" Soul Points", TextColor.color(0x95d7ed))).style {
+                            it.decorate(TextDecoration.BOLD, TextDecoration.ITALIC)
+                        })
+                //lore = listOf("§7Having less soul points increases", "§7the chance of dropping items upon", "§7death", )//" ", "§cShift Right-Click to enable hunted")
+                lore(listOf(
+                    Component.text("Having less soul points increases", NamedTextColor.GRAY),
+                    Component.text("the chance of dropping items upon", NamedTextColor.GRAY),
+                    Component.text("death.", NamedTextColor.GRAY),
+                ))
             })
 
             setItem(9, ItemStack(Material.SNOW).meta {
-                setDisplayName("§7Ring Slot§1")
+                //setDisplayName("§7Ring Slot§1")
+                displayName(Component.text("Ring Slot", NamedTextColor.GRAY).append(Component.text("§1")))
             })
             setItem(10, ItemStack(Material.SNOW).meta {
-                setDisplayName("§7Ring Slot§2")
+                //setDisplayName("§7Ring Slot§2")
+                displayName(Component.text("Ring Slot", NamedTextColor.GRAY).append(Component.text("§2")))
             })
             setItem(11, ItemStack(Material.SNOW).meta {
-                setDisplayName("§7Bracelet Slot")
+                //setDisplayName("§7Bracelet Slot")
+                displayName(Component.text("Bracelet Slot", NamedTextColor.GRAY))
             })
             setItem(12, ItemStack(Material.SNOW).meta {
-                setDisplayName("§7Necklace Slot")
+                //setDisplayName("§7Necklace Slot")
+                displayName(Component.text("Necklace Slot", NamedTextColor.GRAY))
             })
 
             player.updatePouch()

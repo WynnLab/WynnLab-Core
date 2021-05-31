@@ -2,7 +2,7 @@
 
 package com.wynnlab.api
 
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import org.bukkit.NamespacedKey
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataHolder
@@ -11,7 +11,7 @@ import org.bukkit.persistence.PersistentDataType
 inline val PersistentDataHolder.data get() = persistentDataContainer
 
 operator fun <T, Z> PersistentDataContainer.get(key: String, type: PersistentDataType<T, Z>) =
-    try { this[NamespacedKey(plugin, key), type] } catch (e: IllegalArgumentException) { null }
+    try { this[NamespacedKey(wynnlab, key), type] } catch (e: IllegalArgumentException) { null }
 
 fun PersistentDataContainer.getString(key: String, default: String? = null) = this[key, PersistentDataType.STRING] ?: default
 
@@ -29,7 +29,7 @@ fun PersistentDataContainer.getDouble(key: String, default: Double? = null) = th
 
 
 operator fun <T, Z> PersistentDataContainer.set(key: String, type: PersistentDataType<T, Z>, value: Z) =
-    set(NamespacedKey(plugin, key), type, value!!)
+    set(NamespacedKey(wynnlab, key), type, value!!)
 
 fun PersistentDataContainer.setString(key: String, value: String) = set(key, PersistentDataType.STRING, value)
 
@@ -48,4 +48,4 @@ fun PersistentDataContainer.setBoolean(key: String, value: Boolean) = set(key, P
 fun PersistentDataContainer.setDouble(key: String, value: Double) = set(key, PersistentDataType.DOUBLE, value)
 
 
-fun PersistentDataContainer.remove(key: String) = remove(NamespacedKey(plugin, key))
+fun PersistentDataContainer.remove(key: String) = remove(NamespacedKey(wynnlab, key))

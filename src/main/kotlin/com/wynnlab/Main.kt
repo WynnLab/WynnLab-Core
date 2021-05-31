@@ -83,7 +83,7 @@ class Main : JavaPlugin() {
 }
 
 private lateinit var instance: Main
-val plugin get() = instance
+val wynnlab get() = instance
 
 const val PREFIX = "§8[§bWynnLab§8] §r"
 

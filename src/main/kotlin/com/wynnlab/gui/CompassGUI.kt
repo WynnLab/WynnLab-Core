@@ -5,7 +5,7 @@ import com.wynnlab.WynnClass
 import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.guilds.Guild
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import net.minecraft.server.v1_16_R3.ChatMessage
 import net.minecraft.server.v1_16_R3.Containers
 import net.minecraft.server.v1_16_R3.PacketPlayOutOpenWindow
@@ -22,7 +22,7 @@ import org.bukkit.persistence.PersistentDataContainer
 class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, player.getLocalizedText("gui.compass.title", 200 - skills.sum()), 3) {
     constructor(player: Player) : this(player, player.getSkills())
 
-    val spLeft = 200 - skills.sum()
+    private val spLeft = 200 - skills.sum()
 
     init {
         registerListener { e ->
@@ -51,7 +51,7 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
             ChatMessage(player.getLocalizedText("gui.compass.title", 200 - skills.sum())))
         nmsPlayer.playerConnection.sendPacket(packet)
 
-        Bukkit.getScheduler().runTaskLater(plugin, Runnable {
+        Bukkit.getScheduler().runTaskLater(wynnlab, Runnable {
             if (slot == -1 || slot == 0)
                 inventory.setItem(11, strengthBook())
             if (slot == -1 || slot == 1)

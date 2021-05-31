@@ -1,6 +1,6 @@
 package com.wynnlab.entities.pathfinder
 
-import com.wynnlab.plugin
+import com.wynnlab.wynnlab
 import com.wynnlab.spells.MobSpell
 import net.minecraft.server.v1_16_R3.EntityCreature
 import net.minecraft.server.v1_16_R3.EntityLiving
@@ -70,7 +70,7 @@ class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Doubl
         } else if (prepare == 0) {
             if (spell!!.hasBossBar) {
                 spell!!.bossBar!!.removeAll()
-                Bukkit.removeBossBar(NamespacedKey(plugin, "prepare_${creature.id}"))
+                Bukkit.removeBossBar(NamespacedKey(wynnlab, "prepare_${creature.id}"))
             }
 
             runnable = spell!!.newInstance(creature.bukkitEntity, target!!.bukkitEntity as Player)

@@ -9,12 +9,12 @@ import org.bukkit.entity.Player
 enum class Rank(
     val donation: Boolean,
     val tag: String,
-    val color: ChatColor
+    private val color: ChatColor
 ) {
     PLAYER(false, "", ChatColor.WHITE),
 
     VIP(true, "§a[VIP] ", ChatColor.GREEN),
-    `VIP+`(true, "§b[§3VIP+§b] ", ChatColor.AQUA),
+    @Suppress("EnumEntryName") `VIP+`(true, "§b[§3VIP+§b] ", ChatColor.AQUA),
     HERO(true, "§5[§dHERO§5] ", ChatColor.DARK_PURPLE),
     CHAMPION(true, "§e[§6CHAMPION§e] ", ChatColor.YELLOW),
 
