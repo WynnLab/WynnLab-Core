@@ -3,4 +3,5 @@ files:
     ignore:
       - ar_sa.yml
       - de_de.yml
+      - en_us.yml
     translation: /src/main/resources/lang/%locale_with_underscore%.yml
