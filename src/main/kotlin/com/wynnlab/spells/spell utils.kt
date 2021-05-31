@@ -234,7 +234,7 @@ fun nearbyMobsAndTag(player: Player, location: Location, x: Double, y: Double, z
 }
 
 fun castSpell(player: Player, clazz: String, index: Int, vararg args: Any?) = (classes[clazz] as? WynnClass)?.spells?.get(index)
-    ?.cast(player, *args) ?: (classes[clazz] as? BaseClass)?.spells?.get(index)?.constructor?.invoke(player)?.tick()
+    ?.cast(player, *args) ?: (classes[clazz] as? BaseClass)?.spells?.get(index)?.invoke(player)?.schedule()
 
 @Suppress("unused")
 fun colorText(text: String, color: String) = "§$color$text"

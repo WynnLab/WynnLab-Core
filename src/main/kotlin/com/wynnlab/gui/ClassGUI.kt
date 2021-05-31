@@ -1,13 +1,13 @@
 package com.wynnlab.gui
 
 import com.wynnlab.NL_REGEX
+import com.wynnlab.Tuple4
 import com.wynnlab.WynnClass
 import com.wynnlab.api.getLocalizedText
 import com.wynnlab.api.sendWynnMessage
 import com.wynnlab.api.setWynnClass
 import com.wynnlab.classes
 import com.wynnlab.classes.BaseClass
-import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
@@ -32,57 +32,54 @@ class ClassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.class.
                     ClickType.RIGHT, ClickType.SHIFT_RIGHT -> true
                     else -> return@registerListener
             }) {
-                player.sendWynnMessage("gui.class.select", player.getLocalizedText("classes.${clazz.id}.cloneName"))
+                player.sendWynnMessage("gui.class.select", player.getLocalizedText("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.cloneName"))
                 player.addScoreboardTag("clone")
             } else {
-                player.sendWynnMessage("gui.class.select", player.getLocalizedText("classes.${clazz.id}.className"))
+                player.sendWynnMessage("gui.class.select", player.getLocalizedText("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.className"))
                 player.removeScoreboardTag("clone")
             }
 
             player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
 
-            player.setWynnClass(clazz.id)
+            player.setWynnClass((clazz as? WynnClass)?.id ?: (clazz as BaseClass).id)
 
             player.closeInventory()
         }
     }
 
-    //TODO: remove
-    val Any.id get() = if (this is WynnClass) this.id else "CLASS"
-
     override fun update() {
         val iterator = itemPositions.iterator()
 
         for (clazz in classes.values) {
-            if (clazz is BaseClass) {
+            /*if (clazz is BaseClass) {
                 inventory.setItem(iterator.nextInt(), ItemStack(Material.BARRIER))
                 continue
             }
-            if (clazz !is WynnClass)
-                continue
+            if (clazz !is WynnClass && clazz !is BaseClass)
+                continue*/
 
-            val item = ItemStack(clazz.item)
+            val item = (clazz as? WynnClass)?.item?.let { ItemStack(it) } ?: (clazz as BaseClass).item
             val meta = item.itemMeta
 
             meta.isUnbreakable = true
             meta.addItemFlags(*ItemFlag.values())
 
-            if (clazz.itemDamage != 0 && meta is Damageable)
+            if (clazz is WynnClass && clazz.itemDamage != 0 && meta is Damageable)
                 meta.damage = clazz.itemDamage
 
-            meta.setDisplayName(player.getLocalizedText("gui.class.item.title", player.getLocalizedText("classes.${clazz.id}.className")))
+            meta.setDisplayName(player.getLocalizedText("gui.class.item.title", player.getLocalizedText("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.className")))
             val lore = mutableListOf(" ")
 
-            val (damage, defence, range, spells) = clazz.metaStats
+            val (damage, defence, range, spells) = (clazz as? WynnClass)?.metaStats ?: (clazz as BaseClass).metaStats.let { (a, b, c, d) -> Tuple4(a, b, c, d) }
             lore.add(player.getLocalizedText("gui.class.item.damage", damage.squares()))
             lore.add(player.getLocalizedText("gui.class.item.defence", defence.squares()))
             lore.add(player.getLocalizedText("gui.class.item.range", range.squares()))
             lore.add(player.getLocalizedText("gui.class.item.spells", spells.squares()))
 
             lore.add(" ")
-            lore.addAll(player.getLocalizedText("classes.${clazz.id}.lore").split(NL_REGEX))
+            lore.addAll(player.getLocalizedText("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.lore").split(NL_REGEX))
 
-            lore.add(player.getLocalizedText("gui.class.item.clone", player.getLocalizedText("classes.${clazz.id}.cloneName")))
+            lore.add(player.getLocalizedText("gui.class.item.clone", player.getLocalizedText("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.cloneName")))
 
             meta.lore = lore
             item.itemMeta = meta

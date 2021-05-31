@@ -15,6 +15,7 @@ fun registerListeners() {
     registerListener(PlayerClickListener())
     registerListener(PlayerEventsListener())
     registerListener(ProjectileHitListener())
+    registerListener(ScriptAPIListeners())
 }
 
 private fun registerListener(listener: BaseListener) {

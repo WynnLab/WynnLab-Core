@@ -84,7 +84,7 @@ fun loadClasses() {
     classes.remove("MONK")?.let { classes["MONK"] = it }
 
     ClassRegistry.entries.forEach {
-        classes["R_$it"] = it
+        classes[it.id] = it
     }
 
     //plugin.logger.log(Level.INFO, "Classes: $classes")

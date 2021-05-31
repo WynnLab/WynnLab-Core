@@ -43,13 +43,13 @@ val resources = arrayOf(
     "classes/assassin/vanish_end.py",
     "classes/assassin/smoke_bomb_tick.py",
 
-    "classes/mage/mage.yml",
+    /*"classes/mage/mage.yml",
     "classes/mage/mage_main.py",
     "classes/mage/mage_main.ws2",
     "classes/mage/heal.py",
     "classes/mage/teleport.py",
     "classes/mage/meteor.py",
-    "classes/mage/ice_snake.py",
+    "classes/mage/ice_snake.py",*/
 
     "classes/shaman/shaman.yml",
     "classes/shaman/shaman_main.py",

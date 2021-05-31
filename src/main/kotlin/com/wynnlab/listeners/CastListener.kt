@@ -21,9 +21,9 @@ class CastListener : BaseListener() {
         val player = e.player
         val spellClass = player.getWynnClass()?.let { classes[it] } ?: return
         val spellId = e.spellId
-        val spell = ((spellClass as? WynnClass)?.spells ?: (spellClass as BaseClass).spells)[spellId]
+        val spell = ((spellClass as? WynnClass)?.spells?.get(spellId) ?: (spellClass as BaseClass).spells[spellId](player))
 
-        val cost = cost(player, spellId, (spell as? Spell)?.cost ?: 0)
+        val cost = cost(player, spellId, (spell as? Spell)?.cost ?: (spell as BasePlayerSpell).cost)
 
         if (spellId > 0) {
             player.data.setInt("spell_cost_extra", if (player.data.getInt("last_spell") == spellId) (player.data.getInt("spell_cost_extra") ?: 0) + 1 else 0)
@@ -52,7 +52,7 @@ class CastListener : BaseListener() {
             if (player.cooldown()) return
         }
 
-        (spell as? Spell)?.cast(player) ?: (spell as BasePlayerSpell).tick()
+        (spell as? Spell)?.cast(player) ?: (spell as BasePlayerSpell).schedule()
     }
 
     private fun cost(player: Player, spellIndex: Int, cost: Int) =

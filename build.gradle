@@ -15,6 +15,9 @@ repositories {
     flatDir {
         dirs './libs/'
     }
+    flatDir {
+        dirs 'D:/IdeaProjects/WynnLabScriptAPI/build/libs/'
+    }
 }
 
 dependencies {
