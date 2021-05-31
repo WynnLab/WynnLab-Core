@@ -1,3 +1,6 @@
 files:
   - source: /src/main/resources/lang
+    ignore:
+      - ar_sa.yml
+      - de_de.yml
     translation: /src/main/resources/lang/%locale_with_underscore%.yml
