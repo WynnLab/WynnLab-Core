@@ -1,0 +1,199 @@
+---
+messages:
+  current_class: '&aDu bist momentan &3[%s]'
+  no_class: "&cDu hast noch keine Klasse gewählt"
+  class_change: '&aGib &6/class &aein, um eine andere Klasse zu benutzen'
+  class_select: '&cGib &6/class &cein, um eine Klasse zu wählen'
+  totem_out: '&cDein Totem ist aus!'
+  wrong_item: "&cYDu kannst diesen Gegenstand nicht benutzen"
+  no_player: '&cBitte gib einen Spieler an'
+  player_not_exist: "&cDieser Spieler existiert nicht"
+  party:
+    no_party: "&cDu bist gerade in keiner Party"
+    not_owner: "&cDu bist nicht der Ersteller der Party"
+    create: '&aDie Party wurde erfolgreich erstellt!'
+    invite:
+      send: "&aDu hast &6%s&a in deine Party eingeladen!"
+      get: "&6%s&a hat dich in eine Party eingeladen!"
+    join:
+      left: "&dKlicke "
+      link: "&e&nhier"
+      right: "&d um beizutreten"
+      hover: "&fKlicke um beizutreten"
+    no_invite: "&cDu bist noch nicht in eine Party eingeladen worden"
+    already_joined: '&cDu bist dieser Party schon beigetreten'
+    already_other: '&cDu bist schon in einer anderen Party'
+    leave: '&fSchreibe &e/party leave&f um deine momentane Party zu verlassen'
+    joined: '&6%s&a ist der Party beigetreten!'
+    joined_you: '&aDu bist der Party beigetreten!'
+    left: '&6%s&f hat die Party verlassen!'
+    left_you: '&fDu hast die Party verlassen!'
+    promote: '&dDu bist nun der Manager der Party!'
+  ffa:
+    welcome: '&aWillkommen in der &cFFA &aArena'
+    stats: '&7Du siehst deine Stats mit &b/stats'
+    leave: '&7Um die Welt zu verlassen, schreibe &f/leave'
+  pvp:
+    on: '§f[§cPVP§f]§e is jetzt§a aktiviert!'
+    off: '§f[§cPVP§f]§e is jetzt§c deaktiviert!'
+titles:
+  location:
+    enter: '&7Du betrittst jetzt §r%s'
+    leave: '&7Du verlässt jetzt §r%s'
+    discover: '&6Neuer Ort entdeckt: §e%s'
+sidebars:
+  info: "§a§l§nInformation"
+  partyHealth: "§a§lParty: §cLeben"
+  ffaHealth: "§6§lFFA: §cLeben"
+  duelHealth: "§b§nDuel: §cLeben"
+  bossDamage: "§a§lBosskampf: §eSchaden"
+  ffaDamage: "§6§lFFA: §eSchaden"
+  duelDamage: "§b§lDuel: §eSchaden"
+  ffaKills: "§6§lFFA: §aKills"
+items:
+  items:
+    combat_lv_min: '%s &7Level Min: %d'
+  heal_potion:
+    title: '&cTrank der Heilung &4[%d/3]'
+    effects: '&4Effekte:'
+    heal: '&4- &7Heilung: &f%d &c❤'
+    duration: '&4- &7Dauer: &f3 Sekunden'
+    lore: |
+      &8Dieser Trank regeneriert
+      &8deine Leben in 3 Sekunden
+classes:
+  MAGE:
+    className: 'Magier'
+    cloneName: 'Schwarzmagier'
+    lore: |
+      &7Magier haben ein angeborenes
+      &7Talent für die magischen
+      &7Künste. Obwohl ihre Angriffe
+      &7oft schwächer erscheinen,
+      &7bieten sie eine Vielzahl
+      &7hilfreicher und vielfältiger
+      &7Zauber.
+  ARCHER:
+    className: 'Bogenschütze'
+    cloneName: 'Jäger'
+    lore: |
+      &7Sie profitieren von der
+      &7höchsten Reichweite im Spiel.
+      &7So können Bogenschützen
+      &7ihren Feinden bequem fern
+      &7bleiben und trotzdem viel
+      &7Schaden machen. Nur müssen
+      &7sie sich vor Angriffen in
+      &7Acht nehmen, denn ihre
+      &7Verteidigung ist niedrig.
+  ASSASSIN:
+    className: 'Assassine'
+    cloneName: 'Ninja'
+    lore: |
+      &7Die Assassinen gehören zur
+      &7tödlichsten aller Klassen.
+      &7Sie nutzen die Schwach-
+      &7punkte iherer Gegner aus,
+      &7um aus den Schatten heraus
+      &7viel Schaden zu machen.
+      &7Aber sie bringen sich auch
+      &7in Gefahr, denn sie müssen
+      &7ihren Feinden extrem nahe
+      &7kommen.
+gui:
+  class:
+    title: 'Wähle eine Klasse'
+    select: 'Du bist nun &3[%s]'
+    item:
+      title: '&fWähle &6&l%s'
+      damage: '&6⚔ Angriff               %s'
+      defence: '&c❤ Verteidigung         %s'
+      range: '&a➸ Fernkampf           %s'
+      spells: '&d✺ Magie                  %s'
+      clone: '&8Rechtsklick für &b&l%s'
+  compass:
+    title: '&c%d &4Fertigkeitspunke übrig'
+    reset_skills: '&eFertigkeitspunke zurücksetzen'
+    reset_skills_cost: '&7Preis: &f0 Seelenpunkte'
+    upgrade_skill: '&dVerbessere deine %s'
+    upgrade_skill_numbers: |
+      &r       &7&lJetzt         &6&lDann
+      &r       &a%.1f%%     §a>§2>§a>§2>    &e%.1f%%
+      &r     &7%d Punkte          §6%d Punkte
+    upgrade_skill_modified: '&aThis skill was modified by your equipment'
+    upgrade_skill_strength: |
+      &7Jeder Punkt in dieser Fähigkeit
+      &derhöht &7jeglichen Schaden den
+      &7du machst und erhöht den &2✤ Erde&7-
+      &7Schaden den du machst.
+    upgrade_skill_dexterity: |
+      &7Jeder Punkt in dieser Fähigkeit
+      &derhöht &7die Chance einen
+      &7kritischen Treffer (Doppelter
+      &7Schaden) zu landen und erhöht
+      &7den &e✦ Blitz&7-Schaden den
+      &7du machst.
+    upgrade_skill_intelligence: |
+      &7Jeder Punkt in dieser Fähigkeit
+      &dsenkt &7die Menge Mana die deine
+      &7Zauber verbrauchen und erhöht
+      &7den &b❉ Wasser&7-Schaden den
+      &7du machst.
+    upgrade_skill_defense: |
+      &7Jeder Punkt in dieser Fähigkeit
+      &dsenkt &7jeglichen Schaden den
+      &7du bekommst und erhöht den
+      &c✹ Feuer&7-Schaden den du machst.
+    upgrade_skill_agility: |
+      &7Jeder Punkt in dieser Fähigkeit
+      &derhöht &7die Schance Angriffen
+      &7auszuweichen und erhöht den
+      &f❋ Luft&7-Schaden den du machst.
+    daily_rewards: '&eTägliche Belohnungen'
+    mastery_tomes: '&5&lMastery Tomes'
+    mastery_tomes_lore: |
+      &7Tomes sind spezielle Belohnungen
+      &7für Raids die deinen Spieler
+      &7verbessern können
+    no_guild: '&cDu bist noch in keiner Gilde!'
+    guild_rank: '&7Rang: &f%s'
+    guild_joined: '&7Beigetreten: &f%s'
+    guild_open: '&8Öffne das Gilden-Management'
+    guild_view: '&b&lBetrachte deine Gilde'
+    settings: '&f&lEinstellungen'
+    settings_lore: '&7WynnLab Einstellungen'
+    player_info: "&e&l&o%s's Info"
+    player_rank: '&7Rang: &f%s'
+    player_level: '&7Level: &f%d'
+    player_class: '&7Klasse: &f%s'
+    player_quests: '&7Quests: &f%d/%d'
+    player_ids: '&dID Boni:'
+    defense: '&f&lVerteidigungs-Info'
+    defense_basic: '&bGrund-Verteidigung:'
+    defense_health: '&b- &4❤ Leben: &f%s/%s'
+    damage: '&f&lSchadens-Info'
+    main_attack_damage: '&3[%c] &bHauptangriff:'
+    total_damage: '&b- Gesamtschaden (+Bonus): &f%d-%d'
+    spell_damage: '&5[%s] &d%s Zauber: &f%d-%d'
+    wl_settings:
+      title: 'WynnLab Einstellungen'
+      reset: '&eEinstellungen zurücksetzen'
+      reset_default: '&7Zurück zu den Standardwerten'
+      your_particles: '&fDeine Partikel: %s'
+      other_particles: '&fSpielerpartikel: %s'
+    pvp:
+      title: 'Wähle einen Spielmodus'
+      ffa:
+        title: '&cFFA'
+        lore: |
+          &8Spiele gegen alle anderen
+          &8Spieler
+        online: '&7Online: %d/%d'
+elements:
+  strength: '&2✤ Stärke'
+  dexterity: '&e✦ Geschicklichkeit'
+  intelligence: '&b❉ Intelligenz'
+  defense: '&c✹ Verteidigung'
+  agility: '&f❋ Agilität'
+  tps:
+    - '&3Mit &b/pvp &3kommst du ins PvP-Menü'
