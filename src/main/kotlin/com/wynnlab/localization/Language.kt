@@ -11,7 +11,7 @@ class Language(private val locale: Locale) {
     private val config = YamlConfiguration()
 
     init {
-        val file = File(languageFolder, "${locale.toLanguageTag().toLowerCase().replace('-', '_')}.yml")
+        val file = File(languageFolder, "${locale.toLanguageTag().replace('-', '_')}.yml")
         config.load(file)
     }
 
@@ -54,7 +54,7 @@ fun loadLanguages() {
         val name = f.substring(0, f.length - 4)
         wynnlab.logger.log(Level.INFO, "Loading language $name ...")
         try {
-            if (name == "en_us") Language[Locale.US]
+            if (name == "en_US") Language[Locale.US]
             else Language(Locale.US)
         } catch (e: Exception) {
             e.printStackTrace()

@@ -78,7 +78,7 @@ val resources = arrayOf(
     // Languages
     /////////////////////////////////////
 
-    "lang/en_us.yml",
-    "lang/de_de.yml",
-    "lang/ar_sa.yml"
+    "lang/en_US.yml",
+    "lang/de_DE.yml",
+    "lang/ar_SA.yml"
 )
