@@ -1,9 +1,14 @@
 package com.wynnlab.locations
 
-import com.wynnlab.NL_REGEX
+import com.wynnlab.WL_COLOR
 import com.wynnlab.api.getLocalizedText
+import com.wynnlab.api.getLocalizedTextMultiline
 import com.wynnlab.util.BaseSerializable
 import com.wynnlab.util.ConfigurationDeserializable
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Sound
 import org.bukkit.SoundCategory
 import org.bukkit.entity.Player
@@ -29,12 +34,13 @@ class Location(
     fun announce(player: Player, entering: Boolean = true): Boolean {
         if (!announce) return false
 
-        player.sendTitle(player.getLocalizedText(when {
+        player.sendTitle(LegacyComponentSerializer.legacy('§').serialize(player.getLocalizedText(when {
             player.uniqueId !in discovered -> "titles.location.discover"
             entering -> "titles.location.enter"
             else -> "titles.location.leave"
-        }, name),
-            subtitle?.let { player.getLocalizedText(it) }, 10, 30, 10)
+        }, name)),
+            subtitle?.let { LegacyComponentSerializer.legacy('§').serialize(player.getLocalizedText(it)) },
+            10, 30, 10)
 
         return true
     }
@@ -47,14 +53,23 @@ class Location(
 
             player.sendMessage("§0")
 
-            player.sendMessage("     ${player.getLocalizedText("titles.location.discover", name)}")
-            subtitle?.let { player.sendMessage("  §2§o${player.getLocalizedText(it)}") }
+            //player.sendMessage("     ${player.getLocalizedText("titles.location.discover", name)}")
+            player.sendMessage(Component.text("     ")
+                .append(player.getLocalizedText("titles.location.discover", name)))
+            //subtitle?.let { player.sendMessage("  §2§o${player.getLocalizedText(it)}") }
+            subtitle?.let {
+                player.sendMessage(Component.text("  ")
+                    .append(player.getLocalizedText(it)
+                        .color(NamedTextColor.DARK_GREEN)
+                        .decorate(TextDecoration.ITALIC)))
+            }
 
             lore?.let { l ->
                 player.sendMessage("§0")
 
-                player.getLocalizedText(l).split(NL_REGEX).forEach {
-                    player.sendMessage(" §a$it")
+                player.getLocalizedTextMultiline(l).forEach {
+                    player.sendMessage(Component.text(" ")
+                        .append(it.color(WL_COLOR)))
                 }
             }
 

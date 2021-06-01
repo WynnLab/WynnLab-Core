@@ -8,6 +8,7 @@ import com.wynnlab.items.APIException
 import com.wynnlab.locations.removePlayerLocations
 import com.wynnlab.locations.updateLocations
 import com.wynnlab.scoreboard.Scoreboard
+import com.wynnlab.util.colorNonItalic
 import com.wynnlab.util.getWynncraftAPIResult
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -56,7 +57,10 @@ object Players {
         player.isHealthScaled = true
 
         player.sendPlayerListHeader/*AndFooter*/(
-            Component.text("play.WYNNLAB.tk", NamedTextColor.LIGHT_PURPLE, TextDecoration.UNDERLINED),
+            //Component.text("play.WYNNLAB.tk", NamedTextColor.LIGHT_PURPLE, TextDecoration.UNDERLINED),
+            Component.text("play.", TextColor.color(0x666666))
+                .append(Component.text("WYNNLAB", WL_COLOR))
+                .append(Component.text(".tk", TextColor.color(0x666666)))
             //Component.text("Join our Discord:", NamedTextColor.YELLOW).append(Component.text("https://discord.gg/7ktHKn2nZG", NamedTextColor.AQUA, TextDecoration.ITALIC))
                 //.append(Component.newline()).append(Component.text("")))
         )
@@ -69,9 +73,9 @@ object Players {
         player.inventory.run {
             setItem(6, ItemStack(Material.COMPASS).meta {
                 //setDisplayName("§bCharacter Info")
-                displayName(Component.text("Character Info", TextColor.color(0x2f8ed6)))
+                displayName(Component.text("Character Info", colorNonItalic(0x2f8ed6)))
                 //lore = listOf("§6View and manage your skills")//cc832b
-                lore(listOf(Component.text("View and manage your skills", TextColor.color(0x74b3e3))))
+                lore(listOf(Component.text("View and manage your skills", colorNonItalic(0x74b3e3))))
             })
             setItem(7, ItemStack(Material.WRITTEN_BOOK).metaAs<BookMeta> {
                 title = "§dQuest Book"
@@ -85,6 +89,7 @@ object Players {
                         .append(Component.text(" [", TextColor.color(0x732dad)))
                         .append(Component.text("100%", TextColor.color(0x993ce6)))
                         .append(Component.text("]", TextColor.color(0x732dad)))
+                        .style { it.decoration(TextDecoration.ITALIC, false) }
                 ))
             })
             setItem(8, ItemStack(Material.NETHER_STAR, 15).meta {
@@ -96,28 +101,32 @@ object Players {
                         })
                 //lore = listOf("§7Having less soul points increases", "§7the chance of dropping items upon", "§7death", )//" ", "§cShift Right-Click to enable hunted")
                 lore(listOf(
-                    Component.text("Having less soul points increases", NamedTextColor.GRAY),
-                    Component.text("the chance of dropping items upon", NamedTextColor.GRAY),
-                    Component.text("death.", NamedTextColor.GRAY),
+                    Component.text("Having less soul points increases", colorNonItalic(NamedTextColor.GRAY)),
+                    Component.text("the chance of dropping items upon", colorNonItalic(NamedTextColor.GRAY)),
+                    Component.text("death.", colorNonItalic(NamedTextColor.GRAY)),
                 ))
             })
 
-            setItem(9, ItemStack(Material.SNOW).meta {
-                //setDisplayName("§7Ring Slot§1")
-                displayName(Component.text("Ring Slot", NamedTextColor.GRAY).append(Component.text("§1")))
-            })
-            setItem(10, ItemStack(Material.SNOW).meta {
-                //setDisplayName("§7Ring Slot§2")
-                displayName(Component.text("Ring Slot", NamedTextColor.GRAY).append(Component.text("§2")))
-            })
-            setItem(11, ItemStack(Material.SNOW).meta {
-                //setDisplayName("§7Bracelet Slot")
-                displayName(Component.text("Bracelet Slot", NamedTextColor.GRAY))
-            })
-            setItem(12, ItemStack(Material.SNOW).meta {
-                //setDisplayName("§7Necklace Slot")
-                displayName(Component.text("Necklace Slot", NamedTextColor.GRAY))
-            })
+            if (getItem(9) == null)
+                setItem(9, ItemStack(Material.SNOW).meta {
+                    //setDisplayName("§7Ring Slot§1")
+                    displayName(Component.text("Ring Slot", colorNonItalic(NamedTextColor.GRAY)).append(Component.text("§1")))
+                })
+            if (getItem(10) == null)
+                setItem(10, ItemStack(Material.SNOW).meta {
+                    //setDisplayName("§7Ring Slot§2")
+                    displayName(Component.text("Ring Slot", colorNonItalic(NamedTextColor.GRAY)).append(Component.text("§2")))
+                })
+            if (getItem(11) == null)
+                setItem(11, ItemStack(Material.SNOW).meta {
+                    //setDisplayName("§7Bracelet Slot")
+                    displayName(Component.text("Bracelet Slot", colorNonItalic(NamedTextColor.GRAY)))
+                })
+            if (getItem(12) == null)
+                setItem(12, ItemStack(Material.SNOW).meta {
+                    //setDisplayName("§7Necklace Slot")
+                    displayName(Component.text("Necklace Slot", colorNonItalic(NamedTextColor.GRAY)))
+                })
 
             player.updatePouch()
 

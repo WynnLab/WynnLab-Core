@@ -1,10 +1,11 @@
 package com.wynnlab.gui
 
-import com.wynnlab.NL_REGEX
 import com.wynnlab.api.getLocalizedText
+import com.wynnlab.api.getLocalizedTextMultiline
 import com.wynnlab.api.meta
 import com.wynnlab.commands.PVPCommands
 import com.wynnlab.pvp.FFA
+import com.wynnlab.util.emptyComponent
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
@@ -30,12 +31,12 @@ class PVPGUI(player: Player) : GUI(player, player.getLocalizedText("gui.pvp.titl
             isUnbreakable = true
             addItemFlags(*ItemFlag.values())
 
-            setDisplayName(player.getLocalizedText("gui.pvp.ffa.title"))
-            val l = mutableListOf("")
-            player.getLocalizedText("gui.pvp.ffa.lore").split(NL_REGEX).forEach { l.add(it) }
-            l.add("")
+            displayName(player.getLocalizedText("gui.pvp.ffa.title"))
+            val l = mutableListOf(emptyComponent)
+            l.addAll(player.getLocalizedTextMultiline("gui.pvp.ffa.lore"))
+            l.add(emptyComponent)
             l.add(player.getLocalizedText("gui.pvp.ffa.online", FFA.players.size, 100))
-            lore = l
+            lore(l)
         })
 
         inventory.setItem(16, ItemStack(Material.STONE))

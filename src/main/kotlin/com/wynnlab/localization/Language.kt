@@ -1,7 +1,8 @@
 package com.wynnlab.localization
 
+import com.wynnlab.NL_REGEX
 import com.wynnlab.wynnlab
-import org.bukkit.ChatColor
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.util.*
@@ -20,20 +21,30 @@ class Language(private val locale: Locale) {
         if (language_fallbacks[locale.language] == null) language_fallbacks[locale.language] = locale
     }
 
-    fun getMessage(key: String, vararg format_args: Any?): String = getMessageOrNull(key, *format_args) ?:
-    Language[language_fallbacks[locale.language]!!].getMessageOrNull(key, *format_args) ?:
-    en_us.getMessageOrNull(key, *format_args) ?: "§4Nls: §r$key"
+    fun getMessage(key: String, vararg format_args: Any?) = LegacyComponentSerializer.legacy('&').deserialize(getMessageAsString(key, *format_args))
 
-    fun getRandomMessage(key: String, vararg format_args: Any?): String = getRandomMessageOrNull(key, *format_args) ?:
-    Language[language_fallbacks[locale.language]!!].getMessageOrNull(key, *format_args) ?:
-    en_us.getRandomMessageOrNull(key, *format_args) ?: "§4Nls: §r$key"
-
-    private fun getRandomMessageOrNull(key: String, vararg format_args: Any?) = config.getList(key)?.let {
-        it.randomOrNull()?.let { r -> String.format(ChatColor.translateAlternateColorCodes('&', r as String), *format_args) }
+    fun getMessageMultiline(key: String, vararg format_args: Any?) = getMessageAsString(key, *format_args).split(NL_REGEX).map {
+        LegacyComponentSerializer.legacy('&').deserialize(it)
     }
 
-    private fun getMessageOrNull(key: String, vararg format_args: Any?): String? = config.getString(key)?.let {
-        String.format(ChatColor.translateAlternateColorCodes('&', it), *format_args)
+    fun getMessageAsString(key: String, vararg format_args: Any?) = getMessageOrNull(key, format_args) ?:
+    Language[language_fallbacks[locale.language]!!].getMessageOrNull(key, format_args) ?:
+    en_us.getMessageOrNull(key, format_args) ?: "&4Nls: &r$key"
+
+
+    fun getRandomMessage(key: String, vararg format_args: Any?) = LegacyComponentSerializer.legacy('&').deserialize(getRandomMessageAsString(key, format_args))
+
+    private fun getRandomMessageAsString(key: String, format_args: Array<out Any?>): String = getRandomMessageOrNull(key, format_args) ?:
+    Language[language_fallbacks[locale.language]!!].getMessageOrNull(key, format_args) ?:
+    en_us.getRandomMessageOrNull(key, format_args) ?: "&4Nls: &r$key"
+
+
+    private fun getRandomMessageOrNull(key: String, format_args: Array<out Any?>) = config.getList(key)?.let {
+        it.randomOrNull()?.let { r -> String.format(r as String, *format_args) }
+    }
+
+    private fun getMessageOrNull(key: String, format_args: Array<out Any?>): String? = config.getString(key)?.let {
+        String.format(it, *format_args)
     }
 
     companion object {

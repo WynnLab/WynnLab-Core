@@ -1,9 +1,9 @@
 package com.wynnlab.items
 
-import com.wynnlab.NL_REGEX
 import com.wynnlab.api.*
 import com.wynnlab.listeners.PlayerClickListener
 import com.wynnlab.spells.PySpell
+import com.wynnlab.util.emptyComponent
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -18,20 +18,20 @@ enum class SpecialItems(val itemStack: (Player) -> ItemStack, private val rightC
 
         color = Color.FUCHSIA
 
-        setDisplayName(p.getLocalizedText("items.heal_potion.title", 3))
+        displayName(p.getLocalizedText("items.heal_potion.title", 3))
 
-        val lore = mutableListOf(" ",
+        val lore = mutableListOf(emptyComponent,
             p.getLocalizedText("items.heal_potion.effects"),
             p.getLocalizedText("items.heal_potion.heal", 24),
             p.getLocalizedText("items.heal_potion.duration"),
-            " ",
+            emptyComponent,
             p.getLocalizedText("items.items.combat_lv_min", "§a✔", 5),
-            " "
+            emptyComponent
         )
 
-        lore.addAll(p.getLocalizedText("items.heal_potion.lore").split(NL_REGEX))
+        lore.addAll(p.getLocalizedTextMultiline("items.heal_potion.lore"))
 
-        this.lore = lore
+        lore(lore)
 
         data.setString("type", "HealPotion")
         data.setInt("healing", 24)

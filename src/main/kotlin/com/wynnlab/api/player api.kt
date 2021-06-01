@@ -2,18 +2,16 @@
 
 package com.wynnlab.api
 
-import com.wynnlab.PREFIX
-import com.wynnlab.WynnClass
+import com.wynnlab.*
 import com.wynnlab.events.SpellCastEvent
 import com.wynnlab.extensions.data
 import com.wynnlab.items.WynnItem
 import com.wynnlab.listeners.GUIListener
 import com.wynnlab.localization.Language
-import com.wynnlab.random
 import com.wynnlab.scoreboard.InfoSidebar
 import com.wynnlab.scoreboard.scoreboards
 import com.wynnlab.util.RefreshRunnable
-import com.wynnlab.wynnlab
+import com.wynnlab.util.colorNonItalic
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.NamedTextColor
@@ -35,13 +33,19 @@ import kotlin.math.round
 fun Entity.hasScoreboardTag(tag: String) = tag in scoreboardTags
 
 fun Player.sendWynnMessage(key: String, vararg format_args: Any?) =
-    sendMessage(PREFIX + getLocalizedText(key, *format_args))
+    sendMessage(PREFIX.append(getLocalizedText(key, *format_args)))
+
+fun Player.getLocalizedString(key: String, vararg formatArgs: Any?) =
+    Language[locale()].getMessageAsString(key, *formatArgs)
 
 fun Player.getLocalizedText(key: String, vararg format_args: Any?) =
     Language[locale()].getMessage(key, *format_args)
 
-fun Player.sendWynnMessageNonNls(message: String) {
-    sendMessage(PREFIX + message)
+fun Player.getLocalizedTextMultiline(key: String, vararg format_args: Any?) =
+    Language[locale()].getMessageMultiline(key, *format_args)
+
+fun Player.sendWynnMessageNonNls(message: TextComponent) {
+    sendMessage(PREFIX.append(message))
 }
 
 fun Player.setWynnClass(wynnClass: String) {
@@ -154,10 +158,10 @@ fun Player.addRightClick(invertedControls: Boolean = false) {
 }
 
 private fun abComponent(lr1: Char, lr2: Char, lr3: Char): TextComponent {
-    fun charComponent(c: Char) = if (c == '?') Component.text(c, NamedTextColor.WHITE)
-        else Component.text(c, TextColor.color(0x82c63b), TextDecoration.UNDERLINED)
+    fun charComponent(c: Char) = if (c == '?') Component.text(c, NamedTextColor.WHITE).style { it.decoration(TextDecoration.UNDERLINED, false) }
+        else Component.text(c, WL_COLOR, TextDecoration.UNDERLINED)
     //updateActionBar(if (invertedControls) "§a§nL§r-§a§nR§r-§n?" else "§a§nR§r-§a§nL§r-§n?")
-    val dash = Component.text("-", TextColor.color(0xdddddd))
+    val dash = Component.text("-", TextColor.color(0xdddddd)).style { it.decoration(TextDecoration.UNDERLINED, false) }
     return charComponent(lr1).append(dash).append(charComponent(lr2)).append(dash).append(charComponent(lr3))
 }
 
@@ -239,7 +243,7 @@ fun Player.wynnPrefix(): TextComponent {
     return Component.text("[", TextColor.color(0x888888))
         .append(Component.text(106, TextColor.color(0x99cc99)))
         .append(Component.text("/", TextColor.color(0x888888)))
-        .append(Component.text(classPrefix.substring(0, 2), TextColor.color(0xcc9999)))
+        .append(Component.text(classPrefix.content().substring(0, 2), TextColor.color(0xcc9999)))
         .append(Component.text(if (data.has(NamespacedKey(wynnlab, "guild_tag"), PersistentDataType.STRING)) "/" else "", TextColor.color(0x888888)))
         .append(Component.text(data.getString("guild_tag") ?: "", TextColor.color(0x99b0cc)))
         .append(Component.text("]", TextColor.color(0x888888)))
@@ -402,12 +406,12 @@ fun Player.updatePouch(add: ItemStack? = null) {
                     "§fLeft-Click §7to view contents",
                     //" "
                 )*/
-        displayName(Component.text("Magic Pouch", TextColor.color(0xedd953)))
+        displayName(Component.text("Magic Pouch", colorNonItalic(0xedd953)))
         lore(listOf(
-            Component.text("Left-Click", NamedTextColor.WHITE)
-                .append(Component.text(" to view contents", NamedTextColor.GRAY)),
-            Component.text("Shift-Right-Click", NamedTextColor.WHITE)
-                .append(Component.text(" to clear", NamedTextColor.GRAY))
+            Component.text("Left-Click", colorNonItalic(NamedTextColor.WHITE))
+                .append(Component.text(" to view contents", colorNonItalic(NamedTextColor.GRAY))),
+            Component.text("Shift-Right-Click", colorNonItalic(NamedTextColor.WHITE))
+                .append(Component.text(" to clear", colorNonItalic(NamedTextColor.GRAY)))
         ))
 
                 data.setBoolean("pouch", true)

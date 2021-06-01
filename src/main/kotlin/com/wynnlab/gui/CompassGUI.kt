@@ -1,11 +1,16 @@
 package com.wynnlab.gui
 
-import com.wynnlab.NL_REGEX
 import com.wynnlab.WynnClass
 import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.guilds.Guild
+import com.wynnlab.util.emptyComponent
 import com.wynnlab.wynnlab
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import net.minecraft.server.v1_16_R3.ChatMessage
 import net.minecraft.server.v1_16_R3.Containers
 import net.minecraft.server.v1_16_R3.PacketPlayOutOpenWindow
@@ -48,7 +53,7 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
     private fun reopen(slot: Int) {
         val nmsPlayer = (player as CraftPlayer).handle
         val packet = PacketPlayOutOpenWindow(nmsPlayer.activeContainer.windowId, Containers.GENERIC_9X3,
-            ChatMessage(player.getLocalizedText("gui.compass.title", 200 - skills.sum())))
+            ChatMessage(LegacyComponentSerializer.legacy('§').serialize(player.getLocalizedText("gui.compass.title", 200 - skills.sum()))))
         nmsPlayer.playerConnection.sendPacket(packet)
 
         Bukkit.getScheduler().runTaskLater(wynnlab, Runnable {
@@ -94,87 +99,87 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
     }
 
     private fun strengthBook() = ItemStack(Material.BOOK).meta {
-        setDisplayName(language.getMessage("gui.compass.upgrade_skill", language.getMessage("elements.strength")))
-        val lore = mutableListOf(" ")
-        lore.addAll(language.getMessage("gui.compass.upgrade_skill_numbers",
-            skillPercentage(skills[0]) * 100.0, skillPercentage(skills[0] + 1) * 100.0, skills[0], skills[0] + 1).split(NL_REGEX))
-        lore.add(" ")
-        lore.addAll(language.getMessage("gui.compass.upgrade_skill_strength").split(NL_REGEX))
+        displayName(language.getMessage("gui.compass.upgrade_skill", language.getMessageAsString("elements.strength")))
+        val lore = mutableListOf(emptyComponent)
+        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_numbers",
+            skillPercentage(skills[0]) * 100.0, skillPercentage(skills[0] + 1) * 100.0, skills[0], skills[0] + 1))
+        lore.add(emptyComponent)
+        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_strength"))
         //lore.add(" ")
         //lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
-        this.lore = lore
+        lore(lore)
     }
     private var currentStrengthBook = strengthBook()
 
     private fun dexterityBook() = ItemStack(Material.BOOK).meta {
-        setDisplayName(language.getMessage("gui.compass.upgrade_skill", language.getMessage("elements.dexterity")))
-        val lore = mutableListOf(" ")
-        lore.addAll(language.getMessage("gui.compass.upgrade_skill_numbers",
-            skillPercentage(skills[1]) * 100.0, skillPercentage(skills[1] + 1) * 100.0, skills[1], skills[1] + 1).split(NL_REGEX))
-        lore.add(" ")
-        lore.addAll(language.getMessage("gui.compass.upgrade_skill_dexterity").split(NL_REGEX))
+        displayName(language.getMessage("gui.compass.upgrade_skill", language.getMessageAsString("elements.dexterity")))
+        val lore = mutableListOf(emptyComponent)
+        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_numbers",
+            skillPercentage(skills[1]) * 100.0, skillPercentage(skills[1] + 1) * 100.0, skills[1], skills[1] + 1))
+        lore.add(emptyComponent)
+        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_dexterity"))
         //lore.add(" ")
         //lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
-        this.lore = lore
+        lore(lore)
     }
     private var currentDexterityBook = dexterityBook()
 
     private fun intelligenceBook() = ItemStack(Material.BOOK).meta {
-        setDisplayName(language.getMessage("gui.compass.upgrade_skill", language.getMessage("elements.intelligence")))
-        val lore = mutableListOf(" ")
-        lore.addAll(language.getMessage("gui.compass.upgrade_skill_numbers",
-            skillPercentage(skills[2]) * 100.0, skillPercentage(skills[2] + 1) * 100.0, skills[2], skills[2] + 1).split(NL_REGEX))
-        lore.add(" ")
-        lore.addAll(language.getMessage("gui.compass.upgrade_skill_intelligence").split(NL_REGEX))
+        displayName(language.getMessage("gui.compass.upgrade_skill", language.getMessageAsString("elements.intelligence")))
+        val lore = mutableListOf(emptyComponent)
+        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_numbers",
+            skillPercentage(skills[2]) * 100.0, skillPercentage(skills[2] + 1) * 100.0, skills[2], skills[2] + 1))
+        lore.add(emptyComponent)
+        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_intelligence"))
         //lore.add(" ")
         //lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
-        this.lore = lore
+        lore(lore)
     }
     private var currentIntelligenceBook = intelligenceBook()
 
     private fun defenseBook() = ItemStack(Material.BOOK).meta {
-        setDisplayName(language.getMessage("gui.compass.upgrade_skill", language.getMessage("elements.defense")))
-        val lore = mutableListOf(" ")
-        lore.addAll(language.getMessage("gui.compass.upgrade_skill_numbers",
-            skillPercentage(skills[3]) * 100.0, skillPercentage(skills[3] + 1) * 100.0, skills[3], skills[3] + 1).split(NL_REGEX))
-        lore.add(" ")
-        lore.addAll(language.getMessage("gui.compass.upgrade_skill_defense").split(NL_REGEX))
+        displayName(language.getMessage("gui.compass.upgrade_skill", language.getMessageAsString("elements.defense")))
+        val lore = mutableListOf(emptyComponent)
+        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_numbers",
+            skillPercentage(skills[3]) * 100.0, skillPercentage(skills[3] + 1) * 100.0, skills[3], skills[3] + 1))
+        lore.add(emptyComponent)
+        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_defense"))
         //lore.add(" ")
         //lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
-        this.lore = lore
+        lore(lore)
     }
     private var currentDefenseBook = defenseBook()
 
     private fun agilityBook() = ItemStack(Material.BOOK).meta {
-        setDisplayName(language.getMessage("gui.compass.upgrade_skill", language.getMessage("elements.agility")))
-        val lore = mutableListOf(" ")
-        lore.addAll(language.getMessage("gui.compass.upgrade_skill_numbers",
-            skillPercentage(skills[4]) * 100.0, skillPercentage(skills[4] + 1) * 100.0, skills[4], skills[4] + 1).split(NL_REGEX))
-        lore.add(" ")
-        lore.addAll(language.getMessage("gui.compass.upgrade_skill_agility").split(NL_REGEX))
+        displayName(language.getMessage("gui.compass.upgrade_skill", language.getMessageAsString("elements.agility")))
+        val lore = mutableListOf(emptyComponent)
+        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_numbers",
+            skillPercentage(skills[4]) * 100.0, skillPercentage(skills[4] + 1) * 100.0, skills[4], skills[4] + 1))
+        lore.add(emptyComponent)
+        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_agility"))
         //lore.add(" ")
         //lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
-        this.lore = lore
+        lore(lore)
     }
     private var currentAgilityBook = agilityBook()
 
     private val resetSkillPoints = ItemStack(Material.GOLDEN_SHOVEL).setAppearance(21).meta {
         addItemFlags(*ItemFlag.values())
-        setDisplayName(language.getMessage("gui.compass.reset_skills"))
-        lore = listOf(language.getMessage("gui.compass.reset_skills_cost"))
+        displayName(language.getMessage("gui.compass.reset_skills"))
+        lore(listOf(language.getMessage("gui.compass.reset_skills_cost")))
     }
 
-    private val jukebox = ItemStack(Material.JUKEBOX).meta { setDisplayName(language.getMessage("gui.compass.jukebox")) }
+    private val jukebox = ItemStack(Material.JUKEBOX).meta { displayName(language.getMessage("gui.compass.jukebox")) }
 
     private val tomes = ItemStack(Material.ENCHANTED_BOOK).meta {
-        setDisplayName(language.getMessage("gui.compass.tomes"))
+        displayName(language.getMessage("gui.compass.tomes"))
         //lore = language.getMessage("gui.compass.").split(NL_REGEX)
     }
 
     private val guildBanner: ItemStack
     init {
         val guildName = player.data.getString("guild")
-        val guildLore: List<String>
+        val guildLore: List<Component>
         if (guildName == null) {
             guildLore = listOf(language.getMessage("gui.compass.no_guild"))
             guildBanner = ItemStack(Material.WHITE_BANNER)
@@ -182,45 +187,55 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
             val guild = Guild(guildName)
             val guildMember = guild.members[player.name]!!
             guildLore = listOf(
-                "§3${guild.name} §b[${guild.tag}]",
+                /*"§3${guild.name} §b[${guild.tag}]",
                 " ",
                 language.getMessage("gui.compass.guild_rank", guildMember.rank.friendlyName),
                 language.getMessage("gui.compass.guild_joined", guildMember.joined),
                 " ",
+                language.getMessage("gui.compass.guild_open")*/
+                Component.text(guild.name, TextColor.color(0x8f30c9))
+                    .append(Component.text(" [", TextColor.color(0xa42dc2)))
+                    .append(Component.text(guild.tag, TextColor.color(0xbf45de)))
+                    .append(Component.text("]", TextColor.color(0xa42dc2)))
+                    .style { it.decoration(TextDecoration.ITALIC, false) },
+                emptyComponent,
+                language.getMessage("gui.compass.guild_rank", guildMember.rank.friendlyName),
+                language.getMessage("gui.compass.guild_joined", guildMember.joined),
+                emptyComponent,
                 language.getMessage("gui.compass.guild_open")
             )
             guildBanner = guild.banner.clone()
         }
         guildBanner.meta {
-            setDisplayName(language.getMessage("gui.compass.guild_view"))
-            lore = guildLore
+            displayName(language.getMessage("gui.compass.guild_view"))
+            lore(guildLore)
         }
     }
 
     private val settings = ItemStack(Material.CRAFTING_TABLE).meta {
-        setDisplayName(language.getMessage("gui.compass.settings"))
-        lore = listOf(language.getMessage("gui.compass.settings_lore"))
+        displayName(language.getMessage("gui.compass.settings"))
+        lore(listOf(language.getMessage("gui.compass.settings_lore")))
     }
 
     private val idStats = ItemStack(Material.PLAYER_HEAD).meta {
-        setDisplayName(language.getMessage("gui.compass.player_info", player.name))
+        displayName(language.getMessage("gui.compass.player_info", player.name))
         val lore = mutableListOf(
             language.getMessage(
                 "gui.compass.player_rank",
                 player.data.getString("rank")?.toLowerCase()?.capitalize() ?: "Player"
             ),
-            " ",
+            emptyComponent,
             language.getMessage("gui.compass.player_level", 106),
             language.getMessage("gui.compass.player_class", classes[player.getWynnClass()]?.let {
-                if (player.isCloneClass) player.getLocalizedText("classes.${it.id}.cloneName")
-                else player.getLocalizedText("classes.${it.id}.className")
+                if (player.isCloneClass) player.getLocalizedString("classes.${it.id}.cloneName")
+                else player.getLocalizedString("classes.${it.id}.className")
             } ?: "None"),
             language.getMessage("gui.compass.player_quests", 0, 0),
-            " ",
+            emptyComponent,
             language.getMessage("gui.compass.player_ids"),
         )
         addIdValues(lore)
-        this.lore = lore
+        lore(lore)
     }
 
     //TODO: remove
@@ -228,34 +243,39 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
 
     private fun defenseStats() = ItemStack(Material.IRON_CHESTPLATE).meta {
         addItemFlags(*ItemFlag.values())
-        setDisplayName(language.getMessage("gui.compass.defense"))
-        lore = listOf(" ",
+        displayName(language.getMessage("gui.compass.defense"))
+        lore(listOf(
+            emptyComponent,
             language.getMessage("gui.compass.defense_basic"),
             language.getMessage("gui.compass.defense_health", player.health.toInt(), player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value.toInt()),
             // Ranked
-        )
+        ))
     }
     private var currentDefenseStats = defenseStats()
 
     private val invertedControls = player.invertedControls
-    private val clazz = classes[player.getWynnClass()]
+    //private val clazz = classes[player.getWynnClass()]
     private val clone = player.isCloneClass
 
     private fun damageStats(): ItemStack = ItemStack(Material.IRON_SWORD).meta {
         addItemFlags(*ItemFlag.values())
-        setDisplayName(language.getMessage("gui.compass.damage"))
-        lore = listOf(
-            "§7[${player.getFirstWeaponSlot().let { if (it == -1) null else player.inventory.getItem(it) }?.itemMeta?.displayName}§7]",
-            " ",
+        displayName(language.getMessage("gui.compass.damage"))
+        lore(listOf(
+            //"§7[${player.getFirstWeaponSlot().let { if (it == -1) null else player.inventory.getItem(it) }?.itemMeta?.displayName}§7]",
+            Component.text("[", TextColor.color(0xa42dc2))
+                .append(player.getFirstWeaponSlot().let { if (it == -1) null else player.inventory.getItem(it) }?.itemMeta?.displayName() ?: Component.text("null"))
+                .append(Component.text("]", TextColor.color(0xa42dc2)))
+                .style { it.decoration(TextDecoration.ITALIC, false) },
+            emptyComponent,
             language.getMessage("gui.compass.main_attack_damage", if (invertedControls) 'R' else 'L'),
             // Damages
             language.getMessage("gui.compass.total_damage", 0, 0),
-            " ",
-            language.getMessage("gui.compass.spell_damage", if (invertedControls) "LRL" else "RLR", language.getMessage("classes.${player.getWynnClass()}.spells.${if (clone) "1c" else "1"}"), 0, 0),
-            language.getMessage("gui.compass.spell_damage", if (invertedControls) "LLL" else "RRR", language.getMessage("classes.${player.getWynnClass()}.spells.${if (clone) "2c" else "2"}"), 0, 0),
-            language.getMessage("gui.compass.spell_damage", if (invertedControls) "LRR" else "RLL", language.getMessage("classes.${player.getWynnClass()}.spells.${if (clone) "3c" else "3"}"), 0, 0),
-            language.getMessage("gui.compass.spell_damage", if (invertedControls) "LLR" else "RRL", language.getMessage("classes.${player.getWynnClass()}.spells.${if (clone) "4c" else "4"}"), 0, 0),
-        )
+            emptyComponent,
+            language.getMessage("gui.compass.spell_damage", if (invertedControls) "LRL" else "RLR", language.getMessageAsString("classes.${player.getWynnClass()}.spells.${if (clone) "1c" else "1"}"), 0, 0),
+            language.getMessage("gui.compass.spell_damage", if (invertedControls) "LLL" else "RRR", language.getMessageAsString("classes.${player.getWynnClass()}.spells.${if (clone) "2c" else "2"}"), 0, 0),
+            language.getMessage("gui.compass.spell_damage", if (invertedControls) "LRR" else "RLL", language.getMessageAsString("classes.${player.getWynnClass()}.spells.${if (clone) "3c" else "3"}"), 0, 0),
+            language.getMessage("gui.compass.spell_damage", if (invertedControls) "LLR" else "RRL", language.getMessageAsString("classes.${player.getWynnClass()}.spells.${if (clone) "4c" else "4"}"), 0, 0),
+        ))
     }
     private var currentDamageStats = damageStats()
 
@@ -279,20 +299,20 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
 
             inventory.setItem(4, ItemStack(Material.GOLDEN_SHOVEL).setAppearance(21).meta {
                 addItemFlags(*ItemFlag.values())
-                setDisplayName(language.getMessage("gui.compass.wl_settings.reset"))
-                lore = listOf(language.getMessage("gui.compass.wl_settings.reset_default"))
+                displayName(language.getMessage("gui.compass.wl_settings.reset"))
+                lore(listOf(language.getMessage("gui.compass.wl_settings.reset_default")))
             })
 
             val particles = player.data.getInt("particles") ?: 2
             val otherParticles = player.data.getInt("other_particles") ?: 2
 
             inventory.setItem(10, ItemStack(Material.PLAYER_HEAD).meta {
-                setDisplayName(language.getMessage("gui.compass.wl_settings.your_particles", particleSettingString(particles)))
-                lore = particlesLore
+                displayName(language.getMessage("gui.compass.wl_settings.your_particles", particleSettingString(particles)))
+                lore(particlesLore)
             })
             inventory.setItem(11, ItemStack(Material.PLAYER_HEAD).meta {
-                setDisplayName(language.getMessage("gui.compass.wl_settings.other_particles", particleSettingString(otherParticles)))
-                lore = particlesLore
+                displayName(language.getMessage("gui.compass.wl_settings.other_particles", particleSettingString(otherParticles)))
+                lore(particlesLore)
             })
         }
 
@@ -319,12 +339,22 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
         }
 
         val particlesLore = listOf(
-            "§fLeft-Click §7to increase",
-            "§fRight-Click §7to decrease"
+            //"§fLeft-Click §7to increase",
+            //"§fRight-Click §7to decrease"
+            Component.text()
+                .append(Component.keybind("key.dig").color(TextColor.color(0xaaccaa)))
+                .append(Component.text(" to increase", NamedTextColor.GRAY))
+                .style { it.decoration(TextDecoration.ITALIC, false) }
+                .build(),
+            Component.text()
+                .append(Component.keybind("key.use").color(TextColor.color(0xaaccaa)))
+                .append(Component.text(" to decrease", NamedTextColor.GRAY))
+                .style { it.decoration(TextDecoration.ITALIC, false) }
+                .build()
         )
     }
 
-    private fun addIdValues(list: MutableList<String>) {
+    private fun addIdValues(list: MutableList<Component>) {
         val weapon = player.getFirstWeaponSlot().let { if (it == -1) null else player.inventory.getItem(it) }?.itemMeta?.data
         list.addIdValue(weapon, "mana_regen", "Mana Regen", "/4s")
         list.addIdValue(weapon, "mana_steal", "Mana Steal", "/4s")
@@ -351,9 +381,13 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
         list.addIdValue(weapon, "jump_height", "Jump Height", "")
     }
 
-    private fun MutableList<String>.addIdValue(weapon: PersistentDataContainer?, name: String, displayName: String, suffix: String = "%") {
+    private fun MutableList<Component>.addIdValue(weapon: PersistentDataContainer?, name: String, displayName: String, suffix: String = "%") {
         val value = player.getId(name) + (weapon?.getContainer("ids")?.getInt(name) ?: 0)
         if (value != 0)
-            add("§d- §7$displayName: §f${if (value > 0) "+" else ""}$value$suffix")
+            //add("§d- §7$displayName: §f${if (value > 0) "+" else ""}$value$suffix")
+            add(Component.text("- ", TextColor.color(0x9749e6))
+                .append(Component.text("$displayName: ", NamedTextColor.GRAY))
+                .append(Component.text("${if (value > 0) "+" else ""}$value$suffix", NamedTextColor.WHITE))
+                .style { it.decoration(TextDecoration.ITALIC, false) })
     }
 }

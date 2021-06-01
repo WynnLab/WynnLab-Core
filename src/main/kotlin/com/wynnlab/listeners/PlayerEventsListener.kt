@@ -5,6 +5,8 @@ import com.wynnlab.api.*
 import com.wynnlab.localization.Language
 import com.wynnlab.pvp.FFA
 import com.wynnlab.spells.PySpell
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.TextColor
 import org.bukkit.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.PlayerDeathEvent
@@ -18,7 +20,11 @@ class PlayerEventsListener : BaseListener() {
         val player = e.player
 
         Players.preparePlayer(player)
-        e.joinMessage = "§7[§a+§7]§r ${player.prefix}${player.name}"
+        //e.joinMessage = "§7[§a+§7]§r ${player.prefix}${player.name}" 14b54a
+        e.joinMessage(Component.text("[", TextColor.color(0x666666))
+            .append(Component.text("+", TextColor.color(0x14b54a)))
+            .append(Component.text("] ", TextColor.color(0x666666)))
+            .append(Component.text(player.prefix + player.name)))
         //e.player.sendMessage("Locale: ${e.player.locale}")
         player.getWynnClass()?.let { c ->
             player.sendWynnMessage("messages.current_class", player.getLocalizedText("classes.$c.${if (player.isCloneClass) "cloneName" else "className"}"))
@@ -34,7 +40,11 @@ class PlayerEventsListener : BaseListener() {
     fun onPlayerLeave(e: PlayerQuitEvent) {
         val player = e.player
 
-        e.quitMessage = "§7[§c-§7]§r ${player.prefix}${player.name}"
+        //e.quitMessage = "§7[§c-§7]§r ${player.prefix}${player.name}" b52714
+        e.quitMessage(Component.text("[", TextColor.color(0x666666))
+            .append(Component.text("-", TextColor.color(0xb52714)))
+            .append(Component.text("] ", TextColor.color(0x666666)))
+            .append(Component.text(player.prefix + player.name)))
         prefixes.remove(player)
 
         // Remove player from activities
@@ -84,7 +94,7 @@ class PlayerEventsListener : BaseListener() {
         e.setShouldDropExperience(false)
         e.droppedExp = 0
 
-        e.deathMessage = e.entity.let { Language[it.locale()].getRandomMessage("death_messages", it.name) }
+        e.deathMessage(e.entity.let { Language[it.locale()].getRandomMessage("death_messages", it.name) })
     }
 
     @EventHandler

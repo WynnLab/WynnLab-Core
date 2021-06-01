@@ -1,13 +1,11 @@
 package com.wynnlab.gui
 
-import com.wynnlab.NL_REGEX
 import com.wynnlab.Tuple4
 import com.wynnlab.WynnClass
-import com.wynnlab.api.getLocalizedText
-import com.wynnlab.api.sendWynnMessage
-import com.wynnlab.api.setWynnClass
+import com.wynnlab.api.*
 import com.wynnlab.classes
 import com.wynnlab.classes.BaseClass
+import com.wynnlab.util.emptyComponent
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
@@ -67,8 +65,8 @@ class ClassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.class.
             if (clazz is WynnClass && clazz.itemDamage != 0 && meta is Damageable)
                 meta.damage = clazz.itemDamage
 
-            meta.setDisplayName(player.getLocalizedText("gui.class.item.title", player.getLocalizedText("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.className")))
-            val lore = mutableListOf(" ")
+            meta.displayName(player.getLocalizedText("gui.class.item.title", player.getLocalizedText("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.className").content()))
+            val lore = mutableListOf(emptyComponent)
 
             val (damage, defence, range, spells) = (clazz as? WynnClass)?.metaStats ?: (clazz as BaseClass).metaStats.let { (a, b, c, d) -> Tuple4(a, b, c, d) }
             lore.add(player.getLocalizedText("gui.class.item.damage", damage.squares()))
@@ -76,12 +74,12 @@ class ClassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.class.
             lore.add(player.getLocalizedText("gui.class.item.range", range.squares()))
             lore.add(player.getLocalizedText("gui.class.item.spells", spells.squares()))
 
-            lore.add(" ")
-            lore.addAll(player.getLocalizedText("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.lore").split(NL_REGEX))
+            lore.add(emptyComponent)
+            lore.addAll(player.getLocalizedTextMultiline("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.lore"))
 
-            lore.add(player.getLocalizedText("gui.class.item.clone", player.getLocalizedText("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.cloneName")))
+            lore.add(player.getLocalizedText("gui.class.item.clone", player.getLocalizedString("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.cloneName")))
 
-            meta.lore = lore
+            meta.lore(lore)
             item.itemMeta = meta
 
             inventory.setItem(iterator.nextInt(), item)

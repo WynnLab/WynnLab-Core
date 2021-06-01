@@ -60,12 +60,12 @@ data class Party(
 
         player.sendMessage(
             Component.text("$PREFIX${language.getMessage("messages.party.join.left")}")
-                .append(Component.text(language.getMessage("messages.party.join.link"))
+                .append(language.getMessage("messages.party.join.link")
                     .hoverEvent { HoverEvent.showText(
-                        Component.text(language.getMessage("messages.party.join.hover"))
+                        language.getMessage("messages.party.join.hover")
                     ) as HoverEvent<Any> }
                     .clickEvent(ClickEvent.runCommand("/party join")))
-                .append(Component.text(language.getMessage("messages.party.join.right")))
+                .append(language.getMessage("messages.party.join.right"))
         )
 
         owner.sendWynnMessage("messages.party.invite.send", player.name)

@@ -10,6 +10,9 @@ import com.wynnlab.util.DEG2RAD
 import com.wynnlab.util.RAD2DEG
 import com.wynnlab.util.registerSerializers
 import com.wynnlab.util.saveAllResources
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
 import org.bukkit.World
@@ -85,7 +88,11 @@ class Main : JavaPlugin() {
 private lateinit var instance: Main
 val wynnlab get() = instance
 
-const val PREFIX = "§8[§bWynnLab§8] §r"
+val WL_COLOR = TextColor.color(0x82e617)
+val PREFIX = Component.text("[", NamedTextColor.DARK_GRAY)
+    .append(Component.text("WynnLab", WL_COLOR))
+    .append(Component.text("] ", NamedTextColor.DARK_GRAY))
+//"§8[§bWynnLab§8] §r"
 
 val random = java.util.Random()
 

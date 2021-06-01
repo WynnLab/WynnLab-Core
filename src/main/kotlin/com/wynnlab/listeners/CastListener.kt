@@ -41,9 +41,9 @@ class CastListener : BaseListener() {
         if (spellId > 0) {
             if (player.foodLevel > cost) {
                 player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, .5f)
-                player.updateActionBar(Component.text(
-                    player.getLocalizedText("classes.${player.getWynnClass()}.spells.${if (player.isCloneClass) "${spellId}c" else spellId.toString()}"
-                    ), TextColor.color(0x75ebf0))
+                player.updateActionBar(
+                    player.getLocalizedText("classes.${player.getWynnClass()}.spells.${if (player.isCloneClass) "${spellId}c" else spellId.toString()}")
+                        .color(TextColor.color(0x75ebf0))
                     .append(Component.text(" Cast ", TextColor.color(0x9feaed)))
                     .append(Component.text("[",TextColor.color(0x23abb0)))
                     .append(Component.text(-cost, TextColor.color(0x23e1e8)))
