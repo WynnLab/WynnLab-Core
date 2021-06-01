@@ -1,6 +1,7 @@
 # WynnLab
 [![discord](https://img.shields.io/discord/826897491185893428)](https://discord.gg/7ktHKn2nZG)
 [![website](https://img.shields.io/website?up_message=wynnlab.tk&url=https%3A%2F%2Fwww.wynnlab.tk)](https://www.wynnlab.tk)
+[![Crowdin](https://badges.crowdin.net/wynnlab/localized.svg)](https://crowdin.com/project/wynnlab)
 
 Wynncraft Recreation as Minecraft 1.16 plugin
 
