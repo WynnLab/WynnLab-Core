@@ -1,17 +1,20 @@
 package com.wynnlab.entities.pathfinder
 
-import com.wynnlab.wynnlab
+import com.wynnlab.base.BaseSpell
+import com.wynnlab.mobs.spells.BaseMobSpell
 import com.wynnlab.spells.MobSpell
+import com.wynnlab.wynnlab
 import net.minecraft.server.v1_16_R3.EntityCreature
 import net.minecraft.server.v1_16_R3.EntityLiving
 import net.minecraft.server.v1_16_R3.EntityPlayer
 import net.minecraft.server.v1_16_R3.PathfinderGoal
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import java.util.*
 
-class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Double, private val spells: List<MobSpell>) : PathfinderGoal() {
+class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Double, private val spells: List<Any>) : PathfinderGoal() {
     private val range = range * range
 
     private var cooldown = 20
@@ -19,7 +22,8 @@ class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Doubl
 
     private var target: EntityLiving? = null
 
-    private var spell: MobSpell? = null
+    private var mobSpell: MobSpell? = null
+    private var baseMobSpell: BaseMobSpell? = null
     private var runnable: MobSpell.Ticks? = null
 
     init {
@@ -44,44 +48,53 @@ class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Doubl
     }
 
     override fun c() {
-        spell = try { spells.random() } catch (e: NoSuchElementException) { return }
+        val spell = try { spells.random() } catch (e: NoSuchElementException) { return }
+        if (spell is MobSpell) mobSpell = spell else baseMobSpell = (spell as (Entity, Player) -> BaseMobSpell)(creature.bukkitEntity, target!!.bukkitEntity as Player)
 
-        cooldown = spell!!.cooldown
-        prepare = spell!!.prepareTime
+        cooldown = mobSpell?.cooldown ?: baseMobSpell!!.cooldown
+        prepare = mobSpell?.prepareTime ?: 20
 
-        spell!!.spellEffects(creature.bukkitEntity)
+        //spell!!.spellEffects(creature.bukkitEntity)
+        mobSpell?.spellEffects(creature.bukkitEntity) ?: MobSpell.spellEffects(creature.bukkitEntity)
 
-        if (spell!!.hasBossBar)
+        if (mobSpell?.hasBossBar == true)
             creature.bukkitEntity.world.getNearbyEntities(creature.bukkitEntity.location, 10.0, 10.0, 10.0) { it is Player }
-                .forEach { spell!!.bossBar!!.addPlayer(it as Player) }
+                .forEach { mobSpell!!.bossBar!!.addPlayer(it as Player) }
     }
 
     override fun b(): Boolean {
-        if (spell == null)
+        if (mobSpell == null && baseMobSpell == null)
             return false
 
         if (prepare > 0) {
             --prepare
 
-            if (spell!!.hasBossBar)
-                spell!!.bossBar!!.progress = 1.0 - prepare / spell!!.prepareTime.toDouble()
+            if (mobSpell?.hasBossBar == true)
+                mobSpell!!.bossBar!!.progress = 1.0 - prepare / mobSpell!!.prepareTime.toDouble()
 
             return true
         } else if (prepare == 0) {
-            if (spell!!.hasBossBar) {
-                spell!!.bossBar!!.removeAll()
+            if (mobSpell?.hasBossBar == true) {
+                mobSpell!!.bossBar!!.removeAll()
                 Bukkit.removeBossBar(NamespacedKey(wynnlab, "prepare_${creature.id}"))
             }
 
-            runnable = spell!!.newInstance(creature.bukkitEntity, target!!.bukkitEntity as Player)
+            runnable = mobSpell?.newInstance(creature.bukkitEntity, target!!.bukkitEntity as Player)
+            baseMobSpell?.onCast()
             --prepare
         }
 
-        if (!(runnable!!.tick()))
+        if (!(runnable?.tick() ?: true.also { baseMobSpell!!.onTick() }))
             return false
 
-        ++runnable!!.t
+        //++runnable!!.t
+        runnable?.t?.inc() ?: baseMobSpell!!.t.inc()
 
-        return runnable!!.t <= spell!!.maxTick
+        val cancel = (runnable?.t ?: baseMobSpell!!.t) > (mobSpell?.maxTick ?: BaseSpell::class.java.getDeclaredField("maxTick").getInt(runnable))
+
+        if (cancel && baseMobSpell != null)
+            baseMobSpell!!.onCancel()
+
+        return !cancel
     }
 }

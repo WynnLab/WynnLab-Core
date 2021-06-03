@@ -3,6 +3,7 @@ package com.wynnlab.entities
 import com.wynnlab.api.*
 import com.wynnlab.entities.pathfinder.PathfinderGoalCastSpell
 import com.wynnlab.entities.pathfinder.PathfinderGoalRangedAttack
+import com.wynnlab.mobs.BaseMob
 import com.wynnlab.spells.MobSpell
 import com.wynnlab.util.BaseSerializable
 import com.wynnlab.util.ConfigurationDeserializable
@@ -163,7 +164,7 @@ data class WynnMob(
         }
     }
 
-    enum class AI(val initPathfinder: (PathfinderGoalSelector, PathfinderGoalSelector, EntityCreature, WynnMob) -> Unit) {
+    enum class AI(val initPathfinder: (PathfinderGoalSelector, PathfinderGoalSelector, EntityCreature, Any) -> Unit) {
         NONE({ g, _, e, _ ->
             g.a(0, PathfinderGoalFloat(e))
         }),
@@ -178,7 +179,7 @@ data class WynnMob(
             //t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, 10, true, false) { (e.bukkitEntity.lastDamageCause?.entity as org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity).handle == it })
             t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityPlayer::class.java, true))
 
-            g.a(1, PathfinderGoalCastSpell(e, m.vision, m.spells))
+            g.a(1, PathfinderGoalCastSpell(e, (m as? WynnMob)?.vision ?: (m as BaseMob).vision, (m as? WynnMob)?.spells ?: (m as BaseMob).spells))
 
             g.a(2, PathfinderGoalMeleeAttack(e, 1.0, true))
 
@@ -192,9 +193,9 @@ data class WynnMob(
             //t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
             t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityPlayer::class.java, true))
 
-            g.a(1, PathfinderGoalCastSpell(e, m.vision, m.spells))
+            g.a(1, PathfinderGoalCastSpell(e, (m as? WynnMob)?.vision ?: (m as BaseMob).vision, (m as? WynnMob)?.spells ?: (m as BaseMob).spells))
 
-            g.a(2, PathfinderGoalRangedAttack(e, m.vision, (m.attackSpeed * 20).toInt(), m.projectile!!, m.projectileMaterial))
+            g.a(2, PathfinderGoalRangedAttack(e, (m as? WynnMob)?.vision ?: (m as BaseMob).vision, ((m as? WynnMob)?.attackSpeed ?: (m as BaseMob).attackSpeed * 20).toInt(), (m as? WynnMob)?.projectile ?: (m as BaseMob).projectile!!.type.java, (m as? WynnMob)?.projectileMaterial ?: (m as BaseMob).projectile!!.item?.type))
 
             g.a(3, PathfinderGoalRandomLookaround(e))
             g.a(4, PathfinderGoalRandomStroll(e, 1.0))

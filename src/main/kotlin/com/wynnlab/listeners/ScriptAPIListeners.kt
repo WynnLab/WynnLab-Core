@@ -10,10 +10,10 @@ import org.bukkit.event.EventHandler
 class ScriptAPIListeners : BaseListener() {
     @EventHandler
     fun onDamage(e: DamageEvent) {
-        if (e.attacker !is Player)
+        if (e.source !is Player)
             return
 
-        damage(e.attacker as Player, e.target, e.melee, e.multiplier, *e.conversion)
+        damage(e.source as Player, e.target, e.melee, e.multiplier, *e.conversion)
     }
 
     @EventHandler

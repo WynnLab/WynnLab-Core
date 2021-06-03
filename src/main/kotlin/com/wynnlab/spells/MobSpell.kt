@@ -1,10 +1,10 @@
 package com.wynnlab.spells
 
-import com.wynnlab.wynnlab
 import com.wynnlab.util.BaseSerializable
 import com.wynnlab.util.ConfigurationDeserializable
 import com.wynnlab.util.DEG2RAD
 import com.wynnlab.util.prepareScript
+import com.wynnlab.wynnlab
 import com.wynnlab.wynnscript.CompiledWynnScript
 import com.wynnlab.wynnscript.NoSuchFunctionException
 import com.wynnlab.wynnscript.WynnScript
@@ -122,6 +122,34 @@ data class MobSpell(
             val script = WynnScript(scriptFile.reader()).compile()
 
             return MobSpell(name, maxTick, prepareTime, hasBossBar, script)
+        }
+
+        fun spellEffects(caster: Entity) {
+            // Sound
+            caster.world.playSound(caster.location, Sound.BLOCK_PORTAL_TRAVEL, .5f, 2f)
+
+            // Particles
+            val particles = object : Runnable {
+                var taskId = 0
+                private var n = 3
+                override fun run() {
+                    if (n > 0) {
+                        --n
+                        for (i in 0 until 360 step 30) {
+                            caster.world.spawnParticle(Particle.FIREWORKS_SPARK, caster.location.clone().add(sin(i * DEG2RAD), 1.5, cos(i * DEG2RAD)), 1, .0, .0, .0, .0)
+                        }
+                    }
+                    else
+                        Bukkit.getScheduler().cancelTask(taskId)
+                }
+            }
+            particles.taskId = Bukkit.getScheduler().runTaskTimer(wynnlab, particles, 0L, 20L).taskId
+
+            // BossBar
+            /*if (hasBossBar) {
+                bossBar = if (hasBossBar) Bukkit.createBossBar(NamespacedKey(wynnlab, "prepare_${caster.entityId}"),
+                    "§5Preparing: §f$name", BarColor.PURPLE, BarStyle.SOLID, BarFlag.DARKEN_SKY) else null
+            }*/
         }
     }
 }
