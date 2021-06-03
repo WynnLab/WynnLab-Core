@@ -126,7 +126,7 @@ object Players {
         getWynncraftAPIResult("https://api.wynncraft.com/v2/player/${player.name}/stats").task().let { root ->
             val data = try {
                 (root["data"] as JSONArray)[0] as JSONObject
-            } catch (e: ArrayIndexOutOfBoundsException) {
+            } catch (e: IndexOutOfBoundsException) {
                 Rank.PLAYER.apply(player)
                 return@let
             }
