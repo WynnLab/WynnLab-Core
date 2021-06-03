@@ -80,76 +80,84 @@ object EssentialsCommands : BaseCommand("msg", "r", "party", "p") {
             return false
         }
         return when (args[0]) {
-            "create" -> {
-                val party = Party(player)
-
-                player.sendWynnMessage("messages.party.create")
-
-                Party.parties.add(party)
-
-                party.members.add(player)
-                Party.members[player] = party
-
-                true
-            }
-            "invite" -> {
-                if (args.size < 2) {
-                    player.sendWynnMessage("messages.no_player")
-                    return false
-                }
-
-                val party = player.getParty()
-                if (party == null) {
-                    player.sendWynnMessage("messages.party.no_party")
-                    return true
-                }
-                if (party.owner != player) {
-                    player.sendWynnMessage("messages.party.not_owner")
-                    return true
-                }
-
-                val newMember = Bukkit.getPlayer(args[1])
-                if (newMember == null) {
-                    player.sendWynnMessage("messages.player.not_exist")
-                    return false
-                }
-
-                party.invite(newMember)
-
-                true
-            }
-            "join" -> {
-                if (Party.invites.containsKey(player)) {
-                    if (player.getParty() == Party.invites[player]) {
-                        player.sendWynnMessage("messages.party.already_joined")
-                        Party.invites.remove(player)
-                        return true
-                    } else if (player.getParty() != null) {
-                        player.sendWynnMessage("messages.party.already_other")
-                        player.sendWynnMessage("messages.party.leave")
-                        return true
-                    }
-
-                    Party.invites[player]!!.addMember(player)
-                    Party.invites.remove(player)
-                } else {
-                    player.sendWynnMessage("messages.party.no_invite")
-                }
-                true
-            }
-            "leave" -> {
-                val party = player.getParty()
-                if (party == null) {
-                    player.sendWynnMessage("messages.party.no_party")
-                    return true
-                }
-
-                party.removeMember(player)
-
-                true
-            }
+            "create" -> partyCreate(player)
+            "invite" -> partyInvite(player, args)
+            "join" -> partyJoin(player)
+            "leave" -> partyLeave(player)
             else -> false
         }
+    }
+
+    private fun partyCreate(player: Player): Boolean {
+        val party = Party(player)
+
+        player.sendWynnMessage("messages.party.create")
+
+        Party.parties.add(party)
+
+        party.members.add(player)
+        Party.members[player] = party
+
+        return true
+    }
+
+    private fun partyInvite(player: Player, args: Array<out String>): Boolean {
+        if (args.size < 2) {
+            player.sendWynnMessage("messages.no_player")
+            return false
+        }
+
+        val party = player.getParty()
+        if (party == null) {
+            player.sendWynnMessage("messages.party.no_party")
+            return true
+        }
+        if (party.owner != player) {
+            player.sendWynnMessage("messages.party.not_owner")
+            return true
+        }
+
+        val newMember = Bukkit.getPlayer(args[1])
+        if (newMember == null) {
+            player.sendWynnMessage("messages.player.not_exist")
+            return false
+        }
+
+        party.invite(newMember)
+
+        return true
+    }
+
+    private fun partyJoin(player: Player): Boolean {
+        if (Party.invites.containsKey(player)) {
+            if (player.getParty() == Party.invites[player]) {
+                player.sendWynnMessage("messages.party.already_joined")
+                Party.invites.remove(player)
+                return true
+            } else if (player.getParty() != null) {
+                player.sendWynnMessage("messages.party.already_other")
+                player.sendWynnMessage("messages.party.leave")
+                return true
+            }
+
+            Party.invites[player]!!.addMember(player)
+            Party.invites.remove(player)
+        } else {
+            player.sendWynnMessage("messages.party.no_invite")
+        }
+        return true
+    }
+
+    private fun partyLeave(player: Player): Boolean {
+        val party = player.getParty()
+        if (party == null) {
+            player.sendWynnMessage("messages.party.no_party")
+            return true
+        }
+
+        party.removeMember(player)
+
+        return true
     }
 
     private fun p(player: Player, args: Array<out String>): Boolean {

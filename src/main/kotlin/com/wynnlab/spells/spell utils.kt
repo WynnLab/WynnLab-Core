@@ -9,10 +9,10 @@ import com.wynnlab.classes.BaseClass
 import com.wynnlab.entities.Hologram
 import com.wynnlab.items.WynnItem
 import com.wynnlab.listeners.ProjectileHitListener
-import com.wynnlab.wynnlab
 import com.wynnlab.random
 import com.wynnlab.util.normalizeOnXZ
 import com.wynnlab.util.plus
+import com.wynnlab.wynnlab
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Particle
@@ -146,8 +146,23 @@ private fun poisonTask(e: LivingEntity, poison: Int, source: Player) = object : 
 fun damageBy(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double, vararg conversion: Double) {
     val damage = source.getDamage(melee, multiplier, if (conversion.isNotEmpty()) doubleArrayOf(*conversion) else standardConversion)
 
+    val diLocation = e.eyeLocation.clone().add(random.nextDouble() * .5, random.nextDouble() * .5 + .5, random.nextDouble() * .5)
+    val di = Hologram(diLocation, damageText(damage))
+
+    Bukkit.getScheduler().scheduleSyncDelayedTask(wynnlab) {
+        e.damage(damage.sum(), source)
+        e.noDamageTicks = 0
+
+        di.spawn(e.world)
+        di.bukkitEntity.velocity = diLocation.clone().subtract(e.location).multiply(0.5).toVector()
+    }
+
+    di.removeAfter(15)
+}
+
+private fun damageText(damage: DoubleArray): String {
     var space = false
-    val damageText = buildString {
+    return buildString {
         damage.onEachIndexed { i, d ->
             if (space)
                 append(' ')
@@ -168,19 +183,6 @@ fun damageBy(source: Player, e: LivingEntity, melee: Boolean, multiplier: Double
             }
         }
     }
-
-    val diLocation = e.eyeLocation.clone().add(random.nextDouble() * .5, random.nextDouble() * .5 + .5, random.nextDouble() * .5)
-    val di = Hologram(diLocation, damageText)
-
-    Bukkit.getScheduler().scheduleSyncDelayedTask(wynnlab) {
-        e.damage(damage.sum(), source)
-        e.noDamageTicks = 0
-
-        di.spawn(e.world)
-        di.bukkitEntity.velocity = diLocation.clone().subtract(e.location).multiply(0.5).toVector()
-    }
-
-    di.removeAfter(15)
 }
 
 fun <Healable> heal(e: Healable, amount: Double) where Healable : LivingEntity, Healable : Attributable {

@@ -122,45 +122,54 @@ object Players {
         player.updateLocations()
     }
 
-    private fun loadAPIData(player: Player) {
-        try { getWynncraftAPIResult("https://api.wynncraft.com/v2/player/${player.name}/stats").task().let { root ->
+    private fun loadAPIData(player: Player) = try {
+        getWynncraftAPIResult("https://api.wynncraft.com/v2/player/${player.name}/stats").task().let { root ->
             val data = try {
                 (root["data"] as JSONArray)[0] as JSONObject
             } catch (e: ArrayIndexOutOfBoundsException) {
                 Rank.PLAYER.apply(player)
-                return
+                return@let
             }
 
-            var rank = when (data["rank"] as String) {
-                "Player" -> when (((data["meta"] as JSONObject)["tag"] as JSONObject)["value"] as String?) {
-                    "VIP" -> Rank.VIP
-                    "VIP+" -> Rank.`VIP+`
-                    "HERO" -> Rank.HERO
-                    "CHAMPION" -> Rank.CHAMPION
-                    else -> Rank.PLAYER
-                }
-                "Administrator" -> Rank.ADMIN
-                "Moderator" -> Rank.MOD
-                else -> Rank.CT
-            }
-            if (player.name == "TheLastMinecraft") {
-                player.sendMessage("WynnLab Admin, Wynncraft $rank")
-                rank = Rank.ADMIN
-            }
-            rank.apply(player)
+            applyRank(player, data)
+            loadGuild(player, data)
+        }
+    } catch (_: APIException) {
+        Rank.PLAYER.apply(player)
+    }
 
-            val guildData = data["guild"] as JSONObject
-            val guildName = guildData["name"] as String?
-            //val guildRank = guildData["rank"] as String?
-
-            guildName?.let { gn ->
-                getWynncraftAPIResult("https://api.wynncraft.com/public_api.php?action=guildStats&command=${gn.replace(" ", "%20")}").execute { guild ->
-                    val guildTag = guild["prefix"] as String?
-                    guildName.let { player.data.setString("guild", it) }
-                    guildTag?.let { player.data.setString("guild_tag", it) }
-                }
+    private fun applyRank(player: Player, data: JSONObject) {
+        var rank = when (data["rank"] as String) {
+            "Player" -> when (((data["meta"] as JSONObject)["tag"] as JSONObject)["value"] as String?) {
+                "VIP" -> Rank.VIP
+                "VIP+" -> Rank.`VIP+`
+                "HERO" -> Rank.HERO
+                "CHAMPION" -> Rank.CHAMPION
+                else -> Rank.PLAYER
             }
-        } } catch (_: APIException) { Rank.PLAYER.apply(player) }
+            "Administrator" -> Rank.ADMIN
+            "Moderator" -> Rank.MOD
+            else -> Rank.CT
+        }
+        if (player.name == "TheLastMinecraft") {
+            player.sendMessage("WynnLab Admin, Wynncraft $rank")
+            rank = Rank.ADMIN
+        }
+        rank.apply(player)
+    }
+
+    private fun loadGuild(player: Player, data: JSONObject) {
+        val guildData = data["guild"] as JSONObject
+        val guildName = guildData["name"] as String?
+        //val guildRank = guildData["rank"] as String?
+
+        guildName?.let { gn ->
+            getWynncraftAPIResult("https://api.wynncraft.com/public_api.php?action=guildStats&command=${gn.replace(" ", "%20")}").execute { guild ->
+                val guildTag = guild["prefix"] as String?
+                guildName.let { player.data.setString("guild", it) }
+                guildTag?.let { player.data.setString("guild_tag", it) }
+            }
+        }
     }
 
     fun removePlayerFromActivities(player: Player) {

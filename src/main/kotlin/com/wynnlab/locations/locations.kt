@@ -30,12 +30,9 @@ fun testLocations(player: Player): List<Location> = locations.filter { player.lo
 
 fun Player.updateLocations() {
     val labb = playerLocations[this]
-
     val before = labb?.locations
     val now = testLocations(this)
-
     val bb = labb?.bb ?: createLBB(this)
-
     val entered = before?.let { b -> now.filter { it !in b } } ?: now
 
     var announced = false

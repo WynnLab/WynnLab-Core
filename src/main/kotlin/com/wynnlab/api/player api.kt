@@ -311,9 +311,8 @@ fun skillPercentage(p: Int): Double = when {
 // Damage Type: 0 -> Melee Neutral, 1 -> Melee Elemental, 2 -> Spell Neutral, 3 -> Spell Elemental
 val standardConversion = doubleArrayOf(1.0, .0, .0, .0, .0, .0)
 private val noDamage = doubleArrayOf(.0, .0, .0, .0, .0, .0)
-fun Player.getDamage(melee: Boolean, multiplier: Double = 1.0, conversion: DoubleArray = standardConversion): DoubleArray {
-    val result = noDamage
 
+fun Player.getDamage(melee: Boolean, multiplier: Double = 1.0, conversion: DoubleArray = standardConversion): DoubleArray {
     val pvp = hasScoreboardTag("pvp")
 
     // Melee Neutral = (Base Dam) * (1 + (IDs) - (Def)) + (Raw Melee)
@@ -321,9 +320,13 @@ fun Player.getDamage(melee: Boolean, multiplier: Double = 1.0, conversion: Doubl
     // Spell Neutral = (Base Dam) * (1 + (IDs) - (Def)) * (Att Speed) * (Spell Base Multiplier) + (Raw Spell) * (Spell Base Multiplier)
     // Spell Elemental = [(Base Dam) * (1 + (IDs)) - ((Ele Def) * (1 + (Ele Def %)))] * (Att Speed) * (Spell Base Multiplier)
 
-    val strength = skillPercentage(getSkill(0)).let { if (pvp) it.coerceAtMost(.6) else it }
-    val dexterity = if (random.nextDouble() < skillPercentage(getSkill(1)).let { if (pvp) it.coerceAtMost(.35) else it }) 1.0 else .0
+    val baseDamage = getBaseDamage(conversion)
+    val modifiers = getDamageModifiers(melee, pvp)
 
+    return getModifiedDamage(baseDamage, modifiers, multiplier, melee)
+}
+
+private fun Player.getBaseDamage(conversion: DoubleArray): DoubleArray {
     val damageRanges = if (hasWeaponInHand() ?: return noDamage)
         inventory.itemInMainHand.itemMeta.data.getIntArray("damage") ?: return noDamage
     else return noDamage
@@ -336,7 +339,14 @@ fun Player.getDamage(melee: Boolean, multiplier: Double = 1.0, conversion: Doubl
         damages[i] = if (i > 0) damages[0] * conversion[i] + damages[i] else damages[0] * conversion[0]
     }
 
-    val ids = DoubleArray(6) { i ->
+    return damages
+}
+
+private fun Player.getDamageModifiers(melee: Boolean, pvp: Boolean): DoubleArray {
+    val strength = skillPercentage(getSkill(0)).let { if (pvp) it.coerceAtMost(.6) else it }
+    val dexterity = if (random.nextDouble() < skillPercentage(getSkill(1)).let { if (pvp) it.coerceAtMost(.35) else it }) 1.0 else .0
+
+    return DoubleArray(6) { i ->
         var value = strength + dexterity
         value += if (melee)
             getId("damage_bonus") / 100.0
@@ -346,17 +356,21 @@ fun Player.getDamage(melee: Boolean, multiplier: Double = 1.0, conversion: Doubl
             value += getId("bonus_${elementNamesLC[i - 1]}_damage") / 100.0
         value
     }
+}
+
+private fun Player.getModifiedDamage(baseDamage: DoubleArray, modifiers: DoubleArray, multiplier: Double, melee: Boolean): DoubleArray {
+    val result = noDamage
 
     if (melee) {
-        result[0] = damages[0] * (1 + ids[0] /*- def*/) + getId("damage_bonus_raw")
+        result[0] = baseDamage[0] * (1 + modifiers[0] /*- def*/) + getId("damage_bonus_raw")
         repeat(5) { i ->
-            result[i + 1] = damages[i + 1] * (1 + ids[i + 1]) /*- def*/
+            result[i + 1] = baseDamage[i + 1] * (1 + modifiers[i + 1]) /*- def*/
         }
     } else {
         val attackSpeedSpellMultiplier = weaponAttackSpeed!!.spellMultiplier
-        result[0] = (damages[0] * (1 + ids[0] /*- def*/) * attackSpeedSpellMultiplier + getId("spell_damage_raw")) * multiplier
+        result[0] = (baseDamage[0] * (1 + modifiers[0] /*- def*/) * attackSpeedSpellMultiplier + getId("spell_damage_raw")) * multiplier
         repeat(5) { i ->
-            result[i + 1] = (damages[i + 1] * (1 + ids[i + 1]) /*- def*/) * attackSpeedSpellMultiplier * multiplier
+            result[i + 1] = (baseDamage[i + 1] * (1 + modifiers[i + 1]) /*- def*/) * attackSpeedSpellMultiplier * multiplier
         }
     }
 
