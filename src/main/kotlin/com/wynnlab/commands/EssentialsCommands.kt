@@ -1,7 +1,11 @@
 package com.wynnlab.commands
 
+import com.wynnlab.WL_COLOR
 import com.wynnlab.api.sendWynnMessage
 import com.wynnlab.essentials.Party
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -33,11 +37,7 @@ object EssentialsCommands : BaseCommand("msg", "r", "party", "p") {
         }
         val receivers: List<Player> = player.server.selectEntities(player, args[0]).filterIsInstance<Player>()
         val message = args.slice(1 until args.size).joinToString(" ")
-        player.sendMessage("§7[§r${player.name} §6➤ §r${args[0]}§7] §r$message")
-        for (receiver in receivers) {
-            receiver.sendMessage("§7[§r${player.name} §6➤ §r${receiver.name}§7] §r$message")
-            conversations[receiver] = player
-        }
+        pm(player, receivers, args[0], message)
         return true
     }
 
@@ -53,10 +53,26 @@ object EssentialsCommands : BaseCommand("msg", "r", "party", "p") {
             return true
         }
         val message = args.joinToString(" ")
-        player.sendMessage("§7[§r${player.name} §6➤ §r${receiver.name}§7] §r$message")
-        receiver.sendMessage("§7[§r${player.name} §6➤ §r${receiver.name}§7] §r$message")
-        conversations[receiver] = player
+        pm(player, listOf(receiver), player.name, message)
         return true
+    }
+
+    private fun pm(sender: Player, receivers: List<Player>, specifiedReceiver: String, text: String) {
+        fun getComponent(s: Component, r: Component) = Component.text("[", TextColor.color(0x666666))
+            .append(s)
+            .append(Component.text(" ➤ ", TextColor.color(0xf7942a)))
+            .append(r)
+            .append(Component.text("] ", TextColor.color(0x666666)))
+            .append(LegacyComponentSerializer.legacy('&').deserialize(text))
+
+        val you = Component.text("You", WL_COLOR)
+        val sc = Component.text(sender.name, TextColor.color(0x25d8f7))
+
+        sender.sendMessage(getComponent(you, Component.text(specifiedReceiver, TextColor.color(if (Bukkit.getPlayer(specifiedReceiver) != null) 0xd94ef5 else 0x25d8f7))))
+        for (receiver in receivers) {
+            receiver.sendMessage(getComponent(sc, you))
+            conversations[receiver] = sender
+        }
     }
 
     private fun party(player: Player, args: Array<out String>): Boolean {

@@ -39,16 +39,15 @@ abstract class GUI(
     fun show() {
         Bukkit.getScheduler().runTaskAsynchronously(
             wynnlab, Runnable {
-                update()
-                Bukkit.getScheduler().scheduleSyncDelayedTask(wynnlab) {
-                    player.openInventory(inventory)
-                }
+                showSync()
             })
     }
 
     fun showSync() {
         update()
-        player.openInventory(inventory)
+        Bukkit.getScheduler().scheduleSyncDelayedTask(wynnlab) {
+            player.openInventory(inventory)
+        }
     }
 
     inline fun registerListener(crossinline action: (InventoryClickEvent) -> Unit) {

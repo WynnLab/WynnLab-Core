@@ -36,14 +36,15 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
             if (spLeft < skillIncrease)
                 skillIncrease = 0
             player.playSound(player.location, if (skillIncrease > 0) Sound.ENTITY_EXPERIENCE_ORB_PICKUP else Sound.BLOCK_ANVIL_PLACE, 1f, 1f)
+            val skillPointsKey = "skill_points"
             when (e.slot) {
-                4 -> { player.data.setIntArray("skill_points", intArrayOf(0, 0, 0, 0, 0)); reopen(-1) }
+                4 -> { player.data.setIntArray(skillPointsKey, intArrayOf(0, 0, 0, 0, 0)); reopen(-1) }
 
-                11 -> { player.data.setIntArray("skill_points", skills.apply { set(0, get(0) + skillIncrease) }); reopen(0) }
-                12 -> { player.data.setIntArray("skill_points", skills.apply { set(1, get(1) + skillIncrease) }); reopen(1) }
-                13 -> { player.data.setIntArray("skill_points", skills.apply { set(2, get(2) + skillIncrease) }); reopen(2) }
-                14 -> { player.data.setIntArray("skill_points", skills.apply { set(3, get(3) + skillIncrease) }); reopen(3) }
-                15 -> { player.data.setIntArray("skill_points", skills.apply { set(4, get(4) + skillIncrease) }); reopen(4) }
+                11 -> { player.data.setIntArray(skillPointsKey, skills.apply { set(0, get(0) + skillIncrease) }); reopen(0) }
+                12 -> { player.data.setIntArray(skillPointsKey, skills.apply { set(1, get(1) + skillIncrease) }); reopen(1) }
+                13 -> { player.data.setIntArray(skillPointsKey, skills.apply { set(2, get(2) + skillIncrease) }); reopen(2) }
+                14 -> { player.data.setIntArray(skillPointsKey, skills.apply { set(3, get(3) + skillIncrease) }); reopen(3) }
+                15 -> { player.data.setIntArray(skillPointsKey, skills.apply { set(4, get(4) + skillIncrease) }); reopen(4) }
 
                 18 -> WynnLabSettings().show()
             }
@@ -98,69 +99,31 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
         inventory.setItem(26, currentDamageStats)
     }
 
-    private fun strengthBook() = ItemStack(Material.BOOK).meta {
-        displayName(language.getMessage("gui.compass.upgrade_skill", language.getMessageAsString("elements.strength")))
+    private fun abilityBook(index: Int, name: String) = ItemStack(Material.BOOK).meta {
+        displayName(language.getMessage("gui.compass.upgrade_skill", language.getMessageAsString("elements.$name")))
         val lore = mutableListOf(emptyComponent)
         lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_numbers",
-            skillPercentage(skills[0]) * 100.0, skillPercentage(skills[0] + 1) * 100.0, skills[0], skills[0] + 1))
+            skillPercentage(skills[index]) * 100.0, skillPercentage(skills[index] + 1) * 100.0, skills[index], skills[index] + 1))
         lore.add(emptyComponent)
-        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_strength"))
+        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_$name"))
         //lore.add(" ")
         //lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
         lore(lore)
     }
+
+    private val strengthBook = { abilityBook(0, "strength") }
     private var currentStrengthBook = strengthBook()
 
-    private fun dexterityBook() = ItemStack(Material.BOOK).meta {
-        displayName(language.getMessage("gui.compass.upgrade_skill", language.getMessageAsString("elements.dexterity")))
-        val lore = mutableListOf(emptyComponent)
-        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_numbers",
-            skillPercentage(skills[1]) * 100.0, skillPercentage(skills[1] + 1) * 100.0, skills[1], skills[1] + 1))
-        lore.add(emptyComponent)
-        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_dexterity"))
-        //lore.add(" ")
-        //lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
-        lore(lore)
-    }
+    private val dexterityBook = { abilityBook(1, "dexterity") }
     private var currentDexterityBook = dexterityBook()
 
-    private fun intelligenceBook() = ItemStack(Material.BOOK).meta {
-        displayName(language.getMessage("gui.compass.upgrade_skill", language.getMessageAsString("elements.intelligence")))
-        val lore = mutableListOf(emptyComponent)
-        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_numbers",
-            skillPercentage(skills[2]) * 100.0, skillPercentage(skills[2] + 1) * 100.0, skills[2], skills[2] + 1))
-        lore.add(emptyComponent)
-        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_intelligence"))
-        //lore.add(" ")
-        //lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
-        lore(lore)
-    }
+    private val intelligenceBook = { abilityBook(2, "intelligence") }
     private var currentIntelligenceBook = intelligenceBook()
 
-    private fun defenseBook() = ItemStack(Material.BOOK).meta {
-        displayName(language.getMessage("gui.compass.upgrade_skill", language.getMessageAsString("elements.defense")))
-        val lore = mutableListOf(emptyComponent)
-        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_numbers",
-            skillPercentage(skills[3]) * 100.0, skillPercentage(skills[3] + 1) * 100.0, skills[3], skills[3] + 1))
-        lore.add(emptyComponent)
-        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_defense"))
-        //lore.add(" ")
-        //lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
-        lore(lore)
-    }
+    private val defenseBook = { abilityBook(3, "defense") }
     private var currentDefenseBook = defenseBook()
 
-    private fun agilityBook() = ItemStack(Material.BOOK).meta {
-        displayName(language.getMessage("gui.compass.upgrade_skill", language.getMessageAsString("elements.agility")))
-        val lore = mutableListOf(emptyComponent)
-        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_numbers",
-            skillPercentage(skills[4]) * 100.0, skillPercentage(skills[4] + 1) * 100.0, skills[4], skills[4] + 1))
-        lore.add(emptyComponent)
-        lore.addAll(language.getMessageMultiline("gui.compass.upgrade_skill_agility"))
-        //lore.add(" ")
-        //lore.add(language.getMessage("gui.compass.upgrade_skill_modified"))
-        lore(lore)
-    }
+    private val agilityBook = { abilityBook(4, "agility") }
     private var currentAgilityBook = agilityBook()
 
     private val resetSkillPoints = ItemStack(Material.GOLDEN_SHOVEL).setAppearance(21).meta {
@@ -260,6 +223,7 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
     private fun damageStats(): ItemStack = ItemStack(Material.IRON_SWORD).meta {
         addItemFlags(*ItemFlag.values())
         displayName(language.getMessage("gui.compass.damage"))
+        val spellDamageKey = "gui.compass.spell_damage"
         lore(listOf(
             //"§7[${player.getFirstWeaponSlot().let { if (it == -1) null else player.inventory.getItem(it) }?.itemMeta?.displayName}§7]",
             Component.text("[", TextColor.color(0xa42dc2))
@@ -271,10 +235,10 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
             // Damages
             language.getMessage("gui.compass.total_damage", 0, 0),
             emptyComponent,
-            language.getMessage("gui.compass.spell_damage", if (invertedControls) "LRL" else "RLR", language.getMessageAsString("classes.${player.getWynnClass()}.spells.${if (clone) "1c" else "1"}"), 0, 0),
-            language.getMessage("gui.compass.spell_damage", if (invertedControls) "LLL" else "RRR", language.getMessageAsString("classes.${player.getWynnClass()}.spells.${if (clone) "2c" else "2"}"), 0, 0),
-            language.getMessage("gui.compass.spell_damage", if (invertedControls) "LRR" else "RLL", language.getMessageAsString("classes.${player.getWynnClass()}.spells.${if (clone) "3c" else "3"}"), 0, 0),
-            language.getMessage("gui.compass.spell_damage", if (invertedControls) "LLR" else "RRL", language.getMessageAsString("classes.${player.getWynnClass()}.spells.${if (clone) "4c" else "4"}"), 0, 0),
+            language.getMessage(spellDamageKey, if (invertedControls) "LRL" else "RLR", language.getMessageAsString("classes.${player.getWynnClass()}.spells.${if (clone) "1c" else "1"}"), 0, 0),
+            language.getMessage(spellDamageKey, if (invertedControls) "LLL" else "RRR", language.getMessageAsString("classes.${player.getWynnClass()}.spells.${if (clone) "2c" else "2"}"), 0, 0),
+            language.getMessage(spellDamageKey, if (invertedControls) "LRR" else "RLL", language.getMessageAsString("classes.${player.getWynnClass()}.spells.${if (clone) "3c" else "3"}"), 0, 0),
+            language.getMessage(spellDamageKey, if (invertedControls) "LLR" else "RRL", language.getMessageAsString("classes.${player.getWynnClass()}.spells.${if (clone) "4c" else "4"}"), 0, 0),
         ))
     }
     private var currentDamageStats = damageStats()

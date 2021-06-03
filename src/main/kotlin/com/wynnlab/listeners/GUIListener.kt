@@ -1,6 +1,8 @@
 package com.wynnlab.listeners
 
 import com.wynnlab.api.*
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -176,13 +178,13 @@ class GUIListener : BaseListener() {
         val inventories = hashMapOf<String, (InventoryClickEvent) -> Unit>()
 
         fun snowForSlot(slot: Int) = ItemStack(Material.SNOW, 1).meta {
-            setDisplayName(when (slot) {
-                9 -> "§7Ring Slot§1"
-                10 -> "§7Ring Slot§2"
+            displayName(Component.text(when (slot) {
+                9 -> "§7Ring Slot§0"
+                10 -> "§7Ring Slot§1"
                 11 -> "§7Bracelet Slot"
                 12 -> "§7Necklace Slot"
-                else -> null
-            })
+                else -> ""
+            }, NamedTextColor.GRAY))
         }
     }
 }

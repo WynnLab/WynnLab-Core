@@ -256,7 +256,7 @@ class Identifications(
     }
 }
 
-fun idValue(name: String, value: Int, suffix: String = "%", invertedColors: Boolean = false) = if (invertedColors)
+private fun idValue(name: String, value: Int, suffix: String = "%", invertedColors: Boolean = false) = if (invertedColors)
     "${if (value < 0) "§a" else "§c+"}$value$suffix §7$name"
 else
     "${if (value > 0) "§a+" else "§c"}$value$suffix §7$name"

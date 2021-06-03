@@ -5,6 +5,7 @@ import com.wynnlab.commands.EssentialsCommands
 import com.wynnlab.essentials.Party
 import com.wynnlab.essentials.Rank
 import com.wynnlab.items.APIException
+import com.wynnlab.listeners.GUIListener
 import com.wynnlab.locations.removePlayerLocations
 import com.wynnlab.locations.updateLocations
 import com.wynnlab.scoreboard.Scoreboard
@@ -107,26 +108,10 @@ object Players {
                 ))
             })
 
-            if (getItem(9) == null)
-                setItem(9, ItemStack(Material.SNOW).meta {
-                    //setDisplayName("§7Ring Slot§1")
-                    displayName(Component.text("Ring Slot", colorNonItalic(NamedTextColor.GRAY)).append(Component.text("§1")))
-                })
-            if (getItem(10) == null)
-                setItem(10, ItemStack(Material.SNOW).meta {
-                    //setDisplayName("§7Ring Slot§2")
-                    displayName(Component.text("Ring Slot", colorNonItalic(NamedTextColor.GRAY)).append(Component.text("§2")))
-                })
-            if (getItem(11) == null)
-                setItem(11, ItemStack(Material.SNOW).meta {
-                    //setDisplayName("§7Bracelet Slot")
-                    displayName(Component.text("Bracelet Slot", colorNonItalic(NamedTextColor.GRAY)))
-                })
-            if (getItem(12) == null)
-                setItem(12, ItemStack(Material.SNOW).meta {
-                    //setDisplayName("§7Necklace Slot")
-                    displayName(Component.text("Necklace Slot", colorNonItalic(NamedTextColor.GRAY)))
-                })
+            for (i in 9..12) {
+                if (getItem(i) == null)
+                    setItem(i, GUIListener.snowForSlot(i))
+            }
 
             player.updatePouch()
 
