@@ -12,7 +12,6 @@ data class Party(
     var owner: Player,
     val members: MutableList<Player> = mutableListOf()
 ) {
-
     fun addMember(player: Player) {
         this.members.forEach {
             it.sendWynnMessage("messages.party.joined", player.name)

@@ -32,9 +32,9 @@ class Language(private val locale: Locale) {
     en_us.getMessageOrNull(key, format_args) ?: "&4Nls: &r$key"
 
 
-    fun getRandomMessage(key: String, vararg format_args: Any?) = LegacyComponentSerializer.legacy('&').deserialize(getRandomMessageAsString(key, format_args))
+    fun getRandomMessage(key: String, vararg format_args: Any?) = LegacyComponentSerializer.legacy('&').deserialize(getRandomMessageAsString(key, *format_args))
 
-    private fun getRandomMessageAsString(key: String, format_args: Array<out Any?>): String = getRandomMessageOrNull(key, format_args) ?:
+    fun getRandomMessageAsString(key: String, vararg format_args: Any?): String = getRandomMessageOrNull(key, format_args) ?:
     Language[language_fallbacks[locale.language]!!].getMessageOrNull(key, format_args) ?:
     en_us.getRandomMessageOrNull(key, format_args) ?: "&4Nls: &r$key"
 

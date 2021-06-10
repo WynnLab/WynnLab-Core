@@ -8,8 +8,7 @@ import com.wynnlab.extensions.data
 import com.wynnlab.items.WynnItem
 import com.wynnlab.listeners.GUIListener
 import com.wynnlab.localization.Language
-import com.wynnlab.scoreboard.InfoSidebar
-import com.wynnlab.scoreboard.scoreboards
+import com.wynnlab.scoreboard.Sidebar
 import com.wynnlab.util.RefreshRunnable
 import com.wynnlab.util.colorNonItalic
 import net.kyori.adventure.text.Component
@@ -205,7 +204,7 @@ private fun Player.sendWynnActionBar(msg: TextComponent) {
     })*/
     val health = Component.text("[", TextColor.color(0xb0232f))
         .append(Component.text("❤ ", TextColor.color(0xd92b3a)))
-        .append(Component.text(health.toInt(), TextColor.color(0xe82738)))
+        .append(Component.text(health.toInt(), TextColor.color(COLOR_HEALTH_VALUE)))
         .append(Component.text("/", TextColor.color(0xd92b3a)))
         .append(Component.text(getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value.toInt(), TextColor.color(0xe82738)))
         .append(Component.text("]", TextColor.color(0xb0232f)))
@@ -438,9 +437,12 @@ fun Player.showPouch() {
 }
 
 fun Player.updateSidebar() {
-    val sb = scoreboards[data.getString("scoreboard")]
-    if (sb == null)
-        InfoSidebar.update(this)
-    else
-        sb.update(this)
+    val sb = sidebars[this] ?: Sidebar(PLAY_WYNNLAB_TK).also {
+        sidebars[this] = it
+        it.show(this)
+    }
+
+    sb.set(1, Component.text("Health: ", COLOR_HEALTH_VALUE.color).append(Component.text(health.toInt(), NamedTextColor.YELLOW)))
 }
+
+val sidebars = hashMapOf<Player, Sidebar>()

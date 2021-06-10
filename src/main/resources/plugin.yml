@@ -53,10 +53,6 @@ commands:
   mob:
     description: Spawn a WynnLab mob
     usage: /mob <name>
-  sidebar:
-    description: Change the sidebar
-    usage: /sidebar partyHealth
-    aliases: [ sb ]
   pvp:
     description: Toggle pvp
     usage: /pvp

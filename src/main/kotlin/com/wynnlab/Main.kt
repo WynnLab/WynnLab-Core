@@ -93,6 +93,9 @@ val PREFIX = Component.text("[", NamedTextColor.DARK_GRAY)
     .append(Component.text("WynnLab", WL_COLOR))
     .append(Component.text("] ", NamedTextColor.DARK_GRAY))
 //"§8[§bWynnLab§8] §r"
+val PLAY_WYNNLAB_TK = Component.text("play.", TextColor.color(0x666666))
+    .append(Component.text("WYNNLAB", WL_COLOR))
+    .append(Component.text(".tk", TextColor.color(0x666666)))
 
 val random = java.util.Random()
 

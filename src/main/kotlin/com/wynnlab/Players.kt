@@ -59,9 +59,7 @@ object Players {
 
         player.sendPlayerListHeader/*AndFooter*/(
             //Component.text("play.WYNNLAB.tk", NamedTextColor.LIGHT_PURPLE, TextDecoration.UNDERLINED),
-            Component.text("play.", TextColor.color(0x666666))
-                .append(Component.text("WYNNLAB", WL_COLOR))
-                .append(Component.text(".tk", TextColor.color(0x666666)))
+            PLAY_WYNNLAB_TK
             //Component.text("Join our Discord:", NamedTextColor.YELLOW).append(Component.text("https://discord.gg/7ktHKn2nZG", NamedTextColor.AQUA, TextDecoration.ITALIC))
                 //.append(Component.newline()).append(Component.text("")))
         )
@@ -173,10 +171,12 @@ object Players {
     }
 
     fun removePlayerFromActivities(player: Player) {
+        prefixes.remove(player)
         EssentialsCommands.conversations.remove(player)
         Party.invites.remove(player)
         Party.members[player]?.removeMember(player)
         Scoreboard.clear(player)
         removePlayerLocations(player)
+        sidebars.remove(player)
     }
 }

@@ -4,6 +4,11 @@ import com.wynnlab.api.*
 import com.wynnlab.localization.Language
 import com.wynnlab.locations.updateLocations
 import com.wynnlab.spells.PySpell
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.event.ClickEvent
+import net.kyori.adventure.text.event.HoverEvent
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
@@ -17,7 +22,7 @@ object MainThread : Listener {
         Bukkit.getScheduler().runTaskTimer(wynnlab, { -> onSecond() }, 20L, 20L)
         Bukkit.getScheduler().runTaskTimer(wynnlab, { -> on4Seconds() }, 80L, 80L)
         Bukkit.getScheduler().runTaskTimer(wynnlab, { -> on10Seconds() }, 200L, 200L)
-        Bukkit.getScheduler().runTaskTimer(wynnlab, { -> on5Minutes() }, 6000L, 6000L)
+        Bukkit.getScheduler().runTaskTimer(wynnlab, { -> on5Minutes() }, 100L, 6000L)
     }
 
     private fun onTick() {
@@ -81,7 +86,13 @@ object MainThread : Listener {
 
     private fun on5Minutes() {
         for (player in Bukkit.getOnlinePlayers()) {
-            player.sendWynnMessageNonNls(Language[player.locale()].getRandomMessage("tips"))
+            val msg = Language[player.locale()].getRandomMessageAsString("tips")
+            var c = LegacyComponentSerializer.legacy('&').deserialize(msg)
+            if (msg.startsWith("&#5865f2"))
+                c = c.append(Component.text("https://discord.gg/7ktHKn2nZG", COLOR_DISCORD.color)
+                    .hoverEvent(HoverEvent.showText(Component.text("Click to join!", NamedTextColor.GRAY)))
+                    .clickEvent(ClickEvent.openUrl("https://discord.gg/7ktHKn2nZG")))
+            player.sendMessage(c)
         }
     }
 

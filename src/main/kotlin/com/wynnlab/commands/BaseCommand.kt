@@ -16,7 +16,6 @@ fun registerCommands() {
     registerCommand(MobCommand)
     registerCommand(PVPCommands)
     registerCommand(RankCommand)
-    registerCommand(SidebarCommand)
 }
 
 private fun registerCommand(command: BaseCommand) {

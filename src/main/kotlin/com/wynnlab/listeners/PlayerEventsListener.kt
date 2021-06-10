@@ -45,7 +45,6 @@ class PlayerEventsListener : BaseListener() {
             .append(Component.text("-", TextColor.color(0xb52714)))
             .append(Component.text("] ", TextColor.color(0x666666)))
             .append(Component.text(player.prefix + player.name)))
-        prefixes.remove(player)
 
         // Remove player from activities
         Players.removePlayerFromActivities(player)
