@@ -83,11 +83,11 @@ object Players {
             }.meta {
                 //lore = listOf("", "§5Quests: §d0/0 §5[100%]")
                 lore(listOf(Component.text(""),
-                    Component.text("Quests: ", TextColor.color(0x993ce6))
-                        .append(Component.text("0/0", TextColor.color(0xc13ce6)))
-                        .append(Component.text(" [", TextColor.color(0x732dad)))
-                        .append(Component.text("100%", TextColor.color(0x993ce6)))
-                        .append(Component.text("]", TextColor.color(0x732dad)))
+                    Component.text("Quests: ", COLOR_QUESTS)
+                        .append(Component.text("0/0", COLOR_QUESTS_COUNT))
+                        .append(Component.text(" [", COLOR_QUESTS_BRACKET))
+                        .append(Component.text("100%", COLOR_QUESTS_COUNT))
+                        .append(Component.text("]", COLOR_QUESTS_BRACKET))
                         .style { it.decoration(TextDecoration.ITALIC, false) }
                 ))
             })

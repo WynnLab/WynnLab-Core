@@ -89,7 +89,7 @@ object MainThread : Listener {
             val msg = Language[player.locale()].getRandomMessageAsString("tips")
             var c = LegacyComponentSerializer.legacy('&').deserialize(msg)
             if (msg.startsWith("&#5865f2"))
-                c = c.append(Component.text("https://discord.gg/7ktHKn2nZG", COLOR_DISCORD.color)
+                c = c.append(Component.text("https://discord.gg/7ktHKn2nZG", COLOR_DISCORD)
                     .hoverEvent(HoverEvent.showText(Component.text("Click to join!", NamedTextColor.GRAY)))
                     .clickEvent(ClickEvent.openUrl("https://discord.gg/7ktHKn2nZG")))
             player.sendMessage(c)

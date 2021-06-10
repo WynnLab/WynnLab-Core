@@ -419,7 +419,7 @@ fun Player.updatePouch(add: ItemStack? = null) {
                     "§fLeft-Click §7to view contents",
                     //" "
                 )*/
-        displayName(Component.text("Magic Pouch", colorNonItalic(0xedd953)))
+        displayName(Component.text("Magic Pouch", colorNonItalic(COLOR_GOLD)))
         lore(listOf(
             Component.text("Left-Click", colorNonItalic(NamedTextColor.WHITE))
                 .append(Component.text(" to view contents", colorNonItalic(NamedTextColor.GRAY))),
@@ -442,7 +442,35 @@ fun Player.updateSidebar() {
         it.show(this)
     }
 
-    sb.set(1, Component.text("Health: ", COLOR_HEALTH_VALUE.color).append(Component.text(health.toInt(), NamedTextColor.YELLOW)))
+    sb.setForUpdate(1, Component.text("Quests: ", COLOR_QUESTS)
+        .append(Component.text("0/0", COLOR_QUESTS_COUNT))
+        .append(Component.text(" [", COLOR_QUESTS_BRACKET))
+        .append(Component.text("100%", COLOR_QUESTS_COUNT))
+        .append(Component.text("]", COLOR_QUESTS_BRACKET)))
+
+    sb.setForUpdate(3, Component.text("Pos: ", COLOR_ORANGE)
+        .append(Component.text("${location.x.toInt()} ", COLOR_DES_RED))
+        .append(Component.text("${location.y.toInt()} ", COLOR_DES_GREEN))
+        .append(Component.text("${location.z.toInt()} ", COLOR_DES_BLUE))
+        .append(Component.text("[", COLOR_DARKER_GREY))
+        .append(Component.text(yawToDir(eyeLocation.yaw), COLOR_ORANGE))
+        .append(Component.text("]", COLOR_DARKER_GREY)))
+
+    sb.setForUpdate(5, Component.text("5 ✯✯✯✯✯", COLOR_GOLD))
+
+    sb.update()
+}
+
+private fun yawToDir(yaw: Float) = when {
+    yaw < -157.5f -> "N"
+    yaw < -112.5f -> "NE"
+    yaw < -67.5f -> "E"
+    yaw < -22.5f -> "SE"
+    yaw < 22.5f -> "S"
+    yaw < 67.5f -> "SW"
+    yaw < 112.5f -> "W"
+    yaw < 157.5f -> "NW"
+    else -> "N"
 }
 
 val sidebars = hashMapOf<Player, Sidebar>()
