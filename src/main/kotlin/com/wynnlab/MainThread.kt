@@ -1,6 +1,7 @@
 package com.wynnlab
 
 import com.wynnlab.api.*
+import com.wynnlab.essentials.Party
 import com.wynnlab.localization.Language
 import com.wynnlab.locations.updateLocations
 import com.wynnlab.spells.PySpell
@@ -49,6 +50,8 @@ object MainThread : Listener {
     }
 
     private fun onSecond() {
+        Party.parties.forEach(Party::update)
+
         for (player in Bukkit.getOnlinePlayers()) {
             val pvp = player.hasScoreboardTag("pvp")
 

@@ -22,8 +22,7 @@ class Sidebar(title: Component) {
     private val lines = Array<Component?>(16) { null }
     private val setLines = BooleanArray(16)
 
-    private var displayLines = 0
-    val lineCount get() = displayLines
+    var displayLines = 0
 
     fun show(player: Player) {
         player.scoreboard = sb
@@ -34,11 +33,7 @@ class Sidebar(title: Component) {
      */
     @Throws(ArrayIndexOutOfBoundsException::class)
     fun set(line: Int, text: Component) {
-        if (displayLines <= line) displayLines = line + 1
-        lines[line] = text
-        setLines[line] = true
-
-        setScore(16 - line, text)
+        setForUpdate(line, text)
 
         fillEmptyLines()
     }
@@ -66,11 +61,15 @@ class Sidebar(title: Component) {
      */
     @Throws(ArrayIndexOutOfBoundsException::class)
     fun clear(line: Int) {
-        lines[line] = null
-        setLines[line] = false
+        clearForUpdate(line)
 
         setDisplayLines()
         fillEmptyLines()
+    }
+
+    fun clearForUpdate(line: Int) {
+        lines[line] = null
+        setLines[line] = false
     }
 
     fun clear() {

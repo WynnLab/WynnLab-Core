@@ -8,7 +8,6 @@ import com.wynnlab.items.APIException
 import com.wynnlab.listeners.GUIListener
 import com.wynnlab.locations.removePlayerLocations
 import com.wynnlab.locations.updateLocations
-import com.wynnlab.scoreboard.Scoreboard
 import com.wynnlab.util.colorNonItalic
 import com.wynnlab.util.getWynncraftAPIResult
 import net.kyori.adventure.text.Component
@@ -175,7 +174,6 @@ object Players {
         EssentialsCommands.conversations.remove(player)
         Party.invites.remove(player)
         Party.members[player]?.removeMember(player)
-        Scoreboard.clear(player)
         removePlayerLocations(player)
         sidebars.remove(player)
     }

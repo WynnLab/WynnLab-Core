@@ -18,3 +18,15 @@ fun registerMainTeam(name: String): Team = try {
     Bukkit.getScoreboardManager().mainScoreboard.getTeam(name)?.unregister()
     Bukkit.getScoreboardManager().mainScoreboard.registerNewTeam(name)
 }
+
+fun yawToDir(yaw: Float) = when {
+    yaw < -157.5f -> "N"
+    yaw < -112.5f -> "NE"
+    yaw < -67.5f -> "E"
+    yaw < -22.5f -> "SE"
+    yaw < 22.5f -> "S"
+    yaw < 67.5f -> "SW"
+    yaw < 112.5f -> "W"
+    yaw < 157.5f -> "NW"
+    else -> "N"
+}

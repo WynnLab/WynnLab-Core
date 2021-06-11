@@ -1,17 +1,25 @@
 package com.wynnlab.essentials
 
+import com.wynnlab.COLOR_HEALTH_HEART
+import com.wynnlab.COLOR_HEALTH_VALUE
+import com.wynnlab.COLOR_PARTY
 import com.wynnlab.PREFIX
 import com.wynnlab.api.sendWynnMessage
 import com.wynnlab.localization.Language
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.Style
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.entity.Player
 
 data class Party(
     var owner: Player,
     val members: MutableList<Player> = mutableListOf()
 ) {
+    var healthTexts = listOf<Component>()
+
     fun addMember(player: Player) {
         this.members.forEach {
             it.sendWynnMessage("messages.party.joined", player.name)
@@ -68,6 +76,19 @@ data class Party(
         )
 
         owner.sendWynnMessage("messages.party.invite.send", player.name)
+    }
+
+    internal fun update() {
+        healthTexts = members.sortedBy { it.health }.map {
+            Component.text("- ", COLOR_PARTY)
+                .append(Component.text(it.health.toInt(), COLOR_HEALTH_VALUE))
+                .append(Component.text("❤ ", COLOR_HEALTH_HEART))
+                .append(Component.text(it.name, if (it.isDead) Style.style(NamedTextColor.DARK_GRAY, TextDecoration.STRIKETHROUGH) else Style.style(NamedTextColor.WHITE)))
+        }
+    }
+
+    fun getSbTexts(): List<Component> {
+        return healthTexts
     }
 
     companion object {

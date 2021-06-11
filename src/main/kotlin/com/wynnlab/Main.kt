@@ -1,11 +1,11 @@
 package com.wynnlab
 
+import com.wynnlab.api.sidebars
 import com.wynnlab.commands.registerCommands
 import com.wynnlab.commands.tab_completers.registerTabCompleters
 import com.wynnlab.listeners.registerListeners
 import com.wynnlab.localization.loadLanguages
 import com.wynnlab.locations.loadLocations
-import com.wynnlab.scoreboard.Scoreboard
 import com.wynnlab.util.DEG2RAD
 import com.wynnlab.util.RAD2DEG
 import com.wynnlab.util.registerSerializers
@@ -57,7 +57,7 @@ class Main : JavaPlugin() {
     override fun onDisable() {
         Bukkit.getOnlinePlayers().forEach(Players::removePlayerFromActivities)
 
-        Scoreboard.scoreboards.clear()
+        sidebars.clear()
 
         python.close()
     }

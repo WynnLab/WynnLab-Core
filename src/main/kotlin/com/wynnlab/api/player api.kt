@@ -3,12 +3,15 @@
 package com.wynnlab.api
 
 import com.wynnlab.*
+import com.wynnlab.essentials.Party
 import com.wynnlab.events.SpellCastEvent
 import com.wynnlab.extensions.data
 import com.wynnlab.items.WynnItem
 import com.wynnlab.listeners.GUIListener
 import com.wynnlab.localization.Language
+import com.wynnlab.scoreboard.PartySidebar
 import com.wynnlab.scoreboard.Sidebar
+import com.wynnlab.scoreboard.StandardSidebar
 import com.wynnlab.util.RefreshRunnable
 import com.wynnlab.util.colorNonItalic
 import net.kyori.adventure.text.Component
@@ -203,8 +206,8 @@ private fun Player.sendWynnActionBar(msg: TextComponent) {
         append(mana)
     })*/
     val health = Component.text("[", TextColor.color(0xb0232f))
-        .append(Component.text("❤ ", TextColor.color(0xd92b3a)))
-        .append(Component.text(health.toInt(), TextColor.color(COLOR_HEALTH_VALUE)))
+        .append(Component.text("❤ ", COLOR_HEALTH_HEART))
+        .append(Component.text(health.toInt(), COLOR_HEALTH_VALUE))
         .append(Component.text("/", TextColor.color(0xd92b3a)))
         .append(Component.text(getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value.toInt(), TextColor.color(0xe82738)))
         .append(Component.text("]", TextColor.color(0xb0232f)))
@@ -442,35 +445,11 @@ fun Player.updateSidebar() {
         it.show(this)
     }
 
-    sb.setForUpdate(1, Component.text("Quests: ", COLOR_QUESTS)
-        .append(Component.text("0/0", COLOR_QUESTS_COUNT))
-        .append(Component.text(" [", COLOR_QUESTS_BRACKET))
-        .append(Component.text("100%", COLOR_QUESTS_COUNT))
-        .append(Component.text("]", COLOR_QUESTS_BRACKET)))
+    val csb = if (Party.members[this] != null) PartySidebar else StandardSidebar
 
-    sb.setForUpdate(3, Component.text("Pos: ", COLOR_ORANGE)
-        .append(Component.text("${location.x.toInt()} ", COLOR_DES_RED))
-        .append(Component.text("${location.y.toInt()} ", COLOR_DES_GREEN))
-        .append(Component.text("${location.z.toInt()} ", COLOR_DES_BLUE))
-        .append(Component.text("[", COLOR_DARKER_GREY))
-        .append(Component.text(yawToDir(eyeLocation.yaw), COLOR_ORANGE))
-        .append(Component.text("]", COLOR_DARKER_GREY)))
-
-    sb.setForUpdate(5, Component.text("5 ✯✯✯✯✯", COLOR_GOLD))
+    csb.apply(this, sb)
 
     sb.update()
-}
-
-private fun yawToDir(yaw: Float) = when {
-    yaw < -157.5f -> "N"
-    yaw < -112.5f -> "NE"
-    yaw < -67.5f -> "E"
-    yaw < -22.5f -> "SE"
-    yaw < 22.5f -> "S"
-    yaw < 67.5f -> "SW"
-    yaw < 112.5f -> "W"
-    yaw < 157.5f -> "NW"
-    else -> "N"
 }
 
 val sidebars = hashMapOf<Player, Sidebar>()
