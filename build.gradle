@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'com.wynnlab'
-version = '1.0'
+version = '1.0' // "git describe --tags".execute().text
 
 repositories {
     mavenCentral()
@@ -18,6 +18,9 @@ repositories {
     flatDir {
         dirs 'D:/IdeaProjects/WynnLabScriptAPI/build/libs/'
     }
+    flatDir {
+        dirs 'D:/IdeaProjects/WynnLabAPI/build/libs/'
+    }
 }
 
 dependencies {
@@ -30,8 +33,11 @@ dependencies {
     // WynnScript
     compileOnly name: 'WynnScript2-1.0-all'
 
+    // Resources
+    compileOnly name: 'WynnLabAPI-1.0-SNAPSHOT'
+
     // Script API
-    compileOnly name: 'WynnLabScriptAPI-1.0-SNAPSHOT'
+    compileOnly name: 'WynnLabResources-1.0-SNAPSHOT'
 
     // Kotlin
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
