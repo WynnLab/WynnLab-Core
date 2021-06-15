@@ -179,7 +179,7 @@ data class WynnMob(
             //t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, 10, true, false) { (e.bukkitEntity.lastDamageCause?.entity as org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity).handle == it })
             t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityPlayer::class.java, true))
 
-            g.a(1, PathfinderGoalCastSpell(e, (m as? WynnMob)?.vision ?: (m as BaseMob).vision, (m as? WynnMob)?.spells ?: (m as BaseMob).spells))
+            g.a(1, PathfinderGoalCastSpell(e, (m as? WynnMob)?.vision ?: (m as BaseMob).stats.vision, (m as? WynnMob)?.spells ?: (m as BaseMob).spells))
 
             g.a(2, PathfinderGoalMeleeAttack(e, 1.0, true))
 
@@ -193,9 +193,9 @@ data class WynnMob(
             //t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
             t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityPlayer::class.java, true))
 
-            g.a(1, PathfinderGoalCastSpell(e, (m as? WynnMob)?.vision ?: (m as BaseMob).vision, (m as? WynnMob)?.spells ?: (m as BaseMob).spells))
+            g.a(1, PathfinderGoalCastSpell(e, (m as? WynnMob)?.vision ?: (m as BaseMob).stats.vision, (m as? WynnMob)?.spells ?: (m as BaseMob).spells))
 
-            g.a(2, PathfinderGoalRangedAttack(e, (m as? WynnMob)?.vision ?: (m as BaseMob).vision, ((m as? WynnMob)?.attackSpeed ?: (m as BaseMob).attackSpeed * 20).toInt(), (m as? WynnMob)?.projectile ?: (m as BaseMob).projectile!!.type.java, (m as? WynnMob)?.projectileMaterial ?: (m as BaseMob).projectile!!.item?.type))
+            g.a(2, PathfinderGoalRangedAttack(e, (m as? WynnMob)?.vision ?: (m as BaseMob).stats.vision, ((m as? WynnMob)?.attackSpeed ?: (m as BaseMob).stats.attackSpeed * 20).toInt(), (m as? WynnMob)?.projectile ?: (m as BaseMob).stats.projectile!!.type.java, (m as? WynnMob)?.projectileMaterial ?: (m as BaseMob).stats.projectile!!.item?.type))
 
             g.a(3, PathfinderGoalRandomLookaround(e))
             g.a(4, PathfinderGoalRandomStroll(e, 1.0))

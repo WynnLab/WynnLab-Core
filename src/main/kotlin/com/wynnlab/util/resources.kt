@@ -26,13 +26,13 @@ val resources = arrayOf(
     // Classes
     /////////////////////////////////////
 
-    "classes/archer/archer.yml",
+    /*"classes/archer/archer.yml",
     "classes/archer/archer_main.py",
     "classes/archer/arrow_storm.py",
     "classes/archer/escape.py",
     "classes/archer/bomb_arrow.py",
     "classes/archer/arrow_shield.py",
-    "classes/archer/arrow_rain.py",
+    "classes/archer/arrow_rain.py",*/
 
     "classes/assassin/assassin.yml",
     "classes/assassin/assassin_main.py",

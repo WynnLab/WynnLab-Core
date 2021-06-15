@@ -83,13 +83,13 @@ object MobCommand : BaseCommand("mob") {
             init {
                 setLocation(location.x, location.y, location.z, location.yaw, location.pitch)
 
-                customName = ChatComponentText("${net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacy('§').serialize(this@spawn.name)} §6[Lv. $level]")
+                customName = ChatComponentText("${net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacy('§').serialize(this@spawn.name)} §6[Lv. ${stats.level}]")
                 customNameVisible = true
 
-                getAttributeInstance(GenericAttributes.MAX_HEALTH)!!.value = this@spawn.health.toDouble()
-                health = this@spawn.health.toFloat()
+                getAttributeInstance(GenericAttributes.MAX_HEALTH)!!.value = this@spawn.stats.health.toDouble()
+                health = this@spawn.stats.health.toFloat()
 
-                getAttributeInstance(GenericAttributes.MOVEMENT_SPEED)?.value = this@spawn.speed
+                getAttributeInstance(GenericAttributes.MOVEMENT_SPEED)?.value = this@spawn.stats.speed
 
                 equipment.run {
                     mainHand?.let { setSlot(EnumItemSlot.MAINHAND, it.toNMSItem(), true) }
