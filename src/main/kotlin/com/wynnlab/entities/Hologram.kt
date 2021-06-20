@@ -1,15 +1,15 @@
 package com.wynnlab.entities
 
 import com.wynnlab.wynnlab
-import net.minecraft.server.v1_16_R3.ChatComponentText
-import net.minecraft.server.v1_16_R3.EntityArmorStand
-import net.minecraft.server.v1_16_R3.EntityTypes
+import net.minecraft.network.chat.ChatComponentText
+import net.minecraft.world.entity.EntityTypes
+import net.minecraft.world.entity.decoration.EntityArmorStand
 import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld
 import org.bukkit.entity.ArmorStand
 
-class Hologram(location: Location, text: String) : EntityArmorStand(EntityTypes.ARMOR_STAND, (location.world as CraftWorld).handle), CustomEntity<ArmorStand> {
+class Hologram(location: Location, text: String) : EntityArmorStand(EntityTypes.c, (location.world as CraftWorld).handle), CustomEntity<ArmorStand> {
     init {
         isInvisible = true
         isInvulnerable = true

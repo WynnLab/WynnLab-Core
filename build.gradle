@@ -4,31 +4,23 @@ plugins {
 }
 
 group = 'com.wynnlab'
-version = '1.0' // "git describe --tags".execute().text
+version = '1.1.0' // "git describe --tags".execute().text
 
 repositories {
     mavenCentral()
-    maven {
-        name = 'papermc-repo'
-        url = 'https://papermc.io/repo/repository/maven-public/'
-    }
-    flatDir {
-        dirs './libs/'
-    }
-    flatDir {
-        dirs 'D:/IdeaProjects/WynnLabScriptAPI/build/libs/'
-    }
-    flatDir {
-        dirs 'D:/IdeaProjects/WynnLabAPI/build/libs/'
-    }
+    maven { url 'https://papermc.io/repo/repository/maven-public/'}
+
+    flatDir { dirs './libs/'}
+    flatDir { dirs 'D:/IdeaProjects/WynnLabScriptAPI/build/libs/'}
+    flatDir { dirs 'D:/IdeaProjects/WynnLabAPI/build/libs/'}
 }
 
 dependencies {
     // Paper (Spigot) API
-    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT'
 
     // Craftbukkit & NMS
-    compileOnly name: 'craftbukkit-1.16.5'
+    compileOnly name: 'craftbukkit-1.17'
 
     // WynnScript
     compileOnly name: 'WynnScript2-1.0-all'
@@ -49,8 +41,8 @@ dependencies {
     //testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 16
+targetCompatibility = 16
 
 compileKotlin {
     kotlinOptions.jvmTarget = '1.8'

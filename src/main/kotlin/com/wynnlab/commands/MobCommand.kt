@@ -5,14 +5,22 @@ import com.wynnlab.entities.WynnMob
 import com.wynnlab.mobs.BaseMob
 import com.wynnlab.registry.MobRegistry
 import com.wynnlab.wynnlab
-import net.minecraft.server.v1_16_R3.*
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
+import net.minecraft.network.chat.ChatComponentText
+import net.minecraft.sounds.SoundEffect
+import net.minecraft.world.damagesource.DamageSource
+import net.minecraft.world.entity.EntityCreature
+import net.minecraft.world.entity.EntityTypes
+import net.minecraft.world.entity.EnumItemSlot
+import net.minecraft.world.entity.ai.attributes.GenericAttributes
+import net.minecraft.world.entity.ai.goal.PathfinderGoalSelector
 import org.bukkit.Location
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.craftbukkit.v1_16_R3.CraftSound
-import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
+import org.bukkit.craftbukkit.v1_17_R1.CraftSound
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld
+import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.io.File
@@ -83,26 +91,26 @@ object MobCommand : BaseCommand("mob") {
             init {
                 setLocation(location.x, location.y, location.z, location.yaw, location.pitch)
 
-                customName = ChatComponentText("${net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacy('§').serialize(this@spawn.name)} §6[Lv. ${stats.level}]")
+                customName = ChatComponentText("${LegacyComponentSerializer.legacy('§').serialize(this@spawn.name)} §6[Lv. ${stats.level}]")
                 customNameVisible = true
 
-                getAttributeInstance(GenericAttributes.MAX_HEALTH)!!.value = this@spawn.stats.health.toDouble()
+                getAttributeInstance(GenericAttributes.a)!!.value = this@spawn.stats.health.toDouble()
                 health = this@spawn.stats.health.toFloat()
 
-                getAttributeInstance(GenericAttributes.MOVEMENT_SPEED)?.value = this@spawn.stats.speed
+                getAttributeInstance(GenericAttributes.d)?.value = this@spawn.stats.speed
 
                 equipment.run {
-                    mainHand?.let { setSlot(EnumItemSlot.MAINHAND, it.toNMSItem(), true) }
-                    offHand?.let { setSlot(EnumItemSlot.OFFHAND, it.toNMSItem(), true) }
-                    head?.let { setSlot(EnumItemSlot.HEAD, it.toNMSItem(), true) }
-                    chest?.let { setSlot(EnumItemSlot.CHEST, it.toNMSItem(), true) }
-                    legs?.let { setSlot(EnumItemSlot.LEGS, it.toNMSItem(), true) }
-                    feet?.let { setSlot(EnumItemSlot.FEET, it.toNMSItem(), true) }
+                    mainHand?.let { setSlot(EnumItemSlot.a, it.toNMSItem(), true) }
+                    offHand?.let { setSlot(EnumItemSlot.b, it.toNMSItem(), true) }
+                    head?.let { setSlot(EnumItemSlot.f, it.toNMSItem(), true) }
+                    chest?.let { setSlot(EnumItemSlot.e, it.toNMSItem(), true) }
+                    legs?.let { setSlot(EnumItemSlot.d, it.toNMSItem(), true) }
+                    feet?.let { setSlot(EnumItemSlot.c, it.toNMSItem(), true) }
                 }
             }
 
             override fun initPathfinder() {
-                this@spawn.ai.initPathfinder(goalSelector, targetSelector, this, this@spawn)
+                this@spawn.ai.initPathfinder(bO, bP, this, this@spawn)
             }
 
             override fun getSoundAmbient(): SoundEffect? = ambientSound?.toSoundEffect()

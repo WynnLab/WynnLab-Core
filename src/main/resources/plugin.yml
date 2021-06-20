@@ -3,8 +3,8 @@ version: 1.0
 main: com.wynnlab.Main
 depend: [ KBukkit, WynnLabAPI, WynnScript2, PyBukkit ]
 authors: [ Siinus ]
-description: Wynncraft systematic recreation 1.16
-api-version: 1.16
+description: Wynncraft systematic recreation 1.17
+api-version: 1.17
 prefix: WynnLab
 website: wynnlab.com
 commands:

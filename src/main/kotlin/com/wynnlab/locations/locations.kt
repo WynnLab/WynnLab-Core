@@ -19,9 +19,11 @@ fun loadLocations() {
     val config = YamlConfiguration()
     config.load(file)
 
-    val ls = config.getList("locations") as? List<Location> ?: return
+    val ls = try {
+        config.getList("locations") as? List<Location> ?: return
+    } catch (e: IllegalArgumentException) { return }
 
-    ls.forEach { locations.add(it) }
+    ls.forEach { if (it != null) locations.add(it) }
 
     Bukkit.broadcastMessage(locations.toString())
 }
@@ -29,6 +31,8 @@ fun loadLocations() {
 fun testLocations(player: Player): List<Location> = locations.filter { player.location in it }
 
 fun Player.updateLocations() {
+    if (locations.isEmpty()) return
+
     val labb = playerLocations[this]
     val before = labb?.locations
     val now = testLocations(this)

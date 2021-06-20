@@ -4,10 +4,10 @@ import com.wynnlab.base.BaseSpell
 import com.wynnlab.mobs.spells.BaseMobSpell
 import com.wynnlab.spells.MobSpell
 import com.wynnlab.wynnlab
-import net.minecraft.server.v1_16_R3.EntityCreature
-import net.minecraft.server.v1_16_R3.EntityLiving
-import net.minecraft.server.v1_16_R3.EntityPlayer
-import net.minecraft.server.v1_16_R3.PathfinderGoal
+import net.minecraft.server.level.EntityPlayer
+import net.minecraft.world.entity.EntityCreature
+import net.minecraft.world.entity.EntityLiving
+import net.minecraft.world.entity.ai.goal.PathfinderGoal
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
@@ -27,7 +27,7 @@ class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Doubl
     private var runnable: MobSpell.Ticks? = null
 
     init {
-        a(EnumSet.of(Type.LOOK))
+        a(EnumSet.of(Type.b))
     }
 
     override fun a(): Boolean {
@@ -41,7 +41,7 @@ class PathfinderGoalCastSpell(private val creature: EntityCreature, range: Doubl
         if (target == null)
             return false
 
-        if (target!!.h(creature) > range)
+        if (target!!.f(creature) > range)
             return false
 
         return true

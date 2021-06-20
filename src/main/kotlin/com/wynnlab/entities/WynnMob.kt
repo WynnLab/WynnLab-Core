@@ -7,16 +7,24 @@ import com.wynnlab.mobs.BaseMob
 import com.wynnlab.spells.MobSpell
 import com.wynnlab.util.BaseSerializable
 import com.wynnlab.util.ConfigurationDeserializable
-import net.minecraft.server.v1_16_R3.*
+import net.minecraft.network.chat.ChatComponentText
+import net.minecraft.sounds.SoundEffect
+import net.minecraft.sounds.SoundEffects
+import net.minecraft.world.damagesource.DamageSource
+import net.minecraft.world.entity.EntityCreature
+import net.minecraft.world.entity.EntityTypes
+import net.minecraft.world.entity.EnumItemSlot
+import net.minecraft.world.entity.ai.attributes.GenericAttributes
+import net.minecraft.world.entity.ai.goal.PathfinderGoalSelector
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld
+import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack
 import org.bukkit.entity.Projectile
 import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.inventory.ItemStack
-import net.minecraft.server.v1_16_R3.ItemStack as NMSItemStack
+import net.minecraft.world.item.ItemStack as NMSItemStack
 
 data class WynnMob(
     val name: String,
@@ -52,23 +60,23 @@ data class WynnMob(
             customName = ChatComponentText("${this@WynnMob.name} §6[Lv. $level]")
             customNameVisible = true
 
-            getAttributeInstance(GenericAttributes.MAX_HEALTH)!!.value = this@WynnMob.health.toDouble()
+            getAttributeInstance(GenericAttributes.a)!!.value = this@WynnMob.health.toDouble()
             health = this@WynnMob.health.toFloat()
 
-            getAttributeInstance(GenericAttributes.MOVEMENT_SPEED)?.value = this@WynnMob.speed
+            getAttributeInstance(GenericAttributes.d)?.value = this@WynnMob.speed
 
             equipment.run {
-                mainHand?.let { setSlot(EnumItemSlot.MAINHAND, it, true) }
-                offHand?.let { setSlot(EnumItemSlot.OFFHAND, it, true) }
-                head?.let { setSlot(EnumItemSlot.HEAD, it, true) }
-                chest?.let { setSlot(EnumItemSlot.CHEST, it, true) }
-                legs?.let { setSlot(EnumItemSlot.LEGS, it, true) }
-                feet?.let { setSlot(EnumItemSlot.FEET, it, true) }
+                mainHand?.let { setSlot(EnumItemSlot.a, it, true) }
+                offHand?.let { setSlot(EnumItemSlot.b, it, true) }
+                head?.let { setSlot(EnumItemSlot.f, it, true) }
+                chest?.let { setSlot(EnumItemSlot.e, it, true) }
+                legs?.let { setSlot(EnumItemSlot.d, it, true) }
+                feet?.let { setSlot(EnumItemSlot.c, it, true) }
             }
         }
 
         override fun initPathfinder() {
-            this@WynnMob.ai.initPathfinder(goalSelector, targetSelector, this, this@WynnMob)
+            this@WynnMob.ai.initPathfinder(bO, bP, this, this@WynnMob)
         }
 
         override fun getSoundAmbient(): SoundEffect? = ambientSound
@@ -81,7 +89,8 @@ data class WynnMob(
     fun spawn(location: Location) {
         val entity = C(location)
 
-        entity.spawnIn((location.world as CraftWorld).handle)
+        //entity.spawnIn((location.world as CraftWorld).handle)
+        entity.t = (location.world as CraftWorld).handle
         (location.world as CraftWorld).handle.addEntity(entity, CreatureSpawnEvent.SpawnReason.CUSTOM)
 
         val be = entity.bukkitEntity
@@ -124,9 +133,9 @@ data class WynnMob(
             val elementalDamage = (map["elemental_damage"] as List<String>?)?.map { s -> s.split('-').let { it[0].toInt()..it[1].toInt() } }?.let {
                 Elemental(it[0], it[1], it[2], it[3], it[4]) }
             val elementalDefense = (map["elemental_defense"] as List<Int>?)?.let { Elemental(it[0], it[1], it[2], it[3], it[4]) }
-            val ambientSound = (map["ambient_sound"] as String?)?.let { SoundEffects::class.java.getDeclaredField(it.toUpperCase())[null] as SoundEffect }
-            val hurtSound = (map["hurt_sound"] as String?)?.let { SoundEffects::class.java.getDeclaredField(it.toUpperCase())[null] as SoundEffect }
-            val deathSound = (map["death_sound"] as String?)?.let { SoundEffects::class.java.getDeclaredField(it.toUpperCase())[null] as SoundEffect }
+            val ambientSound = (map["ambient_sound"] as String?)?.let { SoundEffects.ot/*::class.java.getDeclaredField(it.toUpperCase())[null] as SoundEffect*/ }
+            val hurtSound = (map["hurt_sound"] as String?)?.let { SoundEffects.ot/*::class.java.getDeclaredField(it.toUpperCase())[null] as SoundEffect*/ }
+            val deathSound = (map["death_sound"] as String?)?.let { SoundEffects.ot/*::class.java.getDeclaredField(it.toUpperCase())[null] as SoundEffect*/ }
             val kbResistance = (map["kb_resistance"] as Number ??: 0).toDouble()
             val equipment = map["equipment"] as Equipment ??: Equipment(null, null, null, null, null, null)
             val spells = map["spells"] as List<MobSpell> ??: listOf()
@@ -166,42 +175,54 @@ data class WynnMob(
 
     enum class AI(val initPathfinder: (PathfinderGoalSelector, PathfinderGoalSelector, EntityCreature, Any) -> Unit) {
         NONE({ g, _, e, _ ->
-            g.a(0, PathfinderGoalFloat(e))
+            g.a(0, net.minecraft.world.entity.ai.goal.PathfinderGoalFloat(e))
         }),
         NO_ATTACK({ g, _, e, _ ->
-            g.a(1, PathfinderGoalRandomLookaround(e))
-            g.a(2, PathfinderGoalRandomStroll(e, 1.0))
-            g.a(3, PathfinderGoalLookAtPlayer(e, EntityPlayer::class.java, .5f))
+            g.a(1, net.minecraft.world.entity.ai.goal.PathfinderGoalRandomLookaround(e))
+            g.a(2, net.minecraft.world.entity.ai.goal.PathfinderGoalRandomStroll(e, 1.0))
+            g.a(3, net.minecraft.world.entity.ai.goal.PathfinderGoalLookAtPlayer(e, net.minecraft.server.level.EntityPlayer::class.java, .5f))
 
-            g.a(0, PathfinderGoalFloat(e))
+            g.a(0, net.minecraft.world.entity.ai.goal.PathfinderGoalFloat(e))
         }),
         MELEE({ g, t, e, m ->
             //t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, 10, true, false) { (e.bukkitEntity.lastDamageCause?.entity as org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity).handle == it })
-            t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityPlayer::class.java, true))
+            t.a(0,
+                net.minecraft.world.entity.ai.goal.target.PathfinderGoalNearestAttackableTarget(
+                    e,
+                    net.minecraft.server.level.EntityPlayer::class.java,
+                    true
+                )
+            )
 
             g.a(1, PathfinderGoalCastSpell(e, (m as? WynnMob)?.vision ?: (m as BaseMob).stats.vision, (m as? WynnMob)?.spells ?: (m as BaseMob).spells))
 
-            g.a(2, PathfinderGoalMeleeAttack(e, 1.0, true))
+            g.a(2, net.minecraft.world.entity.ai.goal.PathfinderGoalMeleeAttack(e, 1.0, true))
 
-            g.a(3, PathfinderGoalRandomLookaround(e))
-            g.a(4, PathfinderGoalRandomStroll(e, 1.0))
-            g.a(5, PathfinderGoalLookAtPlayer(e, EntityPlayer::class.java, .5f))
+            g.a(3, net.minecraft.world.entity.ai.goal.PathfinderGoalRandomLookaround(e))
+            g.a(4, net.minecraft.world.entity.ai.goal.PathfinderGoalRandomStroll(e, 1.0))
+            g.a(5, net.minecraft.world.entity.ai.goal.PathfinderGoalLookAtPlayer(e, net.minecraft.server.level.EntityPlayer::class.java, .5f))
 
-            g.a(0, PathfinderGoalFloat(e))
+            g.a(0, net.minecraft.world.entity.ai.goal.PathfinderGoalFloat(e))
         }),
         RANGED({ g, t, e, m ->
             //t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityHuman::class.java, true))
-            t.a(0, PathfinderGoalNearestAttackableTarget(e, EntityPlayer::class.java, true))
+            t.a(0,
+                net.minecraft.world.entity.ai.goal.target.PathfinderGoalNearestAttackableTarget(
+                    e,
+                    net.minecraft.server.level.EntityPlayer::class.java,
+                    true
+                )
+            )
 
             g.a(1, PathfinderGoalCastSpell(e, (m as? WynnMob)?.vision ?: (m as BaseMob).stats.vision, (m as? WynnMob)?.spells ?: (m as BaseMob).spells))
 
             g.a(2, PathfinderGoalRangedAttack(e, (m as? WynnMob)?.vision ?: (m as BaseMob).stats.vision, ((m as? WynnMob)?.attackSpeed ?: (m as BaseMob).stats.attackSpeed * 20).toInt(), (m as? WynnMob)?.projectile ?: (m as BaseMob).stats.projectile!!.type.java, (m as? WynnMob)?.projectileMaterial ?: (m as BaseMob).stats.projectile!!.item?.type))
 
-            g.a(3, PathfinderGoalRandomLookaround(e))
-            g.a(4, PathfinderGoalRandomStroll(e, 1.0))
-            g.a(5, PathfinderGoalLookAtPlayer(e, EntityHuman::class.java, .5f))
+            g.a(3, net.minecraft.world.entity.ai.goal.PathfinderGoalRandomLookaround(e))
+            g.a(4, net.minecraft.world.entity.ai.goal.PathfinderGoalRandomStroll(e, 1.0))
+            g.a(5, net.minecraft.world.entity.ai.goal.PathfinderGoalLookAtPlayer(e, net.minecraft.world.entity.player.EntityHuman::class.java, .5f))
 
-            g.a(0, PathfinderGoalFloat(e))
+            g.a(0, net.minecraft.world.entity.ai.goal.PathfinderGoalFloat(e))
         }),
         SUPPORT({ g, t, e, m ->
             NO_ATTACK.initPathfinder(g, t, e, m)

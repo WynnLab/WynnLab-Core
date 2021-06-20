@@ -1,8 +1,8 @@
 package com.wynnlab.entities.pathfinder
 
-import net.minecraft.server.v1_16_R3.EntityCreature
-import net.minecraft.server.v1_16_R3.EntityLiving
-import net.minecraft.server.v1_16_R3.PathfinderGoal
+import net.minecraft.world.entity.EntityCreature
+import net.minecraft.world.entity.EntityLiving
+import net.minecraft.world.entity.ai.goal.PathfinderGoal
 import org.bukkit.Material
 import org.bukkit.entity.Projectile
 import org.bukkit.entity.Snowball
@@ -18,7 +18,7 @@ class PathfinderGoalRangedAttack(private val creature: EntityCreature, range: Do
     private var target: EntityLiving? = null
 
     init {
-        a(EnumSet.of(Type.LOOK))
+        a(EnumSet.of(Type.b))
     }
 
     override fun a(): Boolean {
@@ -34,7 +34,7 @@ class PathfinderGoalRangedAttack(private val creature: EntityCreature, range: Do
         if (target == null)
             return false
 
-        if (target!!.h(creature) > range)
+        if (target!!.f(creature) > range)
             return false
 
         return true

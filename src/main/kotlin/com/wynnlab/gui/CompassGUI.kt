@@ -11,14 +11,14 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
-import net.minecraft.server.v1_16_R3.ChatMessage
-import net.minecraft.server.v1_16_R3.Containers
-import net.minecraft.server.v1_16_R3.PacketPlayOutOpenWindow
+import net.minecraft.network.chat.ChatMessage
+import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow
+import net.minecraft.world.inventory.Containers
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
@@ -53,9 +53,9 @@ class CompassGUI(player: Player, private val skills: IntArray) : GUI(player, pla
 
     private fun reopen(slot: Int) {
         val nmsPlayer = (player as CraftPlayer).handle
-        val packet = PacketPlayOutOpenWindow(nmsPlayer.activeContainer.windowId, Containers.GENERIC_9X3,
+        val packet = PacketPlayOutOpenWindow(nmsPlayer.bV.j, Containers.c,
             ChatMessage(LegacyComponentSerializer.legacy('§').serialize(player.getLocalizedText("gui.compass.title", 200 - skills.sum()))))
-        nmsPlayer.playerConnection.sendPacket(packet)
+        nmsPlayer.b.sendPacket(packet)
 
         Bukkit.getScheduler().runTaskLater(wynnlab, Runnable {
             if (slot == -1 || slot == 0)

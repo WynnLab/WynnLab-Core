@@ -30,10 +30,10 @@ class ClassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.class.
                     ClickType.RIGHT, ClickType.SHIFT_RIGHT -> true
                     else -> return@registerListener
             }) {
-                player.sendWynnMessage("gui.class.select", player.getLocalizedText("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.cloneName"))
+                player.sendWynnMessage("gui.class.select", player.getLocalizedString("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.cloneName"))
                 player.addScoreboardTag("clone")
             } else {
-                player.sendWynnMessage("gui.class.select", player.getLocalizedText("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.className"))
+                player.sendWynnMessage("gui.class.select", player.getLocalizedString("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.className"))
                 player.removeScoreboardTag("clone")
             }
 
@@ -65,7 +65,7 @@ class ClassGUI(player: Player) : GUI(player, player.getLocalizedText("gui.class.
             if (clazz is WynnClass && clazz.itemDamage != 0 && meta is Damageable)
                 meta.damage = clazz.itemDamage
 
-            meta.displayName(player.getLocalizedText("gui.class.item.title", player.getLocalizedText("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.className").content()))
+            meta.displayName(player.getLocalizedText("gui.class.item.title", player.getLocalizedString("classes.${(clazz as? WynnClass)?.id ?: (clazz as BaseClass).id}.className")))
             val lore = mutableListOf(emptyComponent)
 
             val (damage, defence, range, spells) = (clazz as? WynnClass)?.metaStats ?: (clazz as BaseClass).metaStats.let { (a, b, c, d) -> Tuple4(a, b, c, d) }
