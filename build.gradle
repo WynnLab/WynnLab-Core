@@ -1,38 +1,42 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.31'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
 }
 
 group = 'com.wynnlab'
 version = '1.1.0' // "git describe --tags".execute().text
 
+ext {
+    kotlinVersion = '1.5.10'
+    apiVersion = '1.17'
+    paperRelease = '0.1-SNAPSHOT'
+}
+
 repositories {
     mavenCentral()
-    maven { url 'https://papermc.io/repo/repository/maven-public/'}
+    maven { url 'https://papermc.io/repo/repository/maven-public/' }
 
-    flatDir { dirs './libs/'}
-    flatDir { dirs 'D:/IdeaProjects/WynnLabScriptAPI/build/libs/'}
-    flatDir { dirs 'D:/IdeaProjects/WynnLabAPI/build/libs/'}
+    flatDir { dirs './libs/' }
+    flatDir { dirs 'D:/Libraries/Java/' }
+    flatDir { dirs 'D:/IdeaProjects/WynnLabScriptAPI/build/libs/' }
+    flatDir { dirs 'D:/IdeaProjects/WynnLabAPI/build/libs/' }
 }
 
 dependencies {
     // Paper (Spigot) API
-    compileOnly 'io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT'
+    compileOnly "io.papermc.paper:paper-api:$apiVersion-R$paperRelease"
 
     // Craftbukkit & NMS
-    compileOnly name: 'craftbukkit-1.17'
+    compileOnly name: "craftbukkit-$apiVersion"
 
-    // WynnScript
+    // WynnScript (deprecated)
     compileOnly name: 'WynnScript2-1.0-all'
 
-    // Resources
-    compileOnly name: 'WynnLabAPI-1.0-SNAPSHOT'
-
-    // Script API
-    compileOnly name: 'WynnLabResources-1.0-SNAPSHOT'
+    // API
+   compileOnly name: "WynnLabAPI-$version"
 
     // Kotlin
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
     // Jython
     compileOnly "org.python:jython-standalone:2.7.1"
@@ -45,11 +49,18 @@ sourceCompatibility = 16
 targetCompatibility = 16
 
 compileKotlin {
-    kotlinOptions.jvmTarget = '1.8'
+    kotlinOptions.jvmTarget = '16'
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = '1.8'
+    kotlinOptions.jvmTarget = '16'
+}
+
+processResources {
+    duplicatesStrategy = 'include'
+    from(sourceSets.main.resources.srcDirs) {
+        filter org.apache.tools.ant.filters.ReplaceTokens, tokens: [VERSION: version, API: apiVersion]
+    }
 }
 
 /*task buildAndCopy {

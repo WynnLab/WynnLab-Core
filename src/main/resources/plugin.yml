@@ -1,10 +1,10 @@
 name: WynnLab
-version: 1.0
+version: @VERSION@
 main: com.wynnlab.Main
 depend: [ KBukkit, WynnLabAPI, WynnScript2, PyBukkit ]
 authors: [ Siinus ]
-description: Wynncraft systematic recreation 1.17
-api-version: 1.17
+description: Wynncraft systematic recreation @API@
+api-version: @API@
 prefix: WynnLab
 website: wynnlab.com
 commands:

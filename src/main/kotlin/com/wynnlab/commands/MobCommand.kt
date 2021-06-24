@@ -45,7 +45,7 @@ object MobCommand : BaseCommand("mob") {
         val mobName = args.joinToString(" ")
 
         val mob = mobs[mobName] ?: run {
-            val apiMob = MobRegistry.entries.find { it.name.content() == mobName }
+            val apiMob = MobRegistry.entries().find { it.name.content() == mobName }
             if (apiMob != null) return@run apiMob
 
             val folder = File(wynnlab.dataFolder, "mobs")

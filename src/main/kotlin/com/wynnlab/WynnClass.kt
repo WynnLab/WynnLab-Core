@@ -83,7 +83,7 @@ fun loadClasses() {
 
     classes.remove("MONK")?.let { classes["MONK"] = it }
 
-    ClassRegistry.entries.forEach {
+    ClassRegistry.entries().forEach {
         classes[it.id] = it
     }
 

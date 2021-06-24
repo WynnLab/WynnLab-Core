@@ -4,9 +4,11 @@
 ![Codacy](https://img.shields.io/codacy/grade/7679f5049036406c9c213b22a8de2bcd)
 [![Crowdin](https://badges.crowdin.net/wynnlab/localized.svg)](https://crowdin.com/project/wynnlab)
 
-Wynncraft Recreation as Minecraft 1.16 plugin
+Wynncraft Recreation as Minecraft 1.17 plugin
 
 This is my recreation of the popular MMORPG in Minecraft: Wynncraft.
+
+### Join our Minecraft server: play.<b>wynnlab</b>.tk
 
 ---
 ### Usage
