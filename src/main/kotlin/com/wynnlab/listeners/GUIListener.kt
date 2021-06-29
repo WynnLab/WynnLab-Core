@@ -119,6 +119,8 @@ class GUIListener : BaseListener() {
             player.playSound(player.location, Sound.ENTITY_HORSE_SADDLE, 1f, .9f)
             player.updatePouch(e.cursor)
             e.cursor = null
+        } else if (e.isRightClick && e.isShiftClick) {
+            player.clearPouch()
         } else {
             player.showPouch()
         }
@@ -128,6 +130,9 @@ class GUIListener : BaseListener() {
 
     @EventHandler
     fun onInventoryClose(e: InventoryCloseEvent) {
+        if (e.view.title == "Magic Pouch") {
+            (e.player as? Player)?.setPouchItems(e.inventory)
+        }
         inventories.remove(e.view.title)
     }
 

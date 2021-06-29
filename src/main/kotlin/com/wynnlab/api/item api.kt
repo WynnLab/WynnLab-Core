@@ -6,8 +6,13 @@ import com.wynnlab.items.WynnItem
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.inventory.meta.ItemMeta
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
+@OptIn(ExperimentalContracts::class)
 inline fun ItemStack.meta(edit: ItemMeta.() -> Unit): ItemStack {
+    contract { callsInPlace(edit, InvocationKind.EXACTLY_ONCE) }
     val meta = itemMeta
     meta.edit()
     itemMeta = meta
@@ -15,7 +20,9 @@ inline fun ItemStack.meta(edit: ItemMeta.() -> Unit): ItemStack {
 }
 
 //BOUNDS_NOT_ALLOWED_IF_BOUNDED_BY_TYPE_PARAMETER
+@OptIn(ExperimentalContracts::class)
 inline fun <reified T> ItemStack.metaAs(edit: T.() -> Unit): ItemStack {
+    contract { callsInPlace(edit, InvocationKind.EXACTLY_ONCE) }
     val meta = itemMeta as? T ?: return this
     meta.edit()
     itemMeta = meta as ItemMeta

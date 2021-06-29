@@ -19,16 +19,14 @@ import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
-import org.bukkit.Bukkit
-import org.bukkit.Effect
-import org.bukkit.Material
-import org.bukkit.NamespacedKey
+import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import org.bukkit.metadata.FixedMetadataValue
+import org.bukkit.inventory.meta.BundleMeta
 import org.bukkit.persistence.PersistentDataType
 import kotlin.math.round
 
@@ -415,13 +413,8 @@ fun Player.testInventory() {
 }
 
 fun Player.updatePouch(add: ItemStack? = null) {
-    inventory.setItem(13, ItemStack(Material.DIAMOND_AXE).setAppearance(93).meta {
-                addItemFlags(*ItemFlag.values())
-                //setDisplayName("§6Magic Pouch")
-                /*lore = listOf(
-                    "§fLeft-Click §7to view contents",
-                    //" "
-                )*/
+    val item = inventory.getItem(13)?.takeIf { it.type == Material.BUNDLE } ?: ItemStack(Material.BUNDLE).setAppearance(93).metaAs<BundleMeta> {
+        addItemFlags(*ItemFlag.values())
         displayName(Component.text("Magic Pouch", colorNonItalic(COLOR_GOLD)))
         lore(listOf(
             Component.text("Left-Click", colorNonItalic(NamedTextColor.WHITE))
@@ -430,13 +423,55 @@ fun Player.updatePouch(add: ItemStack? = null) {
                 .append(Component.text(" to clear", colorNonItalic(NamedTextColor.GRAY)))
         ))
 
-                data.setBoolean("pouch", true)
-            })
+        data.setBoolean("pouch", true)
 
+        repeat(3) { addItem(ItemStack(Material.NETHERITE_AXE)) }
+    }.also {
+        inventory.setItem(13, it)
+    }
+
+    add?.let {
+        item.metaAs<BundleMeta> {
+            if (items.size <= 54)
+                addItem(it)
+            else
+                playSound(location, Sound.BLOCK_ANVIL_PLACE, 1f, 1f)
+        }
+    }
 }
 
 fun Player.showPouch() {
-    setMetadata("a", FixedMetadataValue(wynnlab, Bukkit.createInventory(null, 5)))
+    val pouch = inventory.getItem(13) ?: run {
+        updatePouch()
+        inventory.getItem(13)!!
+    }
+    val items: List<ItemStack>
+    pouch.metaAs<BundleMeta> { items = this.items }
+
+    if (items.size > 54) return
+    val inv = Bukkit.createInventory(null, items.size / 9 * 9 + 9)
+
+    items.forEach(inv::addItem)
+
+    openInventory(inv)
+}
+
+fun Player.clearPouch() {
+    val pouch = inventory.getItem(13) ?: run {
+        updatePouch()
+        inventory.getItem(13)!!
+    }
+
+    pouch.metaAs<BundleMeta> { this.setItems(emptyList()) }
+}
+
+fun Player.setPouchItems(inv: Inventory) {
+    val pouch = inventory.getItem(13) ?: run {
+        updatePouch()
+        inventory.getItem(13)!!
+    }
+
+    pouch.metaAs<BundleMeta> { inv.forEach(this::addItem) }
 }
 
 fun Player.updateSidebar() {
