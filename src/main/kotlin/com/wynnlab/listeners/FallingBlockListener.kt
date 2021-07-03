@@ -16,6 +16,7 @@ class FallingBlockListener : BaseListener() {
                 e.entity.world.spawnParticle(Particle.BLOCK_CRACK, e.entity.location, 16, 1.0, 0.25, 1.0, 1.0, e.to.createBlockData())
                 val from = e.block.type
                 Bukkit.getScheduler().runTaskLater(wynnlab, Runnable { e.block.type = from }, 2L)
+                e.entity.remove()
                 e.isCancelled = true
             }
         }
