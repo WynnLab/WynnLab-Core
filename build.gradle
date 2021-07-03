@@ -45,8 +45,8 @@ dependencies {
     //testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-sourceCompatibility = 16
-targetCompatibility = 16
+//sourceCompatibility = 16
+//targetCompatibility = 16
 
 compileKotlin {
     kotlinOptions.jvmTarget = '16'
@@ -61,6 +61,12 @@ processResources {
     duplicatesStrategy = 'include'
     from(sourceSets.main.resources.srcDirs) {
         filter org.apache.tools.ant.filters.ReplaceTokens, tokens: [VERSION: version, API: apiVersion]
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(16)
     }
 }
 

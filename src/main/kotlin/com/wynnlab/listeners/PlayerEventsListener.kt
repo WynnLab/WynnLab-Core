@@ -3,6 +3,7 @@ package com.wynnlab.listeners
 import com.wynnlab.Players
 import com.wynnlab.api.*
 import com.wynnlab.localization.Language
+import com.wynnlab.pvp.Duels
 import com.wynnlab.pvp.FFA
 import com.wynnlab.spells.PySpell
 import net.kyori.adventure.text.Component
@@ -39,8 +40,6 @@ class PlayerEventsListener : BaseListener() {
     @EventHandler
     fun onPlayerLeave(e: PlayerQuitEvent) {
         val player = e.player
-
-        player.cancelSpell()
 
         //e.quitMessage = "§7[§c-§7]§r ${player.prefix}${player.name}" b52714
         e.quitMessage(Component.text("[", TextColor.color(0x666666))
@@ -97,6 +96,9 @@ class PlayerEventsListener : BaseListener() {
 
         e.entity.cancelSpell()
 
+        if (e.entity.world.name.startsWith("Duel-Instance-"))
+            Duels.playerDied(e.entity)
+
         e.deathMessage(e.entity.let { Language[it.locale()].getRandomMessage("death_messages", it.name) })
     }
 
@@ -130,12 +132,10 @@ class PlayerEventsListener : BaseListener() {
         if (player.isOp)
             e.player.sendMessage("§7[World] $from >> $to")
 
-        when (to) {
-            "FFA" -> FFA.onJoinWorld(player)
-        }
-
-        when (from) {
-            "FFA" -> FFA.onLeaveWorld(player)
+        when {
+            to == "FFA" -> FFA.onJoinWorld(player)
+            from == "FFA" -> FFA.onLeaveWorld(player)
+            from.startsWith("Duel-Instance-") -> Duels.playerLeft(player)
         }
     }
 
