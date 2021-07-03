@@ -3,6 +3,8 @@
 package com.wynnlab.api
 
 import com.wynnlab.*
+import com.wynnlab.classes.BaseClass
+import com.wynnlab.classes.BasePlayerSpell
 import com.wynnlab.essentials.Party
 import com.wynnlab.events.SpellCastEvent
 import com.wynnlab.extensions.data
@@ -87,11 +89,19 @@ fun Player.cooldown(): Boolean {
         true
 }
 
+fun Player.cancelSpell() {
+    for (st in scoreboardTags) {
+        if (st.startsWith("S-")) {
+            BasePlayerSpell.scheduled[st.substring(2).toInt()]?.cancel()
+        }
+    }
+}
+
 var Player.isCloneClass
 get() = "clone" in scoreboardTags
 set(value) { if (value) addScoreboardTag("clone") else removeScoreboardTag("clone") }
 
-val Player.invertedControls get() = (getWynnClass()?.let { WynnClass[it] } as? WynnClass)?.invertedControls ?: false
+val Player.invertedControls get() = getWynnClass()?.let { classes[it] }?.let { (it as? WynnClass)?.invertedControls ?: (it as BaseClass).invertedControls } ?: false
 
 fun Player.castSpell(id: Int) {
     Bukkit.getPluginManager().callEvent(SpellCastEvent(this, id))
@@ -192,17 +202,6 @@ fun Player.standardActionBar() {
 }
 
 private fun Player.sendWynnActionBar(msg: TextComponent) {
-    //val health = "§4[§c❤ ${health.toInt()}/${getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value?.toInt()}§4]§r"
-    //val mana = "§3[§b✺ $foodLevel/20§3]§r"
-    //val mlD2 = (ChatColor.stripColor(msg)!!.length) / 2
-    /*sendActionBar(buildString {
-        append(health)
-        repeat(20 - health.length + 8 - mlD2) { append(' ') }
-        append(msg)
-        append("§r")
-        repeat(20 - mana.length + 8 - mlD2) { append(' ') }
-        append(mana)
-    })*/
     val health = Component.text("[", TextColor.color(0xb0232f))
         .append(Component.text("❤ ", COLOR_HEALTH_HEART))
         .append(Component.text(health.toInt(), COLOR_HEALTH_VALUE))
@@ -449,7 +448,7 @@ fun Player.showPouch() {
     pouch.metaAs<BundleMeta> { items = this.items }
 
     if (items.size > 54) return
-    val inv = Bukkit.createInventory(null, items.size / 9 * 9 + 9)
+    val inv = Bukkit.createInventory(null, items.size / 9 * 9 + 9, "Magic Pouch")
 
     items.forEach(inv::addItem)
 

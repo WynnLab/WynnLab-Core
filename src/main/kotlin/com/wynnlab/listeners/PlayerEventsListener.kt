@@ -40,6 +40,8 @@ class PlayerEventsListener : BaseListener() {
     fun onPlayerLeave(e: PlayerQuitEvent) {
         val player = e.player
 
+        player.cancelSpell()
+
         //e.quitMessage = "§7[§c-§7]§r ${player.prefix}${player.name}" b52714
         e.quitMessage(Component.text("[", TextColor.color(0x666666))
             .append(Component.text("-", TextColor.color(0xb52714)))
@@ -93,6 +95,8 @@ class PlayerEventsListener : BaseListener() {
         e.setShouldDropExperience(false)
         e.droppedExp = 0
 
+        e.entity.cancelSpell()
+
         e.deathMessage(e.entity.let { Language[it.locale()].getRandomMessage("death_messages", it.name) })
     }
 
@@ -117,6 +121,8 @@ class PlayerEventsListener : BaseListener() {
     @EventHandler
     fun onPlayerChangeWorld(e: PlayerChangedWorldEvent) {
         val player = e.player
+
+        player.cancelSpell()
 
         val from = e.from.name
         val to = e.player.world.name

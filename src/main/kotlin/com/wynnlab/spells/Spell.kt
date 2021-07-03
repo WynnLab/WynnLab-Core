@@ -27,13 +27,6 @@ interface Spell : ConfigurationSerializable {
 
     fun cast(player: Player, vararg args: Any?) {
         invoke(player, args)
-        if (player.removeScoreboardTag("life_steal"))
-            lifeSteal(player.getId("life_steal"), player)
-        if (player.removeScoreboardTag("mana_steal"))
-            manaSteal(player.getId("mana_steal"), player)
-        player.removeScoreboardTag("no_life_steal")
-        player.removeScoreboardTag("no_mana_steal")
-        player.removeScoreboardTag("no_exploding")
     }
 
     fun invoke(player: Player, args: Array<out Any?>)

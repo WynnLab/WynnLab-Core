@@ -7,6 +7,8 @@ import com.wynnlab.classes.BaseClass
 import com.wynnlab.classes.BasePlayerSpell
 import com.wynnlab.events.SpellCastEvent
 import com.wynnlab.spells.Spell
+import com.wynnlab.spells.lifeSteal
+import com.wynnlab.spells.manaSteal
 import com.wynnlab.util.RefreshRunnable
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -19,7 +21,7 @@ import kotlin.math.ceil
 import kotlin.math.floor
 
 class CastListener : BaseListener() {
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGHEST)
     fun onSpellCast(e: SpellCastEvent) {
         val player = e.player
         val spellClass = player.getWynnClass()?.let { classes[it] } ?: return
@@ -61,6 +63,14 @@ class CastListener : BaseListener() {
         } else {
             if (player.cooldown()) return
         }
+
+        if (player.removeScoreboardTag("life_steal"))
+            lifeSteal(player.getId("life_steal"), player)
+        if (player.removeScoreboardTag("mana_steal"))
+            manaSteal(player.getId("mana_steal"), player)
+        player.removeScoreboardTag("no_life_steal")
+        player.removeScoreboardTag("no_mana_steal")
+        player.removeScoreboardTag("no_exploding")
 
         (spell as? Spell)?.cast(player) ?: (spell as BasePlayerSpell).schedule()
     }
