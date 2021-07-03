@@ -110,6 +110,9 @@ class GUIListener : BaseListener() {
     }
 
     private fun magicPouch(e: InventoryClickEvent, player: Player, playerInventory: Inventory) {
+        e.isCancelled = true
+        if (e.view.title == "Magic Pouch") return
+
         if (e.hotbarButton in 0..5) {
             player.playSound(player.location, Sound.ENTITY_HORSE_SADDLE, 1f, .9f)
 
@@ -124,8 +127,6 @@ class GUIListener : BaseListener() {
         } else {
             player.showPouch()
         }
-
-        e.isCancelled = true
     }
 
     @EventHandler

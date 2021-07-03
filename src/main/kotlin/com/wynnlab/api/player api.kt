@@ -431,7 +431,7 @@ fun Player.updatePouch(add: ItemStack? = null) {
 
     add?.let {
         item.metaAs<BundleMeta> {
-            if (items.size <= 54)
+            if (items.size <= 27)
                 addItem(it)
             else
                 playSound(location, Sound.BLOCK_ANVIL_PLACE, 1f, 1f)
@@ -447,8 +447,8 @@ fun Player.showPouch() {
     val items: List<ItemStack>
     pouch.metaAs<BundleMeta> { items = this.items }
 
-    if (items.size > 54) return
-    val inv = Bukkit.createInventory(null, items.size / 9 * 9 + 9, "Magic Pouch")
+    if (items.size > 27) return
+    val inv = Bukkit.createInventory(null, 27, "Magic Pouch")
 
     items.forEach(inv::addItem)
 
@@ -470,7 +470,14 @@ fun Player.setPouchItems(inv: Inventory) {
         inventory.getItem(13)!!
     }
 
-    pouch.metaAs<BundleMeta> { inv.forEach(this::addItem) }
+    pouch.metaAs<BundleMeta> {
+        val items = mutableListOf<ItemStack>()
+        inv.forEach {
+            if (it != null && it.type != Material.AIR)
+                items.add(it)
+        }
+        setItems(items)
+    }
 }
 
 fun Player.updateSidebar() {
