@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor
 abstract class BaseCommand(vararg val names: String) : CommandExecutor
 
 fun registerCommands() {
+    registerCommand(BuildCommand)
     registerCommand(CastCommand)
     registerCommand(ClassCommand)
     registerCommand(DevCommands)

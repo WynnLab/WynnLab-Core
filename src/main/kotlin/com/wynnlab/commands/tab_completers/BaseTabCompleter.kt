@@ -8,6 +8,7 @@ abstract class BaseTabCompleter(vararg val names: String) : TabCompleter {
 }
 
 fun registerTabCompleters() {
+    registerTabCompleter(BuildTabCompleter)
     registerTabCompleter(CastTabCompleter)
     registerTabCompleter(ClassTabCompleter)
     registerTabCompleter(EssentialsTabCompleters)

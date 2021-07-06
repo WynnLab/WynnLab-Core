@@ -50,6 +50,7 @@ abstract class GUI(
         }
     }
 
+    @GuiListener
     inline fun registerListener(crossinline action: (InventoryClickEvent) -> Unit) {
         GUIListener.inventories[title.content()] = {
             action(it)
@@ -57,6 +58,9 @@ abstract class GUI(
         }
     }
 }
+
+@DslMarker
+annotation class GuiListener
 
 private val decorator = ItemStack(Material.BLACK_STAINED_GLASS_PANE).meta {
     displayName(Component.empty())
