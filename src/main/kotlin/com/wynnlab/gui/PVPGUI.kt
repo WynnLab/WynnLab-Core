@@ -25,11 +25,15 @@ class PVPGUI(player: Player) : GUI(player, player.getLocalizedText("gui.pvp.titl
                     if (index == currentDuels) {
                         // Start duel
                         Duels.startDuel(player, 0)
-                        e.whoClicked.closeInventory()
+                        player.closeInventory()
                     } else if (index < currentDuels) {
-                        // Join duel
+                        // Join / leave duel
                         val duel = Duels.duels[index]
-                        duel.join(e.whoClicked as Player)
+                        if (duel.player1?.name != player.name && duel.player2?.name != player.name) {
+                            duel.join(player)
+                        } else if (e.isRightClick) {
+                            duel.leave(player)
+                        }
                     }
                 }
             }
@@ -58,7 +62,7 @@ class PVPGUI(player: Player) : GUI(player, player.getLocalizedText("gui.pvp.titl
 
             val full = duel.player1 != null && duel.player2 != null
             inventory.setItem(i, ItemStack(Material.GOLDEN_SHOVEL).meta {
-                (this as Damageable).damage = if (full) 18 else 20
+                (this as Damageable).damage = if (full) 18 else if (duel.ready) 20 else 19
                 isUnbreakable = true
                 AddItemFlags.addAllItemFlags(this)
 
@@ -69,7 +73,7 @@ class PVPGUI(player: Player) : GUI(player, player.getLocalizedText("gui.pvp.titl
                     player.getLocalizedText("gui.pvp.duel.player1", duel.player1?.name ?: "-"),
                     player.getLocalizedText("gui.pvp.duel.player2", duel.player2?.name ?: "-"),
                     emptyComponent,
-                    player.getLocalizedText(if (full) "gui.pvp.duel.spectate" else "gui.pvp.duel.join")
+                    player.getLocalizedText(if (full) "gui.pvp.duel.spectate" else if (duel.player1?.name != player.name && duel.player2?.name != player.name) "gui.pvp.duel.join" else "gui.pvp.duel.leave")
                 ))
             })
         }

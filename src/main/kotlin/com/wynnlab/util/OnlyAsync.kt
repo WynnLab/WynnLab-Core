@@ -1,8 +1,8 @@
 package com.wynnlab.util
 
 /**
- * A class that should only be created in async environment
+ * A function/class that should only be executed in async environment
  */
-@Target(AnnotationTarget.CLASS)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.SOURCE)
 annotation class OnlyAsync

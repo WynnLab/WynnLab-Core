@@ -50,6 +50,12 @@ messages:
     stats: '&7You can see your stats with &b/stats'
     leave: '&7To leave type &f/leave'
 
+  duel:
+    starting: '&aThe duel is starting in 10 seconds'
+    canceled_start: '&cThe duel start was canceled'
+    started: '&aThe duel has started. Good Luck!'
+    wait_world: '&eWaiting for world!'
+
   stats:
     stats_of: '&aStats of &6%s&a:'
     kills: '&8- &fKills: &b%d'
@@ -312,13 +318,25 @@ gui:
 
   pvp:
     title: 'Choose a game'
+
     ffa:
       title: '&cFFA'
-      # TODO: lore
       lore: |
         &8Play against all other players
         &8on a map
       online: '&7Online: %d/%d'
+
+    duel:
+      title: '&aDuel'
+      map: '&7Map: &f%s'
+      maps:
+        PLAINS: '&aPLAINS'
+      player1: '&81st player: &f%s'
+      player2: '&82nd player: &f%s'
+      spectate: '&7Click to spectate!'
+      join: '&7Click to join!'
+      leave: '&7Right click to leave!'
+
 
 elements:
   strength: '&2✤ Strength'
