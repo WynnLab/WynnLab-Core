@@ -1,3 +1,6 @@
+## This Repository is archived! You can compile it and try it out anywanys though.
+[New Repository](https://github.com/wynnlab/wynnlab-minestom)
+
 # WynnLab
 [![discord](https://img.shields.io/discord/826897491185893428)](https://discord.gg/7ktHKn2nZG)
 [![website](https://img.shields.io/website?up_message=wynnlab.tk&url=https%3A%2F%2Fwww.wynnlab.tk)](https://www.wynnlab.tk)
